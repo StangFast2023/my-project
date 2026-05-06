@@ -18,9 +18,11 @@ export default function CallMonthly({ data }) {
         const monthNames = ["", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
         const grouped = tab1part2monthly.reduce((acc, curr) => {
             const m = curr.month; 
+            const y = curr.year;
             if (!acc[m]) {
+                const thaiYearShort = (y + 543).toString().slice(-2);
                 acc[m] = { 
-                    name: monthNames[m], 
+                    name: `${monthNames[m]} ${thaiYearShort}`,
                     monthNum: m 
                 };
             }
