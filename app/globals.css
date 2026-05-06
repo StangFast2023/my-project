@@ -19,8 +19,34 @@
   }
 }
 
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+}
+
+@layer components {
+    .custom-box {
+        @apply p-4 m-2 rounded-2xl shadow-lg; 
+        border: 1px solid black;
+        background: #ffffffab;
+        box-shadow: 2px 2px 10px gray;
+    }
+    .custom-box-tab {
+        @apply p-4 rounded-2xl shadow-lg; 
+        border: 1px solid black;
+        background: #ffffffab;
+        box-shadow: 2px 2px 10px gray;
+    }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
 }
