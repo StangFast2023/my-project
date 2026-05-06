@@ -9,6 +9,18 @@ export async function GET() {
     const [provinces_dla] = await db.query('SELECT * FROM provinces_dla');
     const [type_positions_dla] = await db.query('SELECT * FROM type_positions_dla');
     const [updated_list_dla] = await db.query('SELECT * FROM updated_list_dla');
+
+    //--- tab1 part 2 monthly
+    const [part2callbar] = await db.query(`
+        SELECT 
+            round        AS round , 
+            called_month AS month , 
+            called_year  AS year  , 
+            SUM(total)   AS total 
+        FROM calling_dla 
+        GROUP BY round, called_month, called_year
+        ORDER BY called_month ASC, round ASC
+    `)
     
     return NextResponse.json({
         calling: calling_dla,
@@ -16,7 +28,8 @@ export async function GET() {
         prefixes: prefixes_dla,
         provinces: provinces_dla,
         typePositions: type_positions_dla,
-        updatedList: updated_list_dla
+        updatedList: updated_list_dla,
+        tab1part2monthly: part2callbar
     });
   } catch (error) {
     // บังคับให้ส่ง JSON แม้จะพัง เพื่อไม่ให้หน้าบ้านเจอ <!DOCTYPE

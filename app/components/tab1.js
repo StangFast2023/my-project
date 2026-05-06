@@ -1,4 +1,6 @@
 import StaticNumber from './sub-component/tab1/part1_statics';
+import CallMonthly  from './sub-component/tab1/part2_monthly';
+import PieListed    from './sub-component/tab1/part3_listed';
 
 export default function Tab1({ data }) {
     if (!data) {
@@ -9,10 +11,19 @@ export default function Tab1({ data }) {
             </div>
         );
     }
+    console.log("Data in Tab1 :", data);
     return (
         <div className="custom-box-tab animate-fade-in">
-            <h3 className="text-lg font-bold mb-4 text-gray-600 text-center">ข้อมูลสถิติการบรรจุ - เรียกรายงานตัว</h3>
+            <h3 className="text-lg font-bold text-gray-600 text-center">ข้อมูลสถิติการบรรจุ - เรียกรายงานตัว</h3>
             <StaticNumber data={ data }/>
+            <div className="grid grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-8 bg-white p-6 rounded-3xl shadow-sm">
+                    <CallMonthly  data={ data }/>
+                </div>
+                <div className="col-span-12 lg:col-span-4 space-y-4">
+                    <PieListed  data={ data }/>
+                </div>
+            </div>
         </div>
     );
 }
