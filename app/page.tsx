@@ -40,16 +40,13 @@ export default function App() {
                 {/* เมนูแท็บ */}
                 <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
                     <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : 'text-gray-400'}`} >
-                        สรุปภาพรวมประเทศ
+                        สรุปภาพรวมทุกเขต
                     </button>
                     <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : 'text-gray-400'}`} >
-                        จำแนกประเภท
+                        ข้อมูลรายภาคและเขต
                     </button>
                     <button  onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : 'text-gray-400'}`} >
-                        สถิติรายภาคและเขต
-                    </button>
-                    <button  onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : 'text-gray-400'}`} >
-                        เจาะลึกพื้นที่ & คาดการณ์
+                        ข้อมูลเจาะลึก & คาดการณ์
                     </button>
                 </div>
 
@@ -57,7 +54,6 @@ export default function App() {
                     {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={dbData}/> </div> )}
                     {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 /> </div> )}
                     {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 /> </div> )}
-                    {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 /> </div> )}
                 </div>
             </div>
 

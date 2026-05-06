@@ -21,6 +21,16 @@ export async function GET() {
         GROUP BY round, called_month, called_year
         ORDER BY called_month ASC, round ASC
     `)
+    //--- tab1 part 4 cumulatively
+    const [part4cumulative] = await db.query(`
+        SELECT 
+            called_month AS month , 
+            called_year  AS year  , 
+            SUM(total)   AS total 
+        FROM calling_dla 
+        GROUP BY called_month, called_year
+        ORDER BY called_year ASC, called_month ASC
+    `)
     
     return NextResponse.json({
         calling: calling_dla,
@@ -29,7 +39,9 @@ export async function GET() {
         provinces: provinces_dla,
         typePositions: type_positions_dla,
         updatedList: updated_list_dla,
-        tab1part2monthly: part2callbar
+        //-- tab 1
+        tab1part2monthly: part2callbar,
+        tab1part4cumulative: part4cumulative
     });
   } catch (error) {
     // บังคับให้ส่ง JSON แม้จะพัง เพื่อไม่ให้หน้าบ้านเจอ <!DOCTYPE

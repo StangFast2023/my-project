@@ -18,23 +18,23 @@ export default function StatChart({ data }) {
     const totalRound = 25;
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-2 font-kanit">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 mb-4 font-kanit">
             <div className="bg-white p-3 rounded-xl shadow-lg border-l-4 border-green-500">
                 <p className="text-gray-500 text-sm">รอบที่</p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-800">{currentRound.toLocaleString()} / {totalRound.toLocaleString()}</span>
+                    <span className="text-3xl font-bold text-gray-600">{currentRound.toLocaleString()} / {totalRound.toLocaleString()}</span>
                 </div>
             </div>
             <div className="bg-white p-3 rounded-xl shadow-lg border-l-4 border-green-500">
                 <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด</p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-800">{totalListed.toLocaleString()}</span>
+                    <span className="text-3xl font-bold text-gray-600">{totalListed.toLocaleString()}</span>
                 </div>
             </div>
             <div className="bg-white p-3 rounded-xl shadow-lg border-l-4 border-green-500">
                 <p className="text-gray-500 text-sm">เรียกไปแล้ว</p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-800">{totalCalled.toLocaleString()}</span>
+                    <span className="text-3xl font-bold text-gray-600">{totalCalled.toLocaleString()}</span>
                     <span className="text-xl font-bold text-blue-600 ml-2">
                         ( {totalListed > 0 ? ((totalCalled / totalListed) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0 } % )
                     </span>
@@ -43,7 +43,7 @@ export default function StatChart({ data }) {
             <div className="bg-white p-3 rounded-xl shadow-lg border-l-4 border-green-500">
                 <p className="text-gray-500 text-sm">คงเหลือ</p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-800">{( totalListed - totalCalled ).toLocaleString()}</span>
+                    <span className="text-3xl font-bold text-gray-600">{( totalListed - totalCalled ).toLocaleString()}</span>
                     <span className="text-xl font-bold text-blue-600 ml-2">
                         ( {totalListed > 0 ? (( (totalListed - totalCalled) / totalListed) * 100).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0 } % )
                     </span>

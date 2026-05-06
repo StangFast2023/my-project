@@ -18,7 +18,7 @@ export default function PieListed({ data }) {
     }, [totalCalled, totalListed]);
     return (
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 font-kanit">
-            <h3 className="text-lg font-bold mb-4 text-gray-700">🏛️สัดส่วนการเรียกบรรจุ</h3>
+            <h3 className="text-lg font-bold mb-4 text-gray-700">🏛️สัดส่วนการเรียกรายงานตัว</h3>
             <div className="h-100 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -34,7 +34,10 @@ export default function PieListed({ data }) {
                             ))}
                         </Pie>
                         <Tooltip 
-                            formatter={(value) => value.toLocaleString() + " อัตรา"}
+                            formatter={(value , name) => {
+                                const percent = ((value / totalListed) * 100).toFixed(2);
+                                return [`${value.toLocaleString()} อัตรา (${percent}%)`, name];
+                            }}
                             contentStyle={{ borderRadius: '12px', border: 'none' }}
                             itemStyle={{ fontSize: '16px', fontWeight: '600' }}
                         />
@@ -48,7 +51,7 @@ export default function PieListed({ data }) {
                 <p className="text-2xl font-bold text-blue-600">
                     {totalListed > 0 ? ((totalCalled / totalListed) * 100).toFixed(2) : 0}%
                 </p>
-                <p className="text-xs text-gray-400">จากผู้สอบผ่านทั้งหมด</p>
+                <p className="text-xm text-gray-600">จากผู้สอบผ่านทั้งหมด</p>
             </div>
         </div>
     );
