@@ -4,6 +4,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, 
 import { Chart } from "react-chartjs-2";
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 
+ChartJS.defaults.font.family = "'Kanit', sans-serif";
+ChartJS.defaults.font.size = 16;
 export default function Cumulatibely({ data }) {
     const chartRawData = data?.tab1?.part3; 
     if (!chartRawData) return null;
@@ -53,8 +55,8 @@ export default function Cumulatibely({ data }) {
         maintainAspectRatio: false,
         plugins: {
         legend: {
-            position: 'top',
-            labels: { font: { family: "'Sarabun', sans-serif", size: 14 } }
+            position: 'bottom',
+            labels: { font: { family: "'Kanit', sans-serif", size: 14 } }
         },
         tooltip: {
             mode: 'index',
@@ -74,11 +76,11 @@ export default function Cumulatibely({ data }) {
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: { font: { family: "'Sarabun', sans-serif" } }
+                ticks: { font: { family: "'Kanit', sans-serif" } }
             },
             x: {
                 grid: { display: false },
-                ticks: { font: { family: "'Sarabun', sans-serif" } }
+                ticks: { font: { family: "'Kanit', sans-serif" } }
             }
         }
     };

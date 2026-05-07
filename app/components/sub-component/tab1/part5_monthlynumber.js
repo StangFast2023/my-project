@@ -25,7 +25,7 @@ export default function StatChart({ data }) {
                                 />  <b className="text-xl"> / 100.00 %</b>
                             </span>
                         </div>
-                        <p className="text-gray-500 text-sm">เหลือจำนวนรอบ (คาดการณ์)</p>
+                        <p className="text-gray-500 text-sm">เหลือจำนวนรอบ</p>
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-3xl font-bold text-gray-600">
                                 <CountUp 

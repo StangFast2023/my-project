@@ -6,10 +6,16 @@ import Tab1 from './components/tab1';
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3'; 
 
+//--- modal
+import ModalPart6Top10 from './components/sub-component/tab1/modal/modal_of_part6top10pos'; 
+
 export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('tab1');
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [details, setDetails] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,7 +30,6 @@ export default function App() {
         };
         fetchData();
     }, []);
-
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen w-full bg-[#D3D3D3]">
@@ -35,7 +40,6 @@ export default function App() {
     }
 
     return (
-
         <main style={{ minHeight: '100vh', background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%)' }}>
             <div>
                 <h1 className="font-kanit text-3xl font-bold text-center text-black" style={{ padding: '2rem 1rem' }}>
@@ -43,10 +47,7 @@ export default function App() {
                 </h1>
             </div>
             <hr style={{ borderWidth: '0.15rem', color: '#00000091' }}></hr>
-
-
-            <div className="p-6">
-                {/* เมนูแท็บ */}
+            <div className="my-3">
                 <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
                     <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : 'text-gray-400'}`} >
                         สรุปภาพรวมทุกเขต
@@ -58,13 +59,16 @@ export default function App() {
                         ข้อมูลเจาะลึก & คาดการณ์
                     </button>
                 </div>
-
                 <div className="mt-6">
-                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
-                    {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 /> </div> )}
-                    {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 /> </div> )}
+                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
+                    {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
+                    {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                 </div>
             </div>
+
+            {/* for part6 top 10 position */}
+            <ModalPart6Top10 isOpen={isOpen} setIsOpen={setIsOpen} details={details} loading={loading} />
+
 
         </main>
   );
