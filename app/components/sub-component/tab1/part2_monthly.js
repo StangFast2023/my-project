@@ -1,30 +1,34 @@
 "use client";
-import { useMemo } from 'react';
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { motion } from "framer-motion";
+import { Bar } from "react-chartjs-2";
+import { 
+    Chart as ChartJS, 
+    CategoryScale, 
+    LinearScale, 
+    BarElement, 
+    PointElement,
+    LineElement,
+    Title, 
+    Tooltip, 
+    Legend 
+} from "chart.js";
+
+ChartJS.register(
+    CategoryScale, 
+    LinearScale, 
+    BarElement, 
+    PointElement,
+    LineElement, 
+    Title, 
+    Tooltip, 
+    Legend
+);
+
+ChartJS.defaults.font.family = "'Kanit', sans-serif";
+ChartJS.defaults.font.size = 16;
 
 export default function CallMonthly({ data }) {
-    const tab1part2monthly = data?.tab1part2monthly;
-    const chartData = useMemo(() => {
-        if (!tab1part2monthly) return [];
-        const monthNames = ["", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-        const grouped = tab1part2monthly.reduce((acc, curr) => {
-            const m = curr.month;
-            const totalValue = Number(curr.total);
-            if (!acc[m]) {
-                const thaiYearShort = (curr.year + 543).toString().slice(-2);
-                acc[m] = { 
-                    name: `${monthNames[m]} ${thaiYearShort}`, 
-                    monthNum: m,
-                    monthlyTotal: 0 
-                };
-            }
-            acc[m][`round${curr.round}`] = totalValue; 
-            acc[m].monthlyTotal += totalValue; 
-            return acc;
-        }, {});
-        return Object.values(grouped).sort((a, b) => a.monthNum - b.monthNum);
-    }, [tab1part2monthly]);
-
+    
     const ROUND_COLORS = [
         "#1e40afab", "#fbbe24ab", "#ef4444ab", "#10b981ab", "#8b5cf6ab", 
         "#f59e0bab", "#3b82f6ab", "#ec4899ab", "#06b6d4ab", "#84cc16ab", 
@@ -32,47 +36,108 @@ export default function CallMonthly({ data }) {
         "#0ea5e9ab", "#d946efab", "#22c55eab", "#eab308ab", "#64748bab", 
         "#475569ab", "#be123cab", "#15803dab", "#1d4ed8ab", "#7c3aedab"  
     ];
-    const activeRounds = [...new Set(tab1part2monthly?.map(item => item.round))].sort((a, b) => a - b);
+
+    const chartRawData = data?.tab1?.part2;
+    if (!chartRawData) return null;
+
+    const keys = Object.keys(chartRawData);
+    const labels = keys.map(key => chartRawData[key].name_s);
+    const fullNames = keys.map(key => chartRawData[key].name_l);
+    const allRounds = Array.from(
+        new Set(
+            keys.flatMap(key => {
+                const monthData = chartRawData[key]?.data; 
+                return monthData ? Object.values(monthData).map(d => d.round) : [];
+            })
+        )
+    ).sort((a, b) => a - b);
+
+    const barDatasets = allRounds.map((roundNum, index) => ({
+        type: 'bar',
+        label: ` รอบที่ ${roundNum}`,
+        data: keys.map(key => {
+            const monthEntry = chartRawData[key];
+            if (monthEntry && monthEntry.data) {
+                const dataArray = Object.values(monthEntry.data);
+                const item = dataArray.find(d => d.round === roundNum);
+                return item ? item.total : 0;
+            }
+            return 0;
+        }),
+        backgroundColor: ROUND_COLORS[index] || "#CCCCCC",
+        borderRadius: 6,
+        order: 2,
+    }));
+
+    const lineDataset = {
+        type: 'line', 
+        label: ' ยอดรวมการเรียกรายงานตัว ',
+        data: keys.map(key => chartRawData[key]?.total_per_month),
+        borderColor: '#F87171', 
+        backgroundColor: '#F87171',
+        borderWidth: 3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        fill: false,
+        tension: 0.3, 
+        order: 1, 
+    };
+    const chartData = {
+        labels: labels,
+        datasets: [...barDatasets, lineDataset], 
+    };
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            },
+            tooltip: {
+                labels: {
+                    font: {
+                        size: 14
+                    }
+                },
+                callbacks: {
+                    title: function(context) {
+                        const index = context[0].dataIndex;
+                        return fullNames[index]; 
+                    },
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ' : ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += new Intl.NumberFormat('th-TH').format(context.parsed.y) + ' คน';
+                        }
+                        return label;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: (value) => value.toLocaleString() + ' อัตรา'
+                }
+            }
+        }
+    };
+
+
     return (
-        <div className="bg-white rounded-3xl font-kanit">
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}   
+            transition={{ duration: 0.5 }}  
+        >
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปจำนวนการเรียกรายงานตัวรายรอบและยอดรวมรายเดือน</h3>
-            
-            <div className="h-100 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                        <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 16}} dy={10} />
-                        <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 16}} tickFormatter={(value) => value.toLocaleString()} />
-                        <Tooltip 
-                            formatter={(value, name) => {
-                                if (name === "monthlyTotal") return [value.toLocaleString() + " อัตรา", "ยอดสะสมรวม"];
-                                return [value.toLocaleString() + " อัตรา", name];
-                            }}
-                            labelStyle={{ color: '#353535', fontSize: '20px', fontWeight: 'bold', marginBottom: '4px' }}
-                            itemStyle={{ fontSize: '16px', fontWeight: '600' }}
-                        />
-                        <Legend verticalAlign="bottom" align="center" iconType="circle" />
-                        {activeRounds.map((r) => (
-                            <Bar 
-                                key={`round-${r}`}
-                                name={`รอบที่ ${r}`} 
-                                dataKey={`round${r}`} 
-                                fill={ROUND_COLORS[r - 1]} 
-                                radius={[4, 4, 0, 0]} 
-                            />
-                        ))}
-                        <Line
-                            type="monotone" 
-                            dataKey="monthlyTotal"
-                            name="ยอดรวมรายเดือน"
-                            stroke="#ff0000" 
-                            strokeWidth={3}
-                            dot={{ r: 6, fill: '#ff0000', strokeWidth: 2, stroke: '#ffffff' }}
-                            activeDot={{ r: 8 }}
-                        />
-                    </ComposedChart>
-                </ResponsiveContainer>
-            </div>
-        </div>
+                <div className="w-full h-[400px]">
+                    <Bar data={chartData} options={options} />
+                </div>
+        </motion.div>
     );
 }

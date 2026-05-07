@@ -1,58 +1,103 @@
 "use client";
-import { useMemo } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import CountUp from 'react-countup';
+import { motion } from "framer-motion";
+import { Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+ChartJS.defaults.font.family = "'Kanit', sans-serif";
+ChartJS.defaults.font.size = 16;
 
 export default function PieListed({ data }) {
-     const totalCalled = useMemo(() => {
-        return data?.calling?.reduce((acc, curr) => acc + (curr.total || 0), 0) || 0;
-    }, [data]);
-    const totalListed = useMemo(() => {
-        return data?.updatedList?.reduce((acc, curr) => acc + (curr.total || 0), 0) || 0;
-    }, [data]); 
-    const pieData = useMemo(() => {
-        const remaining = Math.max(0, totalListed - totalCalled);
-        return [
-            { name: 'เรียกบรรจุแล้ว', value: totalCalled, color: '#2563eb' }, 
-            { name: 'คงเหลือในบัญชี', value: remaining, color: '#535353' }   
-        ];
-    }, [totalCalled, totalListed]);
+    const part1 = data?.tab1?.part1;
+    if (!part1) return null;
+
+    const totalRegistered = part1.TotalList;
+    const totalCalled = part1.TotalCall;
+    const remaining = totalRegistered - totalCalled;
+
+    const chartData = {
+        labels: [" เรียกรายงานตัวแล้ว", " คงเหลือในบัญชี"],
+        datasets: [
+            {
+                data: [totalCalled, remaining],
+                backgroundColor: [
+                    "#10B981",
+                    "#E5E7EB",
+                ],
+                hoverBackgroundColor: ["#059669", "#D1D5DB"],
+                borderWidth: 0,
+            },
+        ],
+    };
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '120',
+        plugins: {
+        legend: {
+            position: 'bottom',
+            labels: {
+                font: { family: "'Kanit', sans-serif", size: 14 },
+                usePointStyle: true, 
+                padding: 20
+            }
+        },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed;
+                    const total = totalRegistered;
+                    const percentage = ((value / total) * 100).toFixed(2);
+                    return `${label}: ${value.toLocaleString()} คน ( ${percentage}% )`;
+                }
+            }
+        }
+        }
+    };
     return (
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 font-kanit">
-            <h3 className="text-lg font-bold mb-4 text-gray-700">🏛️สัดส่วนการเรียกรายงานตัว</h3>
-            <div className="h-100 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                        <Pie
-                            data={pieData}
-                            innerRadius={50}  // ทำเป็นทรงโดนัทเพื่อให้ดูทันสมัย
-                            outerRadius={150}
-                            paddingAngle={1}
-                            dataKey="value"
-                        >
-                            {pieData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                        </Pie>
-                        <Tooltip 
-                            formatter={(value , name) => {
-                                const percent = ((value / totalListed) * 100).toFixed(2);
-                                return [`${value.toLocaleString()} อัตรา (${percent}%)`, name];
-                            }}
-                            contentStyle={{ borderRadius: '12px', border: 'none' }}
-                            itemStyle={{ fontSize: '16px', fontWeight: '600' }}
-                        />
-                        <Legend iconType="circle" verticalAlign="bottom" />
-                    </PieChart>
-                </ResponsiveContainer>
-            </div>
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}   
+            transition={{ duration: 0.5 }}  
+        >
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div className="text-center mb-4">
+                    <h3 className="text-lg font-bold mb-4 text-gray-700">🏛️สัดส่วนการเรียกรายงานตัว</h3>
+                    <p className="text-sm text-gray-500">จากทั้งหมด {totalRegistered.toLocaleString()} คน</p>
+                </div>
             
-            {/* แสดงเปอร์เซ็นต์ตรงกลางหรือด้านล่าง */}
-            <div className="text-center mt-2">
-                <p className="text-2xl font-bold text-blue-600">
-                    {totalListed > 0 ? ((totalCalled / totalListed) * 100).toFixed(2) : 0}%
-                </p>
-                <p className="text-xm text-gray-600">จากผู้สอบผ่านทั้งหมด</p>
+                <div className="h-[400px] w-full relative">
+                    <Doughnut data={chartData} options={options} />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none translate-y-[-20px]">
+                        <span className="text-lg text-gray-600">เรียกแล้ว</span>
+                        <span className="text-3xl font-bold text-emerald-400">
+                            <CountUp 
+                                end={totalCalled}
+                                duration={3} 
+                                separator="," 
+                                decimals={0}
+                                useEasing={true}
+                                suffix=" อัตรา"
+                            /> 
+                        </span>
+                        <span className="text-xl font-bold text-emerald-600">
+                            [
+                                <CountUp
+                                    className="mx-2" 
+                                    end={((totalCalled / totalRegistered) * 100).toFixed(2)}
+                                    duration={3} 
+                                    separator="," 
+                                    decimals={2}
+                                    useEasing={true}
+                                    suffix=" %"
+                                />
+                            ]
+                        </span> 
+                    </div>
+                </div>
             </div>
-        </div>
+        </motion.div>
     );
 }

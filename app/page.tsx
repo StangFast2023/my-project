@@ -1,29 +1,38 @@
 "use client";
 import { useState, useEffect } from 'react';
+import axios from "axios";
+
 import Tab1 from './components/tab1'; 
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3'; 
-import Tab4 from './components/tab4';
 
 export default function App() {
-
-    const [dbData, setDbData] = useState(null);
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('tab1');
 
     useEffect(() => {
-        console.log("--- เริ่มต้นการทำงานของ useEffect ---"); // <--- ใส่บรรทัดนี้
-        fetch('/api/data')
-            .then(res => {
-                console.log("ได้รับ Response จาก API แล้ว");
-                return res.json();
-            })
-            .then(data => {
-                console.log("Data checking:", data);
-                setDbData(data);
-            })
-            .catch(err => console.error("เกิดข้อผิดพลาด:", err));
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://127.0.0.1:8000/api/data-stats");
+                setData(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาดในการดึงข้อมูล:", error);
+                setLoading(false);
+            }
+        };
+        fetchData();
     }, []);
 
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen w-full bg-[#D3D3D3]">
+                <div className="w-60 h-60 border-15 border-gray-200 border-t-green-600 rounded-full animate-spin"></div>
+                <p className="mt-10 text-3xl text-600 font-kanit text-gray-800 animate-pulse">กำลังโหลดข้อมูล...</p>
+            </div>
+        );
+    }
 
     return (
 
@@ -51,7 +60,7 @@ export default function App() {
                 </div>
 
                 <div className="mt-6">
-                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={dbData}/> </div> )}
+                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
                     {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 /> </div> )}
                     {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 /> </div> )}
                 </div>
