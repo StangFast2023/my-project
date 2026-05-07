@@ -1,63 +1,98 @@
 "use client";
-import { useMemo } from 'react';
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { motion } from "framer-motion";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
+import { Chart } from "react-chartjs-2";
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 
 export default function Cumulatibely({ data }) {
-    const part4cumulative = data?.tab1part4cumulative;
-    const chartDataPart4 = useMemo(() => {
-        if (!part4cumulative) return [];
-            const monthNames = ["", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-            let runningTotal = 0;
-            return part4cumulative.map((item) => {
-                const monthlyVal = Number(item.total);
-                runningTotal += monthlyVal;
-                const thaiYearShort = (item.year + 543).toString().slice(-2);
-                return {
-                    name: `${monthNames[item.month]} ${thaiYearShort}`,
-                    monthlyTotal: monthlyVal,      
-                    cumulativeTotal: runningTotal  
-                };
-        });
-    }, [part4cumulative]);
+    const chartRawData = data?.tab1?.part3; 
+    if (!chartRawData) return null;
+    const keys = Object.keys(chartRawData);
+    const labels = keys.map(key => chartRawData[key].name_s);
+
+    let runningTotal = 0;
+    const monthlyTotals = [];
+    const cumulativeData = [];
+
+    keys.forEach(key => {
+        const monthTotal = chartRawData[key].total_per_month || 0;
+        runningTotal += monthTotal;
+        
+        monthlyTotals.push(monthTotal); 
+        cumulativeData.push(runningTotal); 
+    });
+
+    const chartData = {
+        labels: labels,
+        datasets: [
+            {
+                type: 'line',
+                label: "ยอดสะสมทั้งหมด",
+                data: cumulativeData,
+                borderColor: "#10B981",
+                borderWidth: 3,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: "#FFF",
+                fill: false,
+                order: 1 
+            },
+            {
+                type: 'bar',
+                label: "ยอดบรรจุรายเดือน",
+                data: monthlyTotals,
+                backgroundColor: "rgba(59, 130, 246, 0.6)",
+                borderRadius: 6,
+                order: 2 
+            }
+        ]
+    };
+
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+        legend: {
+            position: 'top',
+            labels: { font: { family: "'Sarabun', sans-serif", size: 14 } }
+        },
+        tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+            label: function(context) {
+                let label = context.dataset.label || '';
+                if (label) label += ': ';
+                if (context.parsed.y !== null) {
+                    label += context.parsed.y.toLocaleString() + ' คน';
+                }
+                return label;
+            }
+            }
+        }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { font: { family: "'Sarabun', sans-serif" } }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { font: { family: "'Sarabun', sans-serif" } }
+            }
+        }
+    };
     return (
-        <div className="bg-white rounded-3xl font-kanit">
+        
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}   
+            transition={{ duration: 0.5 }}  
+        >
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สถิติเรียกรายงานตัวรายเดือนรวมและยอดสะสม</h3>
-            
-            <div className="h-100 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={chartDataPart4}>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="name" />
-                        <YAxis yAxisId="left"  orientation="left"  stroke="#3b82f6" tickFormatter={(value) => value.toLocaleString()} />
-                        <YAxis yAxisId="right" orientation="right" stroke="#ef4444" tickFormatter={(value) => value.toLocaleString()} />
-                        <Tooltip 
-                            formatter={(value, name) => {
-                                if (name === "monthlyTotal") return [value.toLocaleString() + " อัตรา", "ยอดสะสมรวม"];
-                                return [value.toLocaleString() + " อัตรา", name];
-                            }}
-                            labelStyle={{ color: '#353535', fontSize: '20px', fontWeight: 'bold', marginBottom: '4px' }}
-                            itemStyle={{ fontSize: '16px', fontWeight: '600' }}
-                        />
-                        <Legend />
-                        <Bar 
-                            yAxisId="left" 
-                            dataKey="monthlyTotal" 
-                            name="ยอดรายงานตัวรายเดือน" 
-                            fill="#0062ffa1" 
-                            radius={[4, 4, 0, 0]} 
-                        />
-                        <Line 
-                            yAxisId="right" 
-                            type="monotone" 
-                            dataKey="cumulativeTotal" 
-                            name="ยอดสะสมรวม" 
-                            stroke="#ff0000" 
-                            strokeWidth={3} 
-                            dot={{ r: 6, fill: '#ff0000' }} 
-                        />
-                    </ComposedChart>
-                </ResponsiveContainer>
-            </div>
-        </div>
+                <div className="h-[400px] w-full">
+                    <Chart type="bar" data={chartData} options={options} />
+                </div>
+        </motion.div>
     );
 }

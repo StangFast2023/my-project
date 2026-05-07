@@ -39,7 +39,7 @@ export default function App() {
         <main style={{ minHeight: '100vh', background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%)' }}>
             <div>
                 <h1 className="font-kanit text-3xl font-bold text-center text-black" style={{ padding: '2rem 1rem' }}>
-                    ข้อมูลสถิติการเรียกบรรจุข้าราชการท้องถิ่นปี <b style={{ padding: '0.5rem', border: '1px solid black', margin: '0.5rem'  ,borderRadius: '1rem', background:' #ffffffab', boxShadow: '2px 2px 10px gray' }}>2568</b>
+                    ข้อมูลสถิติการเรียกรายงานตัวข้าราชการท้องถิ่นปี <b style={{ padding: '0.5rem', border: '1px solid black', margin: '0.5rem'  ,borderRadius: '1rem', background:' #ffffffab', boxShadow: '2px 2px 10px gray' }}>2568</b>
                 </h1>
             </div>
             <hr style={{ borderWidth: '0.15rem', color: '#00000091' }}></hr>
