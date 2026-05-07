@@ -30,6 +30,28 @@ export default function App() {
         };
         fetchData();
     }, []);
+    useEffect(() => {
+
+        if (isOpen) {
+
+            document.body.style.overflow = "hidden";
+            document.documentElement.style.overflow = "hidden";
+
+        } else {
+
+            document.body.style.overflow = "auto";
+            document.documentElement.style.overflow = "auto";
+
+        }
+
+        return () => {
+
+            document.body.style.overflow = "auto";
+            document.documentElement.style.overflow = "auto";
+
+        };
+
+    }, [isOpen]);
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen w-full bg-[#D3D3D3]">

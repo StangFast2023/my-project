@@ -6,7 +6,7 @@ export default function PositionDetailModal({  isOpen, setIsOpen, details , load
 
     return (
         <div className=" fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 " onClick={() => setIsOpen(false)} >
-            <div className=" bg-white w-full max-w-6xl h-[90vh] rounded-2xl shadow-2xl overflow-y-auto p-6 " onClick={(e) => e.stopPropagation()} >
+            <div className=" bg-white w-full max-w-6xl h-[90vh] rounded-2xl overflow-y-auto p-6 " onClick={(e) => e.stopPropagation()}>
                 {
                     loading && (
                         <div className="flex flex-col items-center justify-center min-h-screen w-full">
