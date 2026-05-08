@@ -12,7 +12,19 @@ export default function StatChart({ data }) {
         >
             <div className="lg:col-span-7 flex flex-col h-full">
                 <div className="flex flex-col justify-between h-full gap-3 pl-2">
-                    <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                    <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm hover:shadow-xl transition-all duration-300">
+                        <p className="text-gray-500 text-sm">จำนวนรอบ</p>
+                        <div className="items-baseline gap-2 text-right">
+                            <span className="text-3xl font-bold text-gray-600">
+                                <CountUp 
+                                    end={(data.tab1.part1.CurRound)} 
+                                    duration={3} 
+                                    separator="," 
+                                    decimals={0}
+                                    useEasing={true}
+                                />   <b className="text-xl"> / 25 รอบ</b>
+                            </span>
+                        </div>
                         <p className="text-gray-500 text-sm">{data.tab1.part4.CurRound.name}</p>
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-3xl font-bold text-gray-600">
@@ -25,20 +37,11 @@ export default function StatChart({ data }) {
                                 />  <b className="text-xl"> / 100.00 %</b>
                             </span>
                         </div>
-                        <p className="text-gray-500 text-sm">เหลือจำนวนรอบ</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-3xl font-bold text-gray-600">
-                                <CountUp 
-                                    end={(25-data.tab1.part1.CurRound)} 
-                                    duration={3} 
-                                    separator="," 
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-xl"> รอบ</b>
-                            </span>
+                        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                            <div className={`h-full rounded-full transition-all duration-1000 ${data.tab1.part4.CurRound.value >= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(data.tab1.part4.CurRound.value, 100)}%` }} />
                         </div>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                    <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm hover:shadow-xl transition-all duration-300">
                         <p className="text-gray-500 text-sm">{data.tab1.part4.MostTotalCall_1.name}</p>
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-3xl font-bold text-gray-600">
@@ -58,7 +61,7 @@ export default function StatChart({ data }) {
                             </span>
                         </div>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                    <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm hover:shadow-xl transition-all duration-300">
                         <p className="text-gray-500 text-sm">{data.tab1.part4.MostRoundCall_1.name}</p>
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-3xl font-bold text-gray-600">

@@ -134,10 +134,12 @@ export default function CallMonthly({ data }) {
             animate={{ opacity: 1, y: 0 }}   
             transition={{ duration: 0.5 }}  
         >
-            <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปจำนวนการเรียกรายงานตัวรายรอบและยอดรวมรายเดือน</h3>
-                <div className="w-full h-[400px]">
-                    <Bar data={chartData} options={options} />
-                </div>
+            <div>
+                <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปจำนวนการเรียกรายงานตัวรายรอบและยอดรวมรายเดือน</h3>
+                    <div className="w-full h-[370px]">
+                        <Bar data={chartData} options={options} />
+                    </div>
+            </div>
         </motion.div>
     );
 }

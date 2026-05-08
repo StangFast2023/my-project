@@ -30,6 +30,7 @@ export default function App() {
         };
         fetchData();
     }, []);
+
     useEffect(() => {
 
         if (isOpen) {
@@ -52,6 +53,7 @@ export default function App() {
         };
 
     }, [isOpen]);
+
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen w-full bg-[#D3D3D3]">
@@ -68,8 +70,8 @@ export default function App() {
                     ข้อมูลสถิติการเรียกรายงานตัวข้าราชการท้องถิ่นปี <b style={{ padding: '0.5rem', border: '1px solid black', margin: '0.5rem'  ,borderRadius: '1rem', background:' #ffffffab', boxShadow: '2px 2px 10px gray' }}>2568</b>
                 </h1>
             </div>
-            <hr style={{ borderWidth: '0.15rem', color: '#00000091' }}></hr>
-            <div className="my-3">
+            <hr className="w-full border-t-5 border-gray-500 my-5 shadow-sm" />
+            <div className="my-3 p-2">
                 <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
                     <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : 'text-gray-400'}`} >
                         สรุปภาพรวมทุกเขต

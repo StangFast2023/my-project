@@ -92,7 +92,7 @@ export default function Cumulatibely({ data }) {
             transition={{ duration: 0.5 }}  
         >
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สถิติเรียกรายงานตัวรายเดือนรวมและยอดสะสม</h3>
-                <div className="h-[400px] w-full">
+                <div className="h-[370px] w-full">
                     <Chart type="bar" data={chartData} options={options} />
                 </div>
         </motion.div>

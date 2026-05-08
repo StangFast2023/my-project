@@ -62,13 +62,13 @@ export default function PieListed({ data }) {
             animate={{ opacity: 1, y: 0 }}   
             transition={{ duration: 0.5 }}  
         >
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div>
                 <div className="text-center mb-4">
-                    <h3 className="text-lg font-bold mb-4 text-gray-700">🏛️สัดส่วนการเรียกรายงานตัว</h3>
+                    <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนการเรียกรายงานตัว</h3>
                     <p className="text-sm text-gray-500">จากทั้งหมด {totalRegistered.toLocaleString()} คน</p>
                 </div>
             
-                <div className="h-[400px] w-full relative">
+                <div className="h-[370px] w-full relative">
                     <Doughnut data={chartData} options={options} />
                     <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none translate-y-[-20px]">
                         <span className="text-lg text-gray-600">เรียกแล้ว</span>
@@ -82,7 +82,7 @@ export default function PieListed({ data }) {
                                 suffix=" อัตรา"
                             /> 
                         </span>
-                        <span className="text-xl font-bold text-emerald-600">
+                        <span className="text-lg font-bold text-emerald-600">
                             [
                                 <CountUp
                                     className="mx-2" 
