@@ -27,19 +27,19 @@ export default function PositionDetailModal({  isOpen, setIsOpen, details , load
                     ) : (
                         <>
                             {details?.data && Object.entries(details.data).map(([key, zone]) => (
-                                <div key={key} className="mb-10">
-                                    <div className="sticky top-0 z-10 py-3 bg-gray-50/95 backdrop-blur-sm">
+                                <div key={key} className="mb-5">
+                                    <div className="py-3 bg-gray-50/95 backdrop-blur-sm">
                                         <h3 className="text-xl text-white p-4 bg-gray-800 rounded-2xl font-bold shadow-md">
                                             {zone.pro_main_name}
                                         </h3>
                                     </div>
-                                    <div className="grid grid-cols-1 gap-6 mt-4 lg:pl-4">
+                                    <div className="grid grid-cols-1 gap-6 lg:pl-4">
                                         {Object.entries(zone)
                                             .filter(([k, v]) => typeof v === "object")
                                             .map(([subKey, item]) => (
                                                 <div key={subKey} className="group p-1 border-0 rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" >
                                                     <div className="p-5">
-                                                        <div className="flex justify-between items-center mb-6 border-b border-gray-50 pb-4">
+                                                        <div className="flex justify-between items-center border-b border-gray-50 pb-4">
                                                             <div className="flex items-center gap-3">
                                                                 <span className="font-bold text-gray-700 text-lg">เขต</span>
                                                                 <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-bold text-xl">
@@ -50,7 +50,7 @@ export default function PositionDetailModal({  isOpen, setIsOpen, details , load
                                                                 { item.status_listed ? "● เปิดสอบ" : "● ไม่เปิดสอบ" }
                                                             </span>
                                                         </div>
-                                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 mb-6 w-full">
+                                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
                                                             <div className="bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
                                                                 <p className="text-gray-400 text-[12px] mb-1">ขึ้นบัญชี</p>
                                                                 <p className="text-right text-xl font-bold text-gray-600">
@@ -76,7 +76,7 @@ export default function PositionDetailModal({  isOpen, setIsOpen, details , load
                                                                 </p>
                                                             </div>
                                                         </div>
-                                                        <div className="mt-8 bg-gray-50 p-4 rounded-2xl">
+                                                        <div className="mt-2 bg-gray-50 p-4 rounded-2xl">
                                                             <div className="flex justify-between items-center mb-2">
                                                                 <p className="text-gray-500 text-sm font-medium">ความคืบหน้าการเรียกใช้บัญชี</p>
                                                                 <span className="text-lg font-black text-gray-700">{item.total_process.toFixed(2)} %</span>
