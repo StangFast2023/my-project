@@ -3,6 +3,9 @@ import T1P2_CallMonthly         from './sub-component/tab1/part2_monthly';
 import T1P3_PieListed           from './sub-component/tab1/part3_listed';
 import T1P4_Cumulative          from './sub-component/tab1/part4_cumulative';
 import T1P5_PercentageRound     from './sub-component/tab1/part5_percent_round';
+import T1P6_TableRoundCall      from './sub-component/tab1/part6_table_round';
+
+
 
 export default function Tab1({ data }) {
     return (
@@ -39,7 +42,7 @@ export default function Tab1({ data }) {
                         <T1P3_PieListed  data={ data }/>
                     </div>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-
+                        <T1P6_TableRoundCall  data={ data }/>
                     </div>
                 </div>
             </div>
