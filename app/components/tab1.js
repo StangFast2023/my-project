@@ -23,20 +23,23 @@ export default function Tab1({ data }) {
                 </div>
                 
                 <div className="grid grid-cols-12 gap-6">
-                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="col-span-12 lg:col-span-12">
+                        <T1P1_StaticNumber data={ data } />
+                    </div>
+                    <div className="col-span-12 lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T1P2_CallMonthly  data={ data }/>
                     </div>
-                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T1P4_Cumulative  data={ data }/>
+                    <div className="col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <T1P5_PercentageRound  data={ data }/>
                     </div>
-                    <div className="col-span-12 lg:col-span-4">
-                        <T1P1_StaticNumber data={ data } />
+                    <div className="col-span-12 lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <T1P4_Cumulative  data={ data }/>
                     </div>
                     <div className="col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T1P3_PieListed  data={ data }/>
                     </div>
-                    <div className="col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T1P5_PercentageRound  data={ data }/>
+                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+
                     </div>
                 </div>
             </div>

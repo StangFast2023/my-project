@@ -20,8 +20,8 @@ export default function T1P2_CallMonthly({ data }) {
     if (!chartRawData) return null;
 
     const keys = Object.keys(chartRawData);
-    const labels = keys.map(key => chartRawData[key].name_s);
-    const fullNames = keys.map(key => chartRawData[key].name_l);
+    const labels = keys.map(key => chartRawData[key].label_th_s);
+    const fullNames = keys.map(key => chartRawData[key].label_th_f);
     const allRounds = Array.from(
         new Set(
             keys.flatMap(key => {
@@ -51,7 +51,10 @@ export default function T1P2_CallMonthly({ data }) {
     const lineDataset = {
         type: 'line', 
         label: ' ยอดรวมการเรียกรายงานตัว ',
-        data: keys.map(key => chartRawData[key]?.total_per_month),
+        data: keys.map(key => {
+            const value = chartRawData[key]?.total_per_month;
+            return value > 0 ? value : null; 
+        }),
         borderColor: '#F87171', 
         backgroundColor: '#F87171',
         borderWidth: 3,

@@ -81,7 +81,7 @@ export default function T1P3_PieListed({ data }) {
                 <div className="flex flex-col items-center pointer-events-none">
                     <div className="flex items-baseline">
                         <span className="text-lg text-gray-600">เรียกไปแล้ว</span>
-                        <span className="text-3xl font-bold text-emerald-400 ml-2">
+                        <span className="text-3xl font-bold text-emerald-500 ml-2">
                             <CountUp 
                                 end={totalCalled}
                                 duration={3} 

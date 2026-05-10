@@ -10,19 +10,26 @@ ChartJS.defaults.font.size = 16;
 export default function T1P4_Cumulative({ data }) {
     const chartRawData = data?.tab1?.part3; 
     if (!chartRawData) return null;
+        console.log( chartRawData );
+
     const keys = Object.keys(chartRawData);
-    const labels = keys.map(key => chartRawData[key].name_s);
+    const labels = keys.map(key => chartRawData[key].label_th_s);
 
     let runningTotal = 0;
     const monthlyTotals = [];
     const cumulativeData = [];
 
     keys.forEach(key => {
-        const monthTotal = chartRawData[key].total_per_month || 0;
-        runningTotal += monthTotal;
-        
-        monthlyTotals.push(monthTotal); 
-        cumulativeData.push(runningTotal); 
+        const monthData = chartRawData[key];
+        const monthTotal = monthData.total_per_month || 0;
+        const isCalled = monthData.call_status;
+            runningTotal += monthTotal;
+            monthlyTotals.push(monthTotal);
+            if (isCalled === true) {
+                cumulativeData.push(runningTotal);
+            } else {
+                cumulativeData.push(null);
+            }
     });
 
     const chartData = {
