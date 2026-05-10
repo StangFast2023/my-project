@@ -2,11 +2,12 @@
 import { motion } from "framer-motion";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import { Chart } from "react-chartjs-2";
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
+import zoomPlugin from 'chartjs-plugin-zoom';
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler,zoomPlugin);
 
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
-export default function Cumulatibely({ data }) {
+export default function T1P4_Cumulative({ data }) {
     const chartRawData = data?.tab1?.part3; 
     if (!chartRawData) return null;
     const keys = Object.keys(chartRawData);
@@ -54,24 +55,40 @@ export default function Cumulatibely({ data }) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-        legend: {
-            position: 'bottom',
-            labels: { font: { family: "'Kanit', sans-serif", size: 14 } }
-        },
-        tooltip: {
-            mode: 'index',
-            intersect: false,
-            callbacks: {
-            label: function(context) {
-                let label = context.dataset.label || '';
-                if (label) label += ': ';
-                if (context.parsed.y !== null) {
-                    label += context.parsed.y.toLocaleString() + ' คน';
+            legend: {
+                position: 'bottom',
+                labels: { font: { family: "'Kanit', sans-serif", size: 14 } }
+            },
+            tooltip: {
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) label += ': ';
+                        if (context.parsed.y !== null) {
+                            label += context.parsed.y.toLocaleString() + ' คน';
+                        }
+                        return label;
+                    }
                 }
-                return label;
+            },
+            zoom: {
+                zoom: {
+                    wheel: {
+                        enabled: true, 
+                        modifierKey: 'ctrl',
+                    },
+                        pinch: {
+                        enabled: true, 
+                    },
+                    mode: 'x', 
+                },
+                pan: {
+                    enabled: true,
+                    mode: 'x', 
+                }
             }
-            }
-        }
         },
         scales: {
             y: {

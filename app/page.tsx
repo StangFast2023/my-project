@@ -1,14 +1,14 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from "axios";
-
 import Tab1 from './components/tab1'; 
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3'; 
 import Tab4 from './components/tab4'; 
+import Tab5 from './components/tab5'; 
 
 //--- modal
-import ModalPart6Top10 from './components/sub-component/tab1/modal/modal_of_part6top10pos'; 
+import ModalPart6Top10 from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
 
 export default function App() {
     const [data, setData] = useState([]);
@@ -65,7 +65,7 @@ export default function App() {
     }
 
     return (
-        <main style={{ minHeight: '100vh', background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%)' }}>
+        <main className="pb-5" style={{ minHeight: '100vh', background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%)' }}>
             <div className="flex flex-col items-center pt-5">
                 <div className="flex items-center gap-3">
                     <h1 className="text-3xl font-black text-right text-gray-700">
@@ -91,25 +91,31 @@ export default function App() {
                     </button>
                     <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab2' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
-                            ข้อมูลรายภาคและเขต
+                            ข้อมูลประเภทและตำแหน่ง
                         </span>
                     </button>
                     <button  onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
-                            บัญชีรายละเอียดการเรียกรอบ
+                            ข้อมูลรายภาคและเขต
                         </span>
                     </button>
                     <button  onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null }`} >
+                        <span className={`${ activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
+                            บัญชีรายละเอียดการเรียกรอบ
+                        </span>
+                    </button>
+                    <button  onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab4' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                             ข้อมูลเจาะลึก & คาดการณ์
                         </span>
                     </button>
                 </div>
                 <div className="mt-6">
-                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
+                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
                     {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
+                    {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                 </div>
             </div>
 

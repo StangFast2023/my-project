@@ -8,12 +8,12 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 
-export default function PieListed({ data }) {
-    const part7 = data.tab1.part7;
+export default function T2P4_TypePostPart2({ data }) {
+    const part7 = data.tab2.part3;
     if (!part7) return null;
     const dataArray = Object.values(part7 || {});
     const labels = dataArray.map(item => item.type_name);
-    const dataValues = dataArray.map(item => item.total_person);
+    const dataValues = dataArray.map(item => item.total_count);
     const chartData = {
         labels: labels,
         datasets: [
@@ -31,7 +31,7 @@ export default function PieListed({ data }) {
             },
         ],
     };
-    const totalSum = dataArray.reduce((sum, item) => sum + (item.total_person || 0), 0);
+    const totalSum = dataArray.reduce((sum, item) => sum + (item.total_count || 0), 0);
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -65,7 +65,7 @@ export default function PieListed({ data }) {
                         const label = context.label || '';
                         const value = context.raw || 0;
                         const percentage = totalSum > 0 ? ((value / totalSum) * 100).toFixed(2) : 0;
-                        return ` ${label}: ${value.toLocaleString()} คน ( ${percentage} % )`;
+                        return ` ${label}: ${value.toLocaleString()} ตำแหน่ง ( ${percentage} % )`;
                     }
                 },
             }
@@ -79,7 +79,7 @@ export default function PieListed({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนประเภทข้าราชการหรือพนักงานส่วนท้องถิ่นของบัญชีผู้สอบแข่งขันได้ (คน) </h3>
+                    <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนประเภทข้าราชการหรือพนักงานส่วนท้องถิ่นของบัญชีผู้สอบแข่งขันได้ (ตำแหน่ง) </h3>
                 </div>
             
                 <div className="h-[370px] w-full relative">
