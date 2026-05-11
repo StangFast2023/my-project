@@ -5,8 +5,6 @@ import T1P4_Cumulative          from './sub-component/tab1/part4_cumulative';
 import T1P5_PercentageRound     from './sub-component/tab1/part5_percent_round';
 import T1P6_TableRoundCall      from './sub-component/tab1/part6_table_round';
 
-
-
 export default function Tab1({ data }) {
     return (
         <div className="animate-fade-in">
@@ -29,16 +27,16 @@ export default function Tab1({ data }) {
                     <div className="col-span-12 lg:col-span-12">
                         <T1P1_StaticNumber data={ data } />
                     </div>
-                    <div className="col-span-12 lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="col-span-12 lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T1P2_CallMonthly  data={ data }/>
                     </div>
-                    <div className="col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T1P5_PercentageRound  data={ data }/>
                     </div>
-                    <div className="col-span-12 lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="col-span-12 lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T1P4_Cumulative  data={ data }/>
                     </div>
-                    <div className="col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T1P3_PieListed  data={ data }/>
                     </div>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">

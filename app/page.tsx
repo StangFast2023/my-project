@@ -84,11 +84,11 @@ export default function App() {
             </div>
             <div className="my-2 p-2">
                 <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                    <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
+                    {/* <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                             สรุปภาพรวมทุกเขต
                         </span>
-                    </button>
+                    </button> */}
                     <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab2' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                             ข้อมูลประเภทและตำแหน่ง
@@ -111,7 +111,7 @@ export default function App() {
                     </button>
                 </div>
                 <div className="mt-6">
-                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
+                    {/* {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )} */}
                     {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}

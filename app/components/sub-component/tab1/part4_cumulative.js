@@ -10,7 +10,6 @@ ChartJS.defaults.font.size = 16;
 export default function T1P4_Cumulative({ data }) {
     const chartRawData = data?.tab1?.part3; 
     if (!chartRawData) return null;
-        console.log( chartRawData );
 
     const keys = Object.keys(chartRawData);
     const labels = keys.map(key => chartRawData[key].label_th_s);
