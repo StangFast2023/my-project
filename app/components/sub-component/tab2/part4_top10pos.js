@@ -2,8 +2,8 @@
 import { motion } from "framer-motion";
 import axios from 'axios';
 
-export default function T2P1_Top10ListPos({ setIsOpen,setDetails,data }) {
-    const topTenData = data.tab2.part1 || [];
+export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
+    const topTenData = data.tab2.part4 || [];
     const handleViewDetail = async (id) => {
         try { const response = await axios.get( `http://127.0.0.1:8000/api/listed-position-detail/${id}` );
             setDetails(response.data);

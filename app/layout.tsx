@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Kanit } from "next/font/google"; // นำเข้า Kanit
+import { Kanit } from "next/font/google"; 
 import "./globals.css";
 
-// ตั้งค่าฟอนต์ Kanit
 const kanit = Kanit({ 
-  weight: ['300', '400', '700'], // เลือกความหนาที่ต้องการ (ปกติ, หนา)
-  subsets: ["thai", "latin"],    // ต้องใส่ thai เพื่อให้รองรับภาษาไทย
+  weight: ['300', '400', '700'], 
+  subsets: ["thai", "latin"],    
   display: 'swap',
 });
 

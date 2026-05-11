@@ -13,7 +13,7 @@ import ModalPart6Top10 from './components/sub-component/tab2/modal/modal_of_part
 export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('tab1');
+    const [activeTab, setActiveTab] = useState('tab2');
 
     const [isOpen, setIsOpen] = useState(false);
     const [details, setDetails] = useState(null);
@@ -33,26 +33,22 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-
         if (isOpen) {
 
             document.body.style.overflow = "hidden";
             document.documentElement.style.overflow = "hidden";
-
         } else {
 
             document.body.style.overflow = "auto";
             document.documentElement.style.overflow = "auto";
 
         }
-
         return () => {
 
             document.body.style.overflow = "auto";
             document.documentElement.style.overflow = "auto";
 
         };
-
     }, [isOpen]);
 
     if (loading) {
@@ -84,11 +80,11 @@ export default function App() {
             </div>
             <div className="my-2 p-2">
                 <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                    {/* <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
+                    <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                             สรุปภาพรวมทุกเขต
                         </span>
-                    </button> */}
+                    </button>
                     <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab2' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                             ข้อมูลประเภทและตำแหน่ง
@@ -111,7 +107,7 @@ export default function App() {
                     </button>
                 </div>
                 <div className="mt-6">
-                    {/* {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )} */}
+                    {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
                     {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}

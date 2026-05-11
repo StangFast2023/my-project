@@ -1,13 +1,15 @@
 "use client";
 import { motion } from "framer-motion";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, registerables, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import zoomPlugin from 'chartjs-plugin-zoom';
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler,zoomPlugin);
+import { Bar } from "react-chartjs-2";
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
+if (typeof window !== 'undefined') {
+  ChartJS.register(...registerables, zoomPlugin);
+}
 export default function T1P2_CallMonthly({ data }) {
-
     const ROUND_COLORS = [
         "#1e40afab", "#fbbe24ab", "#ef4444ab", "#10b981ab", "#8b5cf6ab", 
         "#f59e0bab", "#3b82f6ab", "#ec4899ab", "#06b6d4ab", "#84cc16ab", 

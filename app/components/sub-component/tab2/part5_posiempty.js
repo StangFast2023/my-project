@@ -2,8 +2,8 @@
 import { motion } from "framer-motion";
 import axios from 'axios';
 
-export default function T2P2_PopularPosEmp({ setIsOpen, setDetails, data }) {
-    const fastEmpty = data.tab2.part2 || [];
+export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
+    const fastEmpty = data.tab2.part5 || [];
     const typeStyles = {
         1: "bg-blue-100 text-blue-700",
         2: "bg-green-100 text-green-700",
