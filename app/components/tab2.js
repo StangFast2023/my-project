@@ -7,6 +7,9 @@ import T2P4_Top10ListPos    from './sub-component/tab2/part4_top10pos';
 import T2P5_PopularPosEmp   from './sub-component/tab2/part5_posiempty';
 import T2P6_TypeAllCall     from './sub-component/tab2/part6_typeallcall';
 import T2P7_TypeAllRemain   from './sub-component/tab2/part7_typeremain';
+import T2P7_TableAllType    from './sub-component/tab2/part8_tablealltype';
+
+
 
 
 export default function Tab1({ setIsOpen,setDetails,data }) {
@@ -49,14 +52,9 @@ export default function Tab1({ setIsOpen,setDetails,data }) {
                         <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <T2P7_TypeAllRemain setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
                         </div>
-                        {/* <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        </div>
-                        <div className="col-span-12 lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        </div>
-                        <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        </div>
                         <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        </div> */}
+                            <T2P7_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
+                        </div>
                     </div>
                 </div>
             </div>

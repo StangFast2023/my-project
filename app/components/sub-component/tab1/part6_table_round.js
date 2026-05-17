@@ -30,15 +30,15 @@ export default function T1P3_PieListed({ data }) {
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
-                                <th className="px-6 py-4 font-semibold border-b">ภาค / เขต</th>
-                                <th className="px-4 py-4 font-semibold text-center border-b bg-gray-100/50">ขึ้นบัญชี</th>
-                                <th className="px-4 py-4 font-semibold text-center border-b bg-emerald-50 text-emerald-700">เรียกแล้วรวม</th>
+                                <th className="w-[15%] px-6 py-4 font-semibold border-b">ภาค / เขต</th>
+                                <th className="w-[10%] px-4 py-4 font-semibold text-center border-b bg-gray-100/50">ขึ้นบัญชี</th>
+                                <th className="w-[10%] px-4 py-4 font-semibold text-center border-b bg-emerald-50 text-emerald-700">เรียกแล้วรวม</th>
                                 {roundColumns.map(num => (
                                     <th key={num} className="px-4 py-4 font-semibold text-center border-b border-l bg-amber-50/30">
                                         รอบที่ {num}
                                     </th>
                                 ))}
-                                <th className="px-6 py-4 font-semibold text-center border-b border-l text-rose-500">คงเหลือ</th>
+                                <th className="w-[10%] px-6 py-4 font-semibold text-center border-b border-l text-rose-500">คงเหลือ</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">

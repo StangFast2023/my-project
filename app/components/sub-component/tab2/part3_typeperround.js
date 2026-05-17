@@ -44,7 +44,6 @@ export default function T2P3_TypePerRound({ data }) {
         labels: labels,
         datasets: [...barDatasets, lineDataset], 
     };
-    console.log(chartData);
     const options = {
         responsive: true,
         maintainAspectRatio: false,
