@@ -5,15 +5,15 @@ import Tab1 from './components/tab1';
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3'; 
 import Tab4 from './components/tab4'; 
-import Tab5 from './components/tab5'; 
 
 //--- modal
-import ModalPart6Top10 from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
+import ModalTab1Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
 
 export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('tab2');
+    const [activeTab, setActiveTab] = useState('tab4');
+
 
     const [isOpen, setIsOpen] = useState(false);
     const [details, setDetails] = useState(null);
@@ -50,7 +50,7 @@ export default function App() {
 
         };
     }, [isOpen]);
-
+    
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen w-full bg-[#D3D3D3]">
@@ -96,13 +96,8 @@ export default function App() {
                         </span>
                     </button>
                     <button  onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null }`} >
-                        <span className={`${ activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
-                            บัญชีรายละเอียดการเรียกรอบ
-                        </span>
-                    </button>
-                    <button  onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null }`} >
                         <span className={`${ activeTab === 'tab4' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
-                            ข้อมูลเจาะลึก & คาดการณ์
+                            สืบค้นรายเขต & วิเคราะห์โอกาสเรียกตัว
                         </span>
                     </button>
                 </div>
@@ -111,13 +106,11 @@ export default function App() {
                     {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                     {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
-                    {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                 </div>
             </div>
 
-            {/* for part6 top 10 position */}
-            <ModalPart6Top10 isOpen={isOpen} setIsOpen={setIsOpen} details={details} loading={loading} />
-
+            {/* for tap1 part6 */}
+            <ModalTab1Part6 isOpen={isOpen} setIsOpen={setIsOpen} details={details} loading={loading} />
 
         </main>
   );
