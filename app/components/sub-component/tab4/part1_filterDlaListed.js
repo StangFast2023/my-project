@@ -48,13 +48,13 @@ export default function T4P1_TableAllListed({ data }) {
     const [selectedPos, setSelectedPos] = useState(posItems.map(i => i.id));
     const handleReset = () => {
         MySwal.fire({
-            title: 'ต้องการล้างค่าที่เลือกทั้งหมด?',
+            title: 'ต้องการคืนค่าเริ่มต้นทั้งหมด?',
             text: "ข้อมูลที่คุณเลือกไว้จะถูกล้างออกทั้งหมด",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
             cancelButtonColor: '#64748b',
-            confirmButtonText: 'ใช่, ล้างข้อมูล',
+            confirmButtonText: 'ใช่, คืนค่าเริ่มต้น',
             cancelButtonText: 'ยกเลิก'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -64,17 +64,131 @@ export default function T4P1_TableAllListed({ data }) {
                     toast: true,
                     position: 'top-end',
                     icon: 'success',
-                    title: 'ล้างข้อมูลเรียบร้อย',
+                    title: 'คืนค่าเริ่มต้นเรียบร้อย',
                     showConfirmButton: false,
                     timer: 1500
                 });
             }
         });
     };
+
+    const getFilterChips = () => {
+        const chips = [];
+        const regionData = data?.tab4?.part1?.region || {};
+        const regionKeys = Object.keys(regionData);
+        
+        const allPossibleIds = items.filter(i => !i.isRegion).map(i => i.id);
+        const isAllSelected = allPossibleIds.every(id => selectedItems.includes(id));
+
+        if (isAllSelected) {
+            return [{ id: 'all', label: "ทุกภาค & ทุกเขต" }];
+        }
+
+        regionKeys.forEach(regKey => {
+            const r = regionData[regKey];
+            const regId = `reg-${r.main}`;
+            const subEntries = Object.entries(r.sub || {});
+            const selectedSubsInThisRegion = subEntries.filter(([subKey, s]) => 
+                selectedItems.includes(`sub-${r.main}-${subKey}`)
+            );
+            if (selectedItems.includes(regId) || selectedSubsInThisRegion.length === subEntries.length) {
+                chips.push({ id: regId, label: `${r.main_name} ทุกเขต` });
+            } 
+            else if (selectedSubsInThisRegion.length > 0) {
+                selectedSubsInThisRegion.forEach(([subKey, s]) => {
+                    chips.push({ 
+                        id: `sub-${r.main}-${subKey}`, 
+                        label: s.sub_name 
+                    });
+                });
+            }
+        });
+
+        return chips;
+    };
+
+    const handleRemove = (idToRemove) => {
+        const itemToRemove = posItems.find(i => i.id === idToRemove);
+        const itemName = itemToRemove ? itemToRemove.name : "รายการนี้";
+        if (idToRemove === 'all') {
+            setSelectedItems([]);
+        } else if (idToRemove.startsWith('reg-')) {
+            const subPrefix = idToRemove.replace('reg-', 'sub-');
+            setSelectedItems(selectedItems.filter(id => id !== idToRemove && !id.startsWith(subPrefix)));
+        } else {
+            setSelectedItems(selectedItems.filter(id => id !== idToRemove));
+        }
+        MySwal.fire({
+            toast: true,
+            position: 'top-end',
+            width: '450px',
+            icon: 'success',
+            title: `ลบ "${itemName}" เรียบร้อย`,
+            showConfirmButton: false,
+            timer: 1000
+        });
+    };
+
+    const getPosFilterChips = () => {
+        const chips = [];
+        const positionData = data?.tab4?.part1?.positions || {};
+        const allPosIds = posItems.filter(i => !i.isRegion).map(i => i.id);
+        const isAllPosSelected = allPosIds.every(id => selectedPos.includes(id));
+
+        if (isAllPosSelected) {
+            return [{ id: 'all-pos', label: "ทุกประเภท & ทุกตำแหน่ง" }];
+        }
+
+        Object.entries(positionData).forEach(([typeKey, p]) => {
+            const typeId = `type-${typeKey}`;
+            const posEntries = Object.entries(p.data_position || {});
+            
+            const selectedPosInThisType = posEntries.filter(([posKey, pos]) => 
+                selectedPos.includes(`pos-${typeKey}-${posKey}`)
+            );
+
+            if (selectedPos.includes(typeId) || selectedPosInThisType.length === posEntries.length) {
+                chips.push({ id: typeId, label: `${p.type_name} ทุกตำแหน่ง` });
+            } 
+            else if (selectedPosInThisType.length > 0) {
+                selectedPosInThisType.forEach(([posKey, pos]) => {
+                    chips.push({ 
+                        id: `pos-${typeKey}-${posKey}`, 
+                        label: pos.full_pos_name 
+                    });
+                });
+            }
+        });
+
+        return chips;
+    };
+
+    const handleRemovePos = (idToRemove) => {
+        const itemToRemove = posItems.find(i => i.id === idToRemove);
+        const itemName = itemToRemove ? itemToRemove.name : "รายการนี้";
+        if (idToRemove === 'all-pos') {
+            setSelectedPos([]);
+        } else if (idToRemove.startsWith('type-')) {
+            const posPrefix = idToRemove.replace('type-', 'pos-');
+            setSelectedPos(selectedPos.filter(id => id !== idToRemove && !id.startsWith(posPrefix)));
+        } else {
+            setSelectedPos(selectedPos.filter(id => id !== idToRemove));
+        }
+        MySwal.fire({
+            toast: true,
+            position: 'top-end',
+            width: '450px',
+            icon: 'success',
+            title: `ลบ "${itemName}" เรียบร้อย`,
+            showConfirmButton: false,
+            timer: 1000
+        });
+    };
+
     if (!filterStructure) return <div className="p-4 text-slate-900">กำลังโหลดข้อมูล...</div>;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div className="grid grid-cols-12 gap-4 items-center bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200">
+            <div className="grid grid-cols-12 gap-4 items-center bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200 my-2">
                 <div className="col-span-4">
                     <FilterDropdown 
                         label="ภาค & เขต"
@@ -97,7 +211,7 @@ export default function T4P1_TableAllListed({ data }) {
                     onClick={handleReset}
                     className="col-span-2 px-2 py-2 bg-slate-200 text-slate-700 rounded-lg text-xm font-medium hover:bg-slate-300 transition-all"
                 >
-                    รีเซ็ต
+                    คืนค่าเริ่มต้น
                 </button>
                 <button 
                     onClick={() => { /* เปิด modal คาดการณ์ */ }}
@@ -105,6 +219,35 @@ export default function T4P1_TableAllListed({ data }) {
                 >
                     คาดการณ์เรียกบรรจุ
                 </button>
+            </div>
+            <div className="flex items-center gap-4 my-2">
+                <span className="text-gray-600 font-medium whitespace-nowrap">
+                    แสดงข้อมูลตาม :
+                </span>
+                <div className="flex flex-wrap gap-2">
+                    {getFilterChips().map((chip, index) => (
+                        <button
+                            key={`pos-${index}`}
+                            type="button"
+                            onClick={() => handleRemove(chip.id)}
+                            className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full border border-blue-200 hover:bg-blue-200 transition-colors cursor-pointer"
+                        >
+                            {chip.label}
+                            <span className="text-lg font-bold leading-none select-none">×</span>
+                        </button>
+                    ))}
+                    {getPosFilterChips().map((chip, index) => (
+                        <button
+                            key={`pos-${index}`}
+                            type="button"
+                            onClick={() => handleRemovePos(chip.id)}
+                            className="flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full border border-purple-200 hover:bg-purple-200 transition-colors cursor-pointer"
+                        >
+                            {chip.label}
+                            <span className="text-lg font-bold leading-none select-none">×</span>
+                        </button>
+                    ))}
+                </div>
             </div>
         </motion.div>
     );

@@ -15,7 +15,7 @@ export default function Tab4({setIsOpen,setDetails,data}) {
         });
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedPositions, setSelectedPositions] = useState([]);
-    const [alert, setAlert] = useState({ isOpen: false, message: "" });
+
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -32,7 +32,7 @@ export default function Tab4({setIsOpen,setDetails,data}) {
                         </h2>
                     </div>
                 </div>
-                <div className="grid grid-cols-12 gap-6">
+                <div className="grid grid-cols-12 gap-6 my-2">
                     <div className="col-span-12 lg:col-span-12">
                         <T4P1_filterDlaListed 
                             setIsOpen={setIsOpen}

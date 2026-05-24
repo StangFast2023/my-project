@@ -47,10 +47,10 @@ export default function Tab1({ setIsOpen,setDetails,data }) {
                             <T2P5_PopularPosEmp setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
                         </div>
                         <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <T2P6_TypeAllCall setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
+                            <T2P7_TypeAllRemain setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
                         </div>
                         <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <T2P7_TypeAllRemain setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
+                            <T2P6_TypeAllCall setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
                         </div>
                         <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <T2P7_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>

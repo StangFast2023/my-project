@@ -1,8 +1,17 @@
 "use client";
 import { motion } from "framer-motion";
+import axios from 'axios';
 
 export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
     const fastEmpty = data.tab2.part7 || {};
+    const handleViewDetail = async (id) => {
+        try { const response = await axios.get( `http://127.0.0.1:8000/api/listed-position-detail/${id}` );
+            setDetails(response.data);
+            setIsOpen(true);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const dataArray = Object.values(fastEmpty);
     const sortedData = dataArray.sort((a, b) => b.total_remain - a.total_remain);
     const typeStyles = {
@@ -29,6 +38,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                 <th className="p-4 text-lg font-semibold text-gray-600">ชื่อตำแหน่ง</th>
                                 <th className="p-4 text-lg font-semibold text-gray-600">ประเภท</th>
                                 <th className="p-4 text-lg font-semibold text-gray-600">อัตรา</th>
+                                <th className="p-4 text-lg font-semibold text-gray-600 text-center">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
@@ -52,6 +62,13 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                     <td className="p-2 text-right">
                                         <span className="font-mono text-xm font-bold text-gray-700">
                                             {pos.total_remain.toLocaleString()}
+                                        </span>
+                                    </td>
+                                    <td className="p-4 text-center">
+                                        <span className="font-mono text-xm font-bold text-blue-700">
+                                            <button onClick={() => handleViewDetail(pos.id_pos)}className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md text-sm transition-colors hover:shadow-xl transition-all duration-300">
+                                                🔎 รายละเอียด
+                                            </button>
                                         </span>
                                     </td>
                                 </tr>

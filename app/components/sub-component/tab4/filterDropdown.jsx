@@ -54,41 +54,54 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
     };
     const [search, setSearch] = React.useState("");
     const s = search.toLowerCase();
-    const selectAllInRegion = (regionId) => {
+
+    const toggleRegion = (regionId) => {
         const subIds = items.filter(i => i.parentId === regionId).map(i => i.id);
-        setSelectedItems([...new Set([...selectedItems, regionId, ...subIds])]);
+        const regionName = items.find(i => i.id === regionId)?.name || "กลุ่มนี้";
+        const isAlreadySelected = selectedItems.includes(regionId);
+
+        if (isAlreadySelected) {
+            const next = selectedItems.filter(i => i !== regionId && !subIds.includes(i));
+            setSelectedItems(next);
+            showToast(`ล้าง ${regionName} ทั้งหมดแล้ว`, "bg-red-500");
+        } else {
+            const next = [...new Set([...selectedItems, regionId, ...subIds])];
+            setSelectedItems(next);
+            showToast(`เลือก ${regionName} ทั้งหมดแล้ว`, "bg-green-500");
+        }
     };
 
     const handleToggle = (id, isRegion, parentId = null) => {
         const isSelected = selectedItems.includes(id);
         let next;
         
-        let itemsToRemove = [];
-        if (isRegion) {
-            itemsToRemove = [id, ...items.filter(i => i.parentId === id).map(i => i.id)];
-        } else {
-            itemsToRemove = [id];
-        }
+        // let itemsToRemove = [];
+        // if (isRegion) {
+        //     itemsToRemove = [id, ...items.filter(i => i.parentId === id).map(i => i.id)];
+        // } else {
+        //     itemsToRemove = [id];
+        // }
 
-        const currentSelectedCount = selectedItems.length;
-        const itemsToRemoveCount = isSelected 
-            ? itemsToRemove.filter(item => selectedItems.includes(item)).length 
-            : 0; 
+        // const currentSelectedCount = selectedItems.length;
+        // const itemsToRemoveCount = isSelected 
+        //     ? itemsToRemove.filter(item => selectedItems.includes(item)).length 
+        //     : 0; 
             
-        const finalCount = isSelected ? (currentSelectedCount - itemsToRemoveCount) : (currentSelectedCount + 1);
+        // const finalCount = isSelected ? (currentSelectedCount - itemsToRemoveCount) : (currentSelectedCount + 1);
 
-        if (isSelected && finalCount === 0) {
-            showToast("กรุณาเลือกอย่างน้อย 1 ค่า", "bg-red-500");
-            return;
-        }
+        // if (isSelected && finalCount === 0) {
+        //     showToast("กรุณาเลือกอย่างน้อย 1 ค่า", "bg-red-500");
+        //     return;
+        // }
+
         if (isRegion) {
             const subIds = items.filter(i => i.parentId === id).map(i => i.id);
             next = isSelected 
                 ? selectedItems.filter(i => i !== id && !subIds.includes(i)) 
                 : [...new Set([...selectedItems, id, ...subIds])];
             const regionName = items.find(i => i.id === id)?.name || "กลุ่มนี้";
-            showToast(isSelected ? `นำ : ${regionName} (ทั้งหมด) ออกแล้ว` : `เพิ่ม : ${regionName} (ทั้งหมด) แล้ว` , isSelected ? "bg-red-500" : "bg-green-500" );
-            
+            const actionText = isSelected ? "ล้าง" : "เลือก";
+            showToast(`${actionText} ${regionName} ทั้งหมดแล้ว`, isSelected ? "bg-red-500" : "bg-green-500");
         } else {
             let tempNext = isSelected ? selectedItems.filter(i => i !== id) : [...selectedItems, id];
             if (!isSelected && parentId) {
@@ -126,6 +139,21 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
     return (
         <div className="text-left">
 
+            {selectedItems.length === 0 && (
+                <button 
+                    type="button"
+                    onClick={() => {
+                        const allIds = items.map(i => i.id);
+                        setSelectedItems(allIds);
+                        showToast("เลือกรายการทั้งหมดแล้ว", "bg-green-600");
+                    }}
+                    className="absolute px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg shadow hover:bg-blue-700 transition-all cursor-pointer"
+                    style={{ right: '2%', top: '5%' }}
+                >
+                    เลือกทั้งหมด
+                </button>
+            )}
+
             {toast.show && (
                 <div className={`absolute top-0 right-0 z-[100] ${toast.color} text-white px-4 py-2 rounded-lg shadow-lg animate-bounce`}>
                     {toast.msg}
@@ -142,29 +170,26 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
                 {filteredRegions.map(r => {
                     const subIds = items.filter(i => i.parentId === r.id).map(i => i.id);
                     const isAllSelected = subIds.length > 0 && subIds.every(id => selectedItems.includes(id));
-
                     return (
                         <div key={r.id} className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                             <div className="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center">
                                 <label className="font-bold text-slate-800 flex items-center cursor-pointer">
-                                    <input 
-                                        type="checkbox" 
-                                        checked={selectedItems.includes(r.id)} 
-                                        onChange={() => handleToggle(r.id, true)} 
-                                        className="mr-3 w-4 h-4"
-                                    />
                                     {r.name} 
                                     {isAllSelected && (
                                         <span className="ml-2 text-xs font-normal text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-                                            (ทั้งหมด)
+                                            (เลือกทั้งหมดแล้ว)
                                         </span>
                                     )}
                                 </label>
                                 <button 
-                                    onClick={() => selectAllInRegion(r.id)} 
-                                    className="text-[11px] font-medium bg-blue-50 text-blue-700 px-3 py-1 rounded-full hover:bg-blue-100 border border-blue-200"
+                                    onClick={() => toggleRegion(r.id)} 
+                                    className={`text-[11px] font-medium px-3 py-1 rounded-full border transition-colors ${
+                                        selectedItems.includes(r.id) 
+                                            ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100" 
+                                            : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
+                                    }`}
                                 >
-                                    เลือกกลุ่มนี้
+                                    {selectedItems.includes(r.id) ? "ล้างกลุ่มนี้" : "เลือกกลุ่มนี้"}
                                 </button>
                             </div>
                             <div 
