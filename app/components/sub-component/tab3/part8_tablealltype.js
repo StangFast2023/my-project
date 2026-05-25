@@ -1,6 +1,7 @@
 "use client";
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useMemo }   from 'react';
+import { motion }           from 'framer-motion';
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 const maxR = 10;
 export default function T2P7_TableAllType({data}) {
     const part8 = data?.tab3?.part8 || null;
@@ -29,13 +30,13 @@ export default function T2P7_TableAllType({data}) {
             return sum + (roundInfo ? (roundInfo.total || 0) : 0);
         }, 0);
     });
+    if(!data) return <LoadingScreen />;
     return (
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}   
             transition={{ duration: 0.5 }}  
         >
-            
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปยอดเรียกรายงานตัวสะสมแยกตามเขตพื้นที่และประเภทตำแหน่ง</h3>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="overflow-x-auto">
@@ -171,7 +172,7 @@ export default function T2P7_TableAllType({data}) {
                                 </td>
                                 {grandTotalPerRound.map((total, index) => (
                                     <td key={index} className="px-4 py-4 text-center border-l border-gray-700 font-mono">
-                                        {total.toLocaleString()}
+                                        {total > 0 ? total.toLocaleString() : null }
                                     </td>
                                 ))}
                                 <td className="px-4 py-4 text-center bg-gray-700 font-mono">

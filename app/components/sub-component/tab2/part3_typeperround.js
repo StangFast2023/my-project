@@ -1,12 +1,14 @@
 "use client";
-import { motion } from "framer-motion";
+import { LoadingScreen }    from '../../../components/LoadingScreen';
+import { motion }           from "framer-motion";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import zoomPlugin from 'chartjs-plugin-zoom';
+import { Bar }              from "react-chartjs-2";
+import zoomPlugin           from 'chartjs-plugin-zoom';
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T2P3_TypePerRound({ data }) {
+    if(!data) return <LoadingScreen />;
     const part3 = data?.tab2?.part3; 
     if (!part3) return null;
     const keys = Object.keys(part3);

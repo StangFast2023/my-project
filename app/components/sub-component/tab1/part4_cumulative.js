@@ -1,12 +1,14 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion }           from "framer-motion";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
-import { Chart } from "react-chartjs-2";
-import zoomPlugin from 'chartjs-plugin-zoom';
+import { Chart }            from "react-chartjs-2";
+import zoomPlugin           from 'chartjs-plugin-zoom';
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T1P4_Cumulative({ data }) {
+    if ( !data ) return <LoadingScreen />;
     const chartRawData = data?.tab1?.part3; 
     if (!chartRawData) return null;
 

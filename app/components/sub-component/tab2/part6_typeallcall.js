@@ -1,7 +1,8 @@
 "use client";
-import { motion } from "framer-motion";
-
-export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
+import { motion }           from "framer-motion";
+import { LoadingScreen }    from '../../../components/LoadingScreen';
+export default function T2P5_PopularPosEmp({ data }) {
+    if(!data) return <LoadingScreen />;
     const fastEmpty = data.tab2.part6 || [];
     const typeStyles = {
         1: "bg-blue-100 text-blue-700",

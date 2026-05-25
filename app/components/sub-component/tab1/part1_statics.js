@@ -1,9 +1,10 @@
 "use client";
-import CountUp from 'react-countup';
-import { motion } from "framer-motion";
+import CountUp              from 'react-countup';
+import { motion }           from "framer-motion";
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 
 export default function StaticNumber({ data }) {
-
+    if ( !data ) return <LoadingScreen />;
     return (
         <motion.div 
             initial={{ opacity: 0, y: 20 }}

@@ -4,8 +4,9 @@ import T1P3_PieListed           from './sub-component/tab1/part3_listed';
 import T1P4_Cumulative          from './sub-component/tab1/part4_cumulative';
 import T1P5_PercentageRound     from './sub-component/tab1/part5_percent_round';
 import T1P6_TableRoundCall      from './sub-component/tab1/part6_table_round';
-
+import { LoadingScreen }        from '../components/LoadingScreen';
 export default function Tab1({ data }) {
+    if ( !data ) return <LoadingScreen />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">

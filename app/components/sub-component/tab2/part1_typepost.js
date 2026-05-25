@@ -1,9 +1,11 @@
 "use client";
 
-import CountUp from 'react-countup';
-import { motion } from "framer-motion";
+import CountUp              from 'react-countup';
+import { motion }           from "framer-motion";
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 
 export default function T2P3_TypePostPart1({ data }) {
+    if(!data) return <LoadingScreen />;
     const part7 = data.tab2.part1;
     if (!part7) return null;
     return (

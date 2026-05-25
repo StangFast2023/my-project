@@ -7,12 +7,11 @@ import T2P4_Top10ListPos    from './sub-component/tab2/part4_top10pos';
 import T2P5_PopularPosEmp   from './sub-component/tab2/part5_posiempty';
 import T2P6_TypeAllCall     from './sub-component/tab2/part6_typeallcall';
 import T2P7_TypeAllRemain   from './sub-component/tab2/part7_typeremain';
-import T2P7_TableAllType    from './sub-component/tab2/part8_tablealltype';
-
-
-
+import T2P8_TableAllType    from './sub-component/tab2/part8_tablealltype';
+import { LoadingScreen }    from '../components/LoadingScreen';
 
 export default function Tab1({ setIsOpen,setDetails,data }) {
+    if ( !data ) return <LoadingScreen />;
     return (
             <div className="animate-fade-in">
                 <div className="my-3">
@@ -44,16 +43,16 @@ export default function Tab1({ setIsOpen,setDetails,data }) {
                             <T2P4_Top10ListPos setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
                         </div>
                         <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <T2P5_PopularPosEmp setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
+                            <T2P5_PopularPosEmp data={data}/>
                         </div>
                         <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                             <T2P7_TypeAllRemain setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
                         </div>
                         <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <T2P6_TypeAllCall setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
+                            <T2P6_TypeAllCall data={data}/>
                         </div>
                         <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <T2P7_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
+                            <T2P8_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data}/>
                         </div>
                     </div>
                 </div>

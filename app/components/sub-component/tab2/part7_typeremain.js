@@ -1,8 +1,10 @@
 "use client";
-import { motion } from "framer-motion";
-import axios from 'axios';
+import { motion }           from "framer-motion";
+import axios                from 'axios';
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 
 export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
+    if(!data) return <LoadingScreen />;
     const fastEmpty = data.tab2.part7 || {};
     const handleViewDetail = async (id) => {
         try { const response = await axios.get( `http://127.0.0.1:8000/api/listed-position-detail/${id}` );

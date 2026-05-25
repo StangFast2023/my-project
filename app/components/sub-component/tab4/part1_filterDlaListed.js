@@ -1,9 +1,10 @@
 "use client";
 import React, { useMemo, useState } from 'react';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { motion } from 'framer-motion';
-import { FilterDropdown } from './filterDropdown';
+import Swal                         from 'sweetalert2';
+import withReactContent             from 'sweetalert2-react-content';
+import { motion }                   from 'framer-motion';
+import { FilterDropdown }           from './filterDropdown';
+import { LoadingScreen }            from '../../../components/LoadingScreen';
 const MySwal = withReactContent(Swal);
 
 export default function T4P1_TableAllListed({ data }) {
@@ -26,7 +27,6 @@ export default function T4P1_TableAllListed({ data }) {
         );
         return [...regions, ...subs];
     }, [filterStructure?.region]);
-    
     const [selectedItems, setSelectedItems] = useState(items.map(i => i.id));
     const posItems = useMemo(() => {
         const positionData = data?.tab4?.part1?.positions || {};
@@ -185,8 +185,7 @@ export default function T4P1_TableAllListed({ data }) {
             timer: 1000
         });
     };
-
-    if (!filterStructure) return <div className="p-4 text-slate-900">กำลังโหลดข้อมูล...</div>;
+    if(!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="grid grid-cols-12 gap-4 items-center bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200 my-2">

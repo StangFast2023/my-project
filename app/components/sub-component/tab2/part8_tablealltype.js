@@ -1,6 +1,7 @@
 "use client";
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import React, { useMemo }   from 'react';
+import { motion }           from 'framer-motion';
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 const maxR = 10;
 export default function T2P7_TableSummary({ data }) {
     const part8 = useMemo(() => data.tab2.part8 || {}, [data.tab2.part8]);
@@ -18,9 +19,7 @@ export default function T2P7_TableSummary({ data }) {
         });
         return { roundColumns: Array.from({ length: maxR }, (_, i) => i + 1), grandTotal: gTotal };
     }, [part8]);
-
-    if (!part8 || Object.keys(part8).length === 0) return <div className="p-4 text-center text-gray-400">ไม่พบข้อมูล</div>;
-
+    if(!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4">
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปยอดเรียกรายงานตัวสะสมรายภาค</h3>
@@ -56,7 +55,7 @@ export default function T2P7_TableSummary({ data }) {
                                                     {zone.pos_type}
                                                 </td>
                                                 <td className="w-[7%] px-4 py-3 text-center font-bold text-gray-600 font-mono">{(Number(zone.total_list) || 0).toLocaleString()}</td>
-                                                {roundColumns.map(num => <td key={num} className="px-4 py-3 text-center border-l font-bold text-gray-600 font-mono">{ ( zone.round_data?.[num]?.total > 0 ? zone.round_data?.[num]?.total.toLocaleString() : null ) || null}</td>)}
+                                                {roundColumns.map(num => <td key={num} className={`px-4 py-3 text-center border-l font-bold text-gray-600 font-mono ${ zone.round_data?.[num]?.total > 0  ? 'bg-white' : 'bg-gray-100' } `}>{ ( zone.round_data?.[num]?.total > 0 ? zone.round_data?.[num]?.total.toLocaleString() : null ) || null}</td>)}
                                                 <td className="w-[7%] px-4 py-3 text-center font-bold text-emerald-600 font-mono">{(Number(zone.total_call) || 0).toLocaleString()}</td>
                                                 <td className="w-[7%] px-4 py-3 text-center font-bold text-rose-600 font-mono">{(Number(zone.total_remain) || 0).toLocaleString()}</td>
                                             </tr>
@@ -65,7 +64,7 @@ export default function T2P7_TableSummary({ data }) {
                                     <tr className="bg-gray-100 font-bold text-gray-800">
                                         <td className="px-6 py-3 text-right">รวม {Object.values(posTypes)[0]?.prov_main_name}</td>
                                         <td className="px-4 py-3 text-center font-mono">{reg.list.toLocaleString()}</td>
-                                        {reg.rounds.map((v, i) => <td key={i} className="px-4 py-3 text-center border-l font-mono">{v > 0 ? v.toLocaleString() : null}</td>)}
+                                        {reg.rounds.map((v, i) => <td key={i} className={`px-4 py-3 text-center border-l font-mono ${ v > 0 ? 'bg-white' : 'bg-gray-100' } `}>{v > 0 ? v.toLocaleString() : null}</td>)}
                                         <td className="px-4 py-3 text-center text-emerald-700 font-mono">{reg.call.toLocaleString()}</td>
                                         <td className="px-4 py-3 text-center text-rose-700 font-mono">{reg.remain.toLocaleString()}</td>
                                     </tr>

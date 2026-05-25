@@ -1,14 +1,14 @@
 "use client";
-import CountUp from 'react-countup';
-import { motion } from "framer-motion";
-import { Doughnut } from "react-chartjs-2";
+import CountUp              from 'react-countup';
+import { motion }           from "framer-motion";
+import { Doughnut }         from "react-chartjs-2";
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
-
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
-
 export default function T1P3_PieListed({ data }) {
+    if ( !data ) return <LoadingScreen />;
     const part1 = data?.tab1?.part1;
     if (!part1) return null;
 

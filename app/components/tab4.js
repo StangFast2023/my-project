@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import T4P1_filterDlaListed     from './sub-component/tab4/part1_filterDlaListed';
+import T4P2_showingAllTable     from './sub-component/tab4/part2_showingAllTable';
+import { LoadingScreen }        from '../components/LoadingScreen';
 
 export default function Tab4({setIsOpen,setDetails,data}) {
     const initialRegions = Object.keys(data?.tab4?.part1?.region || {});
@@ -15,11 +17,10 @@ export default function Tab4({setIsOpen,setDetails,data}) {
         });
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedPositions, setSelectedPositions] = useState([]);
-
+    if ( !data ) return <LoadingScreen />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">
-
                 <div className="flex items-center gap-4 mb-8">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
                         <span className="text-4xl font-black text-white drop-shadow-sm">
@@ -47,6 +48,11 @@ export default function Tab4({setIsOpen,setDetails,data}) {
                             selectedPositions={selectedPositions}
                             setSelectedPositions={setSelectedPositions}
                         />
+                    </div>
+                </div>
+                <div className="grid grid-cols-12 gap-6 my-2">
+                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <T4P2_showingAllTable data={data} />
                     </div>
                 </div>
             </div>

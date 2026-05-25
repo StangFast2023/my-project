@@ -1,8 +1,9 @@
 "use client";
-import React from 'react';
-import { motion } from 'framer-motion';
-
+import React                from 'react';
+import { motion }           from 'framer-motion';
+import { LoadingScreen }    from '../../../components/LoadingScreen';
 export default function T1P3_PieListed({ data }) {
+    if ( !data ) return <LoadingScreen />;
     const part6 = data.tab1.part6;
     if (!part6) return null;
     const allZones      = Object.values(part6).flatMap(region => Object.values(region.data));
