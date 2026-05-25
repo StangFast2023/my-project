@@ -1,22 +1,15 @@
 "use client";
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-
+const maxR = 10;
 export default function T2P7_TableAllType({data}) {
     const part8 = data?.tab3?.part8 || null;
     const { allZones, roundColumns } = useMemo(() => {
         const zones = [];
-        let maxR = 0;
-
         Object.values(part8).forEach(region => {
             Object.values(region).forEach(posTypeGroup => {
                 Object.values(posTypeGroup).forEach(zone => {
                     zones.push(zone);
-                    if (zone.round_data) {
-                        const roundKeys = Object.keys(zone.round_data).map(Number);
-                        const currentMax = roundKeys.length > 0 ? Math.max(...roundKeys) : 0;
-                        if (currentMax > maxR) maxR = currentMax;
-                    }
                 });
             });
         });
@@ -49,15 +42,15 @@ export default function T2P7_TableAllType({data}) {
                     <table className="w-full text-left border-collapse min-w-[900px]">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
-                                <th className="w-[10%] px-6 py-4 font-semibold border-b">ภาค / เขตพื้นที่</th>
+                                <th className="w-[15%] px-6 py-4 font-semibold border-b">ภาค / เขตพื้นที่</th>
                                 <th className="w-[7%] px-4 py-4 font-semibold text-center border-b bg-gray-100/50">ประเภท</th>
                                 <th className="w-[7%] px-4 py-4 font-semibold text-center border-b bg-gray-100/30">ขึ้นบัญชี</th>
-                                <th className="w-[7%] px-4 py-4 font-semibold text-center border-b bg-emerald-50 text-emerald-700">เรียกแล้วรวม</th>
                                 {roundColumns.map(num => (
                                     <th key={num} className="px-4 py-4 font-semibold text-center border-b border-l bg-amber-50/30">
                                         รอบที่ {num}
                                     </th>
                                 ))}
+                                <th className="w-[7%] px-4 py-4 font-semibold text-center border-b bg-emerald-50 text-emerald-700">เรียกแล้วรวม</th>
                                 <th className="w-[7%] px-6 py-4 font-semibold text-center border-b border-l text-rose-500">คงเหลือ</th>
                             </tr>
                         </thead>
@@ -122,17 +115,18 @@ export default function T2P7_TableAllType({data}) {
                                                             <td className="px-4 py-4 text-center text-gray-500 font-mono">
                                                                 {zone.total_list.toLocaleString()}
                                                             </td>
-                                                            <td className="px-4 py-4 text-center bg-emerald-50/10 font-mono">
-                                                                <span className="text-emerald-600 font-medium">{zone.total_call.toLocaleString()}</span>
-                                                            </td>
                                                             {roundColumns.map(num => {
                                                                 const roundInfo = zone.round_data?.[num];
+                                                                const bgClass = roundInfo ? "bg-white" : "bg-gray-100";
                                                                 return (
-                                                                    <td key={num} className="px-4 py-4 text-center border-l border-gray-100 font-mono">
-                                                                        {roundInfo ? roundInfo.total.toLocaleString() : <span className="text-gray-300">-</span>}
+                                                                    <td key={num} className={`px-4 py-4 text-center border-l border-gray-100 font-mono ${bgClass}`}>
+                                                                        {roundInfo ? roundInfo.total.toLocaleString() : null}
                                                                     </td>
                                                                 );
                                                             })}
+                                                            <td className="px-4 py-4 text-center bg-emerald-50/10 font-mono">
+                                                                <span className="text-emerald-600 font-medium">{zone.total_call.toLocaleString()}</span>
+                                                            </td>
                                                             <td className="px-6 py-4 text-center text-rose-500 font-medium border-l border-gray-100 font-mono">
                                                                 {zone.total_remain.toLocaleString()}
                                                             </td>
@@ -141,12 +135,12 @@ export default function T2P7_TableAllType({data}) {
                                                     <tr className="bg-slate-50/60 font-semibold text-gray-900 border-b border-gray-200">
                                                         <td className="px-4 py-3 text-center text-xs text-slate-500 bg-slate-50/40 font-bold">รวมประจำเขต</td>
                                                         <td className="px-4 py-3 text-center font-mono">{zoneTotalList.toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center bg-emerald-50/20 text-emerald-700 font-mono">{zoneTotalCall.toLocaleString()}</td>
                                                         {zoneTotalPerRound.map((total, idx) => (
-                                                            <td key={idx} className="px-4 py-3 text-center border-l border-gray-200 font-mono text-slate-700">
-                                                                {total > 0 ? total.toLocaleString() : <span className="text-gray-300">-</span>}
+                                                            <td key={idx} className={`px-4 py-3 text-center border-l border-gray-200 font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>
+                                                                {total > 0 ? total.toLocaleString() : null}
                                                             </td>
                                                         ))}
+                                                        <td className="px-4 py-3 text-center bg-emerald-50/20 text-emerald-700 font-mono">{zoneTotalCall.toLocaleString()}</td>
                                                         <td className="px-6 py-3 text-center text-rose-600 font-bold border-l border-gray-200 font-mono">{zoneTotalRemain.toLocaleString()}</td>
                                                     </tr>
                                                 </React.Fragment>
@@ -157,12 +151,12 @@ export default function T2P7_TableAllType({data}) {
                                                 รวม{regionName}
                                             </td>
                                             <td className="px-4 py-3.5 text-center font-mono">{regionTotalList.toLocaleString()}</td>
-                                            <td className="px-4 py-3.5 text-center bg-emerald-600/10 text-emerald-700 font-mono">{regionTotalCall.toLocaleString()}</td>
                                             {regionTotalPerRound.map((total, idx) => (
-                                                <td key={idx} className="px-4 py-3.5 text-center border-l border-emerald-100 font-mono">
-                                                    {total > 0 ? total.toLocaleString() : <span className="text-gray-300">-</span>}
+                                                <td key={idx} className={`px-4 py-3.5 text-center border-l border-emerald-100 font-mono ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>
+                                                    {total > 0 ? total.toLocaleString() : null}
                                                 </td>
                                             ))}
+                                            <td className="px-4 py-3.5 text-center bg-emerald-600/10 text-emerald-700 font-mono">{regionTotalCall.toLocaleString()}</td>
                                             <td className="px-6 py-3.5 text-center text-rose-600 font-extrabold border-l border-emerald-100 font-mono">{regionTotalRemain.toLocaleString()}</td>
                                         </tr>
                                     </React.Fragment>
@@ -175,14 +169,14 @@ export default function T2P7_TableAllType({data}) {
                                 <td className="px-4 py-4 text-center font-mono">
                                     {grandTotalListed.toLocaleString()}
                                 </td>
-                                <td className="px-4 py-4 text-center bg-gray-700 font-mono">
-                                    {grandTotalCalled.toLocaleString()}
-                                </td>
                                 {grandTotalPerRound.map((total, index) => (
                                     <td key={index} className="px-4 py-4 text-center border-l border-gray-700 font-mono">
                                         {total.toLocaleString()}
                                     </td>
                                 ))}
+                                <td className="px-4 py-4 text-center bg-gray-700 font-mono">
+                                    {grandTotalCalled.toLocaleString()}
+                                </td>
                                 <td className="px-6 py-4 text-center border-l border-gray-700 text-rose-300 font-mono">
                                     {grandTotalRemain.toLocaleString()}
                                 </td>

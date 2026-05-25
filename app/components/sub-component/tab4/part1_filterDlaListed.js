@@ -8,6 +8,7 @@ const MySwal = withReactContent(Swal);
 
 export default function T4P1_TableAllListed({ data }) {
     const filterStructure = data?.tab4?.part1;
+    const [showEmpty, setShowEmpty] = useState(false); // เริ่มต้นเป็น false (ซ่อน)
     const items = useMemo(() => {
         const regionData = filterStructure?.region || {};
         const regions = Object.values(regionData).map(r => ({
@@ -189,7 +190,7 @@ export default function T4P1_TableAllListed({ data }) {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="grid grid-cols-12 gap-4 items-center bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200 my-2">
-                <div className="col-span-4">
+                <div className="col-span-3">
                     <FilterDropdown 
                         label="ภาค & เขต"
                         items={items}
@@ -198,7 +199,7 @@ export default function T4P1_TableAllListed({ data }) {
                         columns={3}
                     />
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-3">
                     <FilterDropdown 
                         label="ประเภท & ตำแหน่ง" 
                         items={posItems} 
@@ -206,6 +207,23 @@ export default function T4P1_TableAllListed({ data }) {
                         setSelectedItems={setSelectedPos}
                         columns={4}
                     />
+                </div>
+                <div className="col-span-2 rounded-lg shadow-sm border border-slate-300 p-2">
+                    <label className="flex items-center cursor-pointer">
+                        <div className="relative">
+                            <input 
+                                type="checkbox" 
+                                id="toggle-switch"
+                                className="sr-only peer" 
+                                onChange={(e) => console.log("สถานะ:", e.target.checked)}
+                            />
+                            <div className="block bg-gray-300 w-10 h-6 rounded-full peer-checked:bg-blue-200 transition"></div>
+                            <div className="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-4 peer-checked:bg-blue-600"></div>
+                        </div>
+                        <span className="ml-3 text-xm text-gray-700 font-medium">
+                            แสดงตำแหน่งที่ไม่เปิดสอบ
+                        </span>
+                    </label>
                 </div>
                 <button 
                     onClick={handleReset}
