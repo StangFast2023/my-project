@@ -188,27 +188,31 @@ export default function T4P1_TableAllListed({ data }) {
     if(!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div className="grid grid-cols-12 gap-4 items-center bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200 my-2">
-                <div className="col-span-3">
-                    <FilterDropdown 
-                        label="ภาค & เขต"
-                        items={items}
-                        selectedItems={selectedItems}
-                        setSelectedItems={setSelectedItems}
-                        columns={3}
-                    />
+            <div className="flex flex-wrap items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+                <div className="flex flex-1 gap-4">
+                    <div className="w-1/2">
+                        <FilterDropdown 
+                            label="ภาค & เขต"
+                            items={items}
+                            selectedItems={selectedItems}
+                            setSelectedItems={setSelectedItems}
+                            columns={3}
+                        />
+                    </div>
+                    <div className="w-1/2">
+                        <FilterDropdown 
+                            label="ประเภท & ตำแหน่ง" 
+                            items={posItems} 
+                            selectedItems={selectedPos} 
+                            setSelectedItems={setSelectedPos}
+                            columns={4}
+                        />
+                    </div>
                 </div>
-                <div className="col-span-3">
-                    <FilterDropdown 
-                        label="ประเภท & ตำแหน่ง" 
-                        items={posItems} 
-                        selectedItems={selectedPos} 
-                        setSelectedItems={setSelectedPos}
-                        columns={4}
-                    />
-                </div>
-                <div className="col-span-2 rounded-lg shadow-sm border border-slate-300 p-2">
-                    <label className="flex items-center cursor-pointer">
+
+                {/* ส่วนของเครื่องมือเสริม (แยกฝั่งขวา) */}
+                <div className="flex items-center gap-6 ml-auto border-l pl-6 border-gray-200">
+                    <label className="flex items-center cursor-pointer rounded-lg shadow-sm border border-slate-300 p-2">
                         <div className="relative">
                             <input 
                                 type="checkbox" 
@@ -223,19 +227,13 @@ export default function T4P1_TableAllListed({ data }) {
                             แสดงตำแหน่งที่ไม่เปิดสอบ
                         </span>
                     </label>
+                    <button 
+                        onClick={handleReset}
+                        className="col-span-2 px-2 py-2 bg-slate-200 text-slate-700 rounded-lg text-xm font-medium hover:bg-slate-300 transition-all"
+                    >
+                        คืนค่าเริ่มต้น
+                    </button>
                 </div>
-                <button 
-                    onClick={handleReset}
-                    className="col-span-2 px-2 py-2 bg-slate-200 text-slate-700 rounded-lg text-xm font-medium hover:bg-slate-300 transition-all"
-                >
-                    คืนค่าเริ่มต้น
-                </button>
-                <button 
-                    onClick={() => { /* เปิด modal คาดการณ์ */ }}
-                    className="col-span-2 px-2 py-2 bg-blue-600 text-white rounded-lg text-xm font-medium hover:bg-blue-700 transition-all"
-                >
-                    คาดการณ์เรียกบรรจุ
-                </button>
             </div>
             <div className="flex items-center gap-4 my-2">
                 <span className="text-gray-600 font-medium whitespace-nowrap">

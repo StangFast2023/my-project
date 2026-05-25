@@ -1,4 +1,8 @@
-export default function Tab5({setIsOpen,setDetails,data}) {
+import React                from 'react';
+import { LoadingScreen }    from '../components/LoadingScreen';
+
+export default function Tab5({data}) {
+    if ( !data ) return <LoadingScreen />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -11,7 +15,7 @@ export default function Tab5({setIsOpen,setDetails,data}) {
                     </div>
                     <div className="flex flex-col justify-center">
                         <h2 className="text-3xl font-black text-gray-800 leading-none font-kanit text-center">
-                            ข้อมูลเจาะลึก และคาดการณ์
+                            ข้อมูลเจาะลึก และคาดการณ์เรียกบรรจุ
                         </h2>
                     </div>
                 </div>

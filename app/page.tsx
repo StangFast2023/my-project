@@ -5,6 +5,7 @@ import Tab1 from './components/tab1';
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3'; 
 import Tab4 from './components/tab4'; 
+import Tab5 from './components/tab5'; 
 import LoadingWrapper from './components/LoadingWrapper'; 
 
 import ModalTab1Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
@@ -69,7 +70,12 @@ export default function App() {
                         </button>
                         <button  onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null }`} >
                             <span className={`${ activeTab === 'tab4' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
-                                สืบค้นรายเขต & วิเคราะห์โอกาสเรียกตัว
+                                ข้อมูลเจาะลึกรายเขตและตำแหน่ง
+                            </span>
+                        </button>
+                        <button  onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null }`} >
+                            <span className={`${ activeTab === 'tab5' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
+                                วิเคราะห์โอกาสเรียกตัว
                             </span>
                         </button>
                     </div>
@@ -78,6 +84,7 @@ export default function App() {
                         {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                         {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 data={data}/> </div> )}
                         {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
+                        {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 data={data}/> </div> )}
                     </div>
                 </div>
 
