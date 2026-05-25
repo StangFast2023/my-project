@@ -1,4 +1,6 @@
-export default function Tab3({setIsOpen,setDetails,data}) {
+import T3P8_TableAllType    from './sub-component/tab3/part8_tablealltype';
+
+export default function Tab3({data}) {
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -15,6 +17,14 @@ export default function Tab3({setIsOpen,setDetails,data}) {
                         </h2>
                     </div>
                 </div>
+
+                <div className="grid grid-cols-12 gap-6">
+                    
+                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <T3P8_TableAllType data={data}/>
+                    </div>
+                </div>
+
             </div>
         </div>
     );

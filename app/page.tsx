@@ -104,7 +104,7 @@ export default function App() {
                 <div className="mt-6">
                     {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
                     {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
-                    {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
+                    {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 data={data}/> </div> )}
                     {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
                 </div>
             </div>

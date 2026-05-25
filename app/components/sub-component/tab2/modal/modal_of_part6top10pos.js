@@ -8,14 +8,41 @@ export default function PositionDetailModal({  isOpen, setIsOpen, details , load
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setIsOpen(false)}>
             <div className="bg-gray-50 w-full max-w-6xl h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
                 {!loading && details && (
-                    <div className="px-8 py-5 bg-white border-b flex items-center justify-between shrink-0">
-                        <div className="flex flex-col">
-                            <span className="text-sm text-gray-400 font-kanit">รายละเอียดข้อมูลรายเขต</span>
-                            <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.name}</h2>
+                    <div className="px-8 py-5 bg-white border-b">
+                        <div className=" flex items-center justify-between shrink-0">
+                            <div className="flex flex-col">
+                                <span className="text-sm text-gray-400 font-kanit">รายละเอียดข้อมูลรายเขต</span>
+                                <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.name}</h2>
+                            </div>
+                            <button onClick={() => setIsOpen(false)} className="px-6 py-2 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition shadow-lg shadow-red-100"> 
+                                ปิดหน้าต่าง
+                            </button>
                         </div>
-                        <button onClick={() => setIsOpen(false)} className="px-6 py-2 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition shadow-lg shadow-red-100"> 
-                            ปิดหน้าต่าง
-                        </button>
+                        <div className="grid grid-cols-12 gap-6">
+                            <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-gray-100 text-center">
+                                <span className="text-sm text-gray-400 font-kanit">ขึ้นบัญชีทั้งหมด</span>
+                                <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.listed.toLocaleString()}</h2>
+                            </div>
+                            <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-gray-100 text-center">
+                                <span className="text-sm text-gray-400 font-kanit">เรียกทั้งหมด</span>
+                                <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.called.toLocaleString()}</h2>
+                            </div>
+                            <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-gray-100 text-center">
+                                <span className="text-sm text-gray-400 font-kanit">คงเหลือ</span>
+                                <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.remain.toLocaleString()}</h2>
+                            </div>
+                        </div>
+                        <div className="mt-2 bg-gray-50 p-4 rounded-2xl">
+                            <div className="flex justify-between items-center mb-2">
+                                <p className="text-gray-500 text-sm font-medium">ความคืบหน้าการเรียกใช้บัญชีทั้งหมด</p>
+                                <span className="text-lg font-black text-gray-700">
+                                    {( ( details.total.called / details.total.listed ) * 100 ).toFixed(2)} %
+                                </span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div className={`h-full rounded-full transition-all duration-1000 ${( ( ( details.total.called / details.total.listed ) * 100 ) ) >= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min( ( ( details.total.called / details.total.listed ) * 100 ) , 100)}%` }} />
+                            </div>
+                        </div>
                     </div>
                 )}
                 <div className="flex-grow overflow-y-auto p-8 custom-scrollbar">
