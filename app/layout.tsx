@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
-import { Kanit } from "next/font/google"; 
 import "./globals.css";
+import type { Metadata }    from "next";
+import { Kanit }            from "next/font/google"; 
+import ThemeSwitcher        from "./components/ThemeSwitcher";
 
 const kanit = Kanit({ 
   weight: ['300', '400', '700'], 
@@ -13,16 +14,14 @@ export const metadata: Metadata = {
   description: "Built with Next.js by Stang",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({children}: {children: React.ReactNode;}) {
   return (
-    <html lang="th">
-      <body className={kanit.className}>
-        {children}
-      </body>
+    <html lang="th" >
+        <body className={kanit.className}>
+            <ThemeSwitcher />
+                {children}
+        </body>
     </html>
   );
 }
+

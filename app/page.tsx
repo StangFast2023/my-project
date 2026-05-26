@@ -7,13 +7,12 @@ import Tab3 from './components/tab3';
 import Tab4 from './components/tab4'; 
 import Tab5 from './components/tab5'; 
 import LoadingWrapper from './components/LoadingWrapper'; 
-
 import ModalTab1Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
 
 export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('tab4');
+    const [activeTab, setActiveTab] = useState('tab1');
 
 
     const [isOpen, setIsOpen] = useState(false);
