@@ -43,8 +43,34 @@ export default function Part3_PositionRow({ typeData, roundsArray, isParentColla
                             {typeData.pos_type_name}
                         </span>
                     </div>
+                    { !isVisible ? ( <div className="absolute right-3 top-0 bottom-0 flex items-center"> รวม </div> ) : null }
                 </td>
-                {Array.from({ length: roundsArray.length + 7 }).map((_, i) => <td key={i} className={`${typeData.pos_type_id === "1" ? "bg-blue-100 text-blue-700" : typeData.pos_type_id === "2" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}></td>)}
+                {
+                    !isVisible
+                    ?
+                        (
+                            <>
+                                <td className={`${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
+                                <td className={`${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
+                                <td className={`${!hasData ? "bg-gray-50 text-gray-400" : (isFull ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700")} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                                    {hasData ? (isFull ? 'หมดบัญชี' : 'คงเหลือ') : '-'}
+                                </td>
+                                <td className={`${colorClass} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                                    {hasData ? percent.toFixed(2) + ' %' : 0} 
+                                </td>
+                                <td className={`${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} border-l-1 w-[100px] min-w-[100px] p-4 text-center font-bold `}>{typeData.total_listed.toLocaleString()}</td>
+                                <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold bg-emerald-50 text-emerald-700 border-l-1`}>{typeData.total_called.toLocaleString()}</td>
+                                <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold bg-amber-50   text-amber-500 border-l-1 border-r-1`}>{typeData.total_remain.toLocaleString()}</td>
+                                {roundsArray.map((_, i) => (
+                                    <td key={i} className={`${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} w-[100px] min-w-[100px] p-4 text-center border-l border-black`} >
+                                        {typeData.total_each_round?.[i + 1]?.total.toLocaleString() || null }
+                                    </td>
+                                ))}
+                            </>
+                        )
+                    : 
+                        ( Array.from({ length: roundsArray.length + 7 }).map((_, i) => <td key={i} className={`${typeData.pos_type_id === "1" ? "bg-blue-100 text-blue-700" : typeData.pos_type_id === "2" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}></td>) )
+                }
             </motion.tr>
             <AnimatePresence>
                     {isVisible &&
@@ -82,7 +108,6 @@ export default function Part3_PositionRow({ typeData, roundsArray, isParentColla
                             </tr>
                         </>
                     }
-                    
             </AnimatePresence>
         </>
     );

@@ -39,8 +39,31 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                         {regionData.pro_main_name}
                     </span>
                 </div>
+                { isRegionCollapsed ? ( <div className="absolute right-3 top-0 bottom-0 flex items-center"> รวม </div> ) : null }
             </td>
-            {Array.from({ length: roundsArray.length + 7 }).map((_, i) => <td key={i} className="bg-emerald-100"></td>)}
+            {
+                isRegionCollapsed
+                ?
+                    <>
+                        <td className={`bg-emerald-100 w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
+                        <td className={`bg-emerald-100 w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
+                        <td className={`${statusClass} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                            {listed > 0 ? (percent === 100 ? 'หมดบัญชี' : 'คงเหลือ') : '-'}
+                        </td>
+                        <td className={`${percentClass} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                            {listed > 0 ? `${percent.toFixed(2)} %` : 0 }
+                        </td>
+                        <td className={`border-l-1 bg-emerald-100 w-[100px] min-w-[100px] p-4 text-center font-bold `}>{regionData.total_listed.toLocaleString()}</td>
+                        <td className={`border-l-1 w-[100px] min-w-[100px] p-4 text-center font-bold bg-emerald-50 text-emerald-700`}>{regionData.total_called.toLocaleString()}</td>
+                        <td className={`border-r-1 border-l-1 w-[100px] min-w-[100px] p-4 text-center font-bold bg-amber-50 text-amber-500`}>{regionData.total_remain.toLocaleString()}</td>
+                        {roundsArray.map((_, i) => (
+                            <td key={i} className="bg-emerald-100 w-[100px] min-w-[100px] p-4 text-center border-l border-black">
+                                {regionData.total_each_round?.[i + 1]?.total.toLocaleString() || null }
+                            </td>
+                        ))}
+                    </>
+                : Array.from({ length: roundsArray.length + 7 }).map((_, i) => <td key={i} className="bg-emerald-100"></td>)
+            }
         </motion.tr>
             <AnimatePresence initial={false}>
                 {!isRegionCollapsed && (
@@ -84,8 +107,33 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                     {provSubData.pro_sub_name}
                                                 </span>
                                             </div>
+                                            { isCollapsed ? ( <div className="absolute right-3 top-0 bottom-0 flex items-center"> รวม </div> ) : null }
                                         </td>
-                                        {Array.from({ length: roundsArray.length + 7 }).map((_, i) => <td key={i} className="bg-emerald-50"></td>)}
+                                        {
+                                            isCollapsed
+                                            ?
+                                                (
+                                                    <>
+                                                        <td className={`bg-emerald-50 w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
+                                                        <td className={`bg-emerald-50 w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
+                                                        <td className={`${s_statusClass} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                                                            {s_listed > 0 ? (s_percent === 100 ? 'หมดบัญชี' : 'คงเหลือ') : '-'}
+                                                        </td>
+                                                        <td className={`${s_percentClass} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                                                            {s_listed > 0 ? `${s_percent.toFixed(2)} %` : 0}
+                                                        </td>
+                                                        <td className={`border-l-1 bg-emerald-50 w-[100px] min-w-[100px] p-4 text-center font-bold `}>{provSubData.total_listed.toLocaleString()}</td>
+                                                        <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold bg-emerald-50 text-emerald-700  border-l-1`}>{provSubData.total_called.toLocaleString()}</td>
+                                                        <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold bg-amber-50 text-amber-500 border-l-1 border-r-1`}>{provSubData.total_remain.toLocaleString()}</td>
+                                                        {roundsArray.map((_, i) => (
+                                                            <td key={i} className="bg-emerald-50 w-[100px] min-w-[100px] p-4 text-center border-l border-black">
+                                                                {provSubData.total_each_round?.[i + 1]?.total.toLocaleString() || null }
+                                                            </td>
+                                                        ))}
+                                                    </>
+                                                )
+                                            :   (Array.from({ length: roundsArray.length + 7 }).map((_, i) => <td key={i} className="bg-emerald-50"></td>))
+                                        }
                                     </motion.tr>
 
                                     <AnimatePresence initial={false}>
@@ -95,7 +143,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                     <Part3_TypeRow key={typeID} typeData={typeData} roundsArray={roundsArray} isParentCollapsed={isCollapsed} />
                                                 ))}
                                                 <tr className={`bg-emerald-50 font-bold border-t-2 border-gray-300`}>
-                                                    <td className={`border-r-2 border-gray-600 bg-emerald-100 w-[400px] min-w-[400px] sticky z-10 left-0 p-3 pl-12`}>
+                                                    <td className={`border-r-2 border-gray-600 bg-emerald-50 w-[400px] min-w-[400px] sticky z-10 left-0 p-3 pl-12`}>
                                                         <div className="grid grid-cols-12 gap-6">
                                                             <div className="col-span-12 lg:col-span-4 px-3 py-1 text-right">
                                                                 รวม

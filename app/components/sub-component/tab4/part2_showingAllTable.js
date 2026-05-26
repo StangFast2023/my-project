@@ -72,14 +72,14 @@ export default function T2P7_TableAllType({data,isLoading}) {
                 <div className="overflow-x-auto max-h-[800px] rounded-xl shadow-sm">
                     <table className="w-full min-w-[1200px] text-left border-collapse border border-gray-400">
                         <colgroup>
-                            <col className="w-[400px] min-w-[400px]" />
-                            <col className="w-[100px] min-w-[100px]" />
-                            <col className="w-[100px] min-w-[100px]" />
-                            <col className="w-[120px] min-w-[120px]" />
-                            <col className="w-[120px] min-w-[120px]" />
-                            <col className="w-[100px] min-w-[100px]" />
-                            <col className="w-[100px] min-w-[100px]" />
-                            <col className="w-[100px] min-w-[100px]" />
+                            <col className="w-[400px] min-w-[400px] border border-black" />
+                            <col className="w-[100px] min-w-[100px] border border-black" />
+                            <col className="w-[100px] min-w-[100px] border border-black" />
+                            <col className="w-[120px] min-w-[120px] border border-black" />
+                            <col className="w-[120px] min-w-[120px] border border-black" />
+                            <col className="w-[100px] min-w-[100px] border border-black" />
+                            <col className="w-[100px] min-w-[100px] border border-black" />
+                            <col className="w-[100px] min-w-[100px] border border-black" />
                             {roundsArray.map((_, i) => <col key={i} className="w-[100px] min-w-[100px]" />)}
                         </colgroup>
 

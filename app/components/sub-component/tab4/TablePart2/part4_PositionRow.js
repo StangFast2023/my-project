@@ -30,6 +30,9 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                     const status_list       =   posData.data_call_round?.[i + 1]?.status_list       ?? 'no-data';
                     const status_call       =   posData.data_call_round?.[i + 1]?.status_call       ?? 'no-data';
                     const has_no_data       =   !(status_call === 'no-data' && status_list === 'no-data');
+                    const status_cross      =   posData.data_call_round?.[i + 1]?.status_cross      ?? 'no-data';
+                    const crossed_region    =   posData.data_call_round?.[i + 1]?.crossed_region    ?? 'no-data'
+                    const crossed_zone      =   posData.data_call_round?.[i + 1]?.crossed_zone      ?? 'no-data'
                     const getBagColor = (has_no_data, status_call, status_list) => {
                         if (!has_no_data) return 'cursor-default';
                         if (status_call === true) {
@@ -58,7 +61,7 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                         const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
                         return `${parseInt(d)} ${months[parseInt(m) - 1]} ${parseInt(y) + 543}`; // +543 สำหรับ พ.ศ.
                     };
-                    const handleCellClick = (roundIndex, roundData, status_call, status_list, status_cross = posData.data_call_round?.[i + 1]?.status_cross ?? 'no-data' , crossed_region = posData.data_call_round?.[i + 1]?.crossed_region ?? 'no-data', crossed_zone = posData.data_call_round?.[i + 1]?.crossed_zone ?? 'no-data' ) => {
+                    const handleCellClick = (roundIndex, roundData, status_call, status_list, status_cross , crossed_region , crossed_zone ) => {
                         const swalIcon = (status_call === false && status_list === false) ? 'warning' : (status_call === false && status_list === true) ? 'error' : 'success';
                         let text_title      = `รอบที่  ${roundIndex || 0}`;
                         let text_content    = `
@@ -82,7 +85,7 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                             </table>
                             <details class="group bg-gray-50 p-3 rounded-lg border border-gray-200">
                                 <summary class="list-none font-semibold cursor-pointer flex justify-between items-center">
-                                    รายละเอียดเพิ่มเติม
+                                    รายละเอียดเพิ่มเติม ( บรรจุข้ามเขต )
                                     <span class="group-open:rotate-180 transition-transform">▼</span>
                                 </summary>
                                 <div class="mt-3 pt-3 border-t border-gray-200 text-sm">
