@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { createRoot } from 'react-dom/client';
 const MySwal = withReactContent(Swal);
-export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, columns = 2 }) => {
+export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, columns = 2 , onSelectionChange }) => {
     const showModal = () => {
         const container = document.createElement('div');
         const root = createRoot(container);
@@ -17,6 +17,9 @@ export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, 
                     }}
                     setSelectedItems={(newVal) => {
                         setSelectedItems(newVal);
+                        if (onSelectionChange) {
+                            onSelectionChange(newVal); 
+                        }
                         renderContent(newVal); 
                     }} 
                     columns={columns} 

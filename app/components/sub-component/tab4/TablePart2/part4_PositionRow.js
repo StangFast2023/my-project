@@ -16,7 +16,9 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                 <td className=" border border-gray-400 w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] border-r-2 border-gray-600">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
                 <td className={`border border-gray-400 w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
                 <td className={`border border-gray-400 w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{posData.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>
-                <td className={`border border-gray-400 w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"}`}>{posData.status_out_of_lits ? "หมดบัญชี" : "คงเหลือ"}</td>
+                <td className={`border border-gray-400 w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>
+                    {posData.status_out_of_lits ? ( posData.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}
+                </td>
                 <td className={`border border-gray-400 w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>
                 <td className=" border border-gray-400 w-[100px] min-w-[100px] p-4 border-l-1 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
                 <td className=" border border-gray-400 w-[100px] min-w-[100px] p-4 border-l-1 text-center bg-emerald-50 font-bold text-emerald-700 border-green-600">{posData.total_call}</td>
@@ -27,9 +29,6 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                     const call_values       =   ['completed', 'waiting'].includes(status) ? posData.data_call_round?.[i + 1]?.total : ( status === 'exhaustion' ? 'บัญชีหมด' : ( status === 'not-used' ? '0' : null ) ) ;
                     const status_list       =   posData.data_call_round?.[i + 1]?.status_list       ?? 'no-data';
                     const status_call       =   posData.data_call_round?.[i + 1]?.status_call       ?? 'no-data';
-                    // const status_cross      =   posData.data_call_round?.[i + 1]?.status_cross      ?? 'no-data';
-                    // const crossed_region    =   posData.data_call_round?.[i + 1]?.crossed_region    ?? 'no-data';
-                    // const crossed_zone      =   posData.data_call_round?.[i + 1]?.crossed_zone      ?? 'no-data';
                     const has_no_data       =   !(status_call === 'no-data' && status_list === 'no-data');
                     const getBagColor = (has_no_data, status_call, status_list) => {
                         if (!has_no_data) return 'cursor-default';
@@ -59,7 +58,7 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                         const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
                         return `${parseInt(d)} ${months[parseInt(m) - 1]} ${parseInt(y) + 543}`; // +543 สำหรับ พ.ศ.
                     };
-                    const handleCellClick = (roundIndex, roundData, status_call, status_list, status_cross , crossed_region, crossed_zone) => {
+                    const handleCellClick = (roundIndex, roundData, status_call, status_list, status_cross = posData.data_call_round?.[i + 1]?.status_cross ?? 'no-data' , crossed_region = posData.data_call_round?.[i + 1]?.crossed_region ?? 'no-data', crossed_zone = posData.data_call_round?.[i + 1]?.crossed_zone ?? 'no-data' ) => {
                         const swalIcon = (status_call === false && status_list === false) ? 'warning' : (status_call === false && status_list === true) ? 'error' : 'success';
                         let text_title      = `รอบที่  ${roundIndex || 0}`;
                         let text_content    = `

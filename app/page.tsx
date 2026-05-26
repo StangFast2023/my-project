@@ -12,7 +12,7 @@ import ModalTab1Part6 from './components/sub-component/tab2/modal/modal_of_part6
 export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('tab1');
+    const [activeTab, setActiveTab] = useState('tab4');
 
 
     const [isOpen, setIsOpen] = useState(false);

@@ -7,9 +7,14 @@ import { FilterDropdown }           from './filterDropdown';
 import { LoadingScreen }            from '../../../components/LoadingScreen';
 const MySwal = withReactContent(Swal);
 
-export default function T4P1_TableAllListed({ data }) {
+export default function T4P1_TableAllListed({ 
+    data, 
+    filters, 
+    setFilters
+ }) {
+
     const filterStructure = data?.tab4?.part1;
-    const [showEmpty, setShowEmpty] = useState(false); // เริ่มต้นเป็น false (ซ่อน)
+
     const items = useMemo(() => {
         const regionData = filterStructure?.region || {};
         const regions = Object.values(regionData).map(r => ({
@@ -27,7 +32,7 @@ export default function T4P1_TableAllListed({ data }) {
         );
         return [...regions, ...subs];
     }, [filterStructure?.region]);
-    const [selectedItems, setSelectedItems] = useState(items.map(i => i.id));
+
     const posItems = useMemo(() => {
         const positionData = data?.tab4?.part1?.positions || {};
         const types = Object.entries(positionData).map(([typeKey, p]) => ({
@@ -45,22 +50,23 @@ export default function T4P1_TableAllListed({ data }) {
         );
 
         return [...types, ...positions];
-    }, [data]);
-    const [selectedPos, setSelectedPos] = useState(posItems.map(i => i.id));
+    }, [data]);    
+
     const handleReset = () => {
         MySwal.fire({
-            title: 'ต้องการคืนค่าเริ่มต้นทั้งหมด?',
-            text: "ข้อมูลที่คุณเลือกไว้จะถูกล้างออกทั้งหมด",
-            icon: 'warning',
+            title: 'คืนค่าเริ่มต้น?',
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            cancelButtonColor: '#64748b',
-            confirmButtonText: 'ใช่, คืนค่าเริ่มต้น',
-            cancelButtonText: 'ยกเลิก'
+            confirmButtonText: 'ตกลง'
         }).then((result) => {
             if (result.isConfirmed) {
-                setSelectedItems(items.map(i => i.id));
-                setSelectedPos(posItems.map(i => i.id));
+                const allRegionIds = items.map(item => item.id);
+                const allPosIds = posItems.map(item => item.id);
+                handleRegionChange(allRegionIds);
+                handlePositionChange(allPosIds);
+                if (typeof handleToggleEmpty === 'function') {
+                    handleToggleEmpty(false); 
+                }
                 MySwal.fire({
                     toast: true,
                     position: 'top-end',
@@ -79,7 +85,7 @@ export default function T4P1_TableAllListed({ data }) {
         const regionKeys = Object.keys(regionData);
         
         const allPossibleIds = items.filter(i => !i.isRegion).map(i => i.id);
-        const isAllSelected = allPossibleIds.every(id => selectedItems.includes(id));
+        const isAllSelected = allPossibleIds.every(id => filters.regions.includes(id));
 
         if (isAllSelected) {
             return [{ id: 'all', label: "ทุกภาค & ทุกเขต" }];
@@ -90,9 +96,9 @@ export default function T4P1_TableAllListed({ data }) {
             const regId = `reg-${r.main}`;
             const subEntries = Object.entries(r.sub || {});
             const selectedSubsInThisRegion = subEntries.filter(([subKey, s]) => 
-                selectedItems.includes(`sub-${r.main}-${subKey}`)
+                filters.regions.includes(`sub-${r.main}-${subKey}`)
             );
-            if (selectedItems.includes(regId) || selectedSubsInThisRegion.length === subEntries.length) {
+            if (filters.regions.includes(regId) || selectedSubsInThisRegion.length === subEntries.length) {
                 chips.push({ id: regId, label: `${r.main_name} ทุกเขต` });
             } 
             else if (selectedSubsInThisRegion.length > 0) {
@@ -109,16 +115,18 @@ export default function T4P1_TableAllListed({ data }) {
     };
 
     const handleRemove = (idToRemove) => {
-        const itemToRemove = posItems.find(i => i.id === idToRemove);
-        const itemName = itemToRemove ? itemToRemove.name : "รายการนี้";
-        if (idToRemove === 'all') {
-            setSelectedItems([]);
-        } else if (idToRemove.startsWith('reg-')) {
-            const subPrefix = idToRemove.replace('reg-', 'sub-');
-            setSelectedItems(selectedItems.filter(id => id !== idToRemove && !id.startsWith(subPrefix)));
-        } else {
-            setSelectedItems(selectedItems.filter(id => id !== idToRemove));
-        }
+        setFilters(prev => {
+            let nextRegions;
+            if (idToRemove === 'all') {
+                nextRegions = [];
+            } else if (idToRemove.startsWith('reg-')) {
+                const subPrefix = idToRemove.replace('reg-', 'sub-');
+                nextRegions = prev.regions.filter(id => id !== idToRemove && !id.startsWith(subPrefix));
+            } else {
+                nextRegions = prev.regions.filter(id => id !== idToRemove);
+            }
+            return { ...prev, regions: nextRegions };
+        });
         MySwal.fire({
             toast: true,
             position: 'top-end',
@@ -134,21 +142,17 @@ export default function T4P1_TableAllListed({ data }) {
         const chips = [];
         const positionData = data?.tab4?.part1?.positions || {};
         const allPosIds = posItems.filter(i => !i.isRegion).map(i => i.id);
-        const isAllPosSelected = allPosIds.every(id => selectedPos.includes(id));
-
+        const isAllPosSelected = allPosIds.every(id => filters.positions.includes(id));
         if (isAllPosSelected) {
             return [{ id: 'all-pos', label: "ทุกประเภท & ทุกตำแหน่ง" }];
         }
-
         Object.entries(positionData).forEach(([typeKey, p]) => {
             const typeId = `type-${typeKey}`;
             const posEntries = Object.entries(p.data_position || {});
-            
             const selectedPosInThisType = posEntries.filter(([posKey, pos]) => 
-                selectedPos.includes(`pos-${typeKey}-${posKey}`)
+                filters.positions.includes(`pos-${typeKey}-${posKey}`)
             );
-
-            if (selectedPos.includes(typeId) || selectedPosInThisType.length === posEntries.length) {
+            if (filters.positions.includes(typeId) || selectedPosInThisType.length === posEntries.length) {
                 chips.push({ id: typeId, label: `${p.type_name} ทุกตำแหน่ง` });
             } 
             else if (selectedPosInThisType.length > 0) {
@@ -163,18 +167,26 @@ export default function T4P1_TableAllListed({ data }) {
 
         return chips;
     };
-
     const handleRemovePos = (idToRemove) => {
         const itemToRemove = posItems.find(i => i.id === idToRemove);
         const itemName = itemToRemove ? itemToRemove.name : "รายการนี้";
-        if (idToRemove === 'all-pos') {
-            setSelectedPos([]);
-        } else if (idToRemove.startsWith('type-')) {
-            const posPrefix = idToRemove.replace('type-', 'pos-');
-            setSelectedPos(selectedPos.filter(id => id !== idToRemove && !id.startsWith(posPrefix)));
-        } else {
-            setSelectedPos(selectedPos.filter(id => id !== idToRemove));
-        }
+        setFilters(prev => {
+            let nextPositions;
+            if (idToRemove === 'all-pos') {
+                nextPositions = [];
+            } else if (idToRemove.startsWith('type-')) {
+                const posPrefix = idToRemove.replace('type-', 'pos-');
+                nextPositions = prev.positions.filter(id => 
+                    id !== idToRemove && !id.startsWith(posPrefix)
+                );
+            } else {
+                nextPositions = prev.positions.filter(id => id !== idToRemove);
+            }
+            return {
+                ...prev,
+                positions: nextPositions
+            };
+        });
         MySwal.fire({
             toast: true,
             position: 'top-end',
@@ -185,6 +197,39 @@ export default function T4P1_TableAllListed({ data }) {
             timer: 1000
         });
     };
+
+    const handleRegionChange = (newRegions) => {
+        setFilters(prev => ({ ...prev, regions: newRegions }));
+    };
+
+    const handlePositionChange = (newPositions) => {
+        setFilters(prev => ({ ...prev, positions: newPositions }));
+    };
+
+    const handleToggleEmpty = (e) => {
+        const isChecked = (typeof e === 'boolean') ? e : e.target.checked;
+        setFilters(prev => ({ ...prev, showEmpty: isChecked }));
+        MySwal.fire({
+            toast: true,
+            position: 'top-end',
+            width: '450px',
+            icon: 'success',
+            title: (isChecked ? 'ทำการแสดง' : 'ซ่อน') + `ตำแหน่งที่ไม่เปิดสอบเรียบร้อย`,
+            showConfirmButton: false,
+            timer: 1000
+        });
+    };
+    
+    React.useEffect(() => {
+        if (filters.regions.length === 0 && items.length > 0) {
+            setFilters(prev => ({
+                ...prev,
+                regions: items.map(i => i.id),
+                positions: posItems.map(i => i.id)
+            }));
+        }
+    }, [items, posItems]);
+
     if(!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -194,8 +239,8 @@ export default function T4P1_TableAllListed({ data }) {
                         <FilterDropdown 
                             label="ภาค & เขต"
                             items={items}
-                            selectedItems={selectedItems}
-                            setSelectedItems={setSelectedItems}
+                            selectedItems={filters.regions}
+                            setSelectedItems={handleRegionChange}
                             columns={3}
                         />
                     </div>
@@ -203,8 +248,8 @@ export default function T4P1_TableAllListed({ data }) {
                         <FilterDropdown 
                             label="ประเภท & ตำแหน่ง" 
                             items={posItems} 
-                            selectedItems={selectedPos} 
-                            setSelectedItems={setSelectedPos}
+                            selectedItems={filters.positions}
+                            setSelectedItems={handlePositionChange}
                             columns={4}
                         />
                     </div>
@@ -218,7 +263,8 @@ export default function T4P1_TableAllListed({ data }) {
                                 type="checkbox" 
                                 id="toggle-switch"
                                 className="sr-only peer" 
-                                onChange={(e) => console.log("สถานะ:", e.target.checked)}
+                                checked={filters.showEmpty}
+                                onChange={handleToggleEmpty}
                             />
                             <div className="block bg-gray-300 w-10 h-6 rounded-full peer-checked:bg-blue-200 transition"></div>
                             <div className="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition peer-checked:translate-x-4 peer-checked:bg-blue-600"></div>
@@ -245,7 +291,7 @@ export default function T4P1_TableAllListed({ data }) {
                             key={`pos-${index}`}
                             type="button"
                             onClick={() => handleRemove(chip.id)}
-                            className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full border border-blue-200 hover:bg-blue-200 transition-colors cursor-pointer"
+                            className="text-xm flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 font-medium rounded-full border border-blue-200 hover:bg-blue-200 transition-colors cursor-pointer"
                         >
                             {chip.label}
                             <span className="text-lg font-bold leading-none select-none">×</span>
@@ -256,7 +302,7 @@ export default function T4P1_TableAllListed({ data }) {
                             key={`pos-${index}`}
                             type="button"
                             onClick={() => handleRemovePos(chip.id)}
-                            className="flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full border border-purple-200 hover:bg-purple-200 transition-colors cursor-pointer"
+                            className="text-xm flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 font-medium rounded-full border border-purple-200 hover:bg-purple-200 transition-colors cursor-pointer"
                         >
                             {chip.label}
                             <span className="text-lg font-bold leading-none select-none">×</span>

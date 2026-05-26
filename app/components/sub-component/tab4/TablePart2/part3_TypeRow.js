@@ -5,6 +5,15 @@ import { ChevronDown }                  from 'lucide-react';
 export default function Part3_PositionRow({ typeData, roundsArray, isParentCollapsed }) {
     const [isTypeExpanded, setIsTypeExpanded] = useState(false);
     const isVisible = !isParentCollapsed && !isTypeExpanded;
+    const listed = Number(typeData.total_listed) || 0;
+    const called = Number(typeData.total_called) || 0;
+    const percent = listed > 0 ? (called / listed) * 100 : 0;
+    const colorClass = percent < 30 ? "text-rose-600 bg-rose-50" 
+                    : percent < 70 ? "text-amber-600 bg-amber-50" 
+                    : "text-emerald-600 bg-emerald-50";
+    // 2. กำหนดคลาสและข้อความ
+    const isFull = percent === 100;
+    const hasData = listed > 0;
     return (
         <>
             <motion.tr 
@@ -56,14 +65,11 @@ export default function Part3_PositionRow({ typeData, roundsArray, isParentColla
                                 </td>
                                 <td className={`${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
                                 <td className={`${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} w-[100px] min-w-[100px] p-4 text-center font-bold `}></td>
-                                <td className={`${typeData.total_called / typeData.total_listed * 100 == 100 ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700"} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
-                                    {   ( ( typeData.total_called / typeData.total_listed ) * 100 ) > 0 
-                                        ?   ( ( ( typeData.total_called / typeData.total_listed ) * 100 ) == 100 ? 'หมดบัญชี' : 'คงเหลือ' )
-                                        :   null
-                                    }
+                                <td className={`${!hasData ? "bg-gray-50 text-gray-400" : (isFull ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700")} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                                    {hasData ? (isFull ? 'หมดบัญชี' : 'คงเหลือ') : '-'}
                                 </td>
-                                <td className={`${( typeData.total_called / typeData.total_listed ) * 100 < 30 ? "text-rose-600 bg-rose-50" : ( typeData.total_called / typeData.total_listed ) * 100 < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
-                                    {( ( typeData.total_called / typeData.total_listed ) * 100 ).toFixed(2)} %
+                                <td className={`${colorClass} w-[120px] min-w-[120px] p-4 text-center font-bold border-l-1`}>
+                                    {hasData ? percent.toFixed(2) + ' %' : 0} 
                                 </td>
                                 <td className={`${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} border-l-1 w-[100px] min-w-[100px] p-4 text-center font-bold `}>{typeData.total_listed.toLocaleString()}</td>
                                 <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold bg-emerald-50 text-emerald-700 border-l-1`}>{typeData.total_called.toLocaleString()}</td>

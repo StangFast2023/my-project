@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect , useMemo  } from 'react';
 
 import T4P1_filterDlaListed     from './sub-component/tab4/part1_filterDlaListed';
 import T4P2_showingAllTable     from './sub-component/tab4/part2_showingAllTable';
+import { T4P3_filterControl }   from './sub-component/tab4/part3_filterControl';
 import { LoadingScreen }        from '../components/LoadingScreen';
 
 export default function Tab4({setIsOpen,setDetails,data}) {
@@ -17,6 +18,49 @@ export default function Tab4({setIsOpen,setDetails,data}) {
         });
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedPositions, setSelectedPositions] = useState([]);
+    
+    const [isLoading, setIsLoading] = useState(false);
+    const [filters, setFilters] = useState({regions: [], positions: [], showEmpty: false});
+    const [fetchedData, setFetchedData] = useState(null);
+
+    const tableData = useMemo(() => {
+        if (fetchedData) return fetchedData;
+        return data || { tab4: { part2: { data: {} } } };
+    }, [data, fetchedData]);
+
+    useEffect(() => {
+        let ignore = false;
+        setIsLoading(true);
+        const { cleanRegions, cleanPositions } = T4P3_filterControl(data, filters);
+        fetch('http://127.0.0.1:8000/api/updating-tab4-table', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ 
+                cleanRegions: filters.regions, 
+                cleanPositions: filters.positions,
+                showEmpty: filters.showEmpty
+            })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(result => {
+            if (!ignore) {
+                setFetchedData(result); 
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 300);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            setIsLoading(false);
+        });
+
+        return () => { ignore = true; };
+    }, [filters, data]);
+    
     if ( !data ) return <LoadingScreen />;
     return (
         <div className="animate-fade-in">
@@ -38,21 +82,29 @@ export default function Tab4({setIsOpen,setDetails,data}) {
                         <T4P1_filterDlaListed 
                             setIsOpen={setIsOpen}
                             setDetails={setDetails}
+
                             data={data}
+
                             selectedRegions={selectedRegions}
                             setSelectedRegions={setSelectedRegions}
+
                             selectedSubRegions={selectedSubRegions}
                             setSelectedSubRegions={setSelectedSubRegions}
+
                             selectedTypes={selectedTypes}
                             setSelectedTypes={setSelectedTypes}
+
                             selectedPositions={selectedPositions}
                             setSelectedPositions={setSelectedPositions}
+
+                            filters={filters}
+                            setFilters={setFilters}
                         />
                     </div>
                 </div>
                 <div className="grid grid-cols-12 gap-6 my-2">
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T4P2_showingAllTable data={data} />
+                        <T4P2_showingAllTable data={tableData} isLoading={isLoading} />
                     </div>
                 </div>
             </div>
