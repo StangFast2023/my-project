@@ -98,7 +98,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                                         const percent = (posData.total_listed > 0) ? (posData.total_call / posData.total_listed) * 100 : 0;
                                                         return (
                                                             <tr key={`${regionKey}-${provSubID}-${posData.pos_id}`} className="bg-white hover:bg-gray-50" >
-                                                                <td className=" w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name} part 5</td>
+                                                                <td className=" w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
                                     {!columns.all_header && (   <td className={`w-[200px] min-w-[200px] sticky top-0 z-10 p-4 font-semibold text-center bg-gray-50 ${regionColors[regionData.pro_main_id]} `}>{regionData.pro_main_name}</td>)}
                                     {!columns.all_header && (   <td className={`w-[100px] min-w-[100px] sticky top-0 z-10 p-4 font-semibold text-center bg-gray-50 ${zoneColors[provSubData.pro_sub_id]} `}>เขต {provSubData.pro_sub_id}</td>)}
                                                                 <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
