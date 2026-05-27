@@ -5,6 +5,7 @@ import withReactContent             from 'sweetalert2-react-content';
 import { motion }                   from 'framer-motion';
 import { FilterDropdown }           from './filterDropdown';
 import { LoadingScreen }            from '../../../components/LoadingScreen';
+import { useColumnStore }           from '../../useTableColumns';
 const MySwal = withReactContent(Swal);
 export default function T4P1_TableAllListed({ 
     data, 
@@ -228,7 +229,145 @@ export default function T4P1_TableAllListed({
             }));
         }
     }, [items, posItems]);
-
+    
+    const updateTableVisibility = (newSettings) => {
+        const setStoreColumns = useColumnStore.getState().setColumns;
+        setStoreColumns(newSettings); 
+    };
+    const openSettingsModal = () => {
+        const currentColumns = useColumnStore.getState().columns;
+        Swal.fire({
+            title: 'ตั้งค่าการแสดงผลตาราง',
+            html: `
+                <table class="w-full text-left border-collapse">
+                    <tr class="border-b">
+                        <td class="w-[100%] py-2 text-gray-500 text-left" colspan="2">
+                            <span style="font-size: 1.2rem; font-weight: 600;">
+                                โครงสร้างตาราง (แนวตั้ง)
+                            </span> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-[70%] py-2 text-gray-500 text-left">
+                            <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                    <circle cx="12" cy="12" r="6"/>
+                                </svg>
+                                ระดับภาค , เขต และประเภท
+                            </span> 
+                        </td>
+                        <td class="w-[30%] py-2 text-gray-500 text-center">
+                            <label style="display: flex; align-items: center; align-items: center;">
+                                <input id="all_header" type="checkbox" style="width: 20px; height: 20px; margin-right: 1rem;" ${currentColumns.all_header ? 'checked' : ''}>
+                                <span style="font-size: 1.2rem; font-weight: 600;">แสดง</span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <table class="w-full text-left border-collapse">
+                    <tr class="border-b">
+                        <td class="w-[100%] py-2 text-gray-500 text-left" colspan="2">
+                            <span style="font-size: 1.2rem; font-weight: 600;">
+                                ข้อมูลคอลัมน์ (แนวนอน)
+                            </span> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-[70%] py-2 text-gray-500 text-left">
+                            <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                    <circle cx="12" cy="12" r="6"/>
+                                </svg>
+                                สถานะสอบ
+                            </span> 
+                        </td>
+                        <td class="w-[30%] py-2 text-gray-500 text-center">
+                            <label style="display: flex; align-items: center; align-items: center;">
+                                <input id="column_part1" type="checkbox" style="width: 20px; height: 20px; margin-right: 1rem;" ${currentColumns.column_part1 ? 'checked' : ''}>
+                                <span style="font-size: 1.2rem; font-weight: 600;">แสดง</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-[70%] py-2 text-gray-500 text-left">
+                            <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                    <circle cx="12" cy="12" r="6"/>
+                                </svg>
+                                สถานะบัญชี
+                            </span> 
+                        </td>
+                        <td class="w-[30%] py-2 text-gray-500 text-center">
+                            <label style="display: flex; align-items: center; align-items: center;">
+                                <input id="column_part2" type="checkbox" style="width: 20px; height: 20px; margin-right: 1rem;" ${currentColumns.column_part2 ? 'checked' : ''}>
+                                <span style="font-size: 1.2rem; font-weight: 600;">แสดง</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="w-[70%] py-2 text-gray-500 text-left">
+                            <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                    <circle cx="12" cy="12" r="6"/>
+                                </svg>
+                                ความคืบหน้า
+                            </span> 
+                        </td>
+                        <td class="w-[30%] py-2 text-gray-500 text-center">
+                            <label style="display: flex; align-items: center; align-items: center;">
+                                <input id="column_part3" type="checkbox" style="width: 20px; height: 20px; margin-right: 1rem;" ${currentColumns.column_part3 ? 'checked' : ''}>
+                                <span style="font-size: 1.2rem; font-weight: 600;">แสดง</span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+            `,
+            confirmButtonText: 'ยืนยัน',
+            showCancelButton: true,
+            width: '600px',
+            preConfirm: () => {
+                return {
+                    all_header:   document.getElementById('all_header').checked,
+                    column_part1: document.getElementById('column_part1').checked,
+                    column_part2: document.getElementById('column_part2').checked,
+                    column_part3: document.getElementById('column_part3').checked,
+                };
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const { all_header, column_part1, column_part2, column_part3 } = result.value;
+                const isHeaderHidden = !all_header;
+                if (isHeaderHidden) {
+                    let text = "";
+                    if (!all_header) text = `หากคุณซ่อนหัวแถวและสรุปของระดับ <b>ภาค , เขต และประเภท</b> <br> ระบบจะเพิ่มคอลัมน์ <b>ภาค</b> กับ <b>เขต</b> เข้ามาแทน <br> และ <b>สรุปรวม</b> ของ ภาค , เขต และประเภท จะไม่แสดงผล`;
+                    const confirmRes = await Swal.fire({
+                        icon: 'warning',
+                        title: 'ยืนยันการเปลี่ยนแปลง?',
+                        html: `<div style="text-align: center;">${text}</div>`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33'
+                    });
+                    if (!confirmRes.isConfirmed) {
+                        openSettingsModal();
+                        return;
+                    }
+                }
+                updateTableVisibility(result.value);
+                let changes = [];
+                if (all_header) changes.push("โครงสร้างตาราง");
+                if (column_part1 || column_part2 || column_part3) changes.push("ข้อมูลคอลัมน์");
+                MySwal.fire({
+                    toast: true,
+                    width: '600px',
+                    position: 'top-end',
+                    icon: 'success',
+                    title: `ปรับเปลี่ยน ${changes.join(' และ ')} เรียบร้อยแล้ว`,
+                    showConfirmButton: false,
+                    timer: 4500
+                });
+            }
+        });
+    };
     if(!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -254,7 +393,6 @@ export default function T4P1_TableAllListed({
                     </div>
                 </div>
 
-                {/* ส่วนของเครื่องมือเสริม (แยกฝั่งขวา) */}
                 <div className="flex items-center gap-6 ml-auto border-l pl-6 border-gray-200">
                     <label className="flex items-center cursor-pointer rounded-lg shadow-sm border border-slate-300 p-2">
                         <div className="relative">
@@ -273,8 +411,14 @@ export default function T4P1_TableAllListed({
                         </span>
                     </label>
                     <button 
+                        onClick={openSettingsModal}
+                        className="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all"
+                    >
+                        ⚙️ ตั้งค่าการแสดงผล
+                    </button>
+                    <button 
                         onClick={handleReset}
-                        className="col-span-2 px-2 py-2 bg-slate-200 text-slate-700 rounded-lg text-xm font-medium hover:bg-slate-300 transition-all"
+                        className="px-2 py-2 bg-slate-200 text-slate-700 rounded-lg shadow-sm border border-blue-200 hover:bg-slate-300 transition-all"
                     >
                         คืนค่าเริ่มต้น
                     </button>

@@ -1,26 +1,40 @@
 import React                from 'react'; 
 import Swal                 from 'sweetalert2';
 import { motion }           from 'framer-motion';
-
-export default function Part4_PositionRow({ posData, roundsArray }) {
+import { useColumnStore }   from '../../../useTableColumns';
+export default function Part4_PositionRow({ posData, roundsArray , regoin , zone ,isParentCollapsed , isRegionCollapsed , isCollapsed , isExpanded}) {
     const percent = (posData.total_listed > 0) ? (posData.total_call / posData.total_listed) * 100 : 0;
+    const columns = useColumnStore((state) => state.columns);
+    console.log( 'isRegionCollapsed :' + isRegionCollapsed , 'isCollapsed ' + isCollapsed);
+    const regionColors = {
+        1: "bg-rose-50 text-rose-800 font-bold",   
+        2: "bg-indigo-50 text-indigo-800 font-bold", 
+        3: "bg-teal-50 text-teal-800 font-bold",   
+        4: "bg-amber-50 text-amber-800 font-bold"   
+    };
+    const zoneColors = {
+        1: "bg-sky-100 text-sky-800 font-bold",   
+        2: "bg-slate-100 text-slate-800 font-bold", 
+        3: "bg-orange-100 text-orange-800 font-bold" 
+    };
     return (
-        <>
+        !isParentCollapsed && (
             <motion.tr
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
                 className="bg-white hover:bg-gray-50"
+                style={{ display: isParentCollapsed ? 'none' : '' }}
             >
-                <td className=" w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
-                <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
-                <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{posData.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>
-                <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>
-                    {posData.status_out_of_lits ? ( posData.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}
-                </td>
-                <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>
-                <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
+                                            <td className=" w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
+                {!columns.all_header && (   <td className={`w-[200px] min-w-[200px] sticky top-0 z-10 p-4 font-semibold text-center bg-gray-50 ${regionColors[regoin.pro_main_id]} `}>{regoin.pro_main_name}</td>)}
+                {!columns.all_header && (   <td className={`w-[100px] min-w-[100px] sticky top-0 z-10 p-4 font-semibold text-center bg-gray-50 ${zoneColors[zone.pro_sub_id]} `}>เขต {zone.pro_sub_id}</td>)}
+                                            <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
+                {columns.column_part1 && (  <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{posData.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>)}
+                {columns.column_part2 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>{posData.status_out_of_lits ? ( posData.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}</td>)}
+                {columns.column_part3 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>)}
+                                            <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
                 {roundsArray.map((_, i) => {
                     const status            =   posData.data_call_round?.[i + 1]?.status;
                     const text_color        =   ['completed', 'waiting'].includes(status) ? 'text-emerald-600' :status === 'exhaustion' ? 'text-amber-600' :status === 'not-used' ? 'text-red-400' : 'text-slate-900';
@@ -161,7 +175,7 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                         <td
                             key={i}
                             onClick={has_no_data ? () => handleCellClick(i + 1, posData.data_call_round?.[i + 1], status_call, status_list) : undefined}
-                            className={`bg-clip-padding relative group w-[100px] min-w-[100px] p-4 text-center font-bold  ${bag_color}  ${text_color}`}
+                            className={`w-[100px] min-w-[100px] bg-clip-padding relative group p-4 text-center font-bold ${bag_color} ${text_color}`}
                         >
                             <div className={`transition-transform duration-300 group-hover:-translate-y-2 `}>
                                 {call_values}
@@ -182,6 +196,6 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                 <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call}</td>
                 <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
             </motion.tr>
-        </>
+        )
     );
 }

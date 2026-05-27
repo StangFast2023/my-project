@@ -1,11 +1,13 @@
 "use client";
-import React                                from 'react';
-import { motion }                           from 'framer-motion';
-import { EmptyData }                        from '../../../components/EmptyData';
-import { LoadingScreen }                    from '../../../components/LoadingScreen';
-import Part1_TableContainer                 from '../tab4/TablePart2/Part1_TableContainer';
+import React                    from 'react';
+import { motion }               from 'framer-motion';
+import { EmptyData }            from '../../../components/EmptyData';
+import { LoadingScreen }        from '../../../components/LoadingScreen';
+import Part1_TableContainer     from '../tab4/TablePart2/Part1_TableContainer';
+import { useColumnStore }       from '../../useTableColumns';
 export default function T2P7_TableAllType({data,isLoading}) {
     const part2 = data?.tab4?.part2.data || null;
+    const columns = useColumnStore((state) => state.columns);
     const [collapsedIDs, setCollapsedIDs] = React.useState({});
     const toggleCollapse = (id) => {
         setCollapsedIDs(prev => ({
@@ -48,9 +50,7 @@ export default function T2P7_TableAllType({data,isLoading}) {
 
     const statusText = percent === 100 ? 'หมดบัญชี' : (percent > 0 ? 'คงเหลือ' : null);
     const statusColor = percent < 30 ? "text-rose-400" : (percent < 70 ? "text-amber-400" : "text-emerald-400");
-    const has_data = Object.keys(data.tab4.part2.data || {}).length > 0;
-    console.log("has_data" + has_data);
-    
+    const has_data = Object.keys(data.tab4.part2.data || {}).length > 0;    
     if (isLoading) {
         return (
             <div className="h-[600px] flex flex-col items-center justify-center h-[400px]">
@@ -68,15 +68,17 @@ export default function T2P7_TableAllType({data,isLoading}) {
             transition={{ duration: 0.5 }}  
         >
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
-            <div className="flex flex-col h-full border border-gray-300">
-                <div className="flex-1 overflow-x-auto overflow-y-auto  shadow-sm">
-                    <table className="w-full min-w-[1200px] table-fixed border-collapse">
+            <div className="flex flex-col h-full min-h-[100px] max-h-[800px]  border border-gray-300">
+                <div className="flex-1 overflow-x-auto shadow-sm">
+                    <table className="w-full min-w-[1200px] overflow-y-auto table-fixed border-collapse">
                         <colgroup>
                             <col className="w-[400px] min-w-[400px] border-1 border-gray-200 border-r-[2px] border-r-gray-600" />
+                            {!columns.all_header && (<col className="w-[200px] min-w-[200px] border-1 border-gray-200" />)}
+                            {!columns.all_header && (<col className="w-[100px] min-w-[100px] border-1 border-gray-200" />)}
                             <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
-                            <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
-                            <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />
-                            <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />
+                            {columns.column_part1 && (<col className="w-[100px] min-w-[100px] border-1 border-gray-200" />)}
+                            {columns.column_part2 && (<col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
+                            {columns.column_part3 && (<col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
                             <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
                             {roundsArray.map((_, i) => <col key={i} className="w-[100px] min-w-[100px] border-y-[1px] border-l-[1px] border-gray-200" />)}
                             <col className="w-[120px] min-w-[120px] border-1 border-emerald-400" />
@@ -84,15 +86,17 @@ export default function T2P7_TableAllType({data,isLoading}) {
                         </colgroup>
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
-                                <th className="sticky left-0 top-0 z-40 p-4 font-semibold bg-gray-50 ">ภาค / เขต / ตำแหน่ง</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ประเภท</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะสอบ</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>
-                                {roundsArray.map((_, index) => (<th key={index} className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
-                                <th className="z-30 p-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกทั้งหมด</th>
-                                <th className="z-30 p-4 font-semibold text-center bg-amber-50 text-amber-500">คงเหลือ</th>
+                                                                            <th className="w-[400px] min-w-[400px] sticky left-0 top-0 z-40 p-4 font-semibold bg-gray-50 ">ภาค / เขต / ตำแหน่ง</th>
+                                {!columns.all_header && (                   <th className="w-[200px] min-w-[200px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ภาค</th>)}
+                                {!columns.all_header && (                   <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">เขต</th>)}
+                                                                            <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ประเภท</th>
+                                {columns.column_part1 && (                  <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะสอบ</th>)}
+                                {columns.column_part2 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>)}
+                                {columns.column_part3 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>)}
+                                                                            <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>
+                                {roundsArray.map((_, index) => (<th key={index} className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
+                                                                            <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกทั้งหมด</th>
+                                                                            <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-amber-50 text-amber-500">คงเหลือ</th>
                             </tr>
                         </thead>
                         <Part1_TableContainer
@@ -103,26 +107,20 @@ export default function T2P7_TableAllType({data,isLoading}) {
                             roundsArray={roundsArray}
                         />
                     </table>
-                    <table className="w-full min-w-[1200px] table-fixed border-collapse">
+                    <table className="sticky bottom-0 z-20 w-full min-w-[1200px] table-fixed border-collapse">
                         <tfoot className="sticky bottom-0 z-20 bg-[#2d3446] text-white">
                             <tr>
-                                <td className="sticky left-0 top-0 z-30 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center">รวมทั้งหมดทุกภาค</td>
-                                <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>
-                                <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>
-                                <td className="px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">
-                                    {statusText}
-                                </td>
-                                <td className={`${statusColor} px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold`}>
-                                    {summary?.total_listed > 0 ? `${percent.toFixed(2)} %` : 0}
-                                </td>
-                                <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold">{summary ? summary.total_listed.toLocaleString() : null}</td>
-                                {roundsArray.map((_, i) => (
-                                    <td key={i} className={`w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >
-                                        { summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null }
-                                    </td>
-                                ))}
-                                <td className="top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_called.toLocaleString() : null}</td>
-                                <td className="top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_remain.toLocaleString() : null}</td>
+                                <td className="sticky left-0 bottom-0 z-30 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center">รวมทั้งหมดทุกภาค</td>
+                                {!columns.all_header && (<td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[200px] min-w-[200px] p-4 text-center font-bold"></td>)}
+                                {!columns.all_header && (<td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>)}
+                                <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>
+                                {columns.column_part1 && (<td className=" sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>)}
+                                {columns.column_part2 && (<td className=" sticky left-0 bottom-0 z-30 px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">{statusText}</td>)}
+                                {columns.column_part3 && (<td className={`sticky left-0 bottom-0 z-30 ${statusColor} px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold`}>{summary?.total_listed > 0 ? `${percent.toFixed(2)} %` : 0}</td>)}
+                                <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold">{summary ? summary.total_listed.toLocaleString() : null}</td>
+                                {roundsArray.map((_, i) => (<td key={i} className={`sticky left-0 bottom-0 z-30 w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >{ summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null }</td>))}
+                                <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_called.toLocaleString() : null}</td>
+                                <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_remain.toLocaleString() : null}</td>
                             </tr>
                         </tfoot>
                     </table>

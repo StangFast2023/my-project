@@ -1,7 +1,9 @@
 import React                from 'react';
 import Part2_RegionRow      from './Part2_RegionRow';
+import { useColumnStore }   from '../../../useTableColumns';
 export default function Part1_TableContainer({ part2, collapsedIDs, toggleRegionCollapse, toggleCollapse, roundsArray }) {
     const safePart2 = part2 || {};
+    const isExpanded = useColumnStore((state) => state.columns.all_header);
     return (
         <tbody className="divide-y divide-gray-100 text-sm text-gray-700">
             {Object.entries(safePart2).map(([regionKey, regionData]) => (
@@ -13,6 +15,7 @@ export default function Part1_TableContainer({ part2, collapsedIDs, toggleRegion
                     toggleRegionCollapse={toggleRegionCollapse}
                     toggleCollapse={toggleCollapse}
                     roundsArray={roundsArray}
+                    isExpanded={isExpanded}
                 />
             ))}
         </tbody>
