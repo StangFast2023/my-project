@@ -22,7 +22,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                 animate={{ opacity: 1 }}
                 style={{ display: columns.all_header ? '' : 'none' }}
             >
-                <td className="sticky left-0 z-10 bg-emerald-100 p-4">
+                <td className="w-[400px] min-w-[400px] sticky left-0 z-10 bg-emerald-100 p-4">
                     <div className="flex items-center gap-2">
                         <motion.div
                             animate={{ rotate: isRegionCollapsed ? -90 : 0 }}
@@ -38,7 +38,6 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                 {
                     isRegionCollapsed ? (
                         <>
-                                                                <td className=" w-[400px] min-w-[400px] bg-emerald-100 p-4 text-center font-bold"></td>
                             {!columns.all_header && (           <td className=" w-[200px] min-w-[200px] bg-emerald-100 p-4 text-center font-bold" />)}
                             {!columns.all_header && (           <td className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center font-bold" />)}
                                                                 <td className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center font-bold"></td>
@@ -69,7 +68,6 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                             const s_percentClass = s_percent < 30 ? "text-rose-600 bg-rose-50" : s_percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50";
                             return (
                                 <React.Fragment key={currentID}>
-                                    {/* แถวหลักของ Zone */}
                                     <motion.tr 
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
@@ -118,9 +116,9 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                         <Part3_TypeRow key={typeID} typeData={typeData} roundsArray={roundsArray} isRegionCollapsed={isRegionCollapsed} isCollapsed={isCollapsed} isParentCollapsed={isRegionCollapsed || isCollapsed} regoin={regionData} zone={provSubData} isExpanded={isExpanded} />
                                                     ))
                                                 }
-                                                {columns.all_header && (
+                                                {
                                                     !isCollapsed && (
-                                                        <tr className="bg-emerald-50 font-bold">
+                                                        <tr className="bg-emerald-50 font-bold" style={{ display: columns.all_header ? '' : 'none' }}>
                                                             <td className=" w-[400px] min-w-[400px] bg-emerald-50 sticky z-10 left-0 p-3 pl-12"><div className="grid grid-cols-12 gap-6"><div className="col-span-12 lg:col-span-4 px-3 py-1 text-right">รวม</div><div className="col-span-12 lg:col-span-8 bg-emerald-300 px-3 py-1 rounded-lg text-emerald-900 text-center">{provSubData.pro_sub_name}</div></div></td>
                         {!columns.all_header && (           <td className=" w-[200px] min-w-[200px] bg-emerald-50 p-4 text-center font-bold"></td>)}
                         {!columns.all_header && (           <td className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center font-bold"></td>)}
@@ -134,7 +132,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                             <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-amber-50 text-amber-500">{provSubData.total_remain.toLocaleString()}</td>
                                                         </tr>
                                                     )
-                                                )}
+                                                }
                                             </>
                                         )}
                                     </AnimatePresence>
@@ -142,7 +140,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                             );
                         })}
 
-                        <tr className={`bg-emerald-100 font-bold`}>
+                        <tr className={`bg-emerald-100 font-bold`}  style={{ display: columns.all_header ? '' : 'none' }}>
                             <td className={`w-[400px] min-w-[400px] bg-emerald-100 sticky z-10 left-0 p-3 pl-12`}>
                                 <div className="grid grid-cols-12 gap-6">
                                     <div className="col-span-12 lg:col-span-4 px-3 py-1 text-right">

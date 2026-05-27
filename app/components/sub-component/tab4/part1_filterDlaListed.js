@@ -12,7 +12,6 @@ export default function T4P1_TableAllListed({
     filters, 
     setFilters
  }) {
-
     const filterStructure = data?.tab4?.part1;
 
     const items = useMemo(() => {
@@ -67,6 +66,13 @@ export default function T4P1_TableAllListed({
                 if (typeof handleToggleEmpty === 'function') {
                     handleToggleEmpty(false); 
                 }
+                const defaultSettings = {
+                    all_header: true,
+                    column_part1: true,
+                    column_part2: true,
+                    column_part3: true,
+                };
+                updateTableVisibility(defaultSettings);
                 MySwal.fire({
                     toast: true,
                     position: 'top-end',
@@ -337,20 +343,30 @@ export default function T4P1_TableAllListed({
             if (result.isConfirmed) {
                 const { all_header, column_part1, column_part2, column_part3 } = result.value;
                 const isHeaderHidden = !all_header;
-                if (isHeaderHidden) {
-                    let text = "";
-                    if (!all_header) text = `หากคุณซ่อนหัวแถวและสรุปของระดับ <b>ภาค , เขต และประเภท</b> <br> ระบบจะเพิ่มคอลัมน์ <b>ภาค</b> กับ <b>เขต</b> เข้ามาแทน <br> และ <b>สรุปรวม</b> ของ ภาค , เขต และประเภท จะไม่แสดงผล`;
-                    const confirmRes = await Swal.fire({
-                        icon: 'warning',
-                        title: 'ยืนยันการเปลี่ยนแปลง?',
-                        html: `<div style="text-align: center;">${text}</div>`,
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33'
-                    });
-                    if (!confirmRes.isConfirmed) {
-                        openSettingsModal();
-                        return;
+                if( all_header || !all_header ) {
+                    if (isHeaderHidden) {
+                        let text = "";
+                        if (!all_header) text = `หากคุณซ่อนหัวแถวและสรุปของระดับ <b>ภาค , เขต และประเภท</b> <br> ระบบจะเพิ่มคอลัมน์ <b>ภาค</b> กับ <b>เขต</b> เข้ามาแทน <br> และ <b>สรุปรวม</b> ของ ภาค , เขต และประเภท จะไม่แสดงผล`;
+                        const confirmRes = await Swal.fire({
+                            icon: 'warning',
+                            title: 'ยืนยันการเปลี่ยนแปลง?',
+                            html: `<div style="text-align: center;">${text}</div>`,
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33'
+                        });
+                        if (!confirmRes.isConfirmed) {
+                            openSettingsModal();
+                            return;
+                        }
                     }
+                    Swal.fire({
+                        title: 'กำลังปรับโครงสร้างตาราง...',
+                        allowOutsideClick: false,
+                        didOpen: () => Swal.showLoading()
+                    });
+
+                    await new Promise((resolve) => setTimeout(resolve, 2000));
+                    Swal.close();
                 }
                 updateTableVisibility(result.value);
                 let changes = [];
@@ -393,8 +409,8 @@ export default function T4P1_TableAllListed({
                     </div>
                 </div>
 
-                <div className="flex items-center gap-6 ml-auto border-l pl-6 border-gray-200">
-                    <label className="flex items-center cursor-pointer rounded-lg shadow-sm border border-slate-300 p-2">
+                <div className="flex items-center gap-2 border-l pl-3 border-gray-200 flex-shrink-0">
+                    <label className="flex items-center cursor-pointer rounded-lg shadow-sm border border-slate-300 p-2 whitespace-nowrap">
                         <div className="relative">
                             <input 
                                 type="checkbox" 
@@ -410,20 +426,26 @@ export default function T4P1_TableAllListed({
                             แสดงตำแหน่งที่ไม่เปิดสอบ
                         </span>
                     </label>
-                    <button 
-                        onClick={openSettingsModal}
-                        className="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all"
-                    >
-                        ⚙️ ตั้งค่าการแสดงผล
-                    </button>
-                    <button 
-                        onClick={handleReset}
-                        className="px-2 py-2 bg-slate-200 text-slate-700 rounded-lg shadow-sm border border-blue-200 hover:bg-slate-300 transition-all"
-                    >
-                        คืนค่าเริ่มต้น
-                    </button>
+                    <div className="flex gap-2">
+                        <button 
+                            onClick={openSettingsModal}
+                            className="flex items-center gap-2 px-5 py-2 px-4 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all whitespace-nowrap"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span className="font-medium">ตั้งค่าตาราง</span>
+                        </button>
+                        <button 
+                            onClick={handleReset}
+                            className="flex items-center gap-2 px-5 py-2 px-4 bg-slate-100 text-slate-600 rounded-lg shadow-sm border border-slate-200 hover:bg-slate-200 transition-all whitespace-nowrap"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw-icon lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                            <span className="font-medium">คืนค่าเริ่มต้น</span>
+                        </button>
+                    </div>
                 </div>
             </div>
+
+
             <div className="flex items-center gap-4 my-2">
                 <span className="text-gray-600 font-medium whitespace-nowrap">
                     แสดงข้อมูลตาม :

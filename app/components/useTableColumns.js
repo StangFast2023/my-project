@@ -9,6 +9,7 @@ export const useColumnStore = create(persist((set) => ({
         column_part3:   true,
     },
     setColumns: (newSettings) => set({ columns: newSettings }),
+    
 }), { 
     name: 'table-storage' 
 }));

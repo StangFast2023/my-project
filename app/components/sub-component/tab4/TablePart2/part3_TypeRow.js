@@ -14,6 +14,7 @@ export default function Part3_PositionRow({ typeData, roundsArray , isRegionColl
     const isFull = percent === 100;
     const hasData = listed > 0;
     return (
+        
         <>
             <motion.tr 
                 initial={{ opacity: 0, height: 0 }}
@@ -53,15 +54,13 @@ export default function Part3_PositionRow({ typeData, roundsArray , isRegionColl
                 }
             </motion.tr>
 
-
-            
             <AnimatePresence>
                 {isVisible && (
                     <>
                         {Object.values(typeData.data_position).map((pos) => (
                             <Part4_PositionRow key={pos.pos_id} posData={pos} roundsArray={roundsArray} isRegionCollapsed={isRegionCollapsed} isCollapsed={isCollapsed} isParentCollapsed={isParentCollapsed} regoin={regoin} zone={zone} isExpanded={isExpanded} />
                         ))}
-                        <tr className={`${typeData.pos_type_id === "1" ? "bg-blue-100 text-blue-700" : typeData.pos_type_id === "2" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"} font-bold`} style={{ display: isVisible ? '' : 'none' }}>
+                        <tr className={`${typeData.pos_type_id === "1" ? "bg-blue-100 text-blue-700" : typeData.pos_type_id === "2" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"} font-bold`} style={{ display: columns.all_header ? '' : 'none' }}>
                             <td className={`w-[400px] min-w-[400px] ${typeData.pos_type_id === "1" ? "bg-blue-100 text-blue-700" : typeData.pos_type_id === "2" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"} sticky z-10 left-0 p-3 pl-12`}>
                                 <div className="grid grid-cols-12 gap-6">
                                     <div className="col-span-12 lg:col-span-4 px-3 py-1 text-right">
@@ -87,5 +86,6 @@ export default function Part3_PositionRow({ typeData, roundsArray , isRegionColl
                 )}
             </AnimatePresence>
         </>
+        
     );
 }

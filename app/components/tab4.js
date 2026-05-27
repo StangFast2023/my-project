@@ -2,11 +2,14 @@ import React, { useState , useEffect , useMemo  } from 'react';
 
 import T4P1_filterDlaListed     from './sub-component/tab4/part1_filterDlaListed';
 import T4P2_showingAllTable     from './sub-component/tab4/part2_showingAllTable';
+import ShowAllDataTable         from './sub-component/tab4/showallDataTable';
 import { T4P3_filterControl }   from './sub-component/tab4/part3_filterControl';
 import { LoadingScreen }        from '../components/LoadingScreen';
+import { useColumnStore }       from '../components/useTableColumns';
 
 export default function Tab4({setIsOpen,setDetails,data}) {
-    const initialRegions = Object.keys(data?.tab4?.part1?.region || {});
+    const columns           = useColumnStore((state) => state.columns);
+    const initialRegions    = Object.keys(data?.tab4?.part1?.region || {});
     const [selectedRegions, setSelectedRegions] = useState(initialRegions);
     const [selectedSubRegions, setSelectedSubRegions] = useState(() => {
             const allSubs = [];
@@ -60,7 +63,6 @@ export default function Tab4({setIsOpen,setDetails,data}) {
 
         return () => { ignore = true; };
     }, [filters, data]);
-    
     if ( !data ) return <LoadingScreen />;
     return (
         <div className="animate-fade-in">
@@ -102,9 +104,15 @@ export default function Tab4({setIsOpen,setDetails,data}) {
                         />
                     </div>
                 </div>
-                <div className="grid grid-cols-12 gap-6 my-2">
+                <div className={`grid grid-cols-12 gap-6 my-2 ${!columns.all_header ? 'hidden' : 'block' }`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T4P2_showingAllTable data={tableData} isLoading={isLoading} />
+                    </div>
+                </div>
+                <div className={`grid grid-cols-12 gap-6 my-2 ${columns.all_header ? 'hidden' : 'block' }`}>
+                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 className="text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
+                        <ShowAllDataTable part2={tableData} isLoading={isLoading} />
                     </div>
                 </div>
             </div>

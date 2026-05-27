@@ -3,8 +3,8 @@ import React                    from 'react';
 import { motion }               from 'framer-motion';
 import { EmptyData }            from '../../../components/EmptyData';
 import { LoadingScreen }        from '../../../components/LoadingScreen';
-import Part1_TableContainer     from '../tab4/TablePart2/Part1_TableContainer';
 import { useColumnStore }       from '../../useTableColumns';
+import Part1_TableContainer     from '../tab4/TablePart2/Part1_TableContainer';
 export default function T2P7_TableAllType({data,isLoading}) {
     const part2 = data?.tab4?.part2.data || null;
     const columns = useColumnStore((state) => state.columns);
