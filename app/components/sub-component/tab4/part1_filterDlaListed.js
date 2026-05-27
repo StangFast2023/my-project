@@ -6,7 +6,6 @@ import { motion }                   from 'framer-motion';
 import { FilterDropdown }           from './filterDropdown';
 import { LoadingScreen }            from '../../../components/LoadingScreen';
 const MySwal = withReactContent(Swal);
-
 export default function T4P1_TableAllListed({ 
     data, 
     filters, 

@@ -68,35 +68,33 @@ export default function T2P7_TableAllType({data,isLoading}) {
             transition={{ duration: 0.5 }}  
         >
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-300 overflow-hidden">
-                <div className="overflow-x-auto max-h-[800px] rounded-xl shadow-sm">
-                    <table className="w-full min-w-[1200px] text-left border-collapse border border-gray-400">
+            <div className="flex flex-col h-full border border-gray-300">
+                <div className="flex-1 overflow-x-auto overflow-y-auto  shadow-sm">
+                    <table className="w-full min-w-[1200px] table-fixed border-collapse">
                         <colgroup>
-                            <col className="w-[400px] min-w-[400px] border border-black" />
-                            <col className="w-[100px] min-w-[100px] border border-black" />
-                            <col className="w-[100px] min-w-[100px] border border-black" />
-                            <col className="w-[120px] min-w-[120px] border border-black" />
-                            <col className="w-[120px] min-w-[120px] border border-black" />
-                            <col className="w-[100px] min-w-[100px] border border-black" />
-                            <col className="w-[100px] min-w-[100px] border border-black" />
-                            <col className="w-[100px] min-w-[100px] border border-black" />
-                            {roundsArray.map((_, i) => <col key={i} className="w-[100px] min-w-[100px]" />)}
+                            <col className="w-[400px] min-w-[400px] border-1 border-gray-200 border-r-[2px] border-r-gray-600" />
+                            <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
+                            <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
+                            <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />
+                            <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />
+                            <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
+                            {roundsArray.map((_, i) => <col key={i} className="w-[100px] min-w-[100px] border-y-[1px] border-l-[1px] border-gray-200" />)}
+                            <col className="w-[120px] min-w-[120px] border-1 border-emerald-400" />
+                            <col className="w-[120px] min-w-[120px] border-1 border-amber-400" />
                         </colgroup>
-
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
-                                <th className="sticky left-0 top-0 z-40 p-4 font-semibold bg-gray-50 border-r-2 border-gray-600 border-b">ภาค / เขต / ตำแหน่ง</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-gray-50">ประเภท</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-gray-50">สถานะสอบ</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-gray-50">สถานะบัญชี</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-gray-50">ความคืบหน้า</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-gray-50">ขึ้นบัญชี</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-emerald-50 text-emerald-700">เรียก</th>
-                                <th className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-amber-50 text-amber-500">คงเหลือ</th>
-                                {roundsArray.map((_, index) => (<th key={index} className="sticky top-0 z-30 p-4 font-semibold text-center border border-gray-400 bg-gray-50">รอบ {index + 1}</th>))}
+                                <th className="sticky left-0 top-0 z-40 p-4 font-semibold bg-gray-50 ">ภาค / เขต / ตำแหน่ง</th>
+                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ประเภท</th>
+                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะสอบ</th>
+                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>
+                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>
+                                <th className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>
+                                {roundsArray.map((_, index) => (<th key={index} className="sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
+                                <th className="z-30 p-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกทั้งหมด</th>
+                                <th className="z-30 p-4 font-semibold text-center bg-amber-50 text-amber-500">คงเหลือ</th>
                             </tr>
                         </thead>
-
                         <Part1_TableContainer
                             part2={part2}
                             collapsedIDs={collapsedIDs}
@@ -104,26 +102,27 @@ export default function T2P7_TableAllType({data,isLoading}) {
                             toggleCollapse={toggleCollapse}
                             roundsArray={roundsArray}
                         />
-
+                    </table>
+                    <table className="w-full min-w-[1200px] table-fixed border-collapse">
                         <tfoot className="sticky bottom-0 z-20 bg-[#2d3446] text-white">
                             <tr>
-                                <td className="sticky left-0 top-0 z-40 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center !border-r-2 !border-white">รวมทั้งหมดทุกภาค</td>
+                                <td className="sticky left-0 top-0 z-30 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center">รวมทั้งหมดทุกภาค</td>
                                 <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>
                                 <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>
-                                <td className="px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold border border-white">
+                                <td className="px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">
                                     {statusText}
                                 </td>
-                                <td className={`${statusColor} px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold border border-white`}>
+                                <td className={`${statusColor} px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold`}>
                                     {summary?.total_listed > 0 ? `${percent.toFixed(2)} %` : 0}
                                 </td>
-                                <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold border border-white">{summary ? summary.total_listed.toLocaleString() : null}</td>
-                                <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold border border-white">{summary ? summary.total_called.toLocaleString() : null}</td>
-                                <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold border border-white">{summary ? summary.total_remain.toLocaleString() : null}</td>
+                                <td className="px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold">{summary ? summary.total_listed.toLocaleString() : null}</td>
                                 {roundsArray.map((_, i) => (
-                                    <td key={i} className={`w-[100px] min-w-[100px] p-4 text-center text-center font-bold ${ summary ? ( summary.rounds?.[i + 1] ? 'border border-white' : null ) : null }`} >
+                                    <td key={i} className={`w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >
                                         { summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null }
                                     </td>
                                 ))}
+                                <td className="top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_called.toLocaleString() : null}</td>
+                                <td className="top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_remain.toLocaleString() : null}</td>
                             </tr>
                         </tfoot>
                     </table>

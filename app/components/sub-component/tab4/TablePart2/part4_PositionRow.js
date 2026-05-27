@@ -11,18 +11,16 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white hover:bg-gray-50 border-b border-gray-100"
+                className="bg-white hover:bg-gray-50"
             >
-                <td className=" border border-gray-400 w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)] border-r-2 border-gray-600">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
-                <td className={`border border-gray-400 w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
-                <td className={`border border-gray-400 w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{posData.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>
-                <td className={`border border-gray-400 w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>
+                <td className=" w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
+                <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
+                <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{posData.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>
+                <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>
                     {posData.status_out_of_lits ? ( posData.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}
                 </td>
-                <td className={`border border-gray-400 w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>
-                <td className=" border border-gray-400 w-[100px] min-w-[100px] p-4 border-l-1 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
-                <td className=" border border-gray-400 w-[100px] min-w-[100px] p-4 border-l-1 text-center bg-emerald-50 font-bold text-emerald-700 border-green-600">{posData.total_call}</td>
-                <td className=" border border-gray-400 w-[100px] min-w-[100px] p-4 border-l-1 border-r-1 text-center font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
+                <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>
+                <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
                 {roundsArray.map((_, i) => {
                     const status            =   posData.data_call_round?.[i + 1]?.status;
                     const text_color        =   ['completed', 'waiting'].includes(status) ? 'text-emerald-600' :status === 'exhaustion' ? 'text-amber-600' :status === 'not-used' ? 'text-red-400' : 'text-slate-900';
@@ -163,7 +161,7 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                         <td
                             key={i}
                             onClick={has_no_data ? () => handleCellClick(i + 1, posData.data_call_round?.[i + 1], status_call, status_list) : undefined}
-                            className={`border border-gray-400 relative group w-[100px] min-w-[100px] p-4 text-center font-bold  ${bag_color}  ${text_color}`}
+                            className={`bg-clip-padding relative group w-[100px] min-w-[100px] p-4 text-center font-bold  ${bag_color}  ${text_color}`}
                         >
                             <div className={`transition-transform duration-300 group-hover:-translate-y-2 `}>
                                 {call_values}
@@ -181,6 +179,8 @@ export default function Part4_PositionRow({ posData, roundsArray }) {
                         </td>
                     );
                 })}
+                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call}</td>
+                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
             </motion.tr>
         </>
     );
