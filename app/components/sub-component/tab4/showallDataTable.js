@@ -10,8 +10,8 @@ export default function ShowAllDataTable({ part2, isLoading }) {
     const roundsArray = Array.from({ length: maxRound }, (_, i) => i + 1);
     let summary = { total_listed: 0, total_called: 0, total_remain: 0, rounds: {} };
 
-    if (part2 && Object.keys(part2).length > 0) {
-        summary = Object.values(part2).reduce((acc, curr) => {
+    if (safePart2 && Object.keys(safePart2).length > 0) {
+        summary = Object.values(safePart2).reduce((acc, curr) => {
             acc.total_listed += (Number(curr.total_listed) || 0);
             acc.total_called += (Number(curr.total_called) || 0);
             acc.total_remain += (Number(curr.total_remain) || 0);

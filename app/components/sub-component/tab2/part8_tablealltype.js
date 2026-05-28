@@ -62,7 +62,7 @@ export default function T2P7_TableSummary({ data }) {
                                         );
                                     })}
                                     <tr className="bg-gray-100 font-bold text-gray-800">
-                                        <td className="px-6 py-3 text-right">รวม {Object.values(posTypes)[0]?.prov_main_name}</td>
+                                        <td className="px-6 py-3 text-left">รวม {Object.values(posTypes)[0]?.prov_main_name}</td>
                                         <td className="px-4 py-3 text-center font-mono">{reg.list.toLocaleString()}</td>
                                         {reg.rounds.map((v, i) => <td key={i} className={`px-4 py-3 text-center border-l font-mono ${ v > 0 ? 'bg-white' : 'bg-gray-100' } `}>{v > 0 ? v.toLocaleString() : null}</td>)}
                                         <td className="px-4 py-3 text-center text-emerald-700 font-mono">{reg.call.toLocaleString()}</td>

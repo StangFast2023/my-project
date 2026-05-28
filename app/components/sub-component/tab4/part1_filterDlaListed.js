@@ -256,7 +256,7 @@ export default function T4P1_TableAllListed({
                     <tr>
                         <td class="w-[70%] py-2 text-gray-500 text-left">
                             <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="round lucide lucide-circle-small-icon lucide-circle-small">
                                     <circle cx="12" cy="12" r="6"/>
                                 </svg>
                                 ระดับภาค , เขต และประเภท
@@ -281,7 +281,7 @@ export default function T4P1_TableAllListed({
                     <tr>
                         <td class="w-[70%] py-2 text-gray-500 text-left">
                             <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="round lucide lucide-circle-small-icon lucide-circle-small">
                                     <circle cx="12" cy="12" r="6"/>
                                 </svg>
                                 สถานะสอบ
@@ -297,7 +297,7 @@ export default function T4P1_TableAllListed({
                     <tr>
                         <td class="w-[70%] py-2 text-gray-500 text-left">
                             <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="round lucide lucide-circle-small-icon lucide-circle-small">
                                     <circle cx="12" cy="12" r="6"/>
                                 </svg>
                                 สถานะบัญชี
@@ -313,7 +313,7 @@ export default function T4P1_TableAllListed({
                     <tr>
                         <td class="w-[70%] py-2 text-gray-500 text-left">
                             <span style="font-size: 1.2rem; font-weight: 600; padding-left: 2.5rem; display: flex; align-items: center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-small-icon lucide-circle-small">
+                                <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="round lucide lucide-circle-small-icon lucide-circle-small">
                                     <circle cx="12" cy="12" r="6"/>
                                 </svg>
                                 ความคืบหน้า
@@ -431,14 +431,14 @@ export default function T4P1_TableAllListed({
                             onClick={openSettingsModal}
                             className="flex items-center gap-2 px-5 py-2 px-4 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all whitespace-nowrap"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="round lucide lucide-settings-icon lucide-settings"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
                             <span className="font-medium">ตั้งค่าตาราง</span>
                         </button>
                         <button 
                             onClick={handleReset}
                             className="flex items-center gap-2 px-5 py-2 px-4 bg-slate-100 text-slate-600 rounded-lg shadow-sm border border-slate-200 hover:bg-slate-200 transition-all whitespace-nowrap"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw-icon lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="round lucide lucide-rotate-ccw-icon lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                             <span className="font-medium">คืนค่าเริ่มต้น</span>
                         </button>
                     </div>

@@ -68,7 +68,12 @@ export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
                                     <td className="p-4 text-center">
                                         <span className="font-mono text-xm font-bold text-blue-700">
                                             <button onClick={() => handleViewDetail(pos.id_pos)}className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md text-sm transition-colors hover:shadow-xl transition-all duration-300">
-                                                🔎 รายละเอียด
+                                                <div className="flex items-center gap-1 ">
+                                                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                                    </svg>
+                                                    <span>รายละเอียด</span>
+                                                </div>
                                             </button>
                                         </span>
                                     </td>

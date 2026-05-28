@@ -7,7 +7,7 @@ import { T4P3_filterControl }   from './sub-component/tab4/part3_filterControl';
 import { LoadingScreen }        from '../components/LoadingScreen';
 import { useColumnStore }       from '../components/useTableColumns';
 
-export default function Tab4({setIsOpen,setDetails,data}) {
+export default function Tab4({data}) {
     const columns           = useColumnStore((state) => state.columns);
     const initialRegions    = Object.keys(data?.tab4?.part1?.region || {});
     const [selectedRegions, setSelectedRegions] = useState(initialRegions);
@@ -33,7 +33,9 @@ export default function Tab4({setIsOpen,setDetails,data}) {
 
     useEffect(() => {
         let ignore = false;
-        setIsLoading(true);
+        requestAnimationFrame(() => {
+            if (!ignore) setIsLoading(true);
+        });
         const { cleanRegions, cleanPositions } = T4P3_filterControl(data, filters);
         fetch('http://127.0.0.1:8000/api/updating-tab4-table', {
             method: 'POST',
@@ -82,8 +84,6 @@ export default function Tab4({setIsOpen,setDetails,data}) {
                 <div className="grid grid-cols-12 gap-6 my-2">
                     <div className="col-span-12 lg:col-span-12">
                         <T4P1_filterDlaListed 
-                            setIsOpen={setIsOpen}
-                            setDetails={setDetails}
 
                             data={data}
 

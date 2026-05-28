@@ -1,23 +1,35 @@
 "use client";
 import { useState, useEffect } from 'react';
-import axios from "axios";
-import Tab1 from './components/tab1'; 
-import Tab2 from './components/tab2';
-import Tab3 from './components/tab3'; 
-import Tab4 from './components/tab4'; 
-import Tab5 from './components/tab5'; 
-import LoadingWrapper from './components/LoadingWrapper'; 
-import ModalTab1Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
-
+import axios                from "axios";
+import Tab1                 from './components/tab1'; 
+import Tab2                 from './components/tab2';
+import Tab3                 from './components/tab3'; 
+import Tab4                 from './components/tab4'; 
+import Tab5                 from './components/tab5'; 
+import LoadingWrapper       from './components/LoadingWrapper'; 
+import ModalTab1Part6       from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
+import ModalFilterSelect    from './components/sub-component/tab5/modal/modalFilterSelect'; 
+export interface FilterData {
+    id_region: number;
+    id_sub_regoin: number;
+    id_position: number;
+    number_rank: number;
+}
 export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('tab4');
+    const [activeTab, setActiveTab] = useState('tab5');
 
-
-    const [isOpen, setIsOpen] = useState(false);
     const [details, setDetails] = useState(null);
+    const [isOpen2, setIsOpen2] = useState(false);
 
+    const [details5, setDetails5] = useState<FilterData | null>(null);;
+    const [isOpen5, setIsOpen5] = useState(false);
+    const handleSave = (val: FilterData) => {
+        console.log("ข้อมูลที่ได้รับจาก Modal:", val);
+        setDetails5(val); 
+        setIsOpen5(false);
+    };
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -80,15 +92,17 @@ export default function App() {
                     </div>
                     <div className="mt-6">
                         {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
-                        {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
+                        {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} data={data}/> </div> )}
                         {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 data={data}/> </div> )}
-                        {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 setIsOpen={setIsOpen} setDetails={setDetails} data={data}/> </div> )}
-                        {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 data={data}/> </div> )}
-                    </div>
+                        {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 data={data}/> </div> )}
+                        {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} data={data}/> </div> )}                    </div>
                 </div>
 
                 {/* for tap1 part6 */}
-                <ModalTab1Part6 isOpen={isOpen} setIsOpen={setIsOpen} details={details} loading={loading} />
+                <ModalTab1Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} loading={loading} />
+
+                {/* for tap5 part1 */}
+                <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} details={details5} loading={loading} data={data} onSave={handleSave} />
 
             </main>
         </LoadingWrapper>
