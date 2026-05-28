@@ -2,7 +2,7 @@
 import React, { useMemo }   from 'react';
 import { motion }           from 'framer-motion';
 import { LoadingScreen }    from '../../../components/LoadingScreen';
-const maxR = 10;
+const maxR = 25;
 export default function T2P7_TableAllType({data}) {
     const part8 = data?.tab3?.part8 || null;
     const { allZones, roundColumns } = useMemo(() => {
@@ -39,20 +39,16 @@ export default function T2P7_TableAllType({data}) {
         >
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปยอดเรียกรายงานตัวสะสมแยกตามเขตพื้นที่และประเภทตำแหน่ง</h3>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse min-w-[900px]">
+                <div className="flex-1 overflow-x-auto min-h-[600px] max-h-[800px] shadow-sm">
+                    <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
-                                <th className="w-[15%] px-6 py-4 font-semibold border-b">ภาค / เขตพื้นที่</th>
-                                <th className="w-[7%] px-4 py-4 font-semibold text-center border-b bg-gray-100/50">ประเภท</th>
-                                <th className="w-[7%] px-4 py-4 font-semibold text-center border-b bg-gray-100/30">ขึ้นบัญชี</th>
-                                {roundColumns.map(num => (
-                                    <th key={num} className="px-4 py-4 font-semibold text-center border-b border-l bg-amber-50/30">
-                                        รอบที่ {num}
-                                    </th>
-                                ))}
-                                <th className="w-[7%] px-4 py-4 font-semibold text-center border-b bg-emerald-50 text-emerald-700">เรียกแล้วรวม</th>
-                                <th className="w-[7%] px-6 py-4 font-semibold text-center border-b border-l text-rose-500">คงเหลือ</th>
+                                <th className="sticky left-0 top-0 z-40 w-[15%] px-6 py-4 font-semibold bg-gray-50">ภาค / เขตพื้นที่</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-gray-50">ประเภท</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-amber-50 text-amber-700">ขึ้นบัญชี</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกแล้วรวม</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-6 py-4 font-semibold text-center bg-rose-50 text-rose-500">คงเหลือ</th>
+                                {roundColumns.map(num => (<th key={num} className="sticky top-0 z-30 px-4 py-4 font-semibold text-center bg-amber-50">รอบที่ {num}</th>))}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 text-sm text-gray-700">
@@ -76,8 +72,10 @@ export default function T2P7_TableAllType({data}) {
                                 return (
                                     <React.Fragment key={regionKey}>
                                         <tr className="bg-emerald-50/30">
-                                            <td colSpan={roundColumns.length + 5} className="px-6 py-2.5 text-emerald-800 font-bold text-base border-b border-gray-100">
-                                                {regionName}
+                                            <td colSpan={roundColumns.length + 5} className="px-6 py-2.5 text-emerald-800 font-bold text-base">
+                                                <span className="sticky left-[30px] z-40">
+                                                    {regionName}
+                                                </span>
                                             </td>
                                         </tr>
                                         {Object.entries(zonesBySubId).map(([subId, zoneList]) => {
@@ -96,91 +94,45 @@ export default function T2P7_TableAllType({data}) {
                                             return (
                                                 <React.Fragment key={subId}>
                                                     {zoneList.map((zone, index) => (
-                                                        <tr key={`${subId}-${zone.pos_type_id}`} className="hover:bg-gray-50/40 transition-colors">
-                                                            {index === 0 && (
-                                                                <td 
-                                                                    rowSpan={rowCount} 
-                                                                    className="px-6 py-4 font-semibold text-gray-800 bg-gray-50/10 text-center border-r border-gray-100"
-                                                                    style={{ verticalAlign: 'middle' }}
-                                                                >
-                                                                    {zone.prov_full_name}
-                                                                </td>
-                                                            )}
-                                                            <td className={`px-4 py-4 text-center ${
-                                                                zone.pos_type_id === "1" ? "bg-blue-50 text-blue-700" :
-                                                                zone.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : 
-                                                                "bg-amber-50 text-amber-700"
-                                                            }`}>
-                                                                {zone.pos_type}
-                                                            </td>
-                                                            <td className="px-4 py-4 text-center text-gray-500 font-mono">
-                                                                {zone.total_list.toLocaleString()}
-                                                            </td>
-                                                            {roundColumns.map(num => {
-                                                                const roundInfo = zone.round_data?.[num];
-                                                                const bgClass = roundInfo ? "bg-white" : "bg-gray-100";
-                                                                return (
-                                                                    <td key={num} className={`px-4 py-4 text-center border-l border-gray-100 font-mono ${bgClass}`}>
-                                                                        {roundInfo ? roundInfo.total.toLocaleString() : null}
-                                                                    </td>
-                                                                );
-                                                            })}
-                                                            <td className="px-4 py-4 text-center bg-emerald-50/10 font-mono">
-                                                                <span className="text-emerald-600 font-medium">{zone.total_call.toLocaleString()}</span>
-                                                            </td>
-                                                            <td className="px-6 py-4 text-center text-rose-500 font-medium border-l border-gray-100 font-mono">
-                                                                {zone.total_remain.toLocaleString()}
-                                                            </td>
+                                                        <tr key={`${subId}-${zone.pos_type_id}`}>
+                                                            {index === 0 && (<td rowSpan={rowCount} className="sticky left-0 z-20 bg-white px-6 py-4 text-gray-800 bg-gray-50 text-sm font-semibold  text-center"style={{ verticalAlign: 'middle' }}>{zone.prov_full_name}</td>)}
+                                                            <td className={`px-4 py-4 text-sm font-semibold text-center ${zone.pos_type_id === "1" ? "bg-blue-50 text-blue-700" :zone.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{zone.pos_type}</td>
+                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-50 text-amber-500">{zone.total_list.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-emerald-50"><span className="text-emerald-600 ">{zone.total_call.toLocaleString()}</span></td>
+                                                            <td className="px-6 py-4  text-sm font-semibold text-center bg-rose-50 text-rose-500">{zone.total_remain.toLocaleString()}</td>
+                                                            {roundColumns.map(num => {const roundInfo = zone.round_data?.[num];const bgClass = roundInfo ? "bg-white" : "bg-gray-100";return (<td key={num} className={`px-4 py-4 text-center text-sm font-semibold ${bgClass}`}>{roundInfo ? roundInfo.total.toLocaleString() : null}</td>);})}
+
                                                         </tr>
                                                     ))}
-                                                    <tr className="bg-slate-50/60 font-semibold text-gray-900 border-b border-gray-200">
+                                                    <tr className="bg-slate-50/60 font-semibold text-gray-900 ">
                                                         <td className="px-4 py-3 text-center text-xs text-slate-500 bg-slate-50/40 font-bold">รวมประจำเขต</td>
-                                                        <td className="px-4 py-3 text-center font-mono">{zoneTotalList.toLocaleString()}</td>
-                                                        {zoneTotalPerRound.map((total, idx) => (
-                                                            <td key={idx} className={`px-4 py-3 text-center border-l border-gray-200 font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>
-                                                                {total > 0 ? total.toLocaleString() : null}
-                                                            </td>
-                                                        ))}
-                                                        <td className="px-4 py-3 text-center bg-emerald-50/20 text-emerald-700 font-mono">{zoneTotalCall.toLocaleString()}</td>
-                                                        <td className="px-6 py-3 text-center text-rose-600 font-bold border-l border-gray-200 font-mono">{zoneTotalRemain.toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalList.toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-sm font-semibold bg-emerald-50/20 text-emerald-700 ">{zoneTotalCall.toLocaleString()}</td>
+                                                        <td className="px-6 py-3 text-center text-sm font-semibold text-rose-600 font-bold ">{zoneTotalRemain.toLocaleString()}</td>
+                                                        {zoneTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3 text-center text-sm font-semibold font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>{total > 0 ? total.toLocaleString() : null}</td>))}
                                                     </tr>
                                                 </React.Fragment>
                                             );
                                         })}
-                                        <tr className="bg-emerald-600/5 font-bold text-emerald-900 border-b-2 border-gray-200">
-                                            <td colSpan={2} className="px-6 py-3.5 text-center text-sm">
-                                                รวม{regionName}
-                                            </td>
-                                            <td className="px-4 py-3.5 text-center font-mono">{regionTotalList.toLocaleString()}</td>
-                                            {regionTotalPerRound.map((total, idx) => (
-                                                <td key={idx} className={`px-4 py-3.5 text-center border-l border-emerald-100 font-mono ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>
-                                                    {total > 0 ? total.toLocaleString() : null}
-                                                </td>
-                                            ))}
-                                            <td className="px-4 py-3.5 text-center bg-emerald-600/10 text-emerald-700 font-mono">{regionTotalCall.toLocaleString()}</td>
-                                            <td className="px-6 py-3.5 text-center text-rose-600 font-extrabold border-l border-emerald-100 font-mono">{regionTotalRemain.toLocaleString()}</td>
+                                        <tr className="bg-emerald-100 text-emerald-900 text-sm">
+                                            <td className="sticky left-0 z-20 bg-emerald-100 px-6 py-3.5 text-center text-sm font-semibold ">รวม{regionName}</td>
+                                            <td className="px-6 py-3.5 text-center text-sm font-semibold  "></td>
+                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-50 text-amber-700">{regionTotalList.toLocaleString()}</td>
+                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-emerald-100 text-emerald-700 ">{regionTotalCall.toLocaleString()}</td>
+                                            <td className="px-6 py-3.5 text-center text-sm font-semibold bg-rose-50 text-rose-600">{regionTotalRemain.toLocaleString()}</td>
+                                            {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-sm font-semibold ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>{total > 0 ? total.toLocaleString() : null}</td>))}
+
                                         </tr>
                                     </React.Fragment>
                                 );
                             })}
                             <tr className="bg-gray-700 text-white font-bold text-sm">
-                                <td colSpan={2} className="px-6 py-4 text-center uppercase tracking-wider">
-                                    รวมทั้งหมดทุกภาค
-                                </td>
-                                <td className="px-4 py-4 text-center font-mono">
-                                    {grandTotalListed.toLocaleString()}
-                                </td>
-                                {grandTotalPerRound.map((total, index) => (
-                                    <td key={index} className="px-4 py-4 text-center border-l border-gray-700 font-mono">
-                                        {total > 0 ? total.toLocaleString() : null }
-                                    </td>
-                                ))}
-                                <td className="px-4 py-4 text-center bg-gray-700 font-mono">
-                                    {grandTotalCalled.toLocaleString()}
-                                </td>
-                                <td className="px-6 py-4 text-center border-l border-gray-700 text-rose-300 font-mono">
-                                    {grandTotalRemain.toLocaleString()}
-                                </td>
+                                <td className="sticky left-0 bottom-0 z-40 px-6 py-4 bg-gray-700 text-center uppercase tracking-wider">รวมทั้งหมดทุกภาค</td>
+                                <td className="sticky bottom-0 z-30 px-6 py-4 bg-gray-700 text-center uppercase tracking-wider"></td>
+                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalListed.toLocaleString()}</td>
+                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalCalled.toLocaleString()}</td>
+                                <td className="sticky bottom-0 z-30 px-6 bg-gray-700 py-4 text-center text-rose-300 font-mono">{grandTotalRemain.toLocaleString()}</td>
+                                {grandTotalPerRound.map((total, index) => (<td key={index} className="sticky bottom-0 z-30 px-4 py-4 bg-gray-700 text-center font-mono">{total > 0 ? total.toLocaleString() : null }</td>))}
                             </tr>
                         </tbody>
                     </table>

@@ -45,9 +45,9 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                             {columns.column_part2 &&            <td className={`w-[120px] min-w-[120px] ${statusClass} p-4 text-center font-bold`}>{listed > 0 ? (percent === 100 ? 'หมดบัญชี' : 'คงเหลือ') : '-'}</td>}
                             {columns.column_part3 &&            <td className={`w-[120px] min-w-[120px] ${percentClass} p-4 text-center font-bold`}>{listed > 0 ? `${percent.toFixed(2)} %` : 0}</td>}
                                                                 <td className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center font-bold">{regionData.total_listed.toLocaleString()}</td>
-                            {roundsArray.map((_, i) =>  <td key={i} className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center">{regionData.total_each_round?.[i + 1]?.total.toLocaleString() || null}</td>)}
                                                                 <td className=" w-[120px] min-w-[120px] top-0 z-10 p-4 text-center font-bold bg-emerald-50 text-emerald-700">{regionData.total_called.toLocaleString()}</td>
                                                                 <td className=" w-[120px] min-w-[120px] top-0 z-10 p-4 text-center font-bold bg-amber-50 text-amber-500">{regionData.total_remain.toLocaleString()}</td>
+                            {roundsArray.map((_, i) =>  <td key={i} className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center">{regionData.total_each_round?.[i + 1]?.total.toLocaleString() || null}</td>)}
                         </>
                     ) : Array.from({ length: roundsArray.length + 8 }).map((_, i) => <td key={i} className="bg-emerald-100"></td>)
                 }
@@ -100,9 +100,9 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                     {columns.column_part2 &&            <td className={`w-[120px] min-w-[120px] ${s_statusClass}  p-4 text-center font-bold`}>{s_listed > 0 ? (s_percent === 100 ? 'หมดบัญชี' : 'คงเหลือ') : '-'}</td>}
                                                     {columns.column_part3 &&            <td className={`w-[120px] min-w-[120px] ${s_percentClass} p-4 text-center font-bold`}>{s_listed > 0 ? `${s_percent.toFixed(2)} %` : 0}</td>}
                                                                                         <td className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center font-bold">{provSubData.total_listed.toLocaleString()}</td>
-                                                    {roundsArray.map((_, i) =>  <td key={i} className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center">{provSubData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>)}
                                                                                         <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-emerald-50 text-emerald-700">{provSubData.total_called.toLocaleString()}</td>
                                                                                         <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-amber-50 text-amber-500">{provSubData.total_remain.toLocaleString()}</td>
+                                                    {roundsArray.map((_, i) =>  <td key={i} className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center">{provSubData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>)}
                                                 </>
                                             ) : Array.from({ length: roundsArray.length + 8 }).map((_, i) => <td key={i} className="bg-emerald-50"></td>)
                                         }
@@ -127,9 +127,9 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                         {columns.column_part2 && (          <td className={`w-[120px] min-w-[120px] ${s_statusClass} p-4 text-center font-bold`}>{s_listed > 0 ? (s_percent === 100 ? 'หมดบัญชี' : 'คงเหลือ') : '-'}</td>)}
                         {columns.column_part3 && (          <td className={`w-[120px] min-w-[120px] ${s_percentClass} p-4 text-center font-bold`}>{s_listed > 0 ? `${s_percent.toFixed(2)} %` : 0}</td>)}
                                                             <td className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center font-bold">{provSubData.total_listed.toLocaleString()}</td>
-                        {roundsArray.map((_, i) => (<td key={i} className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center">{provSubData.total_each_round?.[i + 1]?.total.toLocaleString() || null}</td>))}
                                                             <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-emerald-50 text-emerald-700">{provSubData.total_called.toLocaleString()}</td>
                                                             <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-amber-50 text-amber-500">{provSubData.total_remain.toLocaleString()}</td>
+                        {roundsArray.map((_, i) => (<td key={i} className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center">{provSubData.total_each_round?.[i + 1]?.total.toLocaleString() || null}</td>))}
                                                         </tr>
                                                     )
                                                 }
@@ -158,9 +158,9 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                             {columns.column_part2 && (          <td className={`w-[120px] min-w-[120px] ${statusClass}  p-4 text-center font-bold`}>{listed > 0 ? (percent === 100 ? 'หมดบัญชี' : 'คงเหลือ') : '-'}</td>)}
                             {columns.column_part3 && (          <td className={`w-[120px] min-w-[120px] ${percentClass} p-4 text-center font-bold`}>{listed > 0 ? `${percent.toFixed(2)} %` : 0 }</td>)}
                                                                 <td className={`w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center font-bold `}>{regionData.total_listed.toLocaleString()}</td>
-                            {roundsArray.map((_, i) => (<td key={i} className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center">{regionData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>))}
                                                                 <td className={`w-[120px] min-w-[120px] bg-clip-padding p-4 text-center font-bold bg-emerald-50 text-emerald-700`}>{regionData.total_called.toLocaleString()}</td>
                                                                 <td className={`w-[120px] min-w-[120px] bg-clip-padding p-4 text-center font-bold bg-amber-50 text-amber-500`}>{regionData.total_remain.toLocaleString()}</td>
+                            {roundsArray.map((_, i) => (<td key={i} className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center">{regionData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>))}
                         </tr>
                     
                     </>

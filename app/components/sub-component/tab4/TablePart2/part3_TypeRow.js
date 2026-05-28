@@ -46,9 +46,10 @@ export default function Part3_PositionRow({ typeData, roundsArray , isRegionColl
                             {columns.column_part2 && (          <td className={` w-[120px] min-w-[120px] ${!hasData ? "bg-gray-50 text-gray-400" : (isFull ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700")} p-4 text-center font-bold`}>{hasData ? (isFull ? 'หมดบัญชี' : 'คงเหลือ') : '-'}</td>)}
                             {columns.column_part3 && (          <td className={` w-[120px] min-w-[120px] ${colorClass} p-4 text-center font-bold`}>{hasData ? percent.toFixed(2) + ' %' : 0} </td>)}
                                                                 <td className={` w-[100px] min-w-[100px] ${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} p-4 text-center font-bold `}>{typeData.total_listed.toLocaleString()}</td>
-                            {roundsArray.map((_, i) => (<td key={i} className={` w-[100px] min-w-[100px] ${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} p-4 text-center`} >{typeData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>))}
                                                                 <td className={` w-[120px] min-w-[120px] top-0 z-10 p-4 text-center font-bold bg-emerald-50 text-emerald-700 `}>{typeData.total_called.toLocaleString()}</td>
                                                                 <td className={` w-[120px] min-w-[120px] top-0 z-10 p-4 text-center font-bold bg-amber-50 text-amber-500 `}>{typeData.total_remain.toLocaleString()}</td>
+                            {roundsArray.map((_, i) => (<td key={i} className={` w-[100px] min-w-[100px] ${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} p-4 text-center`} >{typeData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>))}
+
                         </>
                     ) : Array.from({ length: roundsArray.length + 8 }).map((_, i) => (<td key={i} className={`${typeData.pos_type_id === "1" ? "bg-blue-100 text-blue-700" : typeData.pos_type_id === "2" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}></td>))
                 }
@@ -78,9 +79,10 @@ export default function Part3_PositionRow({ typeData, roundsArray , isRegionColl
                             {columns.column_part2 && (                  <td className={`w-[120px] min-w-[120px] ${!hasData ? "bg-gray-50 text-gray-400" : (isFull ? "bg-green-50 text-green-700" : "bg-yellow-50 text-yellow-700 ")} bg-clip-padding p-4 text-center font-bold`}>{hasData ? (isFull ? 'หมดบัญชี' : 'คงเหลือ') : '-'}</td>)}
                             {columns.column_part3 && (                  <td className={`w-[120px] min-w-[120px] ${colorClass} p-4 text-center font-bold`}>{hasData ? percent.toFixed(2) + ' %' : 0} </td>)}
                                                                         <td className={`w-[100px] min-w-[100px] ${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} p-4 text-center font-bold `}>{typeData.total_listed.toLocaleString()}</td>
-                            {roundsArray.map((_, i) => (        <td key={i} className={`w-[100px] min-w-[100px] ${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} p-4 text-center`} >{typeData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>))}
                                                                         <td className={`w-[120px] min-w-[120px] top-0 z-10 p-4 text-center font-bold bg-emerald-50 bg-clip-padding text-emerald-700`}>{typeData.total_called.toLocaleString()}</td>
                                                                         <td className={`w-[120px] min-w-[120px] top-0 z-10 p-4 text-center font-bold bg-amber-50   bg-clip-padding text-amber-500`}>{typeData.total_remain.toLocaleString()}</td>
+                            {roundsArray.map((_, i) => (        <td key={i} className={`w-[100px] min-w-[100px] ${typeData.pos_type_id === "1" ? "bg-blue-100" : typeData.pos_type_id === "2" ? "bg-emerald-100" : "bg-amber-100"} p-4 text-center`} >{typeData.total_each_round?.[i + 1]?.total.toLocaleString() || null }</td>))}
+
                         </tr>
                     </>
                 )}

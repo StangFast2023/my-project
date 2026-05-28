@@ -80,9 +80,10 @@ export default function T2P7_TableAllType({data,isLoading}) {
                             {columns.column_part2 && (<col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
                             {columns.column_part3 && (<col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
                             <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
-                            {roundsArray.map((_, i) => <col key={i} className="w-[100px] min-w-[100px] border-y-[1px] border-l-[1px] border-gray-200" />)}
                             <col className="w-[120px] min-w-[120px] border-1 border-emerald-400" />
                             <col className="w-[120px] min-w-[120px] border-1 border-amber-400" />
+                            {roundsArray.map((_, i) => <col key={i} className="w-[100px] min-w-[100px] border-y-[1px] border-l-[1px] border-gray-200" />)}
+
                         </colgroup>
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
@@ -94,9 +95,9 @@ export default function T2P7_TableAllType({data,isLoading}) {
                                 {columns.column_part2 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>)}
                                 {columns.column_part3 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>)}
                                                                             <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>
-                                {roundsArray.map((_, index) => (<th key={index} className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
                                                                             <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกทั้งหมด</th>
                                                                             <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-amber-50 text-amber-500">คงเหลือ</th>
+                                {roundsArray.map((_, index) => (<th key={index} className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
                             </tr>
                         </thead>
                         <Part1_TableContainer
@@ -118,9 +119,9 @@ export default function T2P7_TableAllType({data,isLoading}) {
                                 {columns.column_part2 && (<td className=" sticky left-0 bottom-0 z-30 px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">{statusText}</td>)}
                                 {columns.column_part3 && (<td className={`sticky left-0 bottom-0 z-30 ${statusColor} px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold`}>{summary?.total_listed > 0 ? `${percent.toFixed(2)} %` : 0}</td>)}
                                 <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold">{summary ? summary.total_listed.toLocaleString() : null}</td>
-                                {roundsArray.map((_, i) => (<td key={i} className={`sticky left-0 bottom-0 z-30 w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >{ summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null }</td>))}
                                 <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_called.toLocaleString() : null}</td>
                                 <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_remain.toLocaleString() : null}</td>
+                                {roundsArray.map((_, i) => (<td key={i} className={`sticky left-0 bottom-0 z-30 w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >{ summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null }</td>))}
                             </tr>
                         </tfoot>
                     </table>

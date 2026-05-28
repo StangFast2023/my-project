@@ -68,23 +68,23 @@ export default function ShowAllDataTable({ part2, isLoading }) {
 {columns.column_part2 && (  <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
 {columns.column_part3 && (  <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
                             <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
-{roundsArray.map((_, i) =>  <col key={i} className="w-[100px] min-w-[100px] border-y-[1px] border-l-[1px] border-gray-200" />)}
                             <col className="w-[120px] min-w-[120px] border-1 border-emerald-400" />
                             <col className="w-[120px] min-w-[120px] border-1 border-amber-400" />
+{roundsArray.map((_, i) =>  <col key={i} className="w-[100px] min-w-[100px] border-y-[1px] border-l-[1px] border-gray-200" />)}
                         </colgroup>
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
                                                                             <th className="w-[400px] min-w-[400px] sticky left-0 top-0 z-40 p-4 font-semibold bg-gray-50 ">ภาค / เขต / ตำแหน่ง</th>
-                                {!columns.all_header && (                   <th className="w-[200px] min-w-[200px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ภาค</th>)}
-                                {!columns.all_header && (                   <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">เขต</th>)}
-                                                                            <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ประเภท</th>
-                                {columns.column_part1 && (                  <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะสอบ</th>)}
-                                {columns.column_part2 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>)}
-                                {columns.column_part3 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>)}
-                                                                            <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>
-                                {roundsArray.map((_, index) => (<th key={index} className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
-                                                                            <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกทั้งหมด</th>
-                                                                            <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-amber-50 text-amber-500">คงเหลือ</th>
+                                {!columns.all_header && (                   <th className="w-[200px] min-w-[200px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ภาค</th>)}
+                                {!columns.all_header && (                   <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">เขต</th>)}
+                                                                            <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ประเภท</th>
+                                {columns.column_part1 && (                  <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">สถานะสอบ</th>)}
+                                {columns.column_part2 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>)}
+                                {columns.column_part3 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>)}
+                                                                            <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>
+                                                                            <th className="w-[120px] min-w-[120px] sticky top-0 z-30        p-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกทั้งหมด</th>
+                                                                            <th className="w-[120px] min-w-[120px] sticky top-0 z-30        p-4 font-semibold text-center bg-amber-50 text-amber-500">คงเหลือ</th>
+                                {roundsArray.map((_, index) => (<th key={index} className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 text-sm text-gray-700">
@@ -98,14 +98,16 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                                         const percent = (posData.total_listed > 0) ? (posData.total_call / posData.total_listed) * 100 : 0;
                                                         return (
                                                             <tr key={`${regionKey}-${provSubID}-${posData.pos_id}`} className="bg-white hover:bg-gray-50" >
-                                                                <td className=" w-[400px] min-w-[400px] sticky left-0 z-10 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
-                                    {!columns.all_header && (   <td className={`w-[200px] min-w-[200px] sticky top-0 z-10 p-4 font-semibold text-center bg-gray-50 ${regionColors[regionData.pro_main_id]} `}>{regionData.pro_main_name}</td>)}
-                                    {!columns.all_header && (   <td className={`w-[100px] min-w-[100px] sticky top-0 z-10 p-4 font-semibold text-center bg-gray-50 ${zoneColors[provSubData.pro_sub_id]} `}>เขต {provSubData.pro_sub_id}</td>)}
+                                                                <td className=" w-[400px] min-w-[400px] sticky left-0 z-20 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{posData.pos_id}</span> ] {posData.pos_name}</td>
+                                    {!columns.all_header && (   <td className={`w-[200px] min-w-[200px] sticky top-0  z-10 p-4 font-semibold text-center bg-gray-50 ${regionColors[regionData.pro_main_id]} `}>{regionData.pro_main_name}</td>)}
+                                    {!columns.all_header && (   <td className={`w-[100px] min-w-[100px] sticky top-0  z-10 p-4 font-semibold text-center bg-gray-50 ${zoneColors[provSubData.pro_sub_id]} `}>เขต {provSubData.pro_sub_id}</td>)}
                                                                 <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
                                     {columns.column_part1 && (  <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{posData.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>)}
                                     {columns.column_part2 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>{posData.status_out_of_lits ? ( posData.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}</td>)}
                                     {columns.column_part3 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>)}
                                                                 <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
+                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call}</td>
+                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
                                                                     {roundsArray.map((_, i) => {
                                                                         const status            =   posData.data_call_round?.[i + 1]?.status;
                                                                         const text_color        =   ['completed', 'waiting'].includes(status) ? 'text-emerald-600' :status === 'exhaustion' ? 'text-amber-600' :status === 'not-used' ? 'text-red-400' : 'text-slate-900';
@@ -264,8 +266,6 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                                                             </td>
                                                                         );
                                                                     })}
-                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call}</td>
-                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
                                                             </tr>
                                                         );
                                                 
@@ -281,7 +281,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                     <table className="sticky bottom-0 z-20 w-full min-w-[1200px] table-fixed border-collapse">
                         <tfoot className="sticky bottom-0 z-20 bg-[#2d3446] text-white">
                             <tr>
-                                <td className="sticky left-0 bottom-0 z-30 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center">รวมทั้งหมดทุกภาค</td>
+                                <td className="sticky left-0 bottom-0 z-40 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center">รวมทั้งหมดทุกภาค</td>
                                 {!columns.all_header && (<td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[200px] min-w-[200px] p-4 text-center font-bold"></td>)}
                                 {!columns.all_header && (<td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>)}
                                 <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>
@@ -289,9 +289,9 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                 {columns.column_part2 && (<td className=" sticky left-0 bottom-0 z-30 px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">{statusText}</td>)}
                                 {columns.column_part3 && (<td className={`sticky left-0 bottom-0 z-30 ${statusColor} px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold`}>{summary?.total_listed > 0 ? `${percent.toFixed(2)} %` : 0}</td>)}
                                 <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold">{summary ? summary.total_listed.toLocaleString() : null}</td>
-                                {roundsArray.map((_, i) => (<td key={i} className={`sticky left-0 bottom-0 z-30 w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >{ summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null }</td>))}
                                 <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_called.toLocaleString() : null}</td>
                                 <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_remain.toLocaleString() : null}</td>
+                                {roundsArray.map((_, i) => (<td key={i} className={`sticky left-0 bottom-0 z-30 w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >{ summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null }</td>))}
                             </tr>
                         </tfoot>
                     </table>

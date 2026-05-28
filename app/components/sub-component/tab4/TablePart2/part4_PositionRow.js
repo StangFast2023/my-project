@@ -5,20 +5,6 @@ import { useColumnStore }   from '../../../useTableColumns';
 export default function Part4_PositionRow({ posData, roundsArray , regoin , zone ,isParentCollapsed , isRegionCollapsed , isCollapsed , isExpanded}) {
     const percent = (posData.total_listed > 0) ? (posData.total_call / posData.total_listed) * 100 : 0;
     const columns = useColumnStore((state) => state.columns);
-    
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         console.log('--- Debug Status 2026 ---');
-    //         console.log('isParentCollapsed :', isParentCollapsed);
-    //         console.log('isRegionCollapsed :', isRegionCollapsed);
-    //         console.log('isCollapsed :', isCollapsed);
-    //         console.log('isExpanded :', isExpanded);
-    //         console.log('columns :', columns);
-    //     }, 1000);
-
-    //     return () => clearInterval(interval);
-    // }, [isParentCollapsed, isRegionCollapsed, isCollapsed, isExpanded ,columns]);
-    
     const regionColors = {
         1: "bg-rose-50 text-rose-800 font-bold",   
         2: "bg-indigo-50 text-indigo-800 font-bold", 
@@ -46,6 +32,8 @@ export default function Part4_PositionRow({ posData, roundsArray , regoin , zone
             {columns.column_part2 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>{posData.status_out_of_lits ? ( posData.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}</td>)}
             {columns.column_part3 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>)}
                                         <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
+                                        <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call}</td>
+                                        <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
             {roundsArray.map((_, i) => {
                 const status            =   posData.data_call_round?.[i + 1]?.status;
                 const text_color        =   ['completed', 'waiting'].includes(status) ? 'text-emerald-600' :status === 'exhaustion' ? 'text-amber-600' :status === 'not-used' ? 'text-red-400' : 'text-slate-900';
@@ -204,8 +192,6 @@ export default function Part4_PositionRow({ posData, roundsArray , regoin , zone
                     </td>
                 );
             })}
-            <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call}</td>
-            <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
         </motion.tr>
     );
 }
