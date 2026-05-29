@@ -60,16 +60,15 @@ export default function ShowAllDataTable({ part2, isLoading }) {
         }
         return 'cursor-pointer hover:bg-rose-50 hover:text-rose-700 transition-colors duration-200 hover:border-b-rose-300';
     };
+
     const flatTableRows = useMemo(() => {
         const safePart2 = part2?.tab4?.part2?.data || {};
-
         const rows = [];
         Object.entries(safePart2).forEach(([regionKey, regionData]) => {
             Object.entries(regionData.pro_sub).forEach(([provSubID, provSubData]) => {
                 Object.entries(provSubData.data_type_position).forEach(([typeID, typeData]) => {
                     Object.values(typeData.data_position).forEach((posData) => {
                         rows.push({
-                            
                             regionKey,
                             regionData,
                             provSubID,
@@ -77,9 +76,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                             typeID,
                             typeData,
                             posData,
-
                             uniqueKey: `${regionKey}-${provSubID}-${typeID}-${posData.pos_id}`,
-
                             pos_id: posData.pos_id,
                             pos_name: posData.pos_name,
                             pos_type_name: posData.pos_type_name,
@@ -89,12 +86,10 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                             total_call: posData.total_call,
                             total_remain: posData.total_remain,
                             roundsData: posData.data_call_round || {},
-
                             pro_main_id: regionData.pro_main_id,
                             pro_main_name: regionData.pro_main_name,
                             pro_sub_id: provSubData.pro_sub_id,
                             pos_type_id: posData.pos_type_id,
-
                             pro_main_id: regionData.pro_main_id,
                             pro_main_id: regionData.pro_main_id,
                             pro_main_id: regionData.pro_main_id,
@@ -104,9 +99,9 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                 });
             });
         });
-
         return rows;
     }, [part2]);
+
     if (isLoading) {
         return (
             <div className="h-[600px] flex flex-col items-center justify-center h-[400px]">
