@@ -104,11 +104,11 @@ export default function Tab4({data}) {
                         />
                     </div>
                 </div>
-                <div className={`grid grid-cols-12 gap-6 my-2 ${!columns.all_header ? 'hidden' : 'block' }`}>
+                {/* <div className={`grid grid-cols-12 gap-6 my-2 ${!columns.all_header ? 'hidden' : 'block' }`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T4P2_showingAllTable data={tableData} isLoading={isLoading} />
                     </div>
-                </div>
+                </div> */}
                 <div className={`grid grid-cols-12 gap-6 my-2 ${columns.all_header ? 'hidden' : 'block' }`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 className="text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
