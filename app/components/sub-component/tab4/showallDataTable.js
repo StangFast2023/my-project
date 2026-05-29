@@ -3,7 +3,6 @@ import Swal                                         from 'sweetalert2';
 import { EmptyData }                                from '../../EmptyData';
 import { useColumnStore }                           from '../../useTableColumns';
 export default function ShowAllDataTable({ part2, isLoading }) {
-    console.log(isLoading);
     const safePart2 = part2.tab4.part2.data || {};
     const columns   = useColumnStore((state) => state.columns);
     const maxRound  = Math.max(10, part2?.tab4?.part2?.round || 0);
@@ -104,10 +103,10 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                                                 <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : posData.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{posData.pos_type_name}</td>
                                     {columns.column_part1 && (  <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${posData.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{posData.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>)}
                                     {columns.column_part2 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${posData.status_out_of_lits ? ( posData.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>{posData.status_out_of_lits ? ( posData.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}</td>)}
-                                    {columns.column_part3 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(0)} % </td>)}
+                                    {columns.column_part3 && (  <td className={`w-[120px] min-w-[120px] p-4 pr-6 text-right font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(2)} %</td>)}
                                                                 <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{posData.total_listed.toLocaleString()}</td>
-                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call}</td>
-                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain}</td>
+                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{posData.total_call.toLocaleString()}</td>
+                                                                <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{posData.total_remain.toLocaleString()}</td>
                                                                     {roundsArray.map((_, i) => {
                                                                         const status            =   posData.data_call_round?.[i + 1]?.status;
                                                                         const text_color        =   ['completed', 'waiting'].includes(status) ? 'text-emerald-600' :status === 'exhaustion' ? 'text-amber-600' :status === 'not-used' ? 'text-red-400' : 'text-slate-900';
@@ -251,7 +250,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                                                                 className={`w-[100px] min-w-[100px] bg-clip-padding relative group p-4 text-center font-bold ${bag_color} ${text_color}`}
                                                                             >
                                                                                 <div className={`transition-transform duration-300 group-hover:-translate-y-2 `}>
-                                                                                    {call_values}
+                                                                                    {call_values ? call_values.toLocaleString() : null}
                                                                                 </div>
                                                                                 {has_no_data && (
                                                                                     <div className={`absolute inset-x-0 bottom-0 flex flex-col items-center justify-center opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out ${button_color} `}>

@@ -2,7 +2,7 @@
 import React, { useMemo }   from 'react';
 import { motion }           from 'framer-motion';
 import { LoadingScreen }    from '../../../components/LoadingScreen';
-const maxR = 25;
+const maxR = 10;
 export default function T2P7_TableAllType({data}) {
     const part8 = data?.tab3?.part8 || null;
     const { allZones, roundColumns } = useMemo(() => {

@@ -6,7 +6,6 @@ import { LoadingScreen }            from '../../../components/LoadingScreen';
 const MySwal = withReactContent(Swal);
 export default function T5P1_filterDlaSearch({ setIsOpen, details, data }) { 
     const part5ForShow = data?.tab5?.part1 || {};
-    console.log(part5ForShow);
     const handleViewDetail = async () => {
         setIsOpen(true);
     };

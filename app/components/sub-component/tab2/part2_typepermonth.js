@@ -112,7 +112,7 @@ export default function T2P2_TypePerMonth({ data }) {
             transition={{ duration: 0.5 }}  
         >
             <div>
-                <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปจำนวนการเรียกรายงานตัวรายเดือนแบบแบ่งประเภท</h3>
+                <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สถิติการเรียกบรรจุรายเดือน จำแนกตามประเภทตำแหน่ง</h3>
                     <div className="w-full h-[370px]">
                         <Bar data={chartData} options={options} />
                     </div>

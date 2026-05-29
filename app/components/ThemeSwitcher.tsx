@@ -25,9 +25,9 @@ export default function InfoModal() {
   return (
     <button
       onClick={showInfo}
-      className="fixed top-4 right-4 p-3 rounded-full bg-emerald-600 text-white shadow-lg z-50 hover:scale-110 transition-transform"
+      className="fixed bottom-4 right-4 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-3xl transition-all duration-500 ease-in-out hover:scale-110 hover:bg-emerald-600 will-change-transform"
     >
-      <User size={24} />
+      <User size={40} />
     </button>
   );
 }

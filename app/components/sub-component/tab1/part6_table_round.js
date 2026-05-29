@@ -25,7 +25,7 @@ export default function T1P3_PieListed({ data }) {
             transition={{ duration: 0.5 }}  
         >
             
-            <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปยอดเรียกรายงานตัวสะสมแยกตามเขตพื้นที่</h3>
+            <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปข้อมูลการเรียกบรรจุสะสม จำแนกตามเขตพื้นที่</h3>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex-1 overflow-x-auto">
                     <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse whitespace-nowrap">

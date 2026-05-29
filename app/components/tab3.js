@@ -15,7 +15,7 @@ export default function Tab3({data}) {
                     </div>
                     <div className="flex flex-col justify-center">
                         <h2 className="text-3xl font-black text-gray-800 leading-none font-kanit text-center">
-                            รายงานสรุปสถิติบัญชีผู้สอบแข่งขันได้แบบแบ่งภาคและเขต
+                            สรุปสถิติการเรียกบรรจุสะสม แยกตามเขตพื้นที่และประเภทตำแหน่ง
                         </h2>
                     </div>
                 </div>

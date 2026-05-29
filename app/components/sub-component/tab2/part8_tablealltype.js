@@ -2,7 +2,7 @@
 import React, { useMemo }   from 'react';
 import { motion }           from 'framer-motion';
 import { LoadingScreen }    from '../../../components/LoadingScreen';
-const maxR = 25;
+const maxR = 10;
 export default function T2P7_TableSummary({ data }) {
     const part8 = useMemo(() => data.tab2.part8 || {}, [data.tab2.part8]);
     const { roundColumns, grandTotal } = useMemo(() => {
@@ -22,8 +22,8 @@ export default function T2P7_TableSummary({ data }) {
     if(!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4">
-            <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปยอดเรียกรายงานตัวสะสมรายภาค</h3>
-            <div className="flex-1 rounded-2xl overflow-x-auto min-h-[600px] max-h-[800px] shadow-sm shadow-sm">
+            <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปสถิติการเรียกบรรจุสะสม จำแนกตามภูมิภาคและประเภทตำแหน่ง</h3>
+            <div className="flex-1 rounded-2xl overflow-x-auto min-h-[600px] shadow-sm shadow-sm">
                 <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse  whitespace-nowrap">
                     <thead className="bg-gray-50 text-gray-600 uppercase text-xs">
                         <tr>

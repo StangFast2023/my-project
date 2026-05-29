@@ -16,7 +16,7 @@ export default function T2P3_TypePostPart1({ data }) {
         >
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
                 <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xs">
-                    <p className="text-gray-500 text-sm">จำนวนตำแหน่งทั้งหมด</p>
+                    <p className="text-xl text-shadow-sm font-bold text-gray-500">จำนวนตำแหน่งทั้งหมด</p>
                     <div className="items-baseline gap-2 text-right">
                         <span className="text-3xl font-bold text-gray-600">
                             <CountUp 
@@ -42,8 +42,8 @@ export default function T2P3_TypePostPart1({ data }) {
                     </div>
                 </div>
                 {Object.entries(part7 || {}).filter(([key]) => key !== 't').map(([key, value]) => (
-                    <div key={key} className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xs">
-                        <p className="text-gray-600 text-xl font-bold">{value.type_name}</p>
+                    <div key={key} className={`flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 ${ value.pos_type_id == 1 ? 'border-blue-500' : ( value.pos_type_id == 2 ? 'border-green-500' : 'border-yellow-500' ) } my-2 shadow-xs`}>
+                        <p className={`text-xl text-shadow-sm font-bold ${ value.pos_type_id == 1 ? 'text-blue-500' : ( value.pos_type_id == 2 ? 'text-green-500' : 'text-yellow-500' ) }  `}>{value.type_name}</p>
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-3xl font-bold text-gray-600">
                                 <CountUp 
@@ -53,17 +53,6 @@ export default function T2P3_TypePostPart1({ data }) {
                                     decimals={0}
                                     useEasing={true}
                                 />   <b className="text-xl"> ตำแหน่ง </b> 
-                            </span>
-                            <span className="text-2xl font-bold text-emerald-600">
-                                <CountUp 
-                                    end={value.total_count_in_percent} 
-                                    duration={3} 
-                                    separator="," 
-                                    decimals={2}
-                                    useEasing={true}
-                                    prefix={'('}
-                                    suffix={'%)'}
-                                />
                             </span>
                         </div>
                         <div className="border-t border-gray-100"></div>
@@ -77,17 +66,6 @@ export default function T2P3_TypePostPart1({ data }) {
                                     decimals={0}
                                     useEasing={true}
                                 />   <b className="text-xl"> คน </b> 
-                            </span>
-                            <span className="text-2xl font-bold text-emerald-600">
-                                <CountUp 
-                                    end={value.total_person_in_percent} 
-                                    duration={3} 
-                                    separator="," 
-                                    decimals={2}
-                                    useEasing={true}
-                                    prefix={'('}
-                                    suffix={'%)'}
-                                />
                             </span>
                         </div>
                     </div>

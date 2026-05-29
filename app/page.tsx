@@ -26,10 +26,15 @@ export default function App() {
     const [details5, setDetails5] = useState<FilterData | null>(null);;
     const [isOpen5, setIsOpen5] = useState(false);
     const handleSave = (val: FilterData) => {
-        console.log("ข้อมูลที่ได้รับจาก Modal:", val);
         setDetails5(val); 
         setIsOpen5(false);
     };
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }, [activeTab]);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -63,10 +68,10 @@ export default function App() {
                     <h2 className="text-gray-600 mt-2 text-2xl font-bold"></h2>
                 </div>
                 <div className="my-2 p-2">
-                    <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
+                    <div className="sticky top-0 z-50 flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
                         <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
                             <span className={`${ activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
-                                สรุปภาพรวมทุกเขต
+                                สรุปภาพรวม
                             </span>
                         </button>
                         <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null }`} >

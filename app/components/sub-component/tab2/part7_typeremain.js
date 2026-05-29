@@ -29,7 +29,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         >
             <div className="w-full bg-white rounded-2xl overflow-hidden">
                 <div className="text-center">
-                    <h3 className="text-xl font-bold text-gray-800">🛠️ สรุปตำแหน่งที่มียอดคงเหลือมากที่สุด</h3>
+                    <h3 className="text-xl font-bold text-gray-800">🛠️ สรุปตำแหน่งที่มีอัตราคงเหลือสูงสุด</h3>
                     <p className="text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>
                 </div>
                 <div className="max-h-[500px] overflow-y-auto">

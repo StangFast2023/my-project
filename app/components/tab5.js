@@ -1,6 +1,8 @@
 import React , { useState  }                from 'react';
 import { LoadingScreen }                    from '../components/LoadingScreen';
 import T5P1_filterDlaSearch                 from './sub-component/tab5/part1_filterDropdownSearch';
+import T5P1S1_CurrentData                   from './sub-component/tab5/sub-tab5/tab5_1';
+import T5P1S2_PredictData                   from './sub-component/tab5/sub-tab5/tab5_2';
 
 export default function Tab5({ setIsOpen,details,data }) {
     if ( !data ) return <LoadingScreen />;
@@ -24,6 +26,12 @@ export default function Tab5({ setIsOpen,details,data }) {
                         <T5P1_filterDlaSearch setIsOpen={setIsOpen} details={details} data={data} />
                     </div>
                 </div>
+            </div>
+            <div className="my-3">
+                <T5P1S1_CurrentData details={details} />
+            </div>
+            <div className="my-3">
+                <T5P1S2_PredictData details={details} />
             </div>
         </div>
     );

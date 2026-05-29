@@ -72,7 +72,7 @@ export default function T1P3_PieListed({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนบัญชีผู้สอบแข่งขันได้ที่ถูกเรียกให้ไปรายงานตัว</h3>
+                    <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนการเรียกบรรจุรายรอบ</h3>
                     <p className="text-sm text-gray-500">จากทั้งหมด {totalRegistered.toLocaleString()} คน</p>
                 </div>
             
@@ -92,18 +92,6 @@ export default function T1P3_PieListed({ data }) {
                                 suffix=" อัตรา"
                             /> 
                         </span>
-                        <span className="text-lg font-bold text-emerald-600">
-                            <CountUp
-                                className="mx-2" 
-                                end={((totalCalled / totalRegistered) * 100).toFixed(2)}
-                                duration={3} 
-                                separator="," 
-                                decimals={2}
-                                useEasing={true}
-                                prefix="( "
-                                suffix=" % )"
-                            />
-                        </span> 
                     </div>
                 </div>
             </div>
