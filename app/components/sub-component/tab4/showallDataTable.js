@@ -32,7 +32,6 @@ export default function ShowAllDataTable({ part2, isLoading }) {
     const statusColor = percent < 30 ? "text-rose-400" : (percent < 70 ? "text-amber-400" : "text-emerald-400");
 
     const has_data = Object.keys(part2.tab4.part2.data || {}).length > 0;    
-
     const regionColors = {
         1: "bg-rose-50 text-rose-800 font-bold",   
         2: "bg-indigo-50 text-indigo-800 font-bold", 
@@ -80,6 +79,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                             pos_id: posData.pos_id,
                             pos_name: posData.pos_name,
                             pos_type_name: posData.pos_type_name,
+                            pos_percent: ( ( posData.total_call / posData.total_listed ) * 100 ),
                             status_open: posData.status_open,
                             status_out_of_lits: posData.status_out_of_lits,
                             total_listed: posData.total_listed,
@@ -153,10 +153,10 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                     <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${item.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : item.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{item.pos_type_name}</td>
         {columns.column_part1 && (  <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${item.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{item.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>)}
         {columns.column_part2 && (  <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${item.status_out_of_lits ? ( item.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700" ) : "bg-yellow-50 text-yellow-700"}`}>{item.status_out_of_lits ? ( item.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี" ) : "คงเหลือ"}</td>)}
-        {columns.column_part3 && (  <td className={`w-[120px] min-w-[120px] p-4 pr-6 text-right font-bold ${percent < 30 ? "text-rose-600 bg-rose-50" : percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {percent.toFixed(2)} %</td>)}
-                                    <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{item.total_listed ? item.total_listed.toLocaleString() : null}</td>
-                                    <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{item.total_call ? item.total_call.toLocaleString() : null}</td>
-                                    <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{item.total_remain ? item.total_remain.toLocaleString() : null}</td>
+        {columns.column_part3 && (  <td className={`w-[120px] min-w-[120px] p-4 pr-6 text-right font-bold ${item.pos_percent < 30 ? "text-rose-600 bg-rose-50" : item.pos_percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50"}`}> {item.pos_percent.toFixed(2)} %</td>)}
+                                    <td className=" w-[100px] min-w-[100px] p-4 text-center font-bold">{item.total_listed.toLocaleString()}</td>
+                                    <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{item.total_call.toLocaleString()}</td>
+                                    <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold bg-amber-50 text-amber-500">{item.total_remain.toLocaleString()}</td>
                                         {roundsArray.map((_, i) => {
                                             const status            =   item.roundsData?.[i + 1]?.status;
                                             const text_color        =   ['completed', 'waiting'].includes(status) ? 'text-emerald-600' :status === 'exhaustion' ? 'text-amber-600' :status === 'not-used' ? 'text-red-400' : 'text-slate-900';

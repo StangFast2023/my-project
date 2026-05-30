@@ -72,6 +72,11 @@ export default function T1P2_CallMonthly({ data }) {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
+        spanGaps: true, 
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        },
         plugins: {
             legend: {
                 position: 'bottom'

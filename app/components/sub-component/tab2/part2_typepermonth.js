@@ -51,6 +51,11 @@ export default function T2P2_TypePerMonth({ data }) {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
+        spanGaps: true, 
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
+        },
         plugins: {
             legend: {
                 position: 'bottom'
