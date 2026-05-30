@@ -11,11 +11,9 @@ export default function T1P3_PieListed({ data }) {
     if ( !data ) return <LoadingScreen />;
     const part5 = data.tab1.part5;
     if (!part5) return null;
-
     const part1 = data?.tab1?.part1;
     if (!part1) return null;
 
-    const totalRegistered = part1.TotalList;
     const totalCalled = part1.TotalCall;
 
     const ROUND_COLORS = [
@@ -73,7 +71,7 @@ export default function T1P3_PieListed({ data }) {
             <div>
                 <div className="text-center mb-4">
                     <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนการเรียกบรรจุรายรอบ</h3>
-                    <p className="text-sm text-gray-500">จากทั้งหมด {totalRegistered.toLocaleString()} คน</p>
+                    <p className="text-sm text-gray-500">เรียกไปแล้วทั้งหมด {Object.values(part5).length} รอบ</p>
                 </div>
             
                 <div className="h-[370px] w-full relative">
@@ -89,9 +87,9 @@ export default function T1P3_PieListed({ data }) {
                                 separator="," 
                                 decimals={0}
                                 useEasing={true}
-                                suffix=" อัตรา"
                             /> 
                         </span>
+                        <span className="text-lg text-gray-600 pl-2">อัตรา</span>
                     </div>
                 </div>
             </div>

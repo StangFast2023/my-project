@@ -34,6 +34,7 @@ export default function T1P3_PieListed({ data }) {
                                 <th className="bg-gray-50    w-[250px] px-6 py-4 text-lg font-semibold sticky left-[0] z-30">ภาค / เขต</th>
                                 <th className="bg-amber-50   w-[120px] px-4 py-4 text-lg font-semibold text-center">ขึ้นบัญชี</th>
                                 <th className="bg-emerald-50 w-[120px] px-4 py-4 text-lg font-semibold text-center text-emerald-700">เรียกแล้ว</th>
+                                <th className="bg-blue-50    w-[120px] px-4 py-4 text-lg font-semibold text-center text-blue-700">ความคืบหน้า</th>
                                 <th className="bg-rose-50    w-[120px] px-4 py-4 text-lg font-semibold text-center text-rose-500">คงเหลือ</th>
                                 {roundColumns.map(num => (<th key={num} className="w-[100px] px-4 py-4 text-lg font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
                             </tr>
@@ -50,8 +51,9 @@ export default function T1P3_PieListed({ data }) {
                                         <tr key={zone.full}>
                                             <td className="bg-gray-50    w-[250px] px-6 py-4 text-sm font-semibold text-gray-700 sticky left-0 z-10">{zone.name}</td>
                                             <td className="bg-amber-50   w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold text-gray-500">{zone.total_listed.toLocaleString()}</td>
-                                            <td className="bg-emerald-50 w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold "><span className="text-emerald-600 font-bold">{zone.total_called.toLocaleString()}</span></td>
-                                            <td className="bg-rose-50    w-[120px] px-6 py-4 text-sm font-semibold text-center font-bold text-rose-500 font-semibold">{zone.total_remain.toLocaleString()}</td>
+                                            <td className="bg-emerald-50 w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold text-emerald-600">{zone.total_called.toLocaleString()}</td>
+                                            <td className="bg-blue-50    w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold text-blue-600">{( ( zone.total_called / zone.total_listed ) * 100 ).toFixed(2)} %</td>
+                                            <td className="bg-rose-50    w-[120px] px-6 py-4 text-sm font-semibold text-center font-bold text-rose-500">{zone.total_remain.toLocaleString()}</td>
                                             {roundColumns.map(num => {
                                                 const roundInfo = zone['data-round'][num];
                                                 const bgClass = roundInfo ? "bg-white" : "bg-gray-200";
@@ -78,7 +80,8 @@ export default function T1P3_PieListed({ data }) {
                             <tr className="bg-gray-700 text-white font-bold">
                                 <td className="bg-gray-700 w-[250px] px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
                                 <td className="bg-gray-700 w-[120px] px-4 py-4 text-center">{grandTotalListed.toLocaleString()}</td>
-                                <td className="bg-gray-700 w-[120px] px-4 py-4 text-center bg-gray-700">{grandTotalCalled.toLocaleString()}</td>
+                                <td className="bg-gray-700 w-[120px] px-4 py-4 text-center">{grandTotalCalled.toLocaleString()}</td>
+                                <td className="bg-gray-700 w-[120px] px-4 py-4 text-center text-blue-300">{( ( grandTotalCalled / grandTotalListed ) * 100 ).toFixed(2)} %</td>
                                 <td className="bg-gray-700 w-[120px] px-6 py-4 text-center text-rose-300">{grandTotalRemain.toLocaleString()}</td>
                                 {grandTotalPerRound.map((total, index) => (<td key={index} className="w-[120px] px-4 py-4 text-center">{total > 0 ? total.toLocaleString() : null}</td>))}
                             </tr>

@@ -82,21 +82,9 @@ export default function T1P3_PieListed({ data }) {
                                 separator="," 
                                 decimals={0}
                                 useEasing={true}
-                                suffix=" อัตรา"
                             /> 
                         </span>
-                        <span className="text-lg font-bold text-gray-600">
-                            <CountUp
-                                className="mx-2" 
-                                end={((remaining / totalRegistered) * 100).toFixed(2)}
-                                duration={3} 
-                                separator="," 
-                                decimals={2}
-                                useEasing={true}
-                                prefix="( "
-                                suffix=" % )"
-                            />
-                        </span> 
+                        <span className="text-lg text-gray-600 pl-2">อัตรา</span>
                     </div>
                 </div>
             </div>
