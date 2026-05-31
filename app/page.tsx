@@ -7,7 +7,7 @@ import Tab3                                     from './components/tab3';
 import Tab4                                     from './components/tab4'; 
 import Tab5                                     from './components/tab5'; 
 import LoadingWrapper                           from './components/LoadingWrapper'; 
-import ModalTab1Part6                           from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
+import ModalTab2Part6                           from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
 import ModalFilterSelect                        from './components/sub-component/tab5/modal/modalFilterSelect'; 
 export interface FilterData {
     id_region: number;
@@ -19,10 +19,12 @@ export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('tab5');
-
+    
+    {/* for tap2 part6 */}
     const [details, setDetails] = useState(null);
     const [isOpen2, setIsOpen2] = useState(false);
 
+    {/* for tap5 part1 */}
     const [details5, setDetails5] = useState<FilterData | null>(null);;
     const [isOpen5, setIsOpen5] = useState(false);
     const handleSave = (val: FilterData) => {
@@ -100,11 +102,12 @@ export default function App() {
                         {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} data={data}/> </div> )}
                         {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 data={data}/> </div> )}
                         {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 data={data}/> </div> )}
-                        {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} data={data}/> </div> )}                    </div>
+                        {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} data={data}/> </div> )}
+                    </div>
                 </div>
 
-                {/* for tap1 part6 */}
-                <ModalTab1Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} loading={loading} />
+                {/* for tap2 part6 */}
+                <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} loading={loading} />
 
                 {/* for tap5 part1 */}
                 <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} details={details5} loading={loading} data={data} onSave={handleSave} />

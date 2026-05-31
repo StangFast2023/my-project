@@ -50,7 +50,6 @@ export default function T2P9_PosTypePose({ data }) {
             }
         }
     };
-    console.log(options);
     return (
         <motion.div 
             initial={{ opacity: 0, y: 20 }}

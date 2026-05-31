@@ -48,7 +48,6 @@ export default function T2P7_TableSummary({ data }) {
                                         </td>
                                     </tr>
                                     {Object.values(posTypes).map((zone) => {
-                                        console.log(zone.pos_type_id);
                                         reg.list += (Number(zone.total_list) || 0);
                                         reg.call += (Number(zone.total_call) || 0);
                                         reg.remain += (Number(zone.total_remain) || 0);

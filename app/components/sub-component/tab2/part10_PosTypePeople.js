@@ -9,7 +9,6 @@ ChartJS.defaults.font.size = 16;
 export default function T2P10_PosTypePeople({ data }) {
     if ( !data ) return <LoadingScreen />;
     const part10 = data.tab2.part1;
-    console.log(part10);
     if (!part10) return null;
     const dataArray = Object.keys(part10).filter(key => key !== 't').map(key => part10[key]);
     const ROUND_COLORS = ["#3b82f6ab", "#10b981ab", "#f59e0bab"];
@@ -51,7 +50,6 @@ export default function T2P10_PosTypePeople({ data }) {
             }
         }
     };
-    console.log(options);
     return (
         <motion.div 
             initial={{ opacity: 0, y: 20 }}

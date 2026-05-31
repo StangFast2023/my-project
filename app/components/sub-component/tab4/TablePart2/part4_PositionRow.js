@@ -2,7 +2,6 @@ import Swal                 from 'sweetalert2';
 import { motion }           from 'framer-motion';
 import { useColumnStore }   from '../../../useTableColumns';
 export default function Part4_PositionRow({ posData, roundsArray , regoin , zone ,isParentCollapsed , isRegionCollapsed , isCollapsed , isExpanded}) {
-    console.log(posData);
     const percent = (posData.total_listed > 0) ? (posData.total_call / posData.total_listed) * 100 : 0;
     const columns = useColumnStore((state) => state.columns);
     const regionColors = {

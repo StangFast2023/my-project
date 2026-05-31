@@ -3,7 +3,6 @@ import React                from 'react';
 import { motion }           from 'framer-motion';
 import { LoadingScreen }    from '../../../components/LoadingScreen';
 export default function T1P3_PieListed({ data }) {
-    if ( !data ) return <LoadingScreen />;
     const part6 = data.tab1.part6;
     if (!part6) return null;
     const allZones      = Object.values(part6).flatMap(region => Object.values(region.data));
@@ -18,6 +17,7 @@ export default function T1P3_PieListed({ data }) {
             return sum + (roundInfo ? roundInfo.total : 0);
         }, 0);
     });
+    if ( !data ) return <LoadingScreen />;
     return (
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -53,7 +53,7 @@ export default function T1P3_PieListed({ data }) {
                                             <td className="bg-amber-50   w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold text-gray-500">{zone.total_listed.toLocaleString()}</td>
                                             <td className="bg-emerald-50 w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold text-emerald-600">{zone.total_called.toLocaleString()}</td>
                                             <td className="bg-blue-50    w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold text-blue-600">{( ( zone.total_called / zone.total_listed ) * 100 ).toFixed(2)} %</td>
-                                            <td className="bg-rose-50    w-[120px] px-6 py-4 text-sm font-semibold text-center font-bold text-rose-500">{zone.total_remain.toLocaleString()}</td>
+                                            <td className="bg-rose-50    w-[120px] px-4 py-4 text-sm font-semibold text-center font-bold text-rose-500">{zone.total_remain.toLocaleString()}</td>
                                             {roundColumns.map(num => {
                                                 const roundInfo = zone['data-round'][num];
                                                 const bgClass = roundInfo ? "bg-white" : "bg-gray-200";
