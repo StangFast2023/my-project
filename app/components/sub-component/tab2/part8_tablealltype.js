@@ -41,7 +41,7 @@ export default function T2P7_TableSummary({ data }) {
                             return (
                                 <React.Fragment key={regId}>
                                     <tr className="bg-emerald-50/50">
-                                        <td colSpan={roundColumns.length + 4} className="px-4 py-2.5 font-bold text-emerald-900">
+                                        <td colSpan={roundColumns.length + 5} className="px-4 py-2.5 font-bold text-emerald-900 border-t-2 border-gray-400">
                                            <span className="sticky left-[20px] z-20 pr-2">
                                                 {Object.values(posTypes)[0]?.prov_main_name || `ภาคที่ ${regId}`}
                                            </span>

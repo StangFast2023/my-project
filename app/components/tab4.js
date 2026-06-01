@@ -36,7 +36,6 @@ export default function Tab4({data}) {
         requestAnimationFrame(() => {
             if (!ignore) setIsLoading(true);
         });
-        const { cleanRegions, cleanPositions } = T4P3_filterControl(data, filters);
         fetch('http://127.0.0.1:8000/api/updating-tab4-table', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },

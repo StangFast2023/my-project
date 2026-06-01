@@ -19,7 +19,7 @@ export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('tab5');
-    
+
     {/* for tap2 part6 */}
     const [details, setDetails] = useState(null);
     const [isOpen2, setIsOpen2] = useState(false);

@@ -284,7 +284,7 @@ export default function T4P1_TableAllListed({
                                 <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 1rem;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="round lucide lucide-circle-small-icon lucide-circle-small">
                                     <circle cx="12" cy="12" r="6"/>
                                 </svg>
-                                สถานะสอบ
+                                สถานะเปิดสอบ
                             </span> 
                         </td>
                         <td class="w-[30%] py-2 text-gray-500 text-center">

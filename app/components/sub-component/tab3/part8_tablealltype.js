@@ -73,7 +73,7 @@ export default function T2P7_TableAllType({data}) {
                                 return (
                                     <React.Fragment key={regionKey}>
                                         <tr className="bg-emerald-50/30">
-                                            <td colSpan={roundColumns.length + 5} className="px-6 py-2.5 text-emerald-800 font-bold text-base">
+                                            <td colSpan={roundColumns.length + 6} className="border-t-2 border-gray-500 px-6 py-2.5 text-emerald-800 font-bold text-base">
                                                 <span className="sticky left-[30px] z-40">
                                                     {regionName}
                                                 </span>
@@ -85,13 +85,11 @@ export default function T2P7_TableAllType({data}) {
                                             const zoneTotalCall = zoneList.reduce((s, z) => s + (z.total_call || 0), 0);
                                             const zoneTotalRemain = zoneList.reduce((s, z) => s + (z.total_remain || 0), 0);
                                             const zoneTotalPerRound = roundColumns.map(num => {
-                                                return zoneList.reduce((s, z) => s + (z.round_data?.[num]?.total || 0), 0);
-                                            });
+                                            return zoneList.reduce((s, z) => s + (z.round_data?.[num]?.total || 0), 0);});
                                             regionTotalList += zoneTotalList;
                                             regionTotalCall += zoneTotalCall;
                                             regionTotalRemain += zoneTotalRemain;
                                             zoneTotalPerRound.forEach((val, i) => regionTotalPerRound[i] += val);
-
                                             return (
                                                 <React.Fragment key={subId}>
                                                     {zoneList.map((zone, index) => (

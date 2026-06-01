@@ -77,7 +77,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                 {!columns.all_header && (                   <th className="w-[200px] min-w-[200px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ภาค</th>)}
                                 {!columns.all_header && (                   <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">เขต</th>)}
                                                                             <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ประเภท</th>
-                                {columns.column_part1 && (                  <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">สถานะสอบ</th>)}
+                                {columns.column_part1 && (                  <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">สถานะเปิด</th>)}
                                 {columns.column_part2 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>)}
                                 {columns.column_part3 && (                  <th className="w-[120px] min-w-[120px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>)}
                                                                             <th className="w-[100px] min-w-[100px] sticky top-0 z-30        p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>

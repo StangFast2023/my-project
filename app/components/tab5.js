@@ -1,10 +1,32 @@
-import React , { useState  }                from 'react';
-import { LoadingScreen }                    from '../components/LoadingScreen';
-import T5P1_filterDlaSearch                 from './sub-component/tab5/part1_filterDropdownSearch';
-import T5P1S1_CurrentData                   from './sub-component/tab5/sub-tab5/tab5_1';
-import T5P1S2_PredictData                   from './sub-component/tab5/sub-tab5/tab5_2';
+import React , { useCallback, useState , useEffect  }   from 'react';
+import axios                                            from 'axios';
+import { LoadingScreen }                                from '../components/LoadingScreen';
+import T5P1_filterDlaSearch                             from './sub-component/tab5/part1_filterDropdownSearch';
+import T5P2_chartPrediction                             from './sub-component/tab5/part2_chartPredictions';
 
-export default function Tab5({ setIsOpen,details,data }) {
+export default function Tab5({ setIsOpen, details, data }) {
+    const [dataforPrediction, setdataforPrediction] = useState(null);
+
+    const fetchData = useCallback( async (details) => {
+        if (!details) return;
+        const { regionId, areaId, positionId, sequence } = details;
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}`);
+            setdataforPrediction(response.data);
+        } catch (error) {
+            console.error("Error fetching details:", error);
+        }
+    }, []); 
+
+    useEffect(() => {
+        if (details) {
+            const performFetch = async () => {
+                await fetchData(details);
+            };
+            performFetch();
+        }
+    }, [details, fetchData]);
+    
     if ( !data ) return <LoadingScreen />;
     return (
         <div className="animate-fade-in">
@@ -27,11 +49,8 @@ export default function Tab5({ setIsOpen,details,data }) {
                     </div>
                 </div>
             </div>
-            <div className="my-3">
-                <T5P1S1_CurrentData details={details} />
-            </div>
-            <div className="my-3">
-                <T5P1S2_PredictData details={details} />
+            <div className="my-1">
+                <T5P2_chartPrediction data={dataforPrediction} />
             </div>
         </div>
     );

@@ -17,7 +17,17 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, details, loading,
     const positionButtonRef = useRef(null);
     const modalRef = useRef(null);
     const dropdownRef = useRef(null);
-
+    const Toast = MySwal.mixin({
+    toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', MySwal.stopTimer)
+            toast.addEventListener('mouseleave', MySwal.resumeTimer)
+        }
+    });
     useEffect(() => {
         const handleScroll = () => {
             if (activeDropdown === 'pos' && positionButtonRef.current) {
@@ -253,7 +263,10 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, details, loading,
                                         sequence: sequence 
                                     });
                                     setIsOpen(false);
-                                    MySwal.fire('ยืนยันข้อมูลสำเร็จ!', '', 'success');
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: 'ยืนยันข้อมูลสำเร็จ!'
+                                    });
                                 }
                             });
                         }}
