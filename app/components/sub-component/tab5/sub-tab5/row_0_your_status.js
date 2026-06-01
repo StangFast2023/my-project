@@ -82,7 +82,7 @@ export default function Row1StaticNumber({ data }) {
                     </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div className={`h-full rounded-full transition-all duration-1000 ${ data ? ( data?.process_bars >= 100 ? 'bg-blue-500' : 'bg-green-500' ) : 'bg-white' }`} style={{ width: `${Math.min(data?.process_bars, 100)}%` }} />
+                    <div className={`h-full rounded-full transition-all duration-1000 ${ data ? ( data?.process_bars >= 100 ? 'bg-green-500' : 'bg-blue-500' ) : 'bg-white' }`} style={{ width: `${Math.min(data?.process_bars, 100)}%` }} />
                 </div>
             </div>
 
