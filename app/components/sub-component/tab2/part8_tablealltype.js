@@ -22,7 +22,10 @@ export default function T2P7_TableSummary({ data }) {
     if(!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4">
-            <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 สรุปสถิติการเรียกบรรจุสะสม จำแนกตามภูมิภาคและประเภทตำแหน่ง</h3>
+            <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-4 text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-landmark-icon lucide-landmark"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>
+                <span className="ml-2">สรุปสถิติการเรียกบรรจุสะสม จำแนกตามภูมิภาคและประเภทตำแหน่ง</span>
+            </h3>
             <div className="flex-1 rounded-2xl overflow-x-auto min-h-[600px] shadow-sm shadow-sm">
                 <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse  whitespace-nowrap">
                     <thead className="bg-gray-50 text-gray-600 uppercase text-sm md:text-base lg:text-xs">

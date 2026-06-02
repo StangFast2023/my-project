@@ -58,7 +58,10 @@ export default function T2P9_PosTypePose({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className=" text-sm md:text-base lg:text-lg font-bold text-gray-700">🏛️สัดส่วนตำแหน่งที่เปิดรับ แบ่งตามประเภท</h3>
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-square-chevron-right-icon lucide-square-chevron-right"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m10 8 4 4-4 4"/></svg>
+                        <span className="ml-2">สัดส่วนตำแหน่งที่เปิดรับ แบ่งตามประเภท</span>
+                    </h3>
                     <p className=" text-sm md:text-base lg:text-sm text-gray-500">มีทั้งหมด {part9.t.total_count} ตำแหน่ง</p>
                 </div>
             

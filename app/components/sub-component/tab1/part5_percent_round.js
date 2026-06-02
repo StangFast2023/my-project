@@ -3,6 +3,7 @@ import CountUp              from 'react-countup';
 import { motion }           from "framer-motion";
 import { Doughnut }         from "react-chartjs-2";
 import { LoadingScreen }    from '../../../components/LoadingScreen';
+import { ArrowsUpFromLine } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
@@ -69,8 +70,14 @@ export default function T1P3_PieListed({ data }) {
             transition={{ duration: 0.5 }}  
         >
             <div>
-                <div className="text-center mb-4">
-                    <h3 className="text-sm md:text-base lg:text-lg font-bold text-gray-700">🏛️สัดส่วนการเรียกบรรจุรายรอบ</h3>
+                
+                <div className="text-center mb-4 text-gray-700">
+                    <div className="flex justify-center items-center">
+                        <ArrowsUpFromLine />
+                        <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                            สัดส่วนการเรียกบรรจุรายรอบ
+                        </h3>
+                    </div>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">เรียกไปแล้วทั้งหมด {Object.values(part5).length} รอบ</p>
                 </div>
             

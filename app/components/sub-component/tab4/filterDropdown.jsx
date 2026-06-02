@@ -32,12 +32,13 @@ export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, 
             html: container,
             showConfirmButton: true,
             confirmButtonText: 'ปิดหน้าต่าง',
+            confirmButtonColor: '#d33', 
             didOpen: () => renderContent(selectedItems),
             willClose: () => root.unmount()
         });
     };
     return (
-        <button onClick={showModal} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-xm text-gray-400 text-left hover:border-blue-400">
+        <button onClick={showModal} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-xm text-gray-600 font-medium text-left hover:border-blue-400">
             {label} ({selectedItems.filter(id => !items.find(i => i.id === id)?.isRegion).length})
         </button>
     );

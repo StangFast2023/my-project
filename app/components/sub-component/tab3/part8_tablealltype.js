@@ -37,7 +37,12 @@ export default function T2P7_TableAllType({data}) {
             animate={{ opacity: 1, y: 0 }}   
             transition={{ duration: 0.5 }}  
         >
-            <h3 className="text-lg font-bold mb-6 text-gray-700">📅 สรุปยอดเรียกรายงานตัวสะสมแยกตามเขตพื้นที่และประเภทตำแหน่ง</h3>
+            <div className="text-center mb-2">
+                <h3 className="flex text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-book-user-icon lucide-book-user"><path d="M15 13a3 3 0 1 0-6 0"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="12" cy="8" r="2"/></svg>
+                    <span className="ml-2">สรุปยอดเรียกรายงานตัวสะสมแยกตามเขตพื้นที่และประเภทตำแหน่ง</span>
+                </h3>
+            </div>
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex-1 overflow-x-auto min-h-[600px] max-h-[800px] shadow-sm">
                     <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse whitespace-nowrap">

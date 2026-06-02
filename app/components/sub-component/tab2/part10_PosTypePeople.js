@@ -58,7 +58,10 @@ export default function T2P10_PosTypePeople({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className=" text-sm md:text-base lg:text-lg font-bold text-gray-700">🏛️สัดส่วนจำนวนผู้สอบแข่งขันได้ แบ่งตามประเภท</h3>
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-graduation-cap-icon lucide-graduation-cap"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>
+                        <span className="ml-2">สัดส่วนจำนวนผู้สอบแข่งขันได้ แบ่งตามประเภท</span>
+                    </h3>
                     <p className=" text-sm md:text-base lg:text-sm text-gray-500">มีทั้งหมด {part10.t.total_person.toLocaleString()} คน</p>
                 </div>
             

@@ -109,6 +109,16 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, details, loading,
                 <div></div>
             `,
             input: 'number',
+            inputAttributes: {
+                min: 1,
+                max: maxLimit, 
+                step: 1
+            },
+            inputValidator: (value) => {
+                if (!value || value < 1) {
+                return 'กรุณาระบุลำดับที่มากกว่า 0';
+                }
+            },
             inputPlaceholder: maxLimit === 1 ? 'กรุณากรอกลำดับ 1' : `กรุณากรอกลำดับ (1 - ${maxLimit})`,
             inputValue: sequence,
             showCancelButton: true,

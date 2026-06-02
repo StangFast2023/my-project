@@ -24,7 +24,16 @@ export default function T1P3_PieListed({ data }) {
             animate={{ opacity: 1, y: 0 }}   
             transition={{ duration: 0.5 }}  
         >
-            <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 สรุปข้อมูลการเรียกบรรจุสะสม จำแนกตามเขตพื้นที่</h3>
+
+            <div className="text-center mb-4 text-gray-700">
+                <div className="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-input-icon lucide-file-input"><path d="M4 11V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M2 15h10"/><path d="m9 18 3-3-3-3"/></svg>
+                    <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                        สรุปข้อมูลการเรียกบรรจุสะสม จำแนกตามเขตพื้นที่
+                    </h3>
+                </div>
+            </div>
+            
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex-1 overflow-x-auto">
                     <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse whitespace-nowrap">

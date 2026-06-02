@@ -1,28 +1,21 @@
+
 "use client";
-import { motion }           from "framer-motion";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
-import { Chart }            from "react-chartjs-2";
+import { Bar }              from "react-chartjs-2";
 import zoomPlugin           from 'chartjs-plugin-zoom';
-import { LoadingScreen }    from '../../../components/LoadingScreen';
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
-ChartJS.defaults.font.family = "'Kanit', sans-serif";
-ChartJS.defaults.font.size = 16;
-export default function T1P4_Cumulative({ data }) {
-    if ( !data ) return <LoadingScreen />;
-    const chartRawData = data?.tab1?.part3; 
+export default function Row3Part1Bar({ data }) {
+    const chartRawData = data?.chart_1_round;
     if (!chartRawData) return null;
-
-    const keys = Object.keys(chartRawData);
-    const labels = keys.map(key => chartRawData[key].label_th_s);
-
+    const keys   = Object.keys(chartRawData);
+    const labels = keys.map(key => chartRawData[key].date_thai_s);
     let runningTotal = 0;
     const monthlyTotals = [];
     const cumulativeData = [];
-
     keys.forEach(key => {
         const monthData = chartRawData[key];
         const monthTotal = monthData.total_per_month || 0;
-        const isCalled = monthData.call_status;
+        const isCalled = monthData.call;
             runningTotal += monthTotal;
             monthlyTotals.push(monthTotal);
             if (isCalled === true) {
@@ -31,7 +24,7 @@ export default function T1P4_Cumulative({ data }) {
                 cumulativeData.push(null);
             }
     });
-
+    
     const chartData = {
         labels: labels,
         datasets: [
@@ -58,7 +51,7 @@ export default function T1P4_Cumulative({ data }) {
         ]
     };
 
-    const options = {
+    const optionsBar = {
         responsive: true,
         maintainAspectRatio: false,
         spanGaps: true, 
@@ -114,21 +107,6 @@ export default function T1P4_Cumulative({ data }) {
         }
     };
     return (
-        
-        <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}   
-            transition={{ duration: 0.5 }}  
-        >
-            <div>
-                <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-user-round-cog-icon lucide-user-round-cog"><path d="m14.305 19.53.923-.382"/><path d="m15.228 16.852-.923-.383"/><path d="m16.852 15.228-.383-.923"/><path d="m16.852 20.772-.383.924"/><path d="m19.148 15.228.383-.923"/><path d="m19.53 21.696-.382-.924"/><path d="M2 21a8 8 0 0 1 10.434-7.62"/><path d="m20.772 16.852.924-.383"/><path d="m20.772 19.148.924.383"/><circle cx="10" cy="8" r="5"/><circle cx="18" cy="18" r="3"/></svg>
-                    <span className="ml-2">สถิติการเรียกบรรจุรายเดือนและยอดสะสม</span>
-                </h3>
-                <div className="h-[370px] w-full">
-                    <Chart type="bar" data={chartData} options={options} />
-                </div>
-            </div>
-        </motion.div>
+        <Bar data={chartData} options={optionsBar} />
     );
 }

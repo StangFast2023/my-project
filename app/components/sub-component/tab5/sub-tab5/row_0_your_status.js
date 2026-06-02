@@ -101,7 +101,7 @@ export default function Row1StaticNumber({ data }) {
                                             separator="," 
                                             decimals={2}
                                             useEasing={true}
-                                        /> <span className="text-sm">อัตรา</span>
+                                        /> <span className="text-sm">อัตรา/รอบ</span>
                                     </div>
                                 )
                             : '\u00A0\u00A0'

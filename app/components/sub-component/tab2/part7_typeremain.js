@@ -28,10 +28,15 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
             transition={{ duration: 0.5 }}  
         >
             <div className="w-full bg-white rounded-2xl overflow-hidden">
-                <div className="text-center">
-                    <h3 className="text-sm md:text-base lg:text-xl font-bold text-gray-800">🛠️ สรุปตำแหน่งที่มีอัตราคงเหลือสูงสุด</h3>
+                
+                <div className="text-center mb-2">
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-warehouse-icon lucide-warehouse"><path d="M18 21V10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v11"/><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 1.132-1.803l7.95-3.974a2 2 0 0 1 1.837 0l7.948 3.974A2 2 0 0 1 22 8z"/><path d="M6 13h12"/><path d="M6 17h12"/></svg>
+                        <span className="ml-2">สรุปตำแหน่งที่มีอัตราคงเหลือสูงสุด</span>
+                    </h3>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>
                 </div>
+
                 <div className="max-h-[500px] overflow-y-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>

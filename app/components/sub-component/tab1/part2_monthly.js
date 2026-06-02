@@ -139,10 +139,13 @@ export default function T1P2_CallMonthly({ data }) {
             transition={{ duration: 0.5 }}  
         >
             <div>
-                <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 สรุปจำนวนการเรียกบรรจุรายรอบ (แยกตามเดือน)</h3>
-                    <div className="w-full h-[370px]">
-                        <Bar data={chartData} options={options} />
-                    </div>
+                <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-book-user-icon lucide-book-user"><path d="M15 13a3 3 0 1 0-6 0"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="12" cy="8" r="2"/></svg>
+                    <span className="ml-2">สรุปจำนวนการเรียกบรรจุรายรอบ (แยกตามเดือน)</span>
+                </h3>
+                <div className="w-full h-[370px]">
+                    <Bar data={chartData} options={options} />
+                </div>
             </div>
         </motion.div>
     );

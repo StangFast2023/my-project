@@ -16,10 +16,15 @@ export default function T2P5_PopularPosEmp({ data }) {
             transition={{ duration: 0.5 }}  
         >
             <div className="w-full bg-white rounded-2xl overflow-hidden">
-                <div className="text-center">
-                    <h3 className="text-sm md:text-base lg:text-xl font-bold text-gray-800">🛠️ สรุปอันดับตำแหน่งที่มีการบรรจุสูงสุด</h3>
+                
+                <div className="text-center mb-2">
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-contact-icon lucide-contact"><path d="M16 2v2"/><path d="M7 22v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/><path d="M8 2v2"/><circle cx="12" cy="11" r="3"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+                        <span className="ml-2">สรุปอันดับตำแหน่งที่มีการบรรจุสูงสุด</span>
+                    </h3>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>
                 </div>
+                
                 <div className="max-h-[500px] overflow-y-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
