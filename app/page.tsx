@@ -19,7 +19,7 @@ export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('tab5');
-
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     {/* for tap2 part6 */}
     const [details, setDetails] = useState(null);
     const [isOpen2, setIsOpen2] = useState(false);
@@ -55,7 +55,7 @@ export default function App() {
             <main className="pb-5" style={{ minHeight: '100vh', background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%)' }}>
                 <div className="flex flex-col items-center pt-5">
                     <div className="flex items-center gap-3">
-                        <h1 className="text-3xl font-black text-right text-gray-700">
+                        <h1 className="text-sm md:text-base lg:text-3xl font-black text-right text-gray-700">
                             DLA {" "}
                             <span className="bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent [-webkit-text-stroke:_2px_gray]">
                                 Dashboard
@@ -63,35 +63,49 @@ export default function App() {
                             <br></br>
                             สถิติการเรียกบรรจุข้าราชการท้องถิ่น
                         </h1>
-                        <div className="text-5xl text-gray-700 shadow-lg bg-white px-4 py-1 rounded-3xl shadow-md border border-emerald-100 text-2xl font-bold bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-600">
+                        <div className="text-sm md:text-base lg:text-5xl text-gray-700 shadow-lg bg-white px-4 py-1 rounded-3xl shadow-md border border-emerald-100 text-2xl font-bold bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-600">
                             2568
                         </div>
                     </div>
-                    <h2 className="text-gray-600 mt-2 text-2xl font-bold"></h2>
                 </div>
-                <div className="my-2 p-2">
-                    <div className="sticky top-0 z-50 flex gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                        <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
+                <div className="my-2 p-2 text-sm md:text-base lg:text-lg">
+                    <div className="md:hidden">
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-4 bg-gray-100 rounded-xl w-full text-left font-bold text-emerald-600">
+                            {isMenuOpen ? "✕ ปิดเมนู" : "☰ เลือกเมนูวิเคราะห์"}
+                        </button>
+                        {isMenuOpen && (
+                            <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
+                                <button onClick={() => {setActiveTab('tab1'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
+                                <button onClick={() => {setActiveTab('tab2'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
+                                <button onClick={() => {setActiveTab('tab3'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
+                                <button onClick={() => {setActiveTab('tab4'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
+                                <button onClick={() => {setActiveTab('tab5'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
+                        <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
                             <span className={`${ activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                                 สรุปภาพรวม
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null }`} >
+                        <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null }`} >
                             <span className={`${ activeTab === 'tab2' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                                 ข้อมูลประเภทและตำแหน่ง
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null }`} >
+                        <button  onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null }`} >
                             <span className={`${ activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                                 ข้อมูลรายภาคและเขต
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null }`} >
+                        <button  onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null }`} >
                             <span className={`${ activeTab === 'tab4' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                                 ข้อมูลเจาะลึกรายเขตและตำแหน่ง
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 text-lg rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null }`} >
+                        <button  onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null }`} >
                             <span className={`${ activeTab === 'tab5' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
                                 วิเคราะห์โอกาสเรียกตัว
                             </span>
@@ -105,7 +119,7 @@ export default function App() {
                         {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} data={data}/> </div> )}
                     </div>
                 </div>
-
+                
                 {/* for tap2 part6 */}
                 <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} loading={loading} />
 

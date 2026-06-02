@@ -6,9 +6,9 @@ export default function Row1StaticNumber({ data }) {
 
 
             <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
-                <p className="text-gray-700 text-sm font-bold">ขึ้นบัญชีทั้งหมด : </p>
+                <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">ขึ้นบัญชีทั้งหมด : </p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-600">
+                    <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
                         {
                             data
                             ?
@@ -30,9 +30,9 @@ export default function Row1StaticNumber({ data }) {
             </div>
 
             <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
-                <p className="text-gray-700 text-sm font-bold">เรียกไปแล้ว : </p>
+                <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">เรียกไปแล้ว : </p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-600">
+                    <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
                         {
                             data
                             ?
@@ -54,9 +54,9 @@ export default function Row1StaticNumber({ data }) {
             </div>
 
             <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
-                <p className="text-gray-700 text-sm font-bold">คงเหลือทั้งหมด : </p>
+                <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">คงเหลือทั้งหมด : </p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-600">
+                    <span className="text-lg md:text-base lg:text-lg md:text-base lg:text-3xl font-bold text-gray-600">
                         {
                             data
                             ?
@@ -78,9 +78,9 @@ export default function Row1StaticNumber({ data }) {
             </div>
 
             <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
-                <p className="text-gray-700 text-sm font-bold">เหลืออีกกี่ลำดับก่อนถึงคุณ :</p>
+                <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">เหลืออีกกี่ลำดับก่อนถึงคุณ :</p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-3xl font-bold text-gray-600">
+                    <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
                         {
                             data
                             ?

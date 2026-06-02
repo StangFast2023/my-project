@@ -58,8 +58,8 @@ export default function T2P9_PosTypePose({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนตำแหน่งที่เปิดรับ แบ่งตามประเภท</h3>
-                    <p className="text-sm text-gray-500">มีทั้งหมด {part9.t.total_count} ตำแหน่ง</p>
+                    <h3 className=" text-sm md:text-base lg:text-lg font-bold text-gray-700">🏛️สัดส่วนตำแหน่งที่เปิดรับ แบ่งตามประเภท</h3>
+                    <p className=" text-sm md:text-base lg:text-sm text-gray-500">มีทั้งหมด {part9.t.total_count} ตำแหน่ง</p>
                 </div>
             
                 <div className="h-[370px] w-full relative">

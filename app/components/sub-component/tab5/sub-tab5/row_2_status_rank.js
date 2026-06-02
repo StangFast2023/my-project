@@ -51,14 +51,14 @@ export default function Row3StatusRank({ data }) {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
 
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getNextRound( data?.next_round , status_work )['bg']} my-2 shadow-xs`}>
-                <p className="text-gray-700 text-sm font-bold">โอกาสที่จะถูกเรียกในรอบถัดไป :</p>
+                <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">โอกาสที่จะถูกเรียกในรอบถัดไป :</p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className={`text-2xl font-bold ${getNextRound( data?.next_round )['tx']}`}>
+                    <span className={`text-lg md:text-base lg:text-2xl font-bold ${getNextRound( data?.next_round )['tx']}`}>
                         {
                             data ?
                                 (
                                     <div>
-                                        <span className={`mr-2 text-3xl ${getNextRound( data?.next_round , status_work )['tx']}`}>{getNextRound( data?.next_round , status_work )['label']}</span>
+                                        <span className={`mr-2 text-lg md:text-base lg:text-3xl ${getNextRound( data?.next_round , status_work )['tx']}`}>{getNextRound( data?.next_round , status_work )['label']}</span>
                                         <CountUp 
                                             end={data?.next_round} 
                                             duration={3} 
@@ -77,14 +77,14 @@ export default function Row3StatusRank({ data }) {
             </div>
 
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getRiskStatus( data?.rank_risk )['bg']} my-2 shadow-xs`}>
-                <p className="text-gray-700 font-bold text-sm">สถานะความเสี่ยงของลำดับคุณ : </p>
+                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">สถานะความเสี่ยงของลำดับคุณ : </p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className={`text-2xl font-bold ${getRiskStatus( data?.rank_risk )['tx']}`}>
+                    <span className={`text-lg md:text-base lg:text-2xl font-bold ${getRiskStatus( data?.rank_risk )['tx']}`}>
                         {
                             data ?
                                 (
                                     <div>
-                                        <span className={`mr-2 text-3xl ${getRiskStatus( data?.rank_risk )['tx']}`}>{getRiskStatus( data?.rank_risk )['label']}</span>
+                                        <span className={`mr-2 text-lg md:text-base lg:text-3xl ${getRiskStatus( data?.rank_risk )['tx']}`}>{getRiskStatus( data?.rank_risk )['label']}</span>
                                         <CountUp 
                                             end={data?.rank_risk} 
                                             duration={3} 
@@ -103,16 +103,16 @@ export default function Row3StatusRank({ data }) {
             </div>
             
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4 ${getProbabilityStatus(data?.probabilitys)['bg']} my-2 shadow-xs`}>
-                <p className="text-gray-700 font-bold text-sm">โอกาสบรรจุก่อนที่บัญชีจะหมดอายุ : </p>
+                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">โอกาสบรรจุก่อนที่บัญชีจะหมดอายุ : </p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className={`text-2xl font-bold ${getProbabilityStatus(data?.probabilitys)['tx']}`}>
+                    <span className={`text-lg md:text-base lg:text-2xl font-bold ${getProbabilityStatus(data?.probabilitys)['tx']}`}>
                         
                         {
                             data
                             ?
                                 (
                                     <div>
-                                        <span className={`mr-2 text-3xl ${getProbabilityStatus(data?.probabilitys)['tx']}`}>{getProbabilityStatus(data?.probabilitys)['label']}</span>
+                                        <span className={`mr-2 text-lg md:text-base lg:text-3xl ${getProbabilityStatus(data?.probabilitys)['tx']}`}>{getProbabilityStatus(data?.probabilitys)['label']}</span>
                                         <CountUp 
                                             end={ data?.probabilitys } 
                                             duration={3} 

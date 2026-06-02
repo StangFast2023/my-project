@@ -70,8 +70,8 @@ export default function T1P3_PieListed({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-700">🏛️สัดส่วนการเรียกบรรจุรายรอบ</h3>
-                    <p className="text-sm text-gray-500">เรียกไปแล้วทั้งหมด {Object.values(part5).length} รอบ</p>
+                    <h3 className="text-sm md:text-base lg:text-lg font-bold text-gray-700">🏛️สัดส่วนการเรียกบรรจุรายรอบ</h3>
+                    <p className="text-sm md:text-base lg:text-sm text-gray-500">เรียกไปแล้วทั้งหมด {Object.values(part5).length} รอบ</p>
                 </div>
             
                 <div className="h-[370px] w-full relative">
@@ -79,8 +79,8 @@ export default function T1P3_PieListed({ data }) {
                 </div>
                 <div className="flex flex-col items-center pointer-events-none">
                     <div className="flex items-baseline">
-                        <span className="text-lg text-gray-600">เรียกไปแล้ว</span>
-                        <span className="text-3xl font-bold text-emerald-500 ml-2">
+                        <span className="text-sm md:text-base lg:text-lg text-gray-600">เรียกไปแล้ว</span>
+                        <span className="text-sm md:text-base lg:text-3xl font-bold text-emerald-500 ml-2">
                             <CountUp 
                                 end={totalCalled}
                                 duration={3} 
@@ -89,7 +89,7 @@ export default function T1P3_PieListed({ data }) {
                                 useEasing={true}
                             /> 
                         </span>
-                        <span className="text-lg text-gray-600 pl-2">อัตรา</span>
+                        <span className="text-sm md:text-base lg:text-lg text-gray-600 pl-2">อัตรา</span>
                     </div>
                 </div>
             </div>

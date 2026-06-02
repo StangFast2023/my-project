@@ -70,12 +70,12 @@ export default function Tab4({data}) {
             <div className="my-3">
                 <div className="flex items-center gap-4 mb-8">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
-                        <span className="text-4xl font-black text-white drop-shadow-sm">
+                        <span className="text-sm md:text-base lg:text-4xl font-black text-white drop-shadow-sm">
                             4
                         </span>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h2 className="text-3xl font-black text-gray-800 leading-none font-kanit text-center">
+                        <h2 className="text-sm md:text-base lg:text-3xl font-black text-gray-800 leading-none font-kanit text-center">
                             ระบบสืบค้นและเจาะลึกสถิติการเรียกรายงานตัวรายเขตพื้นที่
                         </h2>
                     </div>
@@ -110,7 +110,7 @@ export default function Tab4({data}) {
                 </div>
                 <div className={`grid grid-cols-12 gap-6 my-2 ${columns.all_header ? 'hidden' : 'block' }`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 className="text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
+                        <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
                         <ShowAllDataTable part2={tableData} isLoading={isLoading} />
                     </div>
                 </div>

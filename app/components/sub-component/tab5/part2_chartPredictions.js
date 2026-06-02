@@ -6,10 +6,9 @@ import Row3 from './sub-tab5/row_3_monthly_pie';
 
 export default function T5P1S1_CurrentData({ data }) {
     const dataforChart = data || null;
-    console.log(dataforChart);
     return (
         <div>
-            <div className="grid grid-cols-12 gap-2 my-2">
+            <div className="grid lg:grid-cols-12 gap-2 my-2">
                 <div className="col-span-12 lg:col-span-12">
                     <Row0 data={dataforChart} />
                 </div>
