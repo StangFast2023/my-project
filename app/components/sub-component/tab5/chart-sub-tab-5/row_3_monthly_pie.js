@@ -1,8 +1,8 @@
 
 "use client";
 import { Rows3 , SquaresExclude }   from 'lucide-react';
-import Row3Part1Bar                 from '../../tab5/chart-sub-tab-5/row_3_part1_bar';
-import Row3Part2Pie                 from '../../tab5/chart-sub-tab-5/row_3_part2_pie';
+import Row3Part1Bar                 from './row_3_part1_bar';
+import Row3Part2Pie                 from './row_3_part2_pie';
 
 export default function Row3StatusRank({ data }) {
     const ChartData = data || {};
