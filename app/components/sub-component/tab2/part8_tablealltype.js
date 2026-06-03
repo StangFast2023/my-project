@@ -1,6 +1,7 @@
 "use client";
 import React, { useMemo }   from 'react';
 import { motion }           from 'framer-motion';
+import { Newspaper }        from 'lucide-react';
 import { LoadingScreen }    from '../../../components/LoadingScreen';
 const maxR = 10;
 export default function T2P7_TableSummary({ data }) {
@@ -23,7 +24,7 @@ export default function T2P7_TableSummary({ data }) {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4">
             <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-4 text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-landmark-icon lucide-landmark"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg>
+                <Newspaper />
                 <span className="ml-2">สรุปสถิติการเรียกบรรจุสะสม จำแนกตามภูมิภาคและประเภทตำแหน่ง</span>
             </h3>
             <div className="flex-1 rounded-2xl overflow-x-auto min-h-[600px] shadow-sm shadow-sm">

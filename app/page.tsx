@@ -18,7 +18,7 @@ export interface FilterData {
 export default function App() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('tab5');
+    const [activeTab, setActiveTab] = useState('tab2');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     {/* for tap2 part6 */}
     const [details, setDetails] = useState(null);

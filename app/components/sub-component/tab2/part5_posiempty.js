@@ -1,5 +1,6 @@
 "use client";
 import { motion }           from "framer-motion";
+import { BookDown }         from 'lucide-react';
 import { LoadingScreen }    from '../../../components/LoadingScreen';
 export default function T2P5_PopularPosEmp({ data }) {
     if(!data) return <LoadingScreen />;
@@ -19,7 +20,7 @@ export default function T2P5_PopularPosEmp({ data }) {
                 
                 <div className="text-center mb-2">
                     <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-spotlight-icon lucide-spotlight"><path d="M15.295 19.562 16 22"/><path d="m17 16 3.758 2.098"/><path d="m19 12.5 3.026-.598"/><path d="M7.61 6.3a3 3 0 0 0-3.92 1.3l-1.38 2.79a3 3 0 0 0 1.3 3.91l6.89 3.597a1 1 0 0 0 1.342-.447l3.106-6.211a1 1 0 0 0-.447-1.341z"/><path d="M8 9V2"/></svg>
+                        <BookDown />
                         <span className="ml-2">สรุปอันดับตำแหน่งที่มีการบรรจุเต็มอัตราในรอบที่ 1</span>
                     </h3>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>

@@ -3,6 +3,7 @@ import CountUp              from 'react-countup';
 import { motion }           from "framer-motion";
 import { Doughnut }         from "react-chartjs-2";
 import { LoadingScreen }    from '../../../components/LoadingScreen';
+import { ChartPie }         from 'lucide-react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
@@ -65,7 +66,7 @@ export default function T1P3_PieListed({ data }) {
             <div>
                 <div className="text-center mb-4 text-gray-700">
                     <div className="flex justify-center items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-book-user-icon lucide-book-user"><path d="M15 13a3 3 0 1 0-6 0"/><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/><circle cx="12" cy="8" r="2"/></svg>
+                        <ChartPie />
                         <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
                             สัดส่วนบัญชีผู้สอบแข่งขันได้
                         </h3>

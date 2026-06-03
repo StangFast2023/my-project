@@ -1,9 +1,10 @@
 "use client";
 import { LoadingScreen }    from '../../../components/LoadingScreen';
 import { motion }           from "framer-motion";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import { Bar }              from "react-chartjs-2";
 import zoomPlugin           from 'chartjs-plugin-zoom';
+import { Bolt }             from 'lucide-react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
@@ -118,7 +119,7 @@ export default function T2P2_TypePerMonth({ data }) {
         >
             <div>
                 <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-building2-icon lucide-building-2"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
+                    <Bolt />
                     <span className="ml-2">สถิติการเรียกบรรจุรายเดือน จำแนกตามประเภทตำแหน่ง</span>
                 </h3>
                 <div className="w-full h-[370px]">

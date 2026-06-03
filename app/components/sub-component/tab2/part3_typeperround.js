@@ -1,9 +1,10 @@
 "use client";
 import { LoadingScreen }    from '../../../components/LoadingScreen';
 import { motion }           from "framer-motion";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import { Bar }              from "react-chartjs-2";
 import zoomPlugin           from 'chartjs-plugin-zoom';
+import { Bolt }             from 'lucide-react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
@@ -107,7 +108,7 @@ export default function T2P3_TypePerRound({ data }) {
         >
             <div>
                 <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-square-chevron-right-icon lucide-square-chevron-right"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m10 8 4 4-4 4"/></svg>
+                    <Bolt />
                     <span className="ml-2">เปรียบเทียบผลการเรียกบรรจุรายรอบ จำแนกตามประเภทตำแหน่ง</span>
                 </h3>
                 <div className="w-full h-[370px]">

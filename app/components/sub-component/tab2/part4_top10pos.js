@@ -1,6 +1,7 @@
 "use client";
 import { motion }           from "framer-motion";
 import axios                from 'axios';
+import { Archive }          from 'lucide-react';
 import { LoadingScreen }    from '../../../components/LoadingScreen';
 
 export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
@@ -29,7 +30,7 @@ export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
                 
                 <div className="text-center mb-2">
                     <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chart-spline-icon lucide-chart-spline"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16c.5-2 1.5-7 4-7 2 0 2 3 4 3 2.5 0 4.5-5 5-7"/></svg>
+                        <Archive />
                         <span className="ml-2">สรุปตำแหน่งที่มีการแข่งขันสูงสุด</span>
                     </h3>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>
