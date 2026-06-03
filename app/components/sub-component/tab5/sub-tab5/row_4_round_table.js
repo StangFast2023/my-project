@@ -3,7 +3,7 @@
 import React from 'react';
 import { AppWindow, TrendingUp, TrendingDown, Equal } from 'lucide-react';
 
-export default function Row3StatusRank({ data }) {
+export default function Row4RoundTable({ data }) {
     const TableData = data?.chart_2_round || {};
     if (!TableData) return null;
     let cumulative_total = 0;
@@ -21,7 +21,6 @@ export default function Row3StatusRank({ data }) {
         const full = `${main}${subs}`;
         return full;
     };
-    console.log(TableData);
     return (
         <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
 
@@ -36,7 +35,7 @@ export default function Row3StatusRank({ data }) {
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex-1 overflow-x-auto">
-                    <table className="w-full min-h-[300px] overflow-y-auto text-left border-collapse whitespace-nowrap">
+                    <table className="w-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
                                 <th className="bg-gray-50    border-b-2 border-gray-700 px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700">รอบที่</th>
@@ -44,7 +43,7 @@ export default function Row3StatusRank({ data }) {
                                 <th className="bg-gray-50    border-b-2 border-gray-700 px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700">วันเดือนปีที่บรรจุ</th>
                                 <th className="bg-emerald-50 border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-700">จำนวนที่เรียก (คน)</th>
                                 <th className="bg-gray-50    border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700">ลำดับที่</th>
-                                <th className="bg-amber-50   border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-amber-700">อัตราการเติบโต (%)</th>
+                                <th className="bg-amber-50   border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-amber-700">อัตราการเปลี่ยนแปลง (%)</th>
                                 <th className="bg-sky-50     border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-sky-700">สัดส่วนการใช้บัญชี (%)</th>
                                 <th className="bg-blue-50    border-b-2 border-gray-700 px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-700">สถานะดำเนินการ</th>
                                 <th className="bg-gray-50    border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700">สถานะการเรียกบรรจุข้ามเขต</th>
@@ -53,7 +52,6 @@ export default function Row3StatusRank({ data }) {
                         </thead>
                         <tbody>
                             {Object.values(TableData).map((round) => {
-                                console.log(round);
                                 const total_listed = data?.total_listed || 0;
                                 cumulative_total += parseInt(round.call_status === 1 && round.list_status === 1 ? round.total : 0);
                                 cumulative_total_call += parseInt(round.call_status === 1 && round.list_status === 1 ? round.total : 0);

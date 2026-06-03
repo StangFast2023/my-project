@@ -1,21 +1,21 @@
 "use client";
-import { motion }           from "framer-motion";
+import { motion } from "framer-motion";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
-import { Bar }              from "react-chartjs-2";
-import zoomPlugin           from 'chartjs-plugin-zoom';
-import { ChartColumn }      from 'lucide-react';
-import { LoadingScreen }    from '../../../components/LoadingScreen';
+import { Bar } from "react-chartjs-2";
+import zoomPlugin from 'chartjs-plugin-zoom';
+import { ChartColumn } from 'lucide-react';
+import { LoadingScreen } from '../../../components/LoadingScreen';
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T1P2_CallMonthly({ data }) {
-    if ( !data ) return <LoadingScreen />;
+    if (!data) return <LoadingScreen />;
     const ROUND_COLORS = [
-        "#1e40afab", "#fbbe24ab", "#ef4444ab", "#10b981ab", "#8b5cf6ab", 
-        "#f59e0bab", "#3b82f6ab", "#ec4899ab", "#06b6d4ab", "#84cc16ab", 
-        "#6366f1ab", "#f43f5eab", "#14b8a6ab", "#f97316ab", "#a855f7ab", 
-        "#0ea5e9ab", "#d946efab", "#22c55eab", "#eab308ab", "#64748bab", 
-        "#475569ab", "#be123cab", "#15803dab", "#1d4ed8ab", "#7c3aedab"  
+        "#1e40afab", "#fbbe24ab", "#ef4444ab", "#10b981ab", "#8b5cf6ab",
+        "#f59e0bab", "#3b82f6ab", "#ec4899ab", "#06b6d4ab", "#84cc16ab",
+        "#6366f1ab", "#f43f5eab", "#14b8a6ab", "#f97316ab", "#a855f7ab",
+        "#0ea5e9ab", "#d946efab", "#22c55eab", "#eab308ab", "#64748bab",
+        "#475569ab", "#be123cab", "#15803dab", "#1d4ed8ab", "#7c3aedab"
     ];
 
     const chartRawData = data?.tab1?.part2;
@@ -27,7 +27,7 @@ export default function T1P2_CallMonthly({ data }) {
     const allRounds = Array.from(
         new Set(
             keys.flatMap(key => {
-                const monthData = chartRawData[key]?.data; 
+                const monthData = chartRawData[key]?.data;
                 return monthData ? Object.values(monthData).map(d => d.round) : [];
             })
         )
@@ -51,29 +51,30 @@ export default function T1P2_CallMonthly({ data }) {
     }));
 
     const lineDataset = {
-        type: 'line', 
+        type: 'line',
         label: ' ยอดรวมการเรียกรายงานตัว ',
+        yAxisID: 'y1',
         data: keys.map(key => {
             const value = chartRawData[key]?.total_per_month;
-            return value > 0 ? value : null; 
+            return value > 0 ? value : null;
         }),
-        borderColor: '#F87171', 
+        borderColor: '#F87171',
         backgroundColor: '#F87171',
         borderWidth: 3,
         pointRadius: 5,
         pointHoverRadius: 7,
         fill: false,
-        tension: 0.3, 
-        order: 1, 
+        tension: 0.3,
+        order: 1,
     };
     const chartData = {
         labels: labels,
-        datasets: [...barDatasets, lineDataset], 
+        datasets: [...barDatasets, lineDataset],
     };
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        spanGaps: true, 
+        spanGaps: true,
         responsive: true,
         scales: {
             y: { beginAtZero: true }
@@ -89,11 +90,11 @@ export default function T1P2_CallMonthly({ data }) {
                     }
                 },
                 callbacks: {
-                    title: function(context) {
+                    title: function (context) {
                         const index = context[0].dataIndex;
-                        return fullNames[index]; 
+                        return fullNames[index];
                     },
-                    label: function(context) {
+                    label: function (context) {
                         let label = context.dataset.label || '';
                         if (label) {
                             label += ' : ';
@@ -108,36 +109,43 @@ export default function T1P2_CallMonthly({ data }) {
             zoom: {
                 zoom: {
                     wheel: {
-                        enabled: true, 
+                        enabled: true,
                         modifierKey: 'ctrl',
                     },
-                        pinch: {
-                        enabled: true, 
+                    pinch: {
+                        enabled: true,
                     },
-                    mode: 'x', 
+                    mode: 'x',
                 },
                 pan: {
                     enabled: true,
-                    mode: 'x', 
+                    mode: 'x',
                 }
             }
         },
         scales: {
             y: {
+                type: 'linear',
+                position: 'left',
                 beginAtZero: true,
-                ticks: {
-                    callback: (value) => value.toLocaleString() + ' อัตรา'
-                }
+                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
+            },
+            y1: {
+                type: 'linear',
+                position: 'right',
+                beginAtZero: true,
+                grid: { drawOnChartArea: false },
+                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
             }
-        }
+        },
     };
 
 
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}   
-            transition={{ duration: 0.5 }}  
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
         >
             <div>
                 <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
