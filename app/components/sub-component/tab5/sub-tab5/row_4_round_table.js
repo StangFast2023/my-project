@@ -35,7 +35,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="flex-1 overflow-x-auto">
-                    <table className="w-full overflow-y-auto text-left border-collapse whitespace-nowrap">
+                    <table className="w-full h-full min-h-[100px] max-h-[600px] overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
                                 <th className="bg-gray-50    border-b-2 border-gray-700 px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700">รอบที่</th>
@@ -90,16 +90,18 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                     </React.Fragment>
                                 );
                             })}
-                            <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
-                                <td colSpan={3} className="bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center">{cumulative_total_call.toLocaleString()}</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                <td className="bg-gray-700 px-4 py-4 text-center">{total_remain.toLocaleString()}</td>
-                            </tr>
+                            {TableData && (
+                                <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
+                                    <td colSpan={3} className="bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center">{cumulative_total_call.toLocaleString()}</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center"></td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center"></td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center"></td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center"></td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center"></td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center">{total_remain.toLocaleString()}</td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

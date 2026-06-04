@@ -1,7 +1,7 @@
 "use client";
 
-import Swal         from 'sweetalert2';
-import { User }     from 'lucide-react'; 
+import Swal from 'sweetalert2';
+import { User } from 'lucide-react';
 
 export default function InfoModal() {
     const showInfo = () => {
@@ -22,12 +22,12 @@ export default function InfoModal() {
         });
     };
 
-  return (
-    <button
-      onClick={showInfo}
-      className="fixed bottom-4 right-4 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-3xl transition-all duration-500 ease-in-out hover:scale-110 hover:bg-emerald-600 will-change-transform"
-    >
-      <User size={40} />
-    </button>
-  );
+    return (
+        <button
+            onClick={showInfo}
+            className="fixed top-4 right-4 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-3xl transition-all duration-500 ease-in-out hover:scale-110 hover:bg-emerald-600 will-change-transform"
+        >
+            <User size={40} />
+        </button>
+    );
 }

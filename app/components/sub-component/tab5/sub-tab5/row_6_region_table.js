@@ -167,7 +167,7 @@ export default function Row6RegionTable({ position, data }) {
     };
     let last = { list: 0, call: 0, remain: 0, rounds: roundColumns.map(() => ({ status: '-', total: null })) };
     return (
-        <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm">
 
             <div className="text-center mb-4 text-gray-700">
                 <div className="flex items-center">
@@ -178,18 +178,18 @@ export default function Row6RegionTable({ position, data }) {
                 </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="flex-1 overflow-x-auto">
-                    <table className="w-full overflow-y-auto text-left border-collapse whitespace-nowrap">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
+                <div className="flex-1  min-h-[400px] max-h-[800px] overflow-x-auto">
+                    <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
-                                <th className="bg-gray-50    w-[10%] px-6 py-4 text-sm md:text-base lg:text-ls font-semibold sticky left-[0] z-30">ภาค / เขต</th>
-                                <th className="bg-sky-50     w-[7%]  px-6 py-4 text-sm md:text-base lg:text-ls font-semibold sticky left-[0] z-30">สถานะเปิดสอบ</th>
-                                <th className="bg-amber-50   w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">ขึ้นบัญชี</th>
-                                <th className="bg-emerald-50 w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-emerald-700">เรียกแล้ว</th>
-                                <th className="bg-blue-50    w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-blue-700">ความคืบหน้า</th>
-                                <th className="bg-rose-50    w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-rose-500">คงเหลือ</th>
-                                {roundColumns.map(num => (<th key={num} className="w-[5%] px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
+                                <th className="sticky top-0 z-30 bg-gray-50    w-[10%] px-6 py-4 text-sm md:text-base lg:text-ls font-semibold sticky left-[0] z-40">ภาค / เขต</th>
+                                <th className="sticky top-0 z-30 bg-sky-50     w-[7%]  px-6 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">สถานะเปิดสอบ</th>
+                                <th className="sticky top-0 z-30 bg-amber-50   w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">ขึ้นบัญชี</th>
+                                <th className="sticky top-0 z-30 bg-emerald-50 w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-emerald-700">เรียกแล้ว</th>
+                                <th className="sticky top-0 z-30 bg-blue-50    w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-blue-700">ความคืบหน้า</th>
+                                <th className="sticky top-0 z-30 bg-rose-50    w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-rose-500">คงเหลือ</th>
+                                {roundColumns.map(num => (<th key={num} className="sticky top-0 z-30 bg-rose-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
                             </tr>
                         </thead>
                         <tbody>
@@ -198,7 +198,7 @@ export default function Row6RegionTable({ position, data }) {
                                 return (
                                     <React.Fragment key={region.name}>
                                         <tr className="bg-emerald-50/20">
-                                            <td colSpan={roundColumns.length + 6} className="border-t-2 border-gray-400 px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
+                                            <td colSpan={roundColumns.length + 6} className="px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
                                                 <span className="sticky left-[30px]">{region.name}</span>
                                             </td>
                                         </tr>
@@ -267,8 +267,9 @@ export default function Row6RegionTable({ position, data }) {
                                                 </tr>
                                             );
                                         })}
-                                        <tr key={region.name} className="border-t border-gray-200" >
-                                            <td colSpan={2} className="bg-white         px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
+                                        <tr key={region.name}>
+                                            <td className="bg-white         px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
+                                            <td className="bg-amber-50/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600"></td>
                                             <td className="bg-amber-50/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
                                             <td className="bg-emerald-50/50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
                                             <td className="bg-blue-50/50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.list) * 100).toFixed(2)} %</td>
@@ -282,18 +283,21 @@ export default function Row6RegionTable({ position, data }) {
                                     </React.Fragment>
                                 );
                             })}
-                            <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
-                                <td colSpan={2} className="bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center">{last.list.toLocaleString()}</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center">{last.call.toLocaleString()}</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center">{((last.call / last.list) * 100).toFixed(2)} %</td>
-                                <td className="bg-gray-700 px-6 py-4 text-center">{last.remain.toLocaleString()}</td>
-                                {last.rounds.map((item, index) => {
-                                    return (
-                                        <td key={index} className="bg-gray-700 px-4 py-4 text-center">{item.total ? item.total.toLocaleString() : null}</td>
-                                    );
-                                })}
-                            </tr>
+                            {TableData && (
+                                <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
+                                    <td className="sticky bottom-0 z-40 bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center"></td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.list.toLocaleString()}</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.call.toLocaleString()}</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{((last.call / last.list) * 100).toFixed(2)} %</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-6 py-4 text-center">{last.remain.toLocaleString()}</td>
+                                    {last.rounds.map((item, index) => {
+                                        return (
+                                            <td key={index} className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{item.total ? item.total.toLocaleString() : null}</td>
+                                        );
+                                    })}
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

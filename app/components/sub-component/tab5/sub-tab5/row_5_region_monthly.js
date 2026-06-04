@@ -33,17 +33,25 @@ export default function Row5RegionMonthly({ position, data }) {
         for (let i = 0; i < str.length; i++) {
             hash = str.charCodeAt(i) + ((hash << 5) - hash);
         }
-        return Math.abs(hash) % 360;
+        const lastChar = str.match(/\d+$/) ? parseInt(str.match(/\d+$/)[0]) : 1;
+        const hue = Math.abs(hash) % 360;
+        const saturation = 70 + (lastChar * 15);
+        const lightness = 10 + (lastChar * 15);
+        return {
+            bg: `hsla(${hue}, ${saturation}%, ${lightness + 35}%, 0.5)`,
+            bd: `hsl(${hue}, ${saturation}%, ${lightness}%, 1)`
+        };
     };
 
     const barDatasets = Object.keys(groupedData).map(regionName => {
+        console.log(regionName);
         const hue = getHueFromString(regionName);
         return {
             type: 'bar',
             label: regionName,
             data: labels.map(month => groupedData[regionName][month] || 0),
-            backgroundColor: `hsla(${hue}, 70%, 85%, 0.5)`,
-            borderColor: `hsla(${hue}, 70%, 30%, 1)`,
+            backgroundColor: hue.bg,
+            borderColor: hue.bd,
             borderWidth: 2,
             borderRadius: 4,
             order: 2,

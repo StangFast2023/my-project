@@ -114,7 +114,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
     if (!has_data) return <EmptyData />;
     return (
         <div className="fade-in">
-            <div className="flex flex-col h-full min-h-[100px] max-h-[800px]  border border-gray-300">
+            <div className="flex flex-col h-full min-h-[100px] max-h-[800px] border border-gray-300">
                 <div className="flex-1 overflow-x-auto shadow-sm">
                     <table className="w-full overflow-y-auto table-fixed border-collapse">
                         <colgroup>
