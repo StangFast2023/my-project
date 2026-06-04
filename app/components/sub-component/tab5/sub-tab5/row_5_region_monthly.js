@@ -3,9 +3,10 @@
 import { FolderKanban } from 'lucide-react';
 import { Bar } from "react-chartjs-2";
 
-export default function Row5RegionMonthly({ data }) {
+export default function Row5RegionMonthly({ position, data }) {
     const chartRawData = data?.chart_3_region || {};
     if (!chartRawData) return null;
+
     const keys = Object.keys(chartRawData);
     const flatData = keys.flatMap(key => {
         const mainRegion = chartRawData[key];
@@ -17,6 +18,7 @@ export default function Row5RegionMonthly({ data }) {
             }));
         });
     });
+
     const firstKey = Object.keys(chartRawData || {})[0];
     const subProvinces = chartRawData?.[firstKey]?.sub_province;
     const labels = subProvinces ? Object.values(Object.values(subProvinces)[0]?.data_monthly || {}).map(m => m.name_s) : [];
@@ -25,6 +27,7 @@ export default function Row5RegionMonthly({ data }) {
         acc[curr.name][curr.labels] = curr.total;
         return acc;
     }, {});
+
     const getHueFromString = (str) => {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
@@ -32,6 +35,7 @@ export default function Row5RegionMonthly({ data }) {
         }
         return Math.abs(hash) % 360;
     };
+
     const barDatasets = Object.keys(groupedData).map(regionName => {
         const hue = getHueFromString(regionName);
         return {
@@ -45,12 +49,14 @@ export default function Row5RegionMonthly({ data }) {
             order: 2,
         };
     });
+
     const monthlyTotals = labels.map(month => {
         return Object.keys(groupedData).reduce((sum, regionName) => {
             const val = groupedData[regionName][month];
             return sum + (parseInt(val, 10) || 0);
         }, 0);
     });
+
     let runningTotal = 0;
     const cumulativeData = monthlyTotals.map(val => {
         const numericVal = Number(val) || 0;
@@ -60,6 +66,7 @@ export default function Row5RegionMonthly({ data }) {
         runningTotal += numericVal;
         return runningTotal;
     });
+
     const lineDataset = {
         type: 'line',
         label: ' ยอดรวมการเรียกรายงานตัว ',
@@ -74,10 +81,12 @@ export default function Row5RegionMonthly({ data }) {
         tension: 0.3,
         order: 1,
     };
+
     const chartData = {
         labels: labels,
         datasets: [...barDatasets, lineDataset],
     };
+
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -149,7 +158,7 @@ export default function Row5RegionMonthly({ data }) {
                 <div className="flex text-gray-700 items-center">
                     <FolderKanban />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        สถิติการเรียกบรรจุรายเดือนแบบแบ่งเขตและยอดสะสม
+                        สถิติการเรียกบรรจุรายเดือนแบบแบ่งเขตและยอดสะสม {position ? " " + position : null}
                     </h3>
                 </div>
                 <div className="w-full h-[500px]">

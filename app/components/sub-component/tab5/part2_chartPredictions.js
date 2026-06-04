@@ -7,8 +7,12 @@ import Row4 from './sub-tab5/row_4_round_table';
 import Row5 from './sub-tab5/row_5_region_monthly';
 import Row6 from './sub-tab5/row_6_region_table';
 
-export default function T5P1S1_CurrentData({ data }) {
+export default function T5P1S1_CurrentData({ details, detailsShow, data }) {
     const dataforChart = data || null;
+    const dataShow = detailsShow || {};
+    const RegSh = dataShow[details?.regionId]?.pro_main_name || null;
+    const ZneSh = dataShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id ? "เขต " + dataShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id : null;
+    const PosSh = dataShow[details?.regionId]?.pro_sub[details?.areaId]?.data_position[details?.positionId]?.pos_name || null;
     return (
         <div>
 
@@ -32,16 +36,16 @@ export default function T5P1S1_CurrentData({ data }) {
                     <Row1 data={dataforChart} />
                 </div>
                 <div className="col-span-12 lg:col-span-12">
-                    <Row3 data={dataforChart} />
+                    <Row3 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
                 <div className="col-span-12 lg:col-span-12">
-                    <Row4 data={dataforChart} />
+                    <Row4 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
                 <div className="col-span-12 lg:col-span-12">
-                    <Row5 data={dataforChart} />
+                    <Row5 position={PosSh} data={dataforChart} />
                 </div>
                 <div className="col-span-12 lg:col-span-12">
-                    <Row6 data={dataforChart} />
+                    <Row6 position={PosSh} data={dataforChart} />
                 </div>
             </div>
 

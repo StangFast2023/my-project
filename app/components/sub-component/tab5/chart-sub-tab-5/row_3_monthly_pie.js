@@ -1,10 +1,10 @@
 
 "use client";
-import { Rows3 , SquaresExclude }   from 'lucide-react';
-import Row3Part1Bar                 from './row_3_part1_bar';
-import Row3Part2Pie                 from './row_3_part2_pie';
+import { Rows3, SquaresExclude } from 'lucide-react';
+import Row3Part1Bar from './row_3_part1_bar';
+import Row3Part2Pie from './row_3_part2_pie';
 
-export default function Row3StatusRank({ data }) {
+export default function Row3StatusRank({ region, zone, position, data }) {
     const ChartData = data || {};
     if (!ChartData) return null;
     return (
@@ -14,6 +14,7 @@ export default function Row3StatusRank({ data }) {
                     <SquaresExclude />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         สถิติการเรียกบรรจุรายเดือนและยอดสะสม
+                        {region && zone && position ? " " + region + " " + zone + " " + position : null}
                     </h3>
                 </div>
                 <div className="w-full h-[450px]">
@@ -26,6 +27,11 @@ export default function Row3StatusRank({ data }) {
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         สัดส่วนบัญชีผู้สอบแข่งขันได้
                     </h3>
+                </div>
+                <div className="text-center text-gray-600 font-semibold">
+                    {region && zone ? region + " " + zone : null}
+                    <br></br>
+                    {position ? position : null}
                 </div>
                 <div className="w-full h-[450px]">
                     <Row3Part2Pie data={ChartData} />

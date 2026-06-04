@@ -1,25 +1,25 @@
 "use client";
-import Swal                         from 'sweetalert2';
-import withReactContent             from 'sweetalert2-react-content';
-import { motion }                   from 'framer-motion';
-import { LoadingScreen }            from '../../../components/LoadingScreen';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { motion } from 'framer-motion';
+import { LoadingScreen } from '../../../components/LoadingScreen';
 const MySwal = withReactContent(Swal);
-export default function T5P1_filterDlaSearch({ setIsOpen, details, data }) { 
+export default function T5P1_filterDlaSearch({ setIsOpen, details, data }) {
     const part5ForShow = data?.tab5?.part1 || {};
     const handleViewDetail = async () => {
         setIsOpen(true);
     };
-    if(!part5ForShow) return <LoadingScreen />;
-    return ( 
-        <motion.div 
+    if (!part5ForShow) return <LoadingScreen />;
+    return (
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}   
-            transition={{ duration: 0.5 }}  
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
         >
             <div className="grid grid-cols-12 gap-6 my-2">
                 <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <span className="font-medium text-gray-700 whitespace-nowrap">คำนวณโดย :</span>
-                    <div 
+                    <div
                         onClick={() => handleViewDetail()}
                         className="group relative w-full h-auto bg-white rounded-3xl cursor-pointer overflow-hidden transition-all duration-300"
                     >
@@ -31,7 +31,7 @@ export default function T5P1_filterDlaSearch({ setIsOpen, details, data }) {
                             <div className="col-span-2 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xs">
                                 <p className="text-gray-500 text-sm">เขต :</p>
                                 <span className="text-lg md:text-base lg:text-xl font-bold text-gray-600 text-right">
-                                    {part5ForShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id ? "เขต" + part5ForShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id : "-"}
+                                    {part5ForShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id ? "เขต " + part5ForShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id : "-"}
                                 </span>
                             </div>
                             <div className="col-span-4 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xs">
@@ -52,7 +52,7 @@ export default function T5P1_filterDlaSearch({ setIsOpen, details, data }) {
                                 </svg>
                                 <span>แก้ไขข้อมูล</span>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>

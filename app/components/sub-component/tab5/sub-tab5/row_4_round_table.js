@@ -3,7 +3,7 @@
 import React from 'react';
 import { AppWindow, TrendingUp, TrendingDown, Equal } from 'lucide-react';
 
-export default function Row4RoundTable({ data }) {
+export default function Row4RoundTable({ region, zone, position, data }) {
     const TableData = data?.chart_2_round || {};
     if (!TableData) return null;
     let cumulative_total = 0;
@@ -28,7 +28,7 @@ export default function Row4RoundTable({ data }) {
                 <div className="flex items-center">
                     <AppWindow />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        ตารางการบรรจุรายรอบ
+                        ตารางการบรรจุรายรอบ{region && zone && position ? " " + region + " " + zone + " " + position : null}
                     </h3>
                 </div>
             </div>
