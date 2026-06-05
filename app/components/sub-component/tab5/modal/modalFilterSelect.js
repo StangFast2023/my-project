@@ -144,7 +144,7 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, details, loading,
 
     return (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div ref={modalRef} className="bg-white w-full max-w-2xl flex flex-col rounded-2xl shadow-2xl overflow-visible animate-in fade-in zoom-in duration-300">
+            <div ref={modalRef} className="bg-white w-full max-w-2xl md:max-w-2xl lg:max-w-[40%] flex flex-col rounded-2xl shadow-2xl overflow-visible animate-in fade-in zoom-in duration-300">
                 <div className="px-8 py-5 shadow-lg text-center font-bold text-2xl text-gray-900 font-kanit">รายละเอียดข้อมูล</div>
                 <div className="flex-grow p-8 space-y-6">
                     <div className="grid grid-cols-12 gap-4 items-center dropdown-container">

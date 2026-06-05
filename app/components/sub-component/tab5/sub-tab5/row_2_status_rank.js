@@ -8,11 +8,11 @@ export default function Row3StatusRank({ data }) {
             return { 'bg': 'bg-gray-100 border-gray-500', 'tx': 'text-gray-600', 'label': 'รอดำเนินการ' };
         }
         const statusMap = [
-            { min: 0, max: 20, bg: 'bg-emerald-100 border-emerald-800', tx: 'text-emerald-700', label: 'ปลอดภัยสูง' },
-            { min: 20.1, max: 40, bg: 'bg-sky-100 border-sky-800', tx: 'text-sky-700', label: 'ค่อนข้างปลอดภัย' },
-            { min: 40.1, max: 60, bg: 'bg-amber-100 border-amber-800', tx: 'text-amber-700', label: 'เฝ้าระวัง' },
-            { min: 60.1, max: 80, bg: 'bg-orange-100 border-orange-800', tx: 'text-orange-700', label: 'สุ่มเสี่ยง' },
-            { min: 80.1, max: 100, bg: 'bg-rose-100 border-rose-800', tx: 'text-rose-700', label: 'เสี่ยงสูงมาก' }
+            { min: 0, max: 20, bg: 'bg-emerald-100 border-emerald-800', tx: 'text-emerald-700', label: 'สถานะปกติ' },
+            { min: 20.1, max: 40, bg: 'bg-sky-100 border-sky-800', tx: 'text-sky-700', label: 'อยู่ในเกณฑ์อุ่นใจ' },
+            { min: 40.1, max: 60, bg: 'bg-amber-100 border-amber-800', tx: 'text-amber-700', label: 'อยู่ในช่วงลุ้นผล' },
+            { min: 60.1, max: 80, bg: 'bg-orange-100 border-orange-800', tx: 'text-orange-700', label: 'ต้องติดตามสถานการณ์' },
+            { min: 80.1, max: 100, bg: 'bg-rose-100 border-rose-800', tx: 'text-rose-700', label: 'เฝ้าระวังเป็นพิเศษ' }
         ];
         const status = statusMap.find(s => riskValue >= s.min && riskValue <= s.max);
         return status || { 'bg': 'bg-rose-100 border-rose-800', 'tx': 'text-rose-700', 'label': 'เสี่ยงสูงมาก' };
@@ -23,11 +23,11 @@ export default function Row3StatusRank({ data }) {
             return { 'bg': 'bg-gray-100 border-gray-500', 'tx': 'text-gray-600', 'label': 'รอดำเนินการ' };
         }
         const statusMap = [
-            { min: 0, max: 20, bg: 'bg-rose-100 border-rose-800', tx: 'text-rose-700', label: 'โอกาสต่ำมาก' },
-            { min: 20.1, max: 40, bg: 'bg-orange-100 border-orange-800', tx: 'text-orange-700', label: 'โอกาสค่อนข้างต่ำ' },
-            { min: 40.1, max: 60, bg: 'bg-amber-100 border-amber-800', tx: 'text-amber-700', label: 'โอกาสปานกลาง' },
-            { min: 60.1, max: 80, bg: 'bg-sky-100 border-sky-800', tx: 'text-sky-700', label: 'โอกาสค่อนข้างสูง' },
-            { min: 80.1, max: 100, bg: 'bg-emerald-100 border-emerald-800', tx: 'text-emerald-700', label: 'โอกาสสูงมาก' }
+            { min: 0, max: 20, bg: 'bg-rose-100 border-rose-800', tx: 'text-rose-700', label: 'รอลุ้นสถานการณ์เพิ่มเติม' },
+            { min: 20.1, max: 40, bg: 'bg-orange-100 border-orange-800', tx: 'text-orange-700', label: 'ต้องลุ้นการเรียกเพิ่ม' },
+            { min: 40.1, max: 60, bg: 'bg-amber-100 border-amber-800', tx: 'text-amber-700', label: 'อยู่ในเกณฑ์ลุ้นบรรจุ' },
+            { min: 60.1, max: 80, bg: 'bg-sky-100 border-sky-800', tx: 'text-sky-700', label: 'มีโอกาสเรียกถึง' },
+            { min: 80.1, max: 100, bg: 'bg-emerald-100 border-emerald-800', tx: 'text-emerald-700', label: 'มีลุ้นสูงมาก' }
         ];
         const status = statusMap.find(s => prob >= s.min && prob <= s.max);
         return status || { 'bg': 'bg-rose-100 border-rose-800', 'tx': 'text-rose-700', 'label': 'โอกาสต่ำมาก' };
@@ -41,11 +41,11 @@ export default function Row3StatusRank({ data }) {
             return { 'bg': 'bg-gray-100 border-gray-500', 'tx': 'text-gray-600', 'label': 'รอดำเนินการ' };
         }
         const statusMap = [
-            { min: 0, max: 10, bg: 'bg-red-100 border-red-800', tx: 'text-red-700', label: 'โอกาสต่ำมาก' },
-            { min: 10.1, max: 30, bg: 'bg-amber-100 border-amber-800', tx: 'text-amber-700', label: 'รอรอบ' },
-            { min: 30.1, max: 60, bg: 'bg-blue-100 border-blue-800', tx: 'text-blue-700', label: 'อยู่ในเกณฑ์' },
-            { min: 60.1, max: 90, bg: 'bg-cyan-100 border-cyan-800', tx: 'text-cyan-700', label: 'น่าลุ้น' },
-            { min: 90.1, max: 100, bg: 'bg-emerald-100 border-emerald-800', tx: 'text-emerald-700', label: 'ใกล้ถึง' }
+            { min: 0, max: 10, bg: 'bg-rose-100 border-rose-800', tx: 'text-rose-700', label: 'รอลุ้นในรอบถัดไป' },
+            { min: 10.1, max: 30, bg: 'bg-orange-100 border-orange-800', tx: 'text-orange-700', label: 'รอรอบการเรียก' },
+            { min: 30.1, max: 60, bg: 'bg-sky-100 border-sky-800', tx: 'text-sky-700', label: 'เกณฑ์ลุ้นผล' },
+            { min: 60.1, max: 90, bg: 'bg-blue-100 border-blue-800', tx: 'text-blue-700', label: 'ลุ้นเรียก' },
+            { min: 90.1, max: 100, bg: 'bg-emerald-100 border-emerald-800', tx: 'text-emerald-700', label: 'ใกล้ถึงคิว' }
         ];
         const foundStatus = statusMap.find(s => prob >= s.min && prob <= s.max);
         return foundStatus || statusMap[0];
