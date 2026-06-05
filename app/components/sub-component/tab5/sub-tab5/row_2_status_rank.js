@@ -2,7 +2,6 @@ import CountUp from 'react-countup';
 
 export default function Row3StatusRank({ data }) {
     const status_work = data?.status_work || {};
-
     const getRiskStatus = (riskValue) => {
         if (riskValue === null || riskValue === undefined) {
             return { 'bg': 'bg-gray-100 border-gray-500', 'tx': 'text-gray-600', 'label': 'รอดำเนินการ' };
@@ -33,8 +32,8 @@ export default function Row3StatusRank({ data }) {
         return status || { 'bg': 'bg-rose-100 border-rose-800', 'tx': 'text-rose-700', 'label': 'โอกาสต่ำมาก' };
     };
 
-    const getNextRound = (prob, status) => {
-        if (status === 'completed') {
+    const getNextRound = (prob) => {
+        if (status_work === 'completed') {
             return { 'bg': 'bg-emerald-100 border-emerald-800', 'tx': 'text-emerald-700', 'label': 'ได้รับการบรรจุ' };
         }
         if (prob === null || prob === undefined) {
@@ -53,7 +52,7 @@ export default function Row3StatusRank({ data }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
 
-            <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getNextRound(data?.next_round, status_work)['bg']} my-2 shadow-xs`}>
+            <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getNextRound(data?.next_round)['bg']} my-2 shadow-xs`}>
                 <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">โอกาสที่จะถูกเรียกในรอบถัดไป :</p>
                 <div className="items-baseline gap-2 text-right">
                     <span className={`text-lg md:text-base lg:text-2xl font-bold ${getNextRound(data?.next_round)['tx']}`}>
@@ -61,7 +60,7 @@ export default function Row3StatusRank({ data }) {
                             data ?
                                 (
                                     <div>
-                                        <span className={`mr-2 text-lg md:text-base lg:text-3xl ${getNextRound(data?.next_round, status_work)['tx']}`}>{getNextRound(data?.next_round, status_work)['label']}</span>
+                                        <span className={`mr-2 text-lg md:text-base lg:text-3xl ${getNextRound(data?.next_round)['tx']}`}>{getNextRound(data?.next_round)['label']}</span>
                                         <CountUp
                                             end={data?.next_round}
                                             duration={3}

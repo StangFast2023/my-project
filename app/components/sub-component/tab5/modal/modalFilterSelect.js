@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
-export default function ModalFilterSelect({ isOpen, setIsOpen, details, loading, data, onSave }) {
+export default function ModalFilterSelect({ isOpen, setIsOpen, data, onSave }) {
     const part1 = data?.tab5?.part1 || {};
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [regionKey, setRegionKey] = useState('');

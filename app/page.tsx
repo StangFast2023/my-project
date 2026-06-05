@@ -1,14 +1,14 @@
 "use client";
-import { useState, useEffect, useTransition }   from 'react';
-import axios                                    from "axios";
-import Tab1                                     from './components/tab1'; 
-import Tab2                                     from './components/tab2';
-import Tab3                                     from './components/tab3'; 
-import Tab4                                     from './components/tab4'; 
-import Tab5                                     from './components/tab5'; 
-import LoadingWrapper                           from './components/LoadingWrapper'; 
-import ModalTab2Part6                           from './components/sub-component/tab2/modal/modal_of_part6top10pos'; 
-import ModalFilterSelect                        from './components/sub-component/tab5/modal/modalFilterSelect'; 
+import { useState, useEffect, useTransition } from 'react';
+import axios from "axios";
+import Tab1 from './components/tab1';
+import Tab2 from './components/tab2';
+import Tab3 from './components/tab3';
+import Tab4 from './components/tab4';
+import Tab5 from './components/tab5';
+import LoadingWrapper from './components/LoadingWrapper';
+import ModalTab2Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos';
+import ModalFilterSelect from './components/sub-component/tab5/modal/modalFilterSelect';
 export interface FilterData {
     id_region: number;
     id_sub_regoin: number;
@@ -20,15 +20,15 @@ export default function App() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('tab5');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    {/* for tap2 part6 */}
+    {/* for tap2 part6 */ }
     const [details, setDetails] = useState(null);
     const [isOpen2, setIsOpen2] = useState(false);
 
-    {/* for tap5 part1 */}
+    {/* for tap5 part1 */ }
     const [details5, setDetails5] = useState<FilterData | null>(null);;
     const [isOpen5, setIsOpen5] = useState(false);
     const handleSave = (val: FilterData) => {
-        setDetails5(val); 
+        setDetails5(val);
         setIsOpen5(false);
     };
     useEffect(() => {
@@ -75,58 +75,58 @@ export default function App() {
                         </button>
                         {isMenuOpen && (
                             <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
-                                <button onClick={() => {setActiveTab('tab1'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
-                                <button onClick={() => {setActiveTab('tab2'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
-                                <button onClick={() => {setActiveTab('tab3'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
-                                <button onClick={() => {setActiveTab('tab4'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
-                                <button onClick={() => {setActiveTab('tab5'); setIsMenuOpen(false)}} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
+                                <button onClick={() => { setActiveTab('tab1'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
+                                <button onClick={() => { setActiveTab('tab2'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
+                                <button onClick={() => { setActiveTab('tab3'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
+                                <button onClick={() => { setActiveTab('tab4'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
+                                <button onClick={() => { setActiveTab('tab5'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
                             </div>
                         )}
                     </div>
 
                     <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                        <button  onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null }`} >
-                            <span className={`${ activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
+                        <button onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null}`} >
+                            <span className={`${activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                                 สรุปภาพรวม
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null }`} >
-                            <span className={`${ activeTab === 'tab2' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
+                        <button onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null}`} >
+                            <span className={`${activeTab === 'tab2' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                                 ข้อมูลประเภทและตำแหน่ง
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null }`} >
-                            <span className={`${ activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
+                        <button onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null}`} >
+                            <span className={`${activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                                 ข้อมูลรายภาคและเขต
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null }`} >
-                            <span className={`${ activeTab === 'tab4' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
+                        <button onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null}`} >
+                            <span className={`${activeTab === 'tab4' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                                 ข้อมูลเจาะลึกรายเขตและตำแหน่ง
                             </span>
                         </button>
-                        <button  onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null }`} >
-                            <span className={`${ activeTab === 'tab5' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400' }`}>
+                        <button onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null}`} >
+                            <span className={`${activeTab === 'tab5' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                                 วิเคราะห์โอกาสเรียกตัว
                             </span>
                         </button>
                     </div>
                     <div className="mt-6">
-                        {activeTab === 'tab1' && ( <div className="animate-fade-in"> <Tab1 data={data}/> </div> )}
-                        {activeTab === 'tab2' && ( <div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} data={data}/> </div> )}
-                        {activeTab === 'tab3' && ( <div className="animate-fade-in"> <Tab3 data={data}/> </div> )}
-                        {activeTab === 'tab4' && ( <div className="animate-fade-in"> <Tab4 data={data}/> </div> )}
-                        {activeTab === 'tab5' && ( <div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} data={data}/> </div> )}
+                        {activeTab === 'tab1' && (<div className="animate-fade-in"> <Tab1 data={data} /> </div>)}
+                        {activeTab === 'tab2' && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} data={data} /> </div>)}
+                        {activeTab === 'tab3' && (<div className="animate-fade-in"> <Tab3 data={data} /> </div>)}
+                        {activeTab === 'tab4' && (<div className="animate-fade-in"> <Tab4 data={data} /> </div>)}
+                        {activeTab === 'tab5' && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} data={data} /> </div>)}
                     </div>
                 </div>
-                
+
                 {/* for tap2 part6 */}
                 <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} loading={loading} />
 
                 {/* for tap5 part1 */}
-                <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} details={details5} loading={loading} data={data} onSave={handleSave} />
+                <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} data={data} onSave={handleSave} />
 
             </main>
         </LoadingWrapper>
-  );
+    );
 }
