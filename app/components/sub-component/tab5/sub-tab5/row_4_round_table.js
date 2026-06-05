@@ -34,7 +34,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
+                <div className="flex-1 min-h-[200px] max-h-[800px] overflow-x-auto">
                     <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>

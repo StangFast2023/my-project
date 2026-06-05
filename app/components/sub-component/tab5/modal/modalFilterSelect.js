@@ -184,7 +184,21 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, details, loading,
                             onClick={() => areaKey && setActiveDropdown(activeDropdown === 'pos' ? null : 'pos')}
                             className={`col-span-9 px-4 py-3 bg-white rounded-2xl border-2 border-gray-200 font-medium flex justify-between items-center ${areaKey ? 'text-gray-900 cursor-pointer' : 'text-gray-400 opacity-50'}`}
                         >
-                            {positionKey ? allPositions.find(p => p.key === positionKey)?.pos_name : "กรุณาเลือกตำแหน่ง"}
+                            <div>
+                                <b className="mr-2">
+                                    {positionKey ? "[ " + allPositions.find(p => p.key === positionKey)?.pos_id + " ]" : null}
+                                </b>
+                                {positionKey ? allPositions.find(p => p.key === positionKey)?.pos_name : "กรุณาเลือกตำแหน่ง"}
+                                {positionKey
+                                    ?
+                                    (
+                                        <span className={`ml-2 px-4 py-1 rounded-full shadow-sm ${typeStyles[allPositions.find(p => p.key === positionKey)?.pos_type_id]}`}>
+                                            {allPositions.find(p => p.key === positionKey)?.pos_type_name}
+                                        </span>
+                                    )
+                                    : null
+                                }
+                            </div>
                         </div>
                         {activeDropdown === 'pos' && (
                             <div
@@ -282,8 +296,8 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, details, loading,
                             });
                         }}
                         className={`px-6 py-2 font-bold rounded-lg transition-all ${isComplete
-                                ? "bg-green-600 text-white hover:bg-green-700 cursor-pointer"
-                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            ? "bg-green-600 text-white hover:bg-green-700 cursor-pointer"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
                             }`}
                     >
                         ยืนยันข้อมูล
