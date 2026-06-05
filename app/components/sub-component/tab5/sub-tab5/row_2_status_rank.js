@@ -53,7 +53,7 @@ export default function Row3StatusRank({ data }) {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
 
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getNextRound(data?.next_round)['bg']} my-2 shadow-xs`}>
-                <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">โอกาสที่จะถูกเรียกในรอบถัดไป :</p>
+                <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">สถานะการรอคอยในบัญชีนี้ :</p>
                 <div className="items-baseline gap-2 text-right">
                     <span className={`text-lg md:text-base lg:text-2xl font-bold ${getNextRound(data?.next_round)['tx']}`}>
                         {
@@ -79,7 +79,7 @@ export default function Row3StatusRank({ data }) {
             </div>
 
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getRiskStatus(data?.rank_risk)['bg']} my-2 shadow-xs`}>
-                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">สถานะความเสี่ยงของลำดับคุณ : </p>
+                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">ประเมินสถานะการเรียกตามลำดับของคุณ : </p>
                 <div className="items-baseline gap-2 text-right">
                     <span className={`text-lg md:text-base lg:text-2xl font-bold ${getRiskStatus(data?.rank_risk)['tx']}`}>
                         {
@@ -105,7 +105,7 @@ export default function Row3StatusRank({ data }) {
             </div>
 
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4 ${getProbabilityStatus(data?.probabilitys)['bg']} my-2 shadow-xs`}>
-                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">โอกาสบรรจุก่อนที่บัญชีจะหมดอายุ : </p>
+                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">โอกาสได้รับการบรรจุก่อนบัญชีหมดอายุ : </p>
                 <div className="items-baseline gap-2 text-right">
                     <span className={`text-lg md:text-base lg:text-2xl font-bold ${getProbabilityStatus(data?.probabilitys)['tx']}`}>
 

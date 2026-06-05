@@ -20,7 +20,7 @@ export default function Row7ChanceforEmpty({ data }) {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
 
             <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
-                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">ในรอบถัดไปคาดว่าจะเรียกกี่อัตรา : </p>
+                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">ประมาณการอัตราเรียกบรรจุรอบถัดไป : </p>
                 <div className="items-baseline gap-2 text-right">
                     <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
 
@@ -58,7 +58,7 @@ export default function Row7ChanceforEmpty({ data }) {
                 </div>
             </div>
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4 ${getProbabilityStatus(data?.probability_percent)['bg']} my-2 shadow-xs`}>
-                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">โอกาสจะเรียกหมดบัญชี : </p>
+                <p className="text-gray-700 font-bold text-lg md:text-base lg:text-sm">ความน่าจะเป็นในการเรียกบรรจุจนครบบัญชี : </p>
                 <div className="items-baseline gap-2 text-right">
                     <span className={`text-lg md:text-base lg:text-2xl font-bold ${getProbabilityStatus(data?.probability_percent)['tx']}`}>
 
