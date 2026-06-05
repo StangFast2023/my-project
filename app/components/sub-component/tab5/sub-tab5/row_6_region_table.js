@@ -179,7 +179,7 @@ export default function Row6RegionTable({ position, data }) {
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
-                <div className="flex-1  min-h-[400px] max-h-[800px] overflow-x-auto">
+                <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
                     <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
@@ -225,11 +225,6 @@ export default function Row6RegionTable({ position, data }) {
 
                                                 last.rounds[index].status = calledVal;
                                                 last.rounds[index].total += currentVal;
-
-                                                if (roundKey === 2) {
-                                                    console.log(`${region.name} ${zone.name} รอบ ${roundKey}`, reg);
-                                                }
-
                                             });
                                             return (
                                                 <tr key={`${region.name}-${zone.name}`}>
@@ -289,7 +284,7 @@ export default function Row6RegionTable({ position, data }) {
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center"></td>
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.list.toLocaleString()}</td>
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.call.toLocaleString()}</td>
-                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{((last.call / last.list) * 100).toFixed(2)} %</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.list > 0 ? (((last.call / last.list) * 100).toFixed(2) + " %") : 0}</td>
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-6 py-4 text-center">{last.remain.toLocaleString()}</td>
                                     {last.rounds.map((item, index) => {
                                         return (

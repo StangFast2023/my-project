@@ -9,9 +9,9 @@ export default function Tab5({ setIsOpen, details, data }) {
 
     const fetchData = useCallback(async (details) => {
         if (!details) return;
-        const { regionId, areaId, positionId, sequence } = details;
+        const { regionId, areaId, positionId, sequence, frequency } = details;
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`);
             setdataforPrediction(response.data);
         } catch (error) {
             console.error("Error fetching details:", error);

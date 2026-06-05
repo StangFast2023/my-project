@@ -44,7 +44,6 @@ export default function Row5RegionMonthly({ position, data }) {
     };
 
     const barDatasets = Object.keys(groupedData).map(regionName => {
-        console.log(regionName);
         const hue = getHueFromString(regionName);
         return {
             type: 'bar',
