@@ -42,7 +42,8 @@ export default function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/data-stats");
+                // const response = await axios.get("http://127.0.0.1:8000/api/data-stats");
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/data-stats`);
                 setData(response.data);
                 setLoading(false);
             } catch (error) {
