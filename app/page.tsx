@@ -41,9 +41,18 @@ export default function App() {
     }, [activeTab]);
     useEffect(() => {
         const fetchData = async () => {
+            // ดึงค่าจาก env
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+            // เช็คก่อนว่าค่ามาไหม ถ้าไม่มาให้ Log บอกเลย
+            if (!baseUrl) {
+                console.error("NEXT_PUBLIC_API_URL ไม่ถูกกำหนดในไฟล์ .env.local!");
+                return;
+            }
+
             try {
-                // const response = await axios.get("http://127.0.0.1:8000/api/data-stats");
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/data-stats`);
+                // รวม URL แบบปลอดภัย
+                const response = await axios.get(`${baseUrl}/data-stats`);
                 setData(response.data);
                 setLoading(false);
             } catch (error) {
