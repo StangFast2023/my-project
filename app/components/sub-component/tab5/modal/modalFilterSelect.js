@@ -140,6 +140,10 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, data, onSave }) {
         2: "bg-green-100 text-green-700",
         3: "bg-yellow-100 text-yellow-700"
     };
+    useEffect(() => {
+        document.body.style.overflow = isOpen ? 'hidden' : 'unset';
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return (

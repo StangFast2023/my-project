@@ -1,4 +1,5 @@
 
+import React, { useState } from 'react';
 import { UserSearch } from 'lucide-react';
 export default function Row7ChanceforEmpty({ region, zone, position, data }) {
     const status_work = data?.status_work || {};
@@ -6,8 +7,8 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
     const heatmap_matrix = data?.heatmap_matrix || {};
     const rounds_header = data?.rounds_header || {};
 
-    console.log(region);
-
+    const [hoveredRow, setHoveredRow] = useState(null);
+    const [hoveredCol, setHoveredCol] = useState(null);
 
     const max_rounds = Math.max(10, data?.rounds_header.length || 0);
     const round_columns = Array.from({ length: max_rounds }, (_, i) => i + 1);
@@ -66,13 +67,25 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                                 if (status_work === 'completed') return null;
                                 if (!month_data) return null;
                                 return (
-                                    <tr key={month} className="text-gray-600">
+                                    <tr key={month} className={`text-gray-600`}>
                                         <td className="sticky left-[0] z-30 bg-gray-50 px-3 py-4 text-sm md:text-base lg:text-ls font-semibold">{month_data?.date}</td>
-                                        {Object.values(month_data?.round).map(round_per => {
+                                        {Object.values(month_data?.round).map((round_per, index) => {
+                                            const isHoveredCell = hoveredRow === month && hoveredCol === index;
+                                            const isHoveredRow = hoveredRow === month;
+                                            const isHoveredCol = hoveredCol === index;
                                             const colorSettings = getHeatmapColor(round_per?.percent || 0);
                                             if (!round_per) return null;
                                             return (
-                                                <td key={`${month_data?.date}-${round_per?.percent}`} style={colorSettings.style} className={`z-30 bg-gray-50 px-3 py-4 text-sm md:text-base lg:text-ls text-center font-semibold`}>{round_per?.percent.toFixed(2)}%</td>
+                                                <td
+                                                    onMouseEnter={() => { setHoveredRow(month); setHoveredCol(index); }}
+                                                    onMouseLeave={() => { setHoveredRow(null); setHoveredCol(null); }}
+                                                    key={`${month_data?.date}-${round_per?.percent}`}
+                                                    style={colorSettings.style}
+                                                    className={`z-30 bg-gray-50 px-3 py-4 text-sm md:text-base lg:text-ls text-center font-semibold transition-all duration-200
+                                                    ${isHoveredCell ? '!bg-indigo-200 !text-indigo-600 z-10 shadow-[inset_0_0_0_3px_#4338ca]' : ''}
+                                                    ${isHoveredRow || isHoveredCol ? '!bg-indigo-50' : ''}`}>
+                                                    {round_per?.percent.toFixed(2)}%
+                                                </td>
                                             );
                                         })}
                                     </tr>

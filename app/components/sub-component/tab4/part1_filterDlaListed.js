@@ -1,18 +1,18 @@
 "use client";
 import React, { useMemo, useState } from 'react';
-import Swal                         from 'sweetalert2';
-import withReactContent             from 'sweetalert2-react-content';
-import { motion }                   from 'framer-motion';
-import { FilterDropdown }           from './filterDropdown';
-import { LoadingScreen }            from '../../../components/LoadingScreen';
-import { useColumnStore }           from '../../useTableColumns';
-import { RotateCcw , Settings }     from 'lucide-react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { motion } from 'framer-motion';
+import { FilterDropdown } from './filterDropdown';
+import { LoadingScreen } from '../../../components/LoadingScreen';
+import { useColumnStore } from '../../useTableColumns';
+import { RotateCcw, Settings } from 'lucide-react';
 const MySwal = withReactContent(Swal);
-export default function T4P1_TableAllListed({ 
-    data, 
-    filters, 
+export default function T4P1_TableAllListed({
+    data,
+    filters,
     setFilters
- }) {
+}) {
     const filterStructure = data?.tab4?.part1;
 
     const items = useMemo(() => {
@@ -22,9 +22,9 @@ export default function T4P1_TableAllListed({
             name: r.main_name,
             isRegion: true
         }));
-        const subs = Object.values(regionData).flatMap(r => 
+        const subs = Object.values(regionData).flatMap(r =>
             Object.entries(r.sub || {}).map(([subKey, s]) => ({
-                id: `sub-${r.main}-${subKey}`, 
+                id: `sub-${r.main}-${subKey}`,
                 name: s.sub_name,
                 isRegion: false,
                 parentId: `reg-${r.main}`
@@ -40,7 +40,7 @@ export default function T4P1_TableAllListed({
             name: p.type_name,
             isRegion: true
         }));
-        const positions = Object.entries(positionData).flatMap(([typeKey, p]) => 
+        const positions = Object.entries(positionData).flatMap(([typeKey, p]) =>
             Object.entries(p.data_position).map(([posKey, pos]) => ({
                 id: `pos-${typeKey}-${posKey}`,
                 name: pos.full_pos_name,
@@ -50,7 +50,7 @@ export default function T4P1_TableAllListed({
         );
 
         return [...types, ...positions];
-    }, [data]);    
+    }, [data]);
 
     const handleReset = () => {
         MySwal.fire({
@@ -65,7 +65,7 @@ export default function T4P1_TableAllListed({
                 handleRegionChange(allRegionIds);
                 handlePositionChange(allPosIds);
                 if (typeof handleToggleEmpty === 'function') {
-                    handleToggleEmpty(false); 
+                    handleToggleEmpty(false);
                 }
                 const defaultSettings = {
                     all_header: true,
@@ -90,7 +90,7 @@ export default function T4P1_TableAllListed({
         const chips = [];
         const regionData = data?.tab4?.part1?.region || {};
         const regionKeys = Object.keys(regionData);
-        
+
         const allPossibleIds = items.filter(i => !i.isRegion).map(i => i.id);
         const isAllSelected = allPossibleIds.every(id => filters.regions.includes(id));
 
@@ -102,17 +102,17 @@ export default function T4P1_TableAllListed({
             const r = regionData[regKey];
             const regId = `reg-${r.main}`;
             const subEntries = Object.entries(r.sub || {});
-            const selectedSubsInThisRegion = subEntries.filter(([subKey, s]) => 
+            const selectedSubsInThisRegion = subEntries.filter(([subKey, s]) =>
                 filters.regions.includes(`sub-${r.main}-${subKey}`)
             );
             if (filters.regions.includes(regId) || selectedSubsInThisRegion.length === subEntries.length) {
                 chips.push({ id: regId, label: `${r.main_name} ทุกเขต` });
-            } 
+            }
             else if (selectedSubsInThisRegion.length > 0) {
                 selectedSubsInThisRegion.forEach(([subKey, s]) => {
-                    chips.push({ 
-                        id: `sub-${r.main}-${subKey}`, 
-                        label: s.sub_name 
+                    chips.push({
+                        id: `sub-${r.main}-${subKey}`,
+                        label: s.sub_name
                     });
                 });
             }
@@ -141,7 +141,7 @@ export default function T4P1_TableAllListed({
             icon: 'success',
             title: `ลบ "${itemName}" เรียบร้อย`,
             showConfirmButton: false,
-            timer: 1000
+            timer: 3000
         });
     };
 
@@ -156,17 +156,17 @@ export default function T4P1_TableAllListed({
         Object.entries(positionData).forEach(([typeKey, p]) => {
             const typeId = `type-${typeKey}`;
             const posEntries = Object.entries(p.data_position || {});
-            const selectedPosInThisType = posEntries.filter(([posKey, pos]) => 
+            const selectedPosInThisType = posEntries.filter(([posKey, pos]) =>
                 filters.positions.includes(`pos-${typeKey}-${posKey}`)
             );
             if (filters.positions.includes(typeId) || selectedPosInThisType.length === posEntries.length) {
                 chips.push({ id: typeId, label: `${p.type_name} ทุกตำแหน่ง` });
-            } 
+            }
             else if (selectedPosInThisType.length > 0) {
                 selectedPosInThisType.forEach(([posKey, pos]) => {
-                    chips.push({ 
-                        id: `pos-${typeKey}-${posKey}`, 
-                        label: pos.full_pos_name 
+                    chips.push({
+                        id: `pos-${typeKey}-${posKey}`,
+                        label: pos.full_pos_name
                     });
                 });
             }
@@ -183,7 +183,7 @@ export default function T4P1_TableAllListed({
                 nextPositions = [];
             } else if (idToRemove.startsWith('type-')) {
                 const posPrefix = idToRemove.replace('type-', 'pos-');
-                nextPositions = prev.positions.filter(id => 
+                nextPositions = prev.positions.filter(id =>
                     id !== idToRemove && !id.startsWith(posPrefix)
                 );
             } else {
@@ -215,7 +215,6 @@ export default function T4P1_TableAllListed({
 
     const handleToggleEmpty = (e) => {
         const isChecked = (typeof e === 'boolean') ? e : e.target.checked;
-        setFilters(prev => ({ ...prev, showEmpty: isChecked }));
         MySwal.fire({
             toast: true,
             position: 'top-end',
@@ -223,10 +222,11 @@ export default function T4P1_TableAllListed({
             icon: 'success',
             title: (isChecked ? 'ทำการแสดง' : 'ซ่อน') + `ตำแหน่งที่ไม่เปิดสอบเรียบร้อย`,
             showConfirmButton: false,
-            timer: 1000
+            timer: 3000
         });
+        setFilters(prev => ({ ...prev, showEmpty: isChecked }));
     };
-    
+
     React.useEffect(() => {
         if (filters.regions.length === 0 && items.length > 0) {
             setFilters(prev => ({
@@ -236,10 +236,10 @@ export default function T4P1_TableAllListed({
             }));
         }
     }, [items, posItems]);
-    
+
     const updateTableVisibility = (newSettings) => {
         const setStoreColumns = useColumnStore.getState().setColumns;
-        setStoreColumns(newSettings); 
+        setStoreColumns(newSettings);
     };
     const openSettingsModal = () => {
         const currentColumns = useColumnStore.getState().columns;
@@ -334,7 +334,7 @@ export default function T4P1_TableAllListed({
             width: '600px',
             preConfirm: () => {
                 return {
-                    all_header:   document.getElementById('all_header').checked,
+                    all_header: document.getElementById('all_header').checked,
                     column_part1: document.getElementById('column_part1').checked,
                     column_part2: document.getElementById('column_part2').checked,
                     column_part3: document.getElementById('column_part3').checked,
@@ -344,7 +344,7 @@ export default function T4P1_TableAllListed({
             if (result.isConfirmed) {
                 const { all_header, column_part1, column_part2, column_part3 } = result.value;
                 const isHeaderHidden = !all_header;
-                if( all_header || !all_header ) {
+                if (all_header || !all_header) {
                     if (isHeaderHidden) {
                         let text = "";
                         if (!all_header) text = `หากคุณซ่อนหัวแถวและสรุปของระดับ <b>ภาค , เขต และประเภท</b> <br> ระบบจะเพิ่มคอลัมน์ <b>ภาค</b> กับ <b>เขต</b> เข้ามาแทน <br> และ <b>สรุปรวม</b> ของ ภาค , เขต และประเภท จะไม่แสดงผล`;
@@ -385,13 +385,13 @@ export default function T4P1_TableAllListed({
             }
         });
     };
-    if(!data) return <LoadingScreen />;
+    if (!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="flex flex-wrap items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
                 <div className="flex flex-1 gap-4">
                     <div className="w-1/2">
-                        <FilterDropdown 
+                        <FilterDropdown
                             label="ภาค & เขต"
                             items={items}
                             selectedItems={filters.regions}
@@ -400,9 +400,9 @@ export default function T4P1_TableAllListed({
                         />
                     </div>
                     <div className="w-1/2">
-                        <FilterDropdown 
-                            label="ประเภท & ตำแหน่ง" 
-                            items={posItems} 
+                        <FilterDropdown
+                            label="ประเภท & ตำแหน่ง"
+                            items={posItems}
                             selectedItems={filters.positions}
                             setSelectedItems={handlePositionChange}
                             columns={4}
@@ -411,10 +411,10 @@ export default function T4P1_TableAllListed({
                 </div>
                 <label className="flex items-center cursor-pointer rounded-lg shadow-sm border border-slate-300 p-2 whitespace-nowrap">
                     <div className="relative">
-                        <input 
-                            type="checkbox" 
+                        <input
+                            type="checkbox"
                             id="toggle-switch"
-                            className="sr-only peer" 
+                            className="sr-only peer"
                             checked={filters.showEmpty}
                             onChange={handleToggleEmpty}
                         />
@@ -425,14 +425,14 @@ export default function T4P1_TableAllListed({
                         แสดงตำแหน่งที่ไม่เปิดสอบ
                     </span>
                 </label>
-                <button 
+                <button
                     onClick={openSettingsModal}
                     className="flex items-center gap-2 px-5 py-2 px-4 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all whitespace-nowrap"
                 >
                     <Settings />
                     <span className="font-medium">ตั้งค่าตาราง</span>
                 </button>
-                <button 
+                <button
                     onClick={handleReset}
                     className="flex items-center gap-2 px-5 py-2 px-4 bg-slate-100 text-slate-600 rounded-lg shadow-sm border border-slate-200 hover:bg-slate-200 transition-all whitespace-nowrap"
                 >

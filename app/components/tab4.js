@@ -1,29 +1,28 @@
-import React, { useState , useEffect , useMemo  } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
-import T4P1_filterDlaListed     from './sub-component/tab4/part1_filterDlaListed';
-import T4P2_showingAllTable     from './sub-component/tab4/part2_showingAllTable';
-import ShowAllDataTable         from './sub-component/tab4/showallDataTable';
-import { T4P3_filterControl }   from './sub-component/tab4/part3_filterControl';
-import { LoadingScreen }        from '../components/LoadingScreen';
-import { useColumnStore }       from '../components/useTableColumns';
+import T4P1_filterDlaListed from './sub-component/tab4/part1_filterDlaListed';
+import T4P2_showingAllTable from './sub-component/tab4/part2_showingAllTable';
+import ShowAllDataTable from './sub-component/tab4/showallDataTable';
+import { LoadingScreen } from '../components/LoadingScreen';
+import { useColumnStore } from '../components/useTableColumns';
 
-export default function Tab4({data}) {
-    const columns           = useColumnStore((state) => state.columns);
-    const initialRegions    = Object.keys(data?.tab4?.part1?.region || {});
+export default function Tab4({ data }) {
+    const columns = useColumnStore((state) => state.columns);
+    const initialRegions = Object.keys(data?.tab4?.part1?.region || {});
     const [selectedRegions, setSelectedRegions] = useState(initialRegions);
     const [selectedSubRegions, setSelectedSubRegions] = useState(() => {
-            const allSubs = [];
-            Object.keys(data?.tab4?.part1?.region || {}).forEach(regId => {
-                const subs = Object.keys(data?.tab4?.part1?.region[regId].sub || {});
-                subs.forEach(subId => allSubs.push(`${regId}-${subId}`));
-            });
-            return allSubs;
+        const allSubs = [];
+        Object.keys(data?.tab4?.part1?.region || {}).forEach(regId => {
+            const subs = Object.keys(data?.tab4?.part1?.region[regId].sub || {});
+            subs.forEach(subId => allSubs.push(`${regId}-${subId}`));
         });
+        return allSubs;
+    });
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedPositions, setSelectedPositions] = useState([]);
-    
-    const [isLoading, setIsLoading] = useState(false);
-    const [filters, setFilters] = useState({regions: [], positions: [], showEmpty: false});
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [filters, setFilters] = useState({ regions: [], positions: [], showEmpty: false });
     const [fetchedData, setFetchedData] = useState(null);
 
     const tableData = useMemo(() => {
@@ -39,32 +38,32 @@ export default function Tab4({data}) {
         fetch('http://127.0.0.1:8000/api/updating-tab4-table', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ 
-                cleanRegions: filters.regions, 
+            body: JSON.stringify({
+                cleanRegions: filters.regions,
                 cleanPositions: filters.positions,
                 showEmpty: filters.showEmpty
             })
         })
-        .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        })
-        .then(result => {
-            if (!ignore) {
-                setFetchedData(result); 
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 300);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            setIsLoading(false);
-        });
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(result => {
+                if (!ignore) {
+                    setFetchedData(result);
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 300);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                setIsLoading(false);
+            });
 
         return () => { ignore = true; };
     }, [filters, data]);
-    if ( !data ) return <LoadingScreen />;
+    if (!data) return <LoadingScreen />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -82,7 +81,7 @@ export default function Tab4({data}) {
                 </div>
                 <div className="grid grid-cols-12 gap-6 my-2">
                     <div className="col-span-12 lg:col-span-12">
-                        <T4P1_filterDlaListed 
+                        <T4P1_filterDlaListed
 
                             data={data}
 
@@ -103,12 +102,12 @@ export default function Tab4({data}) {
                         />
                     </div>
                 </div>
-                <div className={`grid grid-cols-12 gap-6 my-2 ${!columns.all_header ? 'hidden' : 'block' }`}>
+                <div className={`grid grid-cols-12 gap-6 my-2 ${!columns.all_header ? 'hidden' : 'block'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T4P2_showingAllTable data={tableData} isLoading={isLoading} />
                     </div>
                 </div>
-                <div className={`grid grid-cols-12 gap-6 my-2 ${columns.all_header ? 'hidden' : 'block' }`}>
+                <div className={`grid grid-cols-12 gap-6 my-2 ${columns.all_header ? 'hidden' : 'block'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
                         <ShowAllDataTable part2={tableData} isLoading={isLoading} />
