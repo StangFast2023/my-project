@@ -29,31 +29,39 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, data, onSave }) {
         }
     });
     useEffect(() => {
-        const handleScroll = () => {
-            if (activeDropdown === 'pos' && positionButtonRef.current) {
-                const rect = positionButtonRef.current.getBoundingClientRect();
-                setDropdownStyle({
-                    top: (rect.bottom + 8) + 'px',
-                    left: rect.left + 'px',
-                    width: positionButtonRef.current.offsetWidth + 'px',
-                });
-            }
-        };
-        window.addEventListener('scroll', handleScroll, true); // true เพื่อดักจับทุกการ scroll ในหน้า
-        return () => window.removeEventListener('scroll', handleScroll, true);
+        if (typeof window !== 'undefined') {
+            const handleScroll = () => {
+                if (activeDropdown === 'pos' && positionButtonRef.current) {
+                    const rect = positionButtonRef.current.getBoundingClientRect();
+                    setDropdownStyle({
+                        top: (rect.bottom + 8) + 'px',
+                        left: rect.left + 'px',
+                        width: positionButtonRef.current.offsetWidth + 'px',
+                    });
+                }
+            };
+            window.addEventListener('scroll', handleScroll, true);
+            return () => window.removeEventListener('scroll', handleScroll, true);
+        }
     }, [activeDropdown]);
 
     useEffect(() => {
+        // 1. เช็คให้ชัวร์ว่าเราอยู่ใน Browser แล้ว
+        if (typeof window === 'undefined') return;
+
+        // 2. ถ้าอยู่บน Browser แล้ว โค้ดข้างล่างนี้จะปลอดภัย 100%
         const handleUpdate = () => {
             if (activeDropdown === 'pos' && positionButtonRef.current) {
                 const rect = positionButtonRef.current.getBoundingClientRect();
+
+                // ตอนนี้ window.innerHeight จะเรียกใช้ได้ปกติ เพราะเราอยู่ใน Client แล้ว
                 if (rect.bottom < 0 || rect.top > window.innerHeight) {
                     setActiveDropdown(null);
                 } else {
                     setDropdownStyle({
                         top: (rect.bottom + 8) + 'px',
                         left: rect.left + 'px',
-                        minWidth: positionButtonRef.current.offsetWidth + 'px', // ใช้ min-width แทน
+                        minWidth: positionButtonRef.current.offsetWidth + 'px',
                         width: 'max-content',
                         maxWidth: '90vw',
                     });

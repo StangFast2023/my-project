@@ -32,10 +32,12 @@ export default function App() {
         setIsOpen5(false);
     };
     useEffect(() => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        if (typeof window !== 'undefined') {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
     }, [activeTab]);
     useEffect(() => {
         const fetchData = async () => {
