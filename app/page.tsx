@@ -41,10 +41,8 @@ export default function App() {
     }, [activeTab]);
     useEffect(() => {
         const fetchData = async () => {
-            // ดึงค่าจาก env
-            const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-            console.log("Check Env:", process.env.NEXT_PUBLIC_API_URL); // ใส่บรรทัดนี้ไว้ก่อน axios
-            // เช็คก่อนว่าค่ามาไหม ถ้าไม่มาให้ Log บอกเลย
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/data-stats";
+            console.log("ค่าที่ใช้จริงคือ:", baseUrl);
             if (!baseUrl) {
                 console.error("NEXT_PUBLIC_API_URL ไม่ถูกกำหนดในไฟล์ .env.local!");
                 return;
