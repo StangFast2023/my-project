@@ -2,8 +2,7 @@
 "use client";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import zoomPlugin from 'chartjs-plugin-zoom';
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 export default function Row3Part1Bar({ data }) {
     const chartRawData = data?.chart_1_round;
     if (!chartRawData) return null;

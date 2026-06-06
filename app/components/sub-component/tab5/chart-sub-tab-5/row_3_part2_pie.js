@@ -1,9 +1,8 @@
 
 "use client";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
-import { Bar , Doughnut }   from "react-chartjs-2";
-import zoomPlugin           from 'chartjs-plugin-zoom';
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, zoomPlugin);
+import { Bar, Doughnut } from "react-chartjs-2";
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 export default function Row3Part2Pie({ data }) {
     const total_called = data?.total_called;
     const total_remain = data?.total_remain;
@@ -24,31 +23,31 @@ export default function Row3Part2Pie({ data }) {
             },
         ],
     };
-    
+
     const optionsPie = {
         responsive: true,
         maintainAspectRatio: false,
         cutout: '20',
         plugins: {
-        legend: {
-            position: 'bottom',
-            labels: {
-                font: { family: "'Kanit', sans-serif", size: 14 },
-                usePointStyle: true, 
-                padding: 20
-            }
-        },
-        tooltip: {
-            callbacks: {
-                label: function(context) {
-                    const label = context.label || '';
-                    const value = context.parsed;
-                    const total = total_listed;
-                    const percentage = ((value / total) * 100).toFixed(2);
-                    return `${label}: ${value.toLocaleString()} คน ( ${percentage}% )`;
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { family: "'Kanit', sans-serif", size: 14 },
+                    usePointStyle: true,
+                    padding: 20
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        const label = context.label || '';
+                        const value = context.parsed;
+                        const total = total_listed;
+                        const percentage = ((value / total) * 100).toFixed(2);
+                        return `${label}: ${value.toLocaleString()} คน ( ${percentage}% )`;
+                    }
                 }
             }
-        }
         }
     };
     return (

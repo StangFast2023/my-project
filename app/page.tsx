@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useTransition } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios";
 import Tab1 from './components/tab1';
 import Tab2 from './components/tab2';

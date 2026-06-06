@@ -46,15 +46,10 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, data, onSave }) {
     }, [activeDropdown]);
 
     useEffect(() => {
-        // 1. เช็คให้ชัวร์ว่าเราอยู่ใน Browser แล้ว
         if (typeof window === 'undefined') return;
-
-        // 2. ถ้าอยู่บน Browser แล้ว โค้ดข้างล่างนี้จะปลอดภัย 100%
         const handleUpdate = () => {
             if (activeDropdown === 'pos' && positionButtonRef.current) {
                 const rect = positionButtonRef.current.getBoundingClientRect();
-
-                // ตอนนี้ window.innerHeight จะเรียกใช้ได้ปกติ เพราะเราอยู่ใน Client แล้ว
                 if (rect.bottom < 0 || rect.top > window.innerHeight) {
                     setActiveDropdown(null);
                 } else {
