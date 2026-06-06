@@ -49,7 +49,6 @@ export default function App() {
             }
 
             try {
-                // รวม URL แบบปลอดภัย
                 const response = await axios.get(`${baseUrl}/data-stats`);
                 setData(response.data);
                 setLoading(false);
