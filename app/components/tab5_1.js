@@ -6,9 +6,9 @@ import Row5 from '../components/sub-component/tab5/sub-tab5/row_5_region_monthly
 import Row6 from '../components/sub-component/tab5/sub-tab5/row_6_region_table';
 
 
-export default function Tab5_1({ details, data }) {
+export default function Tab5_1({ details, base_data, data }) {
     const dataforChart = data || null;
-    const dataShow = data?.tab5?.part1 || {};
+    const dataShow = base_data?.tab5?.part1 || {};
     const RegSh = dataShow[details?.regionId]?.pro_main_name || null;
     const ZneSh = dataShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id ? "เขต " + dataShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id : null;
     const PosSh = dataShow[details?.regionId]?.pro_sub[details?.areaId]?.data_position[details?.positionId]?.pos_name || null;

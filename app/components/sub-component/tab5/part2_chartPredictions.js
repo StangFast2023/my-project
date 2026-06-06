@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Tab5_1 from '../../tab5_1';
 import Tab5_2 from '../../tab5_2';
 
-export default function T5P1S1_CurrentData({ details, data }) {
+export default function T5P1S1_CurrentData({ details, base_data, data }) {
     const dataforChart = data || null;
     const [activeTab, setActiveTab] = useState('tab5_1');
     return (
@@ -22,8 +22,8 @@ export default function T5P1S1_CurrentData({ details, data }) {
             </div>
 
             <div>
-                {activeTab === 'tab5_1' && (<div className="animate-fade-in"> <Tab5_1 details={details} data={dataforChart} /> </div>)}
-                {activeTab === 'tab5_2' && (<div className="animate-fade-in"> <Tab5_2 details={details} data={dataforChart} /> </div>)}
+                {activeTab === 'tab5_1' && (<div className="animate-fade-in"> <Tab5_1 details={details} base_data={base_data} data={dataforChart} /> </div>)}
+                {activeTab === 'tab5_2' && (<div className="animate-fade-in"> <Tab5_2 details={details} base_data={base_data} data={dataforChart} /> </div>)}
             </div>
 
         </div>

@@ -183,7 +183,7 @@ export default function Row6RegionTable({ position, data }) {
                     <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
-                                <th className="sticky top-0 z-30 bg-gray-50    w-[10%] px-6 py-4 text-sm md:text-base lg:text-ls font-semibold sticky left-[0] z-40">ภาค / เขต</th>
+                                <th className="sticky top-0 left-[0] z-40 bg-gray-50   w-[10%] px-6 py-4 text-sm md:text-base lg:text-ls font-semibold">ภาค / เขต</th>
                                 <th className="sticky top-0 z-30 bg-sky-50     w-[7%]  px-6 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">สถานะเปิดสอบ</th>
                                 <th className="sticky top-0 z-30 bg-amber-50   w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">ขึ้นบัญชี</th>
                                 <th className="sticky top-0 z-30 bg-emerald-50 w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-emerald-700">เรียกแล้ว</th>
@@ -197,7 +197,7 @@ export default function Row6RegionTable({ position, data }) {
                                 let reg = { list: 0, call: 0, remain: 0, rounds: roundColumns.map(() => ({ status: '-', total: null })) };
                                 return (
                                     <React.Fragment key={region.name}>
-                                        <tr className="bg-emerald-50/20">
+                                        <tr className="bg-emerald-50/20 border-t-2 border-t-gray-700 border-b border-b-gray-200">
                                             <td colSpan={roundColumns.length + 6} className="px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
                                                 <span className="sticky left-[30px]">{region.name}</span>
                                             </td>
@@ -262,7 +262,7 @@ export default function Row6RegionTable({ position, data }) {
                                                 </tr>
                                             );
                                         })}
-                                        <tr key={region.name}>
+                                        <tr key={region.name} className="border-t border-gray-200">
                                             <td className="bg-white         px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
                                             <td className="bg-amber-50/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600"></td>
                                             <td className="bg-amber-50/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>

@@ -6,7 +6,6 @@ import T5P2_chartPrediction from './sub-component/tab5/part2_chartPredictions';
 
 export default function Tab5({ setIsOpen, details, data }) {
     const [dataforPrediction, setdataforPrediction] = useState(null);
-
     const fetchData = useCallback(async (details) => {
         if (!details) return;
         const { regionId, areaId, positionId, sequence, frequency } = details;
@@ -49,7 +48,7 @@ export default function Tab5({ setIsOpen, details, data }) {
                 </div>
             </div>
             <div className="my-1">
-                <T5P2_chartPrediction details={details} data={dataforPrediction} />
+                <T5P2_chartPrediction details={details} base_data={data} data={dataforPrediction} />
             </div>
         </div>
     );

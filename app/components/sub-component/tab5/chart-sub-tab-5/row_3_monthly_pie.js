@@ -14,7 +14,7 @@ export default function Row3StatusRank({ region, zone, position, data }) {
                     <SquaresExclude />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         สถิติการเรียกบรรจุรายเดือนและยอดสะสม
-                        {region && zone && position ? " " + region + " " + zone + " " + position : null}
+                        {region && zone && position ? " " + position + " " + region + " " + zone : null}
                     </h3>
                 </div>
                 <div className="w-full h-[450px]">

@@ -1,22 +1,28 @@
 "use client";
-import React, { useMemo }   from 'react';
-import { motion }           from 'framer-motion';
-import { BookMarked }       from 'lucide-react';
-import { LoadingScreen }    from '../../../components/LoadingScreen';
-const maxR = 10;
-export default function T2P7_TableAllType({data}) {
+import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { BookMarked } from 'lucide-react';
+import { LoadingScreen } from '../../../components/LoadingScreen';
+
+export default function T2P7_TableAllType({ data }) {
     const part8 = data?.tab3?.part8 || null;
     const { allZones, roundColumns } = useMemo(() => {
         const zones = [];
+        let maxRoundsFound = 0;
         Object.values(part8).forEach(region => {
             Object.values(region).forEach(posTypeGroup => {
                 Object.values(posTypeGroup).forEach(zone => {
                     zones.push(zone);
+                    const zoneRounds = Object.keys(zone.round_data || {}).length;
+                    if (zoneRounds > maxRoundsFound) {
+                        maxRoundsFound = zoneRounds;
+                    }
                 });
             });
         });
+        const finalMaxRounds = Math.max(10, maxRoundsFound);
+        const columns = Array.from({ length: finalMaxRounds }, (_, i) => i + 1);
 
-        const columns = Array.from({ length: maxR }, (_, i) => i + 1);
         return { allZones: zones, roundColumns: columns };
     }, [part8]);
 
@@ -24,19 +30,19 @@ export default function T2P7_TableAllType({data}) {
     const grandTotalListed = allZones.reduce((sum, zone) => sum + (zone.total_list || 0), 0);
     const grandTotalCalled = allZones.reduce((sum, zone) => sum + (zone.total_call || 0), 0);
     const grandTotalRemain = allZones.reduce((sum, zone) => sum + (zone.total_remain || 0), 0);
-    
+
     const grandTotalPerRound = roundColumns.map(num => {
         return allZones.reduce((sum, zone) => {
             const roundInfo = zone.round_data?.[num];
             return sum + (roundInfo ? (roundInfo.total || 0) : 0);
         }, 0);
     });
-    if(!data) return <LoadingScreen />;
+    if (!data) return <LoadingScreen />;
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}   
-            transition={{ duration: 0.5 }}  
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
         >
             <div className="text-center mb-2">
                 <h3 className="flex text-sm md:text-base lg:text-lg font-bold text-gray-700">
@@ -86,12 +92,13 @@ export default function T2P7_TableAllType({data}) {
                                             </td>
                                         </tr>
                                         {Object.entries(zonesBySubId).map(([subId, zoneList]) => {
-                                            const rowCount = zoneList.length + 1; 
+                                            const rowCount = zoneList.length + 1;
                                             const zoneTotalList = zoneList.reduce((s, z) => s + (z.total_list || 0), 0);
                                             const zoneTotalCall = zoneList.reduce((s, z) => s + (z.total_call || 0), 0);
                                             const zoneTotalRemain = zoneList.reduce((s, z) => s + (z.total_remain || 0), 0);
                                             const zoneTotalPerRound = roundColumns.map(num => {
-                                            return zoneList.reduce((s, z) => s + (z.round_data?.[num]?.total || 0), 0);});
+                                                return zoneList.reduce((s, z) => s + (z.round_data?.[num]?.total || 0), 0);
+                                            });
                                             regionTotalList += zoneTotalList;
                                             regionTotalCall += zoneTotalCall;
                                             regionTotalRemain += zoneTotalRemain;
@@ -100,13 +107,13 @@ export default function T2P7_TableAllType({data}) {
                                                 <React.Fragment key={subId}>
                                                     {zoneList.map((zone, index) => (
                                                         <tr key={`${subId}-${zone.pos_type_id}`}>
-                                                            {index === 0 && (<td rowSpan={rowCount} className="sticky left-0 z-20 bg-white px-6 py-4 text-gray-800 bg-gray-50 text-sm font-semibold  text-center"style={{ verticalAlign: 'middle' }}>{zone.prov_full_name}</td>)}
-                                                            <td className={`px-4 py-4 text-sm font-semibold text-center ${zone.pos_type_id === 1 ? "bg-blue-50 text-blue-700" :zone.pos_type_id === 2 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{zone.pos_type}</td>
+                                                            {index === 0 && (<td rowSpan={rowCount} className="sticky left-0 z-20 bg-white px-6 py-4 text-gray-800 bg-gray-50 text-sm font-semibold  text-center" style={{ verticalAlign: 'middle' }}>{zone.prov_full_name}</td>)}
+                                                            <td className={`px-4 py-4 text-sm font-semibold text-center ${zone.pos_type_id === 1 ? "bg-blue-50 text-blue-700" : zone.pos_type_id === 2 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{zone.pos_type}</td>
                                                             <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-50 text-amber-500">{zone.total_list.toLocaleString()}</td>
                                                             <td className="px-4 py-4  text-sm font-semibold text-center bg-emerald-50 text-emerald-600">{zone.total_call.toLocaleString()}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-blue-50 text-blue-600">{( ( zone.total_call / zone.total_list ) * 100).toFixed(2)} %</td>
+                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-blue-50 text-blue-600">{((zone.total_call / zone.total_list) * 100).toFixed(2)} %</td>
                                                             <td className="px-6 py-4  text-sm font-semibold text-center bg-rose-50 text-rose-500">{zone.total_remain.toLocaleString()}</td>
-                                                            {roundColumns.map(num => {const roundInfo = zone.round_data?.[num];const bgClass = roundInfo ? "bg-white" : "bg-gray-100";return (<td key={num} className={`px-4 py-4 text-center text-sm font-semibold ${bgClass}`}>{roundInfo ? roundInfo.total.toLocaleString() : null}</td>);})}
+                                                            {roundColumns.map(num => { const roundInfo = zone.round_data?.[num]; const bgClass = roundInfo ? "bg-white" : "bg-gray-100"; return (<td key={num} className={`px-4 py-4 text-center text-sm font-semibold ${bgClass}`}>{roundInfo ? roundInfo.total.toLocaleString() : null}</td>); })}
 
                                                         </tr>
                                                     ))}
@@ -114,9 +121,9 @@ export default function T2P7_TableAllType({data}) {
                                                         <td className="px-4 py-3 text-center text-xs text-slate-500 bg-slate-50/40 font-bold">รวมประจำเขต</td>
                                                         <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalList.toLocaleString()}</td>
                                                         <td className="px-4 py-3 text-center text-sm font-semibold bg-emerald-50/20 text-emerald-700 ">{zoneTotalCall.toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-sm font-semibold bg-blue-50/20 text-blue-700 ">{( ( zoneTotalCall / zoneTotalList ) * 100 ).toFixed(2)} %</td>
+                                                        <td className="px-4 py-3 text-center text-sm font-semibold bg-blue-50/20 text-blue-700 ">{((zoneTotalCall / zoneTotalList) * 100).toFixed(2)} %</td>
                                                         <td className="px-6 py-3 text-center text-sm font-semibold text-rose-600 font-bold ">{zoneTotalRemain.toLocaleString()}</td>
-                                                        {zoneTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3 text-center text-sm font-semibold font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>{total > 0 ? total.toLocaleString() : null}</td>))}
+                                                        {zoneTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3 text-center text-sm font-semibold font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
                                                     </tr>
                                                 </React.Fragment>
                                             );
@@ -126,9 +133,9 @@ export default function T2P7_TableAllType({data}) {
                                             <td className="px-6 py-3.5 text-center text-sm font-semibold  "></td>
                                             <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-50 text-amber-700">{regionTotalList.toLocaleString()}</td>
                                             <td className="px-4 py-3.5 text-center text-sm font-semibold bg-emerald-100 text-emerald-700 ">{regionTotalCall.toLocaleString()}</td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-blue-100 text-blue-700 ">{( ( regionTotalCall / regionTotalList ) * 100 ).toFixed(2)} %</td>
+                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-blue-100 text-blue-700 ">{((regionTotalCall / regionTotalList) * 100).toFixed(2)} %</td>
                                             <td className="px-6 py-3.5 text-center text-sm font-semibold bg-rose-50 text-rose-600">{regionTotalRemain.toLocaleString()}</td>
-                                            {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-sm font-semibold ${total > 0 ? 'bg-white' : 'bg-gray-100' } `}>{total > 0 ? total.toLocaleString() : null}</td>))}
+                                            {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-sm font-semibold ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
 
                                         </tr>
                                     </React.Fragment>
@@ -139,9 +146,9 @@ export default function T2P7_TableAllType({data}) {
                                 <td className="sticky bottom-0 z-30 px-6 py-4 bg-gray-700 text-center uppercase tracking-wider"></td>
                                 <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalListed.toLocaleString()}</td>
                                 <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalCalled.toLocaleString()}</td>
-                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center text-blue-300 font-mono">{( ( grandTotalCalled / grandTotalListed ) * 100).toFixed(2)} %</td>
+                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center text-blue-300 font-mono">{((grandTotalCalled / grandTotalListed) * 100).toFixed(2)} %</td>
                                 <td className="sticky bottom-0 z-30 px-6 bg-gray-700 py-4 text-center text-rose-300 font-mono">{grandTotalRemain.toLocaleString()}</td>
-                                {grandTotalPerRound.map((total, index) => (<td key={index} className="sticky bottom-0 z-30 px-4 py-4 bg-gray-700 text-center font-mono">{total > 0 ? total.toLocaleString() : null }</td>))}
+                                {grandTotalPerRound.map((total, index) => (<td key={index} className="sticky bottom-0 z-30 px-4 py-4 bg-gray-700 text-center font-mono">{total > 0 ? total.toLocaleString() : null}</td>))}
                             </tr>
                         </tbody>
                     </table>

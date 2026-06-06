@@ -165,7 +165,7 @@ export default function Row5RegionMonthly({ position, data }) {
                 <div className="flex text-gray-700 items-center">
                     <FolderKanban />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        สถิติการเรียกบรรจุรายเดือนแบบแบ่งเขตและยอดสะสม {position ? " " + position : null}
+                        สถิติการเรียกบรรจุรายเดือนแบบแบ่งเขตและยอดสะสม {position ? " " + position + "ทุกเขต" : null}
                     </h3>
                 </div>
                 <div className="w-full h-[500px]">

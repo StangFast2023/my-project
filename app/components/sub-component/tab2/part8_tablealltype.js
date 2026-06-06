@@ -1,26 +1,35 @@
 "use client";
-import React, { useMemo }   from 'react';
-import { motion }           from 'framer-motion';
-import { Newspaper }        from 'lucide-react';
-import { LoadingScreen }    from '../../../components/LoadingScreen';
-const maxR = 10;
+import React, { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { Newspaper } from 'lucide-react';
+import { LoadingScreen } from '../../../components/LoadingScreen';
+
 export default function T2P7_TableSummary({ data }) {
     const part8 = useMemo(() => data.tab2.part8 || {}, [data.tab2.part8]);
     const { roundColumns, grandTotal } = useMemo(() => {
         let gTotal = { list: 0, call: 0, remain: 0, rounds: {} };
+        let maxRoundsFound = 0;
         Object.values(part8).forEach(posTypeGroup => {
             Object.values(posTypeGroup).forEach(zone => {
                 gTotal.list += (Number(zone.total_list) || 0);
                 gTotal.call += (Number(zone.total_call) || 0);
                 gTotal.remain += (Number(zone.total_remain) || 0);
+                const zoneRounds = Object.keys(zone.round_data || {}).length;
+                if (zoneRounds > maxRoundsFound) {
+                    maxRoundsFound = zoneRounds;
+                }
                 Object.entries(zone.round_data || {}).forEach(([r, v]) => {
                     gTotal.rounds[r] = (gTotal.rounds[r] || 0) + (v.total || 0);
                 });
             });
         });
-        return { roundColumns: Array.from({ length: maxR }, (_, i) => i + 1), grandTotal: gTotal };
+        const finalMaxRounds = Math.max(10, maxRoundsFound);
+        return {
+            roundColumns: Array.from({ length: finalMaxRounds }, (_, i) => i + 1),
+            grandTotal: gTotal
+        };
     }, [part8]);
-    if(!data) return <LoadingScreen />;
+    if (!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4">
             <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-4 text-gray-700">
@@ -46,9 +55,9 @@ export default function T2P7_TableSummary({ data }) {
                                 <React.Fragment key={regId}>
                                     <tr className="bg-emerald-50/50">
                                         <td colSpan={roundColumns.length + 5} className="px-4 py-2.5 font-bold text-emerald-900 border-t-2 border-gray-400">
-                                           <span className="sticky left-[20px] z-20 pr-2">
+                                            <span className="sticky left-[20px] z-20 pr-2">
                                                 {Object.values(posTypes)[0]?.prov_main_name || `ภาคที่ ${regId}`}
-                                           </span>
+                                            </span>
                                         </td>
                                     </tr>
                                     {Object.values(posTypes).map((zone) => {
@@ -61,9 +70,9 @@ export default function T2P7_TableSummary({ data }) {
                                                 <td className={`sticky left-0 z-20 px-6 py-3 pl-10 text-sm                  group-hover:bg-transparent font-semibold ${zone.pos_type_id === 1 ? "bg-blue-100 text-blue-700" : zone.pos_type_id === 2 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>{zone.pos_type}</td>
                                                 <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-amber-50     group-hover:bg-transparent text-gray-600 ">{(Number(zone.total_list) || 0).toLocaleString()}</td>
                                                 <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-emerald-50   group-hover:bg-transparent text-emerald-600 ">{(Number(zone.total_call) || 0).toLocaleString()}</td>
-                                                <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-blue-50      group-hover:bg-transparent text-blue-600 ">{(Number(( zone.total_call / zone.total_list ) * 100) || 0).toFixed(2)} %</td>
+                                                <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-blue-50      group-hover:bg-transparent text-blue-600 ">{(Number((zone.total_call / zone.total_list) * 100) || 0).toFixed(2)} %</td>
                                                 <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-rose-50      group-hover:bg-transparent text-rose-600 ">{(Number(zone.total_remain) || 0).toLocaleString()}</td>
-                                                {roundColumns.map(num => <td key={num} className={`px-4 py-3 text-center text-sm font-semibold text-gray-600 group-hover:bg-transparent ${ zone.round_data?.[num]?.total > 0  ? 'bg-white' : 'bg-gray-100' } `}>{ ( zone.round_data?.[num]?.total > 0 ? zone.round_data?.[num]?.total.toLocaleString() : null ) || null}</td>)}
+                                                {roundColumns.map(num => <td key={num} className={`px-4 py-3 text-center text-sm font-semibold text-gray-600 group-hover:bg-transparent ${zone.round_data?.[num]?.total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{(zone.round_data?.[num]?.total > 0 ? zone.round_data?.[num]?.total.toLocaleString() : null) || null}</td>)}
                                             </tr>
                                         );
                                     })}
@@ -71,9 +80,9 @@ export default function T2P7_TableSummary({ data }) {
                                         <td className="sticky left-0 z-20 px-6 py-3 text-sm md:text-base lg:text-sm  bg-inherit    group-hover:bg-transparent font-semibold text-left">รวม {Object.values(posTypes)[0]?.prov_main_name}</td>
                                         <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-amber-50   group-hover:bg-transparent ">{reg.list.toLocaleString()}</td>
                                         <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-emerald-50 group-hover:bg-transparent text-emerald-700 ">{reg.call.toLocaleString()}</td>
-                                        <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-blue-50    group-hover:bg-transparent text-blue-700 ">{( ( reg.call / reg.list ) * 100 ).toFixed(2)} %</td>
+                                        <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-blue-50    group-hover:bg-transparent text-blue-700 ">{((reg.call / reg.list) * 100).toFixed(2)} %</td>
                                         <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-rose-50    group-hover:bg-transparent text-rose-700 ">{reg.remain.toLocaleString()}</td>
-                                        {reg.rounds.map((v, i) => <td key={i} className={`px-4 py-3 text-center text-sm font-semibold group-hover:bg-transparent ${ v > 0 ? 'bg-white' : 'bg-gray-100' } `}>{v > 0 ? v.toLocaleString() : null}</td>)}
+                                        {reg.rounds.map((v, i) => <td key={i} className={`px-4 py-3 text-center text-sm font-semibold group-hover:bg-transparent ${v > 0 ? 'bg-white' : 'bg-gray-100'} `}>{v > 0 ? v.toLocaleString() : null}</td>)}
                                     </tr>
                                 </React.Fragment>
                             );
@@ -83,9 +92,9 @@ export default function T2P7_TableSummary({ data }) {
                             <td className="sticky left-0 bottom-0 z-40 bg-gray-800 px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center uppercase tracking-widest">รวมทั้งหมดทุกภาค</td>
                             <td className="sticky bottom-0 z-30        bg-gray-800 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ">{grandTotal.list.toLocaleString()}</td>
                             <td className="sticky bottom-0 z-30        bg-gray-800 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ">{grandTotal.call.toLocaleString()}</td>
-                            <td className="sticky bottom-0 z-30        bg-gray-800 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ">{( ( grandTotal.call / grandTotal.list ) * 100 ).toFixed(2)} %</td>
+                            <td className="sticky bottom-0 z-30        bg-gray-800 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ">{((grandTotal.call / grandTotal.list) * 100).toFixed(2)} %</td>
                             <td className="sticky bottom-0 z-30        bg-gray-800 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ">{grandTotal.remain.toLocaleString()}</td>
-                            {roundColumns.map(n => <td key={n} className="sticky bottom-0 z-30        bg-gray-800 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center">{ ( grandTotal.rounds[n] > 0 ? grandTotal.rounds[n].toLocaleString() : null ) || null}</td>)}
+                            {roundColumns.map(n => <td key={n} className="sticky bottom-0 z-30        bg-gray-800 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center">{(grandTotal.rounds[n] > 0 ? grandTotal.rounds[n].toLocaleString() : null) || null}</td>)}
                         </tr>
                     </tbody>
                 </table>

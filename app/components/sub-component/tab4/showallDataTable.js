@@ -2,14 +2,12 @@ import React, { useMemo } from 'react';
 import Swal from 'sweetalert2';
 import { EmptyData } from '../../EmptyData';
 import { useColumnStore } from '../../useTableColumns';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 export default function ShowAllDataTable({ part2, isLoading }) {
     const safePart2 = part2.tab4.part2.data || {};
     const columns = useColumnStore((state) => state.columns);
     const maxRound = Math.max(10, part2?.tab4?.part2?.round || 0);
     const roundsArray = Array.from({ length: maxRound }, (_, i) => i + 1);
     let summary = { total_listed: 0, total_called: 0, total_remain: 0, rounds: {} };
-
     if (safePart2 && Object.keys(safePart2).length > 0) {
         summary = Object.values(safePart2).reduce((acc, curr) => {
             acc.total_listed += (Number(curr.total_listed) || 0);

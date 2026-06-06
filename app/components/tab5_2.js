@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import Row2 from '../components/sub-component/tab5/sub-tab5/row_2_status_rank';
 import Row7 from '../components/sub-component/tab5/sub-tab5/row_7_prodiction_empty';
+import Row8 from '../components/sub-component/tab5/sub-tab5/row_8_prediction_heatmap';
 
-export default function Tab5_1({ details, data }) {
+export default function Tab5_2({ details, base_data, data }) {
     const dataforChart = data || null;
     const [frequency, setFrequency] = useState(1);
     const isButtonDisabled = !details?.frequency;
+
+    const dataShow = base_data?.tab5?.part1 || {};
+    const RegSh = dataShow[details?.regionId]?.pro_main_name || null;
+    const ZneSh = dataShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id ? "เขต " + dataShow[details?.regionId]?.pro_sub[details?.areaId]?.pro_sub_id : null;
+    const PosSh = dataShow[details?.regionId]?.pro_sub[details?.areaId]?.data_position[details?.positionId]?.pos_name || null;
+
     return (
         <div>
             <div className="flex items-center gap-4">
@@ -49,6 +56,11 @@ export default function Tab5_1({ details, data }) {
             <div className="grid lg:grid-cols-12 gap-2 my-2">
                 <div className="col-span-12 lg:col-span-12">
                     <Row7 data={dataforChart} />
+                </div>
+            </div>
+            <div className="grid lg:grid-cols-12 gap-2 my-2">
+                <div className="col-span-12 lg:col-span-12">
+                    <Row8 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
             </div>
         </div>
