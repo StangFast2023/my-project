@@ -41,19 +41,14 @@ export default function App() {
     }, [activeTab]);
     useEffect(() => {
         const fetchData = async () => {
-            const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api/data-stats";
-            console.log("ค่าที่ใช้จริงคือ:", baseUrl);
-            if (!baseUrl) {
-                console.error("NEXT_PUBLIC_API_URL ไม่ถูกกำหนดในไฟล์ .env.local!");
-                return;
-            }
-
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://dla-backend-production.up.railway.app/api/data-stats";
+            console.log("กำลังเรียก API ที่:", baseUrl);
             try {
-                const response = await axios.get(`${baseUrl}/data-stats`);
+                const response = await axios.get(baseUrl);
                 setData(response.data);
-                setLoading(false);
             } catch (error) {
                 console.error("เกิดข้อผิดพลาดในการดึงข้อมูล:", error);
+            } finally {
                 setLoading(false);
             }
         };
