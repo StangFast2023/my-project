@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import axios from 'axios';
-import { LoadingScreen } from '../components/LoadingScreen';
 import T5P1_filterDlaSearch from './sub-component/tab5/part1_filterDropdownSearch';
 import T5P2_chartPrediction from './sub-component/tab5/part2_chartPredictions';
 import LoadingSkeleton from '../components/sub-component/tab5/loading';
@@ -27,7 +26,7 @@ export default function Tab5({ setIsOpen, details }) {
         if (!details) return;
         const { regionId, areaId, positionId, sequence, frequency } = details;
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`);
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`);
             setdataforPrediction(response.data);
         } catch (error) {
             console.error("Error fetching details:", error);
