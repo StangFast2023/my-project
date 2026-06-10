@@ -179,7 +179,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                                                                 </td>
                                                                 {Object.values(data_round).map((round, index) => {
                                                                     const isHoveredCell = hoveredRowId === rowId && hoveredColIndex === index;
-                                                                    const colorStyle = getCrossColor(round.reach_probability);
+                                                                    const colorStyle = getCrossColor(round.cross_zone_effect);
                                                                     const handleCellClick = (round, data) => {
                                                                         let text_title = `รอบที่คาดการณ์ ${data.round}`;
                                                                         let text_content = `
@@ -224,7 +224,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                                                                                 ${isHoveredCell ? '!bg-indigo-50 !text-indigo-600 z-10 shadow-[inset_0_0_0_3px_#4338ca]' : ''}
                                                                                 `}
                                                                             style={colorStyle.style}>
-                                                                            {round?.reach_probability.toFixed(2) + "%"}
+                                                                            {round?.cross_zone_effect.toFixed(2) + "%"}
                                                                         </td>
                                                                     );
                                                                 })}
