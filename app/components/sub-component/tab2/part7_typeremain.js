@@ -9,7 +9,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
     const fastEmpty = data.tab2.part7 || {};
     const handleViewDetail = async (id) => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}listed-position-detail/${id}`);
+            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
             setDetails(response.data);
             setIsOpen(true);
         } catch (error) {

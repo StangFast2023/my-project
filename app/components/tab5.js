@@ -9,7 +9,7 @@ export default function Tab5({ setIsOpen, details }) {
     const [loading, setLoading] = useState(true); useEffect(() => {
         async function fetchData() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab5`, { cache: 'no-store' });
+                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`, { cache: 'no-store' });
                 const result = await res.json();
                 setData(result);
             } catch (error) {
@@ -26,7 +26,7 @@ export default function Tab5({ setIsOpen, details }) {
         if (!details) return;
         const { regionId, areaId, positionId, sequence, frequency } = details;
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`);
+            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`);
             setdataforPrediction(response.data);
         } catch (error) {
             console.error("Error fetching details:", error);

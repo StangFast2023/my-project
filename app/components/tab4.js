@@ -11,7 +11,7 @@ export default function Tab4() {
     const [loading, setLoading] = useState(true); useEffect(() => {
         async function fetchData() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab4`, { cache: 'no-store' });
+                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab4`, { cache: 'no-store' });
                 const result = await res.json();
                 setData(result);
             } catch (error) {
@@ -53,7 +53,7 @@ export default function Tab4() {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}updating-tab4-table`, {
+                const response = await axios.post(`https://dla-backend-production.up.railway.app/api/updating-tab4-table`, {
                     cleanRegions: filters.regions,
                     cleanPositions: filters.positions,
                     showEmpty: filters.showEmpty,

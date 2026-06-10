@@ -10,7 +10,7 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
     const [loading, setLoading] = useState(true); useEffect(() => {
         async function fetchData() {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab5`, { cache: 'no-store' });
+                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`, { cache: 'no-store' });
                 const result = await res.json();
                 setData(result);
             } catch (error) {
