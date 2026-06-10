@@ -1,18 +1,26 @@
 import axios from 'axios';
-import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useState, useMemo, useEffect } from 'react';
 import T4P1_filterDlaListed from './sub-component/tab4/part1_filterDlaListed';
 import T4P2_showingAllTable from './sub-component/tab4/part2_showingAllTable';
 import ShowAllDataTable from './sub-component/tab4/showallDataTable';
 import { useColumnStore } from '../components/useTableColumns';
 export default function Tab4() {
-    const [filters, setFilters] = useState({
-        regions: [],
-        positions: [],
-        showEmpty: false,
-        showExpired: true,
-        all_header: null
+
+    const [filters, setFilters] = useState(() => {
+        const saved = localStorage.getItem('tab4Filters');
+        return saved ? JSON.parse(saved) : {
+            regions: [],
+            positions: [],
+            showEmpty: false,
+            showExpired: true,
+            all_header: null
+        };
     });
+
+    useEffect(() => {
+        localStorage.setItem('tab4Filters', JSON.stringify(filters));
+    }, [filters]);
 
     const { data: configData } = useQuery({
         queryKey: ['tab4Config'],
