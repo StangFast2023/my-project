@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from 'react';
-import axios from "axios";
 import Tab1 from './components/tab1';
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3';
@@ -16,10 +15,12 @@ export interface FilterData {
     number_rank: number;
 }
 export default function App() {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+
+    const [loading, setLoading] = useState(false);
+
     const [activeTab, setActiveTab] = useState('tab1');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     {/* for tap2 part6 */ }
     const [details, setDetails] = useState(null);
     const [isOpen2, setIsOpen2] = useState(false);
@@ -31,6 +32,7 @@ export default function App() {
         setDetails5(val);
         setIsOpen5(false);
     };
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             window.scrollTo({
@@ -39,20 +41,6 @@ export default function App() {
             });
         }
     }, [activeTab]);
-    useEffect(() => {
-        const fetchData = async () => {
-            const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://dla-backend-production.up.railway.app/api/data-stats";
-            try {
-                const response = await axios.get(baseUrl);
-                setData(response.data);
-            } catch (error) {
-                console.error("เกิดข้อผิดพลาดในการดึงข้อมูล:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
     return (
         <LoadingWrapper isLoading={loading}>
             <main className="pb-5" style={{ minHeight: '100vh', background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%)' }}>
@@ -115,11 +103,11 @@ export default function App() {
                         </button>
                     </div>
                     <div className="mt-6">
-                        {activeTab === 'tab1' && (<div className="animate-fade-in"> <Tab1 data={data} /> </div>)}
-                        {activeTab === 'tab2' && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} data={data} /> </div>)}
-                        {activeTab === 'tab3' && (<div className="animate-fade-in"> <Tab3 data={data} /> </div>)}
-                        {activeTab === 'tab4' && (<div className="animate-fade-in"> <Tab4 data={data} /> </div>)}
-                        {activeTab === 'tab5' && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} data={data} /> </div>)}
+                        {activeTab === 'tab1' && (<div className="animate-fade-in"> <Tab1 /> </div>)}
+                        {activeTab === 'tab2' && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} /> </div>)}
+                        {activeTab === 'tab3' && (<div className="animate-fade-in"> <Tab3 /> </div>)}
+                        {activeTab === 'tab4' && (<div className="animate-fade-in"> <Tab4 /> </div>)}
+                        {activeTab === 'tab5' && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)}
                     </div>
                 </div>
 
@@ -127,7 +115,7 @@ export default function App() {
                 <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} loading={loading} />
 
                 {/* for tap5 part1 */}
-                <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} data={data} onSave={handleSave} />
+                <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
             </main>
         </LoadingWrapper>

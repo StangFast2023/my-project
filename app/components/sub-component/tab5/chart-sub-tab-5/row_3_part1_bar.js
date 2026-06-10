@@ -8,22 +8,22 @@ export default function Row3Part1Bar({ data }) {
     if (!chartRawData) return null;
     const keys = Object.keys(chartRawData);
     const labels = keys.map(key => chartRawData[key].date_thai_s);
-    let runningTotal = 0;
     const monthlyTotals = [];
     const cumulativeData = [];
+    let runningTotal = 0;
+
     keys.forEach(key => {
         const monthData = chartRawData[key];
-        const monthTotal = monthData.total_per_month || 0;
-        const isCalled = monthData.call;
+        const monthTotal = Number(monthData.total_per_month) || 0;
+        const isCalled = !!monthData.call;
         runningTotal += monthTotal;
         monthlyTotals.push(monthTotal);
-        if (isCalled === true) {
-            cumulativeData.push(runningTotal);
-        } else {
+        if (isCalled) {
             cumulativeData.push(null);
+        } else {
+            cumulativeData.push(runningTotal);
         }
     });
-
     const chartData = {
         labels: labels,
         datasets: [

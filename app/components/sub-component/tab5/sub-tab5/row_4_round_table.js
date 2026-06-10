@@ -57,25 +57,25 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                             {round_columns.map(key => {
                                 const round_data = TableData[key] || {};
                                 const total_listed = data?.total_listed || 0;
-                                cumulative_total += parseInt(round_data?.call_status === 1 && round_data?.list_status === 1 ? round_data?.total : 0);
-                                cumulative_total_call += parseInt(round_data?.call_status === 1 && round_data?.list_status === 1 ? round_data?.total : 0);
+                                cumulative_total += parseInt(round_data?.call_status === true && round_data?.list_status === true ? round_data?.total : 0);
+                                cumulative_total_call += parseInt(round_data?.call_status === true && round_data?.list_status === true ? round_data?.total : 0);
                                 total_remain = total_listed - cumulative_total;
                                 return (
                                     <tr key={`${key}`} className="bg-emerald-50/20">
                                         <td className={`bg-gray-50  px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600`}>{round_data?.round}</td>
-                                        <td className={`bg-gray-50  px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === 1 ? (round_data?.call_status === 1 ? 'text-emerald-600' : 'text-rose-600') : 'text-amber-600'}`}>
-                                            {round_data?.list_status ? (round_data?.list_status === 1 ? (round_data?.call_status === 1 ? 'มีการใช้บัญชี' : 'ไม่มีการเรียกใช้บัญชี') : 'บัญชีสิ้นสุดแล้ว') : null}
+                                        <td className={`bg-gray-50  px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === true ? (round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600') : 'text-amber-600'}`}>
+                                            {round_data?.list_status ? (round_data?.list_status === true ? (round_data?.call_status === true ? 'มีการใช้บัญชี' : 'ไม่มีการเรียกใช้บัญชี') : 'บัญชีสิ้นสุดแล้ว') : null}
                                         </td>
                                         <td className={`bg-gray-50  px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600`}>
-                                            {round_data?.list_status ? (round_data?.list_status === 1 ? round_data?.date : '-') : null}
+                                            {round_data?.list_status ? (round_data?.list_status === true ? round_data?.date : '-') : null}
                                         </td>
-                                        <td className={`bg-gray-50  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === 1 ? (round_data?.call_status === 1 ? 'text-emerald-600' : 'text-rose-600') : 'text-gray-600'}`}>
+                                        <td className={`bg-gray-50  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === true ? (round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600') : 'text-gray-600'}`}>
                                             {round_data?.total ? round_data?.total.toLocaleString() : null}
                                         </td>
-                                        <td className={`bg-gray-50  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === 1 ? (round_data?.call_status === 1 ? 'text-emerald-600' : 'text-rose-600') : 'text-gray-600'}`}>
-                                            {round_data?.list_status ? (round_data?.list_status === 1 && round_data?.call_status === 1 ? round_data?.start_end : '-') : null}
+                                        <td className={`bg-gray-50  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === true ? (round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600') : 'text-gray-600'}`}>
+                                            {round_data?.list_status ? (round_data?.list_status === true && round_data?.call_status === true ? round_data?.start_end : '-') : null}
                                         </td>
-                                        <td className={`bg-amber-50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.change !== 'first' ? round_data?.list_status === 1 ? (round_data?.change > 0 ? 'text-emerald-600' : (round_data?.change === 0 ? 'text-gray-600' : 'text-rose-600')) : 'text-gray-600' : 'text-amber-600'}`}>
+                                        <td className={`bg-amber-50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.change !== 'first' ? round_data?.list_status === true ? (round_data?.change > 0 ? 'text-emerald-600' : (round_data?.change === 0 ? 'text-gray-600' : 'text-rose-600')) : 'text-gray-600' : 'text-amber-600'}`}>
                                             <div className="flex justify-center items-center gap-2">
                                                 {round_data?.change !== undefined && round_data?.change !== null ? (round_data?.change !== 'first' ? (round_data?.change > 0 ? <TrendingUp /> : (round_data?.change === 0 ? <Equal /> : <TrendingDown />)) : null) : null}
                                                 {round_data?.change !== undefined && round_data?.change !== null ? (round_data?.change === 'first' ? 'รอบเริ่มต้น' : (round_data?.change ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " %") : null}
@@ -84,14 +84,14 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                         <td className={`bg-sky-50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-sky-700`}>
                                             {round_data?.proportion !== undefined && round_data?.proportion !== null ? ((round_data?.proportion ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " %") : null}
                                         </td>
-                                        <td className={`bg-gray-50  px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === 1 && round_data?.call_status ? (round_data?.status === 'completed' ? 'text-emerald-700' : 'text-sky-700') : 'text-gray-700'}`}>
-                                            {round_data?.list_status ? (round_data?.list_status === 1 && round_data?.call_status === 1 ? (round_data?.status === 'completed' ? 'ได้รับการบรรจุ' : 'รอการเรียกบรรจุ') : '-') : null}
+                                        <td className={`bg-gray-50  px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status === true && round_data?.call_status ? (round_data?.status === 'completed' ? 'text-emerald-700' : 'text-sky-700') : 'text-gray-700'}`}>
+                                            {round_data?.list_status ? (round_data?.list_status === true && round_data?.call_status === true ? (round_data?.status === 'completed' ? 'ได้รับการบรรจุ' : 'รอการเรียกบรรจุ') : '-') : null}
                                         </td>
                                         <td className={`bg-gray-50  px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600`}>
-                                            {round_data?.list_status ? (round_data?.list_status === 1 ? (round_data?.is_cross_region === 1 ? 'ใช่' : 'ไม่ใช่') : '-') : null}
+                                            {round_data?.list_status ? (round_data?.list_status === true ? (round_data?.is_cross_region === true ? 'ใช่' : 'ไม่ใช่') : '-') : null}
                                             {round_data?.list_status ?
                                                 (
-                                                    round_data?.list_status === 1 && round_data?.call_status === 1 && round_data?.is_cross_region === 1
+                                                    round_data?.list_status === true && round_data?.call_status === true && round_data?.is_cross_region === true
                                                         ?
                                                         (
                                                             <div className="mt-2 text-sm text-gray-600">
@@ -104,7 +104,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                             }
                                         </td>
                                         <td className={`bg-rose-50    w-[10%]  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status ? 'text-rose-600' : 'text-gray-600'}`}>
-                                            {round_data?.list_status ? (round_data?.list_status === 1 ? total_remain.toLocaleString() : '-') : null}
+                                            {round_data?.list_status ? (round_data?.list_status === true ? total_remain.toLocaleString() : '-') : null}
                                         </td>
                                     </tr>
                                 );

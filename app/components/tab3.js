@@ -1,12 +1,27 @@
-import T3P8_TableAllType    from './sub-component/tab3/part8_tablealltype';
-import { LoadingScreen }    from '../components/LoadingScreen';
+import { useState, useEffect } from 'react';
+import T3P8_TableAllType from './sub-component/tab3/part8_tablealltype';
+import LoadingSkeleton from '../components/sub-component/tab3/loading';
 
-export default function Tab3({data}) {
-    if ( !data ) return <LoadingScreen />;
+export default function Tab3() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true); useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab3`, { cache: 'no-store' });
+                const result = await res.json();
+                setData(result);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    }, []);
+    if (!data && loading) return <LoadingSkeleton />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">
-
                 <div className="flex items-center gap-4 mb-8">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
                         <span className="text-sm md:text-base lg:text-4xl font-black text-white drop-shadow-sm">
@@ -21,7 +36,7 @@ export default function Tab3({data}) {
                 </div>
                 <div className="grid grid-cols-12 gap-6">
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T3P8_TableAllType data={data}/>
+                        <T3P8_TableAllType data={data} />
                     </div>
                 </div>
             </div>

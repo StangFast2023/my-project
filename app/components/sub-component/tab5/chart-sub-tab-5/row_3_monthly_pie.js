@@ -29,9 +29,9 @@ export default function Row3StatusRank({ region, zone, position, data }) {
                     </h3>
                 </div>
                 <div className="text-center text-gray-600 font-semibold">
-                    {region && zone ? region + " " + zone : null}
-                    <br></br>
                     {position ? position : null}
+                    <br></br>
+                    {region && zone ? region + " " + zone : null}
                 </div>
                 <div className="w-full h-[450px]">
                     <Row3Part2Pie data={ChartData} />

@@ -1,12 +1,28 @@
-import React, { useState, useEffect, useMemo } from 'react';
-
+import { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
 import T4P1_filterDlaListed from './sub-component/tab4/part1_filterDlaListed';
 import T4P2_showingAllTable from './sub-component/tab4/part2_showingAllTable';
 import ShowAllDataTable from './sub-component/tab4/showallDataTable';
-import { LoadingScreen } from '../components/LoadingScreen';
 import { useColumnStore } from '../components/useTableColumns';
+import LoadingSkeleton from '../components/sub-component/tab4/loading';
+export default function Tab4() {
 
-export default function Tab4({ data }) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true); useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab4`, { cache: 'no-store' });
+                const result = await res.json();
+                setData(result);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    }, []);
+
     const columns = useColumnStore((state) => state.columns);
     const initialRegions = Object.keys(data?.tab4?.part1?.region || {});
     const [selectedRegions, setSelectedRegions] = useState(initialRegions);
@@ -22,7 +38,8 @@ export default function Tab4({ data }) {
     const [selectedPositions, setSelectedPositions] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
-    const [filters, setFilters] = useState({ regions: [], positions: [], showEmpty: false });
+
+    const [filters, setFilters] = useState({ regions: [], positions: [], showEmpty: false, showExpired: true, all_header: null });
     const [fetchedData, setFetchedData] = useState(null);
 
     const tableData = useMemo(() => {
@@ -32,38 +49,32 @@ export default function Tab4({ data }) {
 
     useEffect(() => {
         let ignore = false;
-        requestAnimationFrame(() => {
-            if (!ignore) setIsLoading(true);
-        });
-        fetch('http://127.0.0.1:8000/api/updating-tab4-table', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-                cleanRegions: filters.regions,
-                cleanPositions: filters.positions,
-                showEmpty: filters.showEmpty
-            })
-        })
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.json();
-            })
-            .then(result => {
+        axios.defaults.withCredentials = true;
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}updating-tab4-table`, {
+                    cleanRegions: filters.regions,
+                    cleanPositions: filters.positions,
+                    showEmpty: filters.showEmpty,
+                    showExpired: filters.showExpired
+                });
+
                 if (!ignore) {
-                    setFetchedData(result);
-                    setTimeout(() => {
-                        setIsLoading(false);
-                    }, 300);
+                    setFetchedData(response.data);
+                    setTimeout(() => setIsLoading(false), 300);
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
                 setIsLoading(false);
-            });
+            }
+        };
+
+        fetchData();
 
         return () => { ignore = true; };
     }, [filters, data]);
-    if (!data) return <LoadingScreen />;
+    if (!data && loading) return <LoadingSkeleton />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">

@@ -46,7 +46,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
         if (!dateStr) return "-";
         const [d, m, y] = dateStr.split("-");
         const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-        return `${parseInt(d)} ${months[parseInt(m) - 1]} ${parseInt(y) + 543}`; // +543 สำหรับ พ.ศ.
+        return `${parseInt(d)} ${months[parseInt(m) - 1]} ${parseInt(y) + 543}`;
     };
     const getBagColor = (has_no_data, status_call, status_list) => {
         if (!has_no_data) return 'cursor-default';
@@ -149,7 +149,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
                                     <td className=" w-[400px] min-w-[400px] sticky left-0 z-20 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{item.pos_id}</span> ] {item.pos_name}</td>
                                     {!columns.all_header && (<td className={`w-[200px] min-w-[200px] sticky top-0  z-10 p-4 font-semibold text-center bg-gray-50 ${regionColors[item.pro_main_id]} `}>{item.pro_main_name}</td>)}
                                     {!columns.all_header && (<td className={`w-[100px] min-w-[100px] sticky top-0  z-10 p-4 font-semibold text-center bg-gray-50 ${zoneColors[item.pro_sub_id]} `}>เขต {item.pro_sub_id}</td>)}
-                                    <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${item.pos_type_id === "1" ? "bg-blue-50 text-blue-700" : item.pos_type_id === "2" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{item.pos_type_name}</td>
+                                    <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${item.pos_type_id === 1 ? "bg-blue-50 text-blue-700" : item.pos_type_id === 2 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{item.pos_type_name}</td>
                                     {columns.column_part1 && (<td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${item.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{item.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>)}
                                     {columns.column_part2 && (<td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${item.status_out_of_lits ? (item.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700") : "bg-yellow-50 text-yellow-700"}`}>{item.status_out_of_lits ? (item.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี") : "คงเหลือ"}</td>)}
                                     {columns.column_part3 && (<td className={`w-[120px] min-w-[120px] p-4 pr-6 text-right font-bold ${item.status_open ? (item.pos_percent < 30 ? "text-rose-600 bg-rose-50" : item.pos_percent < 70 ? "text-amber-600 bg-amber-50" : "text-emerald-600 bg-emerald-50") : "text-gray-600 bg-gray-50"}`}> {(item.status_open ? item.pos_percent : 0).toFixed(2)} %</td>)}

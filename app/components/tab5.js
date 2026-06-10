@@ -3,8 +3,25 @@ import axios from 'axios';
 import { LoadingScreen } from '../components/LoadingScreen';
 import T5P1_filterDlaSearch from './sub-component/tab5/part1_filterDropdownSearch';
 import T5P2_chartPrediction from './sub-component/tab5/part2_chartPredictions';
+import LoadingSkeleton from '../components/sub-component/tab5/loading';
+export default function Tab5({ setIsOpen, details }) {
 
-export default function Tab5({ setIsOpen, details, data }) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true); useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab5`, { cache: 'no-store' });
+                const result = await res.json();
+                setData(result);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    }, []);
+
     const [dataforPrediction, setdataforPrediction] = useState(null);
     const fetchData = useCallback(async (details) => {
         if (!details) return;
@@ -25,7 +42,7 @@ export default function Tab5({ setIsOpen, details, data }) {
             performFetch();
         }
     }, [details, fetchData]);
-    if (!data) return <LoadingScreen />;
+    if (!data && loading) return <LoadingSkeleton />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">

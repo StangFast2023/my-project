@@ -3,39 +3,43 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { createRoot } from 'react-dom/client';
 const MySwal = withReactContent(Swal);
-export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, columns = 2 , onSelectionChange }) => {
+export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, columns = 2, onSelectionChange }) => {
     const showModal = () => {
+        let tempSelected = [...new Set([...selectedItems])];
         const container = document.createElement('div');
         const root = createRoot(container);
-        const renderContent = (currentSelected) => {
-            root.render(
-                <ModalBody 
-                    items={items} 
-                    selectedItems={currentSelected} 
-                    onSelectChange={(newVal) => {
-                        setSelectedItems(newVal); 
-                    }}
-                    setSelectedItems={(newVal) => {
-                        setSelectedItems(newVal);
-                        if (onSelectionChange) {
-                            onSelectionChange(newVal); 
-                        }
-                        renderContent(newVal); 
-                    }} 
-                    columns={columns} 
-                />
-            );
-        };
         MySwal.fire({
             title: label,
             width: '1500px',
             html: container,
             showConfirmButton: true,
-            confirmButtonText: 'ปิดหน้าต่าง',
-            confirmButtonColor: '#d33', 
-            didOpen: () => renderContent(selectedItems),
+            showCancelButton: true,
+            confirmButtonText: 'อัปเดตข้อมูล',
+            cancelButtonText: 'ปิดหน้าต่าง',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            preConfirm: () => {
+                setSelectedItems(tempSelected);
+                if (onSelectionChange) onSelectionChange(tempSelected);
+            },
+            didOpen: () => {
+                renderContent(tempSelected);
+            },
             willClose: () => root.unmount()
         });
+        const renderContent = (currentSelected) => {
+            root.render(
+                <ModalBody
+                    items={items}
+                    selectedItems={currentSelected}
+                    onSelectChange={(newVal) => {
+                        tempSelected = newVal;
+                        renderContent(newVal);
+                    }}
+                    columns={columns}
+                />
+            );
+        };
     };
     return (
         <button onClick={showModal} className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-xm text-gray-600 font-medium text-left hover:border-blue-400">
@@ -44,17 +48,17 @@ export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, 
     );
 };
 
-const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => {
-    const [toast , setToast] = React.useState({ show: false, msg: "", color: "" });
+const ModalBody = ({ items, selectedItems, onSelectChange, columns = 3 }) => {
+    const [toast, setToast] = React.useState({ show: false, msg: "", color: "" });
     const toastTimer = React.useRef(null);
     const showToast = (msg, color = "bg-green-500") => {
         if (toastTimer.current) clearTimeout(toastTimer.current);
-        
+
         setToast({ show: true, msg, color });
-        
+
         toastTimer.current = setTimeout(() => {
             setToast({ show: false, msg: "", color: "" });
-        }, 2000); 
+        }, 2000);
     };
     const [search, setSearch] = React.useState("");
     const s = search.toLowerCase();
@@ -66,11 +70,11 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
 
         if (isAlreadySelected) {
             const next = selectedItems.filter(i => i !== regionId && !subIds.includes(i));
-            setSelectedItems(next);
+            onSelectChange(next);
             showToast(`ล้าง ${regionName} ทั้งหมดแล้ว`, "bg-red-500");
         } else {
             const next = [...new Set([...selectedItems, regionId, ...subIds])];
-            setSelectedItems(next);
+            onSelectChange(next);
             showToast(`เลือก ${regionName} ทั้งหมดแล้ว`, "bg-green-500");
         }
     };
@@ -78,30 +82,11 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
     const handleToggle = (id, isRegion, parentId = null) => {
         const isSelected = selectedItems.includes(id);
         let next;
-        
-        // let itemsToRemove = [];
-        // if (isRegion) {
-        //     itemsToRemove = [id, ...items.filter(i => i.parentId === id).map(i => i.id)];
-        // } else {
-        //     itemsToRemove = [id];
-        // }
-
-        // const currentSelectedCount = selectedItems.length;
-        // const itemsToRemoveCount = isSelected 
-        //     ? itemsToRemove.filter(item => selectedItems.includes(item)).length 
-        //     : 0; 
-            
-        // const finalCount = isSelected ? (currentSelectedCount - itemsToRemoveCount) : (currentSelectedCount + 1);
-
-        // if (isSelected && finalCount === 0) {
-        //     showToast("กรุณาเลือกอย่างน้อย 1 ค่า", "bg-red-500");
-        //     return;
-        // }
 
         if (isRegion) {
             const subIds = items.filter(i => i.parentId === id).map(i => i.id);
-            next = isSelected 
-                ? selectedItems.filter(i => i !== id && !subIds.includes(i)) 
+            next = isSelected
+                ? selectedItems.filter(i => i !== id && !subIds.includes(i))
                 : [...new Set([...selectedItems, id, ...subIds])];
             const regionName = items.find(i => i.id === id)?.name || "กลุ่มนี้";
             const actionText = isSelected ? "ล้าง" : "เลือก";
@@ -127,16 +112,16 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
                     showToast(`นำออก : ${items.find(i => i.id === id)?.name || "รายการ"}`, "bg-red-500");
                 }
             } else {
-                showToast(`${isSelected ? "นำออก" : "เพิ่ม"}: ${items.find(i => i.id === id)?.name || "รายการ"}` , isSelected ? "bg-red-500" : "bg-green-500" );
+                showToast(`${isSelected ? "นำออก" : "เพิ่ม"}: ${items.find(i => i.id === id)?.name || "รายการ"}`, isSelected ? "bg-red-500" : "bg-green-500");
             }
             next = tempNext;
         }
 
-        setSelectedItems([...new Set(next)]);
+        onSelectChange([...new Set(next)]);
     };
 
     const filteredRegions = items.filter(i => i.isRegion && (
-        i.name.toLowerCase().includes(s) || 
+        i.name.toLowerCase().includes(s) ||
         items.some(child => child.parentId === i.id && child.name.toLowerCase().includes(s))
     ));
 
@@ -144,11 +129,11 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
         <div className="text-left">
 
             {selectedItems.length === 0 && (
-                <button 
+                <button
                     type="button"
                     onClick={() => {
                         const allIds = items.map(i => i.id);
-                        setSelectedItems(allIds);
+                        onSelectChange(allIds);
                         showToast("เลือกรายการทั้งหมดแล้ว", "bg-green-600");
                     }}
                     className="absolute px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg shadow hover:bg-blue-700 transition-all cursor-pointer"
@@ -164,11 +149,11 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
                 </div>
             )}
 
-            <input 
-                className="w-full p-2 border rounded-lg mb-4" 
-                placeholder="ค้นหา..." 
-                value={search} 
-                onChange={(e) => setSearch(e.target.value)} 
+            <input
+                className="w-full p-2 border rounded-lg mb-4"
+                placeholder="ค้นหา..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
             />
             <div className="max-h-[60vh] overflow-y-auto pr-2 space-y-6">
                 {filteredRegions.map(r => {
@@ -178,33 +163,32 @@ const ModalBody = ({ items, selectedItems, setSelectedItems , columns = 3 }) => 
                         <div key={r.id} className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                             <div className="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center">
                                 <label className="font-bold text-slate-800 flex items-center cursor-pointer">
-                                    {r.name} 
+                                    {r.name}
                                     {isAllSelected && (
                                         <span className="ml-2 text-xs font-normal text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
                                             (เลือกทั้งหมดแล้ว)
                                         </span>
                                     )}
                                 </label>
-                                <button 
-                                    onClick={() => toggleRegion(r.id)} 
-                                    className={`text-[11px] font-medium px-3 py-1 rounded-full border transition-colors ${
-                                        selectedItems.includes(r.id) 
-                                            ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100" 
-                                            : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
-                                    }`}
+                                <button
+                                    onClick={() => toggleRegion(r.id)}
+                                    className={`text-[11px] font-medium px-3 py-1 rounded-full border transition-colors ${selectedItems.includes(r.id)
+                                        ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
+                                        : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
+                                        }`}
                                 >
                                     {selectedItems.includes(r.id) ? "ล้างกลุ่มนี้" : "เลือกกลุ่มนี้"}
                                 </button>
                             </div>
-                            <div 
-                                className="p-4 grid gap-3" 
+                            <div
+                                className="p-4 grid gap-3"
                                 style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
                             >
                                 {items
                                     .filter(i => i.parentId === r.id && (i.name.toLowerCase().includes(s) || r.name.toLowerCase().includes(s)))
                                     .map(s => (
                                         <label key={s.id} className="flex items-center text-sm text-slate-600 hover:text-slate-900 cursor-pointer p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                                            <input type="checkbox" checked={selectedItems.includes(s.id)} onChange={() => handleToggle(s.id, false, r.id)} className="mr-2 w-4 h-4 shrink-0"/>
+                                            <input type="checkbox" checked={selectedItems.includes(s.id)} onChange={() => handleToggle(s.id, false, r.id)} className="mr-2 w-4 h-4 shrink-0" />
                                             {s.name}
                                         </label>
                                     ))

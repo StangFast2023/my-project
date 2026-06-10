@@ -1,10 +1,27 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 
-export default function ModalFilterSelect({ isOpen, setIsOpen, data, onSave }) {
+export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
+
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true); useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab5`, { cache: 'no-store' });
+                const result = await res.json();
+                setData(result);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    }, []);
+
     const part1 = data?.tab5?.part1 || {};
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [regionKey, setRegionKey] = useState('');
@@ -28,45 +45,27 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, data, onSave }) {
             toast.addEventListener('mouseleave', MySwal.resumeTimer)
         }
     });
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const handleScroll = () => {
-                if (activeDropdown === 'pos' && positionButtonRef.current) {
-                    const rect = positionButtonRef.current.getBoundingClientRect();
-                    setDropdownStyle({
-                        top: (rect.bottom + 8) + 'px',
-                        left: rect.left + 'px',
-                        width: positionButtonRef.current.offsetWidth + 'px',
-                    });
-                }
-            };
-            window.addEventListener('scroll', handleScroll, true);
-            return () => window.removeEventListener('scroll', handleScroll, true);
-        }
-    }, [activeDropdown]);
 
-    useEffect(() => {
-        if (typeof window === 'undefined') return;
+    useLayoutEffect(() => {
+        if (activeDropdown !== 'pos' || !positionButtonRef.current) return;
         const handleUpdate = () => {
-            if (activeDropdown === 'pos' && positionButtonRef.current) {
-                const rect = positionButtonRef.current.getBoundingClientRect();
-                if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                    setActiveDropdown(null);
-                } else {
-                    setDropdownStyle({
-                        top: (rect.bottom + 8) + 'px',
-                        left: rect.left + 'px',
-                        minWidth: positionButtonRef.current.offsetWidth + 'px',
-                        width: 'max-content',
-                        maxWidth: '90vw',
-                    });
-                }
+            if (!positionButtonRef.current) return;
+            const rect = positionButtonRef.current.getBoundingClientRect();
+            if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                setActiveDropdown(null);
+                return;
             }
+            setDropdownStyle({
+                top: (rect.bottom + 8) + 'px',
+                left: (rect.left + window.scrollX) + 'px',
+                minWidth: positionButtonRef.current.offsetWidth + 'px',
+                width: 'max-content',
+                maxWidth: '90vw',
+            });
         };
-
+        handleUpdate();
         window.addEventListener('scroll', handleUpdate, true);
         window.addEventListener('resize', handleUpdate, true);
-
         return () => {
             window.removeEventListener('scroll', handleUpdate, true);
             window.removeEventListener('resize', handleUpdate, true);

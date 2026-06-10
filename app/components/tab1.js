@@ -1,12 +1,29 @@
-import T1P1_StaticNumber        from './sub-component/tab1/part1_statics';
-import T1P2_CallMonthly         from './sub-component/tab1/part2_monthly';
-import T1P3_PieListed           from './sub-component/tab1/part3_listed';
-import T1P4_Cumulative          from './sub-component/tab1/part4_cumulative';
-import T1P5_PercentageRound     from './sub-component/tab1/part5_percent_round';
-import T1P6_TableRoundCall      from './sub-component/tab1/part6_table_round';
-import { LoadingScreen }        from '../components/LoadingScreen';
-export default function Tab1({ data }) {
-    if ( !data ) return <LoadingScreen />;
+
+import { useState, useEffect } from 'react';
+import T1P1_StaticNumber from './sub-component/tab1/part1_statics';
+import T1P2_CallMonthly from './sub-component/tab1/part2_monthly';
+import T1P3_PieListed from './sub-component/tab1/part3_listed';
+import T1P4_Cumulative from './sub-component/tab1/part4_cumulative';
+import T1P5_PercentageRound from './sub-component/tab1/part5_percent_round';
+import T1P6_TableRoundCall from './sub-component/tab1/part6_table_round';
+import LoadingSkeleton from '../components/sub-component/tab1/loading';
+export default function Tab1() {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true); useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}recruitment/tab1`, { cache: 'no-store' });
+                const result = await res.json();
+                setData(result);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchData();
+    }, []);
+    if (!data && loading) return <LoadingSkeleton />;
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -24,22 +41,22 @@ export default function Tab1({ data }) {
                 </div>
                 <div className="grid grid-cols-12 gap-6">
                     <div className="col-span-12 lg:col-span-12">
-                        <T1P1_StaticNumber data={ data } />
+                        <T1P1_StaticNumber data={data} />
                     </div>
                     <div className="col-span-12 lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T1P2_CallMonthly  data={ data }/>
+                        <T1P2_CallMonthly data={data} />
                     </div>
                     <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T1P5_PercentageRound  data={ data }/>
+                        <T1P5_PercentageRound data={data} />
                     </div>
                     <div className="col-span-12 lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T1P4_Cumulative  data={ data }/>
+                        <T1P4_Cumulative data={data} />
                     </div>
                     <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T1P3_PieListed  data={ data }/>
+                        <T1P3_PieListed data={data} />
                     </div>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T1P6_TableRoundCall  data={ data }/>
+                        <T1P6_TableRoundCall data={data} />
                     </div>
                 </div>
             </div>
