@@ -1,14 +1,15 @@
 "use client";
-import { motion }           from "framer-motion";
-import axios                from 'axios';
-import { Archive }          from 'lucide-react';
-import { LoadingScreen }    from '../../../components/LoadingScreen';
+import { motion } from "framer-motion";
+import axios from 'axios';
+import { Archive } from 'lucide-react';
+import { LoadingScreen } from '../../../components/LoadingScreen';
 
-export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
-    if(!data) return <LoadingScreen />;
+export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
+    if (!data) return <LoadingScreen />;
     const topTenData = data.tab2.part4 || [];
     const handleViewDetail = async (id) => {
-        try { const response = await axios.get( `http://127.0.0.1:8000/api/listed-position-detail/${id}` );
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}listed-position-detail/${id}`);
             setDetails(response.data);
             setIsOpen(true);
         } catch (error) {
@@ -21,13 +22,13 @@ export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
         3: "bg-yellow-100 text-yellow-700"
     };
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}   
-            transition={{ duration: 0.5 }}  
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
         >
             <div className="w-full bg-white rounded-2xl overflow-hidden">
-                
+
                 <div className="text-center mb-2">
                     <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         <Archive />
@@ -35,7 +36,7 @@ export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
                     </h3>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>
                 </div>
-                
+
                 <div className="max-h-[500px] overflow-y-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -62,7 +63,7 @@ export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
                                     <td className="p-4">
                                         <div className="font-bold  text-sm md:text-base lg:text-xm text-gray-800">
                                             <span className={`px-4 py-1.5 rounded-full font-bold shadow-sm ${typeStyles[pos.pos_type_id]}`}>
-                                                { pos.pos_type }
+                                                {pos.pos_type}
                                             </span>
                                         </div>
                                     </td>
@@ -73,7 +74,7 @@ export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
                                     </td>
                                     <td className="p-4 text-center">
                                         <span className="font-mono text-sm md:text-base lg:text-sm md:text-base lg:text-xm font-bold text-blue-700">
-                                            <button onClick={() => handleViewDetail(pos.id_pos)}className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md transition-colors hover:shadow-xl transition-all duration-300">
+                                            <button onClick={() => handleViewDetail(pos.id_pos)} className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md transition-colors hover:shadow-xl transition-all duration-300">
                                                 <div className="flex items-center gap-1 ">
                                                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -90,6 +91,6 @@ export default function T2P4_Top10ListPos({ setIsOpen,setDetails,data }) {
                 </div>
             </div>
         </motion.div>
-        
+
     );
 }
