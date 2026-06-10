@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AppWindow } from 'lucide-react';
-import { LoadingScreen } from '../../../components/LoadingScreen';
 export default function T1P3_PieListed({ data }) {
     const part6 = data?.tab1?.part6 || {};
     if (!part6) return null;
@@ -19,36 +18,37 @@ export default function T1P3_PieListed({ data }) {
             return sum + (roundInfo ? roundInfo.total : 0);
         }, 0);
     });
-    if (!data) return <LoadingScreen />;
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-
-            <div className="text-center mb-4 text-gray-700">
-                <div className="flex items-center">
-                    <AppWindow />
-                    <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        สรุปข้อมูลการเรียกบรรจุสะสม จำแนกตามเขตพื้นที่
-                    </h3>
+            {data === null || data === undefined ? (null) : (
+                <div className="text-center mb-4 text-gray-700">
+                    <div className="flex items-center">
+                        <AppWindow />
+                        <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                            สรุปข้อมูลการเรียกบรรจุสะสม จำแนกตามเขตพื้นที่
+                        </h3>
+                    </div>
                 </div>
-            </div>
-
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            )}
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
                 <div className="flex-1 overflow-x-auto">
                     <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse whitespace-nowrap">
-                        <thead className="bg-gray-50 text-gray-600 text-sm">
-                            <tr>
-                                <th className="bg-gray-50    w-[5%] px-6 py-4 text-sm md:text-base lg:text-lg font-semibold sticky left-[0] z-30">ภาค / เขต</th>
-                                <th className="bg-amber-50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี</th>
-                                <th className="bg-emerald-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-emerald-700">เรียกแล้ว</th>
-                                <th className="bg-blue-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-blue-700">ความคืบหน้า</th>
-                                <th className="bg-rose-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-rose-500">คงเหลือ</th>
-                                {roundColumns.map(num => (<th key={num} className="w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
-                            </tr>
-                        </thead>
+                        {data === null || data === undefined ? (null) : (
+                            <thead className="bg-gray-50 text-gray-600 text-sm">
+                                <tr>
+                                    <th className="bg-gray-50    w-[5%] px-6 py-4 text-sm md:text-base lg:text-lg font-semibold sticky left-[0] z-30">ภาค / เขต</th>
+                                    <th className="bg-amber-50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี</th>
+                                    <th className="bg-emerald-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-emerald-700">เรียกแล้ว</th>
+                                    <th className="bg-blue-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-blue-700">ความคืบหน้า</th>
+                                    <th className="bg-rose-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-rose-500">คงเหลือ</th>
+                                    {roundColumns.map(num => (<th key={num} className="w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
+                                </tr>
+                            </thead>
+                        )}
                         <tbody>
                             {Object.values(part6).map((region) => {
                                 let reg = { list: 0, call: 0, remain: 0, rounds: Array(roundColumns.length).fill(0) };
@@ -103,14 +103,16 @@ export default function T1P3_PieListed({ data }) {
                                     </React.Fragment>
                                 );
                             })}
-                            <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
-                                <td className="bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalListed.toLocaleString()}</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalCalled.toLocaleString()}</td>
-                                <td className="bg-gray-700 px-4 py-4 text-center text-blue-300">{((grandTotalCalled / grandTotalListed) * 100).toFixed(2)} %</td>
-                                <td className="bg-gray-700 px-6 py-4 text-center text-rose-300">{grandTotalRemain.toLocaleString()}</td>
-                                {grandTotalPerRound.map((total, index) => (<td key={index} className="w-[120px] px-4 py-4 text-center">{total > 0 ? total.toLocaleString() : null}</td>))}
-                            </tr>
+                            {data === null || data === undefined ? (null) : (
+                                <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
+                                    <td className="bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalListed.toLocaleString()}</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalCalled.toLocaleString()}</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center text-blue-300">{((grandTotalCalled / grandTotalListed) * 100).toFixed(2)} %</td>
+                                    <td className="bg-gray-700 px-6 py-4 text-center text-rose-300">{grandTotalRemain.toLocaleString()}</td>
+                                    {grandTotalPerRound.map((total, index) => (<td key={index} className="w-[120px] px-4 py-4 text-center">{total > 0 ? total.toLocaleString() : null}</td>))}
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

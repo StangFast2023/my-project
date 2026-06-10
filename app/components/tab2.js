@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import T2P1_TypePostNum from './sub-component/tab2/part1_typepost';
 import T2P2_TypePerMonth from './sub-component/tab2/part2_typepermonth';
 import T2P3_TypePerRound from './sub-component/tab2/part3_typeperround';
@@ -9,29 +9,19 @@ import T2P7_TypeAllRemain from './sub-component/tab2/part7_typeremain';
 import T2P8_TableAllType from './sub-component/tab2/part8_tablealltype';
 import T2P9_PosTypePose from './sub-component/tab2/part9_PosTypePos';
 import T2P10_PosTypePeople from './sub-component/tab2/part10_PosTypePeople';
-import LoadingSkeleton from '../components/sub-component/tab2/loading';
-
 export default function Tab1({ setIsOpen, setDetails }) {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true); useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab2`, { cache: 'no-store' });
-                const result = await res.json();
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchData();
-    }, []);
-    if (!data && loading) return <LoadingSkeleton />;
+    const { data } = useQuery({
+        queryKey: ['tab2Data'],
+        queryFn: async () => {
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab2`);
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        },
+        staleTime: 10 * 60 * 1000,
+    });
     return (
         <div className="animate-fade-in">
             <div className="my-3">
-
                 <div className="flex items-center gap-4 mb-8">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
                         <span className=" text-sm md:text-base lg:text-4xl font-black text-white drop-shadow-sm">
@@ -44,36 +34,35 @@ export default function Tab1({ setIsOpen, setDetails }) {
                         </h2>
                     </div>
                 </div>
-
                 <div className="grid grid-cols-12 gap-6">
-                    <div className="col-span-12 lg:col-span-12">
+                    <div className={`${data ? '' : 'bg-white/50 animate-pulse rounded-2xl'} col-span-12 lg:col-span-12`} style={{ height: data ? 'auto' : '180px' }}>
                         <T2P1_TypePostNum data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-6 p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P9_PosTypePose data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-6 p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P10_PosTypePeople data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P2_TypePerMonth data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P3_TypePerRound data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P4_Top10ListPos setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P5_PopularPosEmp data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P7_TypeAllRemain setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P6_TypeAllCall data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P8_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
                 </div>

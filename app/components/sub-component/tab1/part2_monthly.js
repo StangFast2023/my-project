@@ -2,7 +2,6 @@
 import { motion } from "framer-motion";
 import { Bar } from "react-chartjs-2";
 import { ChartColumn } from 'lucide-react';
-import { LoadingScreen } from '../../../components/LoadingScreen';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -28,7 +27,6 @@ ChartJS.register(
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T1P2_CallMonthly({ data }) {
-    if (!data) return <LoadingScreen />;
     const ROUND_COLORS = [
         "#1e40afab", "#fbbe24ab", "#ef4444ab", "#10b981ab", "#8b5cf6ab",
         "#f59e0bab", "#3b82f6ab", "#ec4899ab", "#06b6d4ab", "#84cc16ab",
@@ -166,14 +164,12 @@ export default function T1P2_CallMonthly({ data }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div>
-                <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
-                    <ChartColumn />
-                    <span className="ml-2">สรุปจำนวนการเรียกบรรจุรายรอบ (แยกตามเดือน)</span>
-                </h3>
-                <div className="w-full h-[370px]">
-                    <Bar data={chartData} options={options} />
-                </div>
+            <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
+                <ChartColumn />
+                <span className="ml-2">สรุปจำนวนการเรียกบรรจุรายรอบ (แยกตามเดือน)</span>
+            </h3>
+            <div className="w-full h-[370px]">
+                <Bar data={chartData} options={options} />
             </div>
         </motion.div>
     );

@@ -1,47 +1,63 @@
-import React, { useCallback, useState, useEffect } from 'react';
+
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useEffect, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import withReactContent from 'sweetalert2-react-content';
 import T5P1_filterDlaSearch from './sub-component/tab5/part1_filterDropdownSearch';
 import T5P2_chartPrediction from './sub-component/tab5/part2_chartPredictions';
-import LoadingSkeleton from '../components/sub-component/tab5/loading';
+const MySwal = withReactContent(Swal);
 export default function Tab5({ setIsOpen, details }) {
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true); useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`, { cache: 'no-store' });
-                const result = await res.json();
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchData();
-    }, []);
-
-    const [dataforPrediction, setdataforPrediction] = useState(null);
-    const fetchData = useCallback(async (details) => {
-        if (!details) return;
-        const { regionId, areaId, positionId, sequence, frequency } = details;
-        try {
-            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`);
-            setdataforPrediction(response.data);
-        } catch (error) {
-            console.error("Error fetching details:", error);
-        }
-    }, []);
-
+    const { data: configData } = useQuery({
+        queryKey: ['tab5Config'],
+        queryFn: async () => {
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`);
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        },
+        staleTime: 10 * 60 * 1000,
+    });
+    const { data: dataforPrediction, isFetching } = useQuery({
+        queryKey: ['predictionDetails', details],
+        queryFn: async () => {
+            if (!details) return null;
+            const { regionId, areaId, positionId, sequence, frequency } = details;
+            const response = await axios.get(
+                `https://dla-backend-production.up.railway.app/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`
+            );
+            return response.data;
+        },
+        enabled: !!details,
+        staleTime: 5 * 60 * 1000,
+    });
     useEffect(() => {
-        if (details) {
-            const performFetch = async () => {
-                await fetchData(details);
-            };
-            performFetch();
+        if (isFetching) {
+            Swal.fire({
+                title: 'กำลังประมวลผล...',
+                text: 'กรุณารอสักครู่ ระบบกำลังดึงข้อมูล',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        } else {
+            Swal.close();
         }
-    }, [details, fetchData]);
-    if (!data && loading) return <LoadingSkeleton />;
+    }, [isFetching]);
+    const prevIsFetching = useRef(isFetching);
+    useEffect(() => {
+        if (prevIsFetching.current === true && isFetching === false) {
+            Swal.fire({
+                icon: 'success',
+                title: 'สำเร็จ!',
+                text: 'ประมวลผลข้อมูลเสร็จเรียบร้อยแล้ว',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+        prevIsFetching.current = isFetching;
+    }, [isFetching]);
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -57,14 +73,16 @@ export default function Tab5({ setIsOpen, details }) {
                         </h2>
                     </div>
                 </div>
-                <div className="grid grid-cols-12 gap-6 my-2">
-                    <div className="col-span-12 lg:col-span-12">
-                        <T5P1_filterDlaSearch setIsOpen={setIsOpen} details={details} data={data} />
+                <div className={`${configData ? '' : 'bg-white/50 animate-pulse p-20 rounded-2xl'} grid grid-cols-12 gap-6 my-2`} style={{ height: configData ? 'auto' : '180px' }}>
+                    <div className={`${configData ? '' : 'hidden'} col-span-12 lg:col-span-12`}>
+                        <T5P1_filterDlaSearch setIsOpen={setIsOpen} details={details} data={configData} />
                     </div>
                 </div>
             </div>
-            <div className="my-1">
-                <T5P2_chartPrediction details={details} base_data={data} data={dataforPrediction} />
+            <div className={`${configData ? '' : 'bg-white/50 animate-pulse p-20 rounded-2xl'} my-1`} style={{ height: configData ? 'auto' : '800px' }}>
+                <div className={`${configData ? '' : 'hidden'}`}>
+                    <T5P2_chartPrediction details={details} base_data={configData} data={dataforPrediction} />
+                </div>
             </div>
         </div>
     );

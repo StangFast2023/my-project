@@ -1,16 +1,14 @@
 "use client";
-import CountUp              from 'react-countup';
-import { motion }           from "framer-motion";
-import { Doughnut }         from "react-chartjs-2";
-import { LoadingScreen }    from '../../../components/LoadingScreen';
-import { ContactRound }     from 'lucide-react';
+import CountUp from 'react-countup';
+import { motion } from "framer-motion";
+import { Doughnut } from "react-chartjs-2";
+import { ContactRound } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T1P3_PieListed({ data }) {
-    if ( !data ) return <LoadingScreen />;
-    const part5 = data.tab1.part5;
+    const part5 = data?.tab1?.part5;
     if (!part5) return null;
     const part1 = data?.tab1?.part1;
     if (!part1) return null;
@@ -18,20 +16,20 @@ export default function T1P3_PieListed({ data }) {
     const totalCalled = part1.TotalCall;
 
     const ROUND_COLORS = [
-        "#1e40afab", "#fbbe24ab", "#ef4444ab", "#10b981ab", "#8b5cf6ab", 
-        "#f59e0bab", "#3b82f6ab", "#ec4899ab", "#06b6d4ab", "#84cc16ab", 
-        "#6366f1ab", "#f43f5eab", "#14b8a6ab", "#f97316ab", "#a855f7ab", 
-        "#0ea5e9ab", "#d946efab", "#22c55eab", "#eab308ab", "#64748bab", 
-        "#475569ab", "#be123cab", "#15803dab", "#1d4ed8ab", "#7c3aedab"  
+        "#1e40afab", "#fbbe24ab", "#ef4444ab", "#10b981ab", "#8b5cf6ab",
+        "#f59e0bab", "#3b82f6ab", "#ec4899ab", "#06b6d4ab", "#84cc16ab",
+        "#6366f1ab", "#f43f5eab", "#14b8a6ab", "#f97316ab", "#a855f7ab",
+        "#0ea5e9ab", "#d946efab", "#22c55eab", "#eab308ab", "#64748bab",
+        "#475569ab", "#be123cab", "#15803dab", "#1d4ed8ab", "#7c3aedab"
     ];
-    
+
     const pieChartData = {
         labels: Object.values(part5).map(item => `รอบที่ ${item.round}`),
         datasets: [
             {
                 label: 'จำนวนที่เรียกบรรจุ (คน)',
-                data: Object.values(part5).map(item => item.total), 
-                backgroundColor: ROUND_COLORS.slice(0, part5.length), 
+                data: Object.values(part5).map(item => item.total),
+                backgroundColor: ROUND_COLORS.slice(0, part5.length),
                 borderColor: ROUND_COLORS.slice(0, part5.length).map(color => color.replace('ab', 'ff')), // เพิ่มความเข้มที่เส้นขอบ
                 borderWidth: 1,
             },
@@ -43,17 +41,17 @@ export default function T1P3_PieListed({ data }) {
         maintainAspectRatio: false,
         cutout: '20',
         plugins: {
-        legend: {
-            position: 'bottom',
-            labels: {
-                font: { family: "'Kanit', sans-serif", size: 14 },
-                usePointStyle: true, 
-                padding: 20
-            }
-        },
-        tooltip: {
-            callbacks: {
-                    label: function(context) {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { family: "'Kanit', sans-serif", size: 14 },
+                    usePointStyle: true,
+                    padding: 20
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
                         const total = context.dataset.data.reduce((a, b) => a + b, 0);
                         const value = context.raw;
                         const percentage = ((value / total) * 100).toFixed(2);
@@ -64,13 +62,13 @@ export default function T1P3_PieListed({ data }) {
         }
     };
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}   
-            transition={{ duration: 0.5 }}  
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
         >
             <div>
-                
+
                 <div className="text-center mb-4 text-gray-700">
                     <div className="flex justify-center items-center">
                         <ContactRound />
@@ -80,7 +78,7 @@ export default function T1P3_PieListed({ data }) {
                     </div>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">เรียกไปแล้วทั้งหมด {Object.values(part5).length} รอบ</p>
                 </div>
-            
+
                 <div className="h-[370px] w-full relative">
                     <Doughnut data={pieChartData} options={options} />
                 </div>
@@ -88,13 +86,13 @@ export default function T1P3_PieListed({ data }) {
                     <div className="flex items-baseline">
                         <span className="text-sm md:text-base lg:text-lg text-gray-600">เรียกไปแล้ว</span>
                         <span className="text-sm md:text-base lg:text-3xl font-bold text-emerald-500 ml-2">
-                            <CountUp 
+                            <CountUp
                                 end={totalCalled}
-                                duration={3} 
-                                separator="," 
+                                duration={3}
+                                separator=","
                                 decimals={0}
                                 useEasing={true}
-                            /> 
+                            />
                         </span>
                         <span className="text-sm md:text-base lg:text-lg text-gray-600 pl-2">อัตรา</span>
                     </div>

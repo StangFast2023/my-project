@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { motion } from 'framer-motion';
 import { FilterDropdown } from './filterDropdown';
-import { LoadingScreen } from '../../../components/LoadingScreen';
+import LoadingScreen from '../../LoadingScreen';
 import { useColumnStore } from '../../useTableColumns';
 import { RotateCcw, Settings } from 'lucide-react';
 const MySwal = withReactContent(Swal);
@@ -320,7 +320,7 @@ export default function T4P1_TableAllListed({
                 updateTableVisibility(result.value);
                 MySwal.fire({
                     toast: true,
-                    width: '600px',
+                    width: 'auto',
                     position: 'top-end',
                     icon: 'success',
                     title: `ปรับเปลี่ยนการแสดงผลเรียบร้อยแล้ว`,

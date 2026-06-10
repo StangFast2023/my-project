@@ -1,52 +1,61 @@
 @import "tailwindcss";
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --table-bg: #171717;     
-  --row-hover: #262626;   
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --table-bg: #171717;
+    --row-hover: #262626;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --table-bg: #ffffff;
-  --row-hover: #f3f4f6;
+    --background: #ffffff;
+    --foreground: #171717;
+    --table-bg: #ffffff;
+    --row-hover: #f3f4f6;
 }
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
 }
 
 @layer utilities {
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
 
-  .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
-  }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
 }
 
 @layer components {
     .custom-box {
-        @apply p-4 m-2 rounded-2xl shadow-lg; 
+        @apply p-4 m-2 rounded-2xl shadow-lg;
         border: 1px solid black;
         background: #ffffffab;
         box-shadow: 2px 2px 10px gray;
     }
+
     .custom-box-tab {
-        @apply p-4 rounded-2xl shadow-lg; 
+        @apply p-4 rounded-2xl shadow-lg;
         border: 1px solid black;
         background: #ffffffab;
         box-shadow: 2px 2px 10px gray;
@@ -54,6 +63,17 @@
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+/* บังคับไม่ให้ Swal มาเปลี่ยนค่า padding ของ body */
+body.swal2-shown {
+    padding-right: 0 !important;
+    overflow-y: auto !important;
+}
+
+/* กรณีต้องการแก้ที่ตัว container ของ swal โดยตรง */
+.swal2-container {
+    overflow-y: auto !important;
 }

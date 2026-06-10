@@ -1,5 +1,4 @@
 "use client";
-import { LoadingScreen } from '../../../components/LoadingScreen';
 import { motion } from "framer-motion";
 import { Bar } from "react-chartjs-2";
 import { Bolt } from 'lucide-react';
@@ -8,7 +7,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointEleme
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T2P2_TypePerMonth({ data }) {
-    if (!data) return <LoadingScreen />;
     const part2 = data?.tab2?.part2;
     if (!part2) return null;
     const keys = Object.keys(part2);

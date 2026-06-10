@@ -2,14 +2,14 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { BookMarked } from 'lucide-react';
-import { LoadingScreen } from '../../../components/LoadingScreen';
+import LoadingScreen from '../../LoadingScreen';
 
 export default function T2P7_TableAllType({ data }) {
     const part8 = data?.tab3?.part8 || null;
     const { allZones, roundColumns } = useMemo(() => {
         const zones = [];
         let maxRoundsFound = 0;
-        Object.values(part8).forEach(region => {
+        Object.values(part8 || {}).forEach(region => {
             Object.values(region).forEach(posTypeGroup => {
                 Object.values(posTypeGroup).forEach(zone => {
                     zones.push(zone);

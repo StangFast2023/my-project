@@ -1,80 +1,62 @@
-import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import { useState, useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import T4P1_filterDlaListed from './sub-component/tab4/part1_filterDlaListed';
 import T4P2_showingAllTable from './sub-component/tab4/part2_showingAllTable';
 import ShowAllDataTable from './sub-component/tab4/showallDataTable';
 import { useColumnStore } from '../components/useTableColumns';
-import LoadingSkeleton from '../components/sub-component/tab4/loading';
 export default function Tab4() {
+    const [filters, setFilters] = useState({
+        regions: [],
+        positions: [],
+        showEmpty: false,
+        showExpired: true,
+        all_header: null
+    });
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true); useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab4`, { cache: 'no-store' });
-                const result = await res.json();
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchData();
-    }, []);
+    const { data: configData } = useQuery({
+        queryKey: ['tab4Config'],
+        queryFn: async () => {
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab4`);
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        },
+        staleTime: 10 * 60 * 1000,
+    });
+
+    const { data: tableData, isLoading } = useQuery({
+        queryKey: ['tab4Table', filters],
+        queryFn: async () => {
+            const response = await axios.post(`https://dla-backend-production.up.railway.app/api/updating-tab4-table`, {
+                cleanRegions: filters.regions,
+                cleanPositions: filters.positions,
+                showEmpty: filters.showEmpty,
+                showExpired: filters.showExpired
+            });
+            return response.data;
+        },
+        enabled: !!filters,
+        staleTime: 5 * 60 * 1000,
+    });
 
     const columns = useColumnStore((state) => state.columns);
-    const initialRegions = Object.keys(data?.tab4?.part1?.region || {});
-    const [selectedRegions, setSelectedRegions] = useState(initialRegions);
-    const [selectedSubRegions, setSelectedSubRegions] = useState(() => {
-        const allSubs = [];
-        Object.keys(data?.tab4?.part1?.region || {}).forEach(regId => {
-            const subs = Object.keys(data?.tab4?.part1?.region[regId].sub || {});
-            subs.forEach(subId => allSubs.push(`${regId}-${subId}`));
+
+    const initialConfig = useMemo(() => {
+        const regions = Object.keys(configData?.tab4?.part1?.region || {});
+        const subs = [];
+        regions.forEach(regId => {
+            const subList = Object.keys(configData?.tab4?.part1?.region[regId].sub || {});
+            subList.forEach(subId => subs.push(`${regId}-${subId}`));
         });
-        return allSubs;
-    });
+        return { regions, subs };
+    }, [configData]);
+
+    const [selectedRegions, setSelectedRegions] = useState(initialConfig.regions);
+    const [selectedSubRegions, setSelectedSubRegions] = useState(initialConfig.subs);
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedPositions, setSelectedPositions] = useState([]);
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    const [filters, setFilters] = useState({ regions: [], positions: [], showEmpty: false, showExpired: true, all_header: null });
-    const [fetchedData, setFetchedData] = useState(null);
-
-    const tableData = useMemo(() => {
-        if (fetchedData) return fetchedData;
-        return data || { tab4: { part2: { data: {} } } };
-    }, [data, fetchedData]);
-
-    useEffect(() => {
-        let ignore = false;
-        axios.defaults.withCredentials = true;
-        const fetchData = async () => {
-            setIsLoading(true);
-            try {
-                const response = await axios.post(`https://dla-backend-production.up.railway.app/api/updating-tab4-table`, {
-                    cleanRegions: filters.regions,
-                    cleanPositions: filters.positions,
-                    showEmpty: filters.showEmpty,
-                    showExpired: filters.showExpired
-                });
-
-                if (!ignore) {
-                    setFetchedData(response.data);
-                    setTimeout(() => setIsLoading(false), 300);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-
-        return () => { ignore = true; };
-    }, [filters, data]);
-    if (!data && loading) return <LoadingSkeleton />;
+    const tableDataResult = tableData || { tab4: { part2: { data: {} } } };
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -90,11 +72,11 @@ export default function Tab4() {
                         </h2>
                     </div>
                 </div>
-                <div className="grid grid-cols-12 gap-6 my-2">
+                <div className={`${configData ? '' : 'bg-white/50 animate-pulse rounded-2xl mb-6'} grid grid-cols-12 gap-6 my-2`} style={{ height: configData ? 'auto' : '150px' }}>
                     <div className="col-span-12 lg:col-span-12">
                         <T4P1_filterDlaListed
 
-                            data={data}
+                            data={configData}
 
                             selectedRegions={selectedRegions}
                             setSelectedRegions={setSelectedRegions}
@@ -113,15 +95,15 @@ export default function Tab4() {
                         />
                     </div>
                 </div>
-                <div className={`grid grid-cols-12 gap-6 my-2 ${!columns.all_header ? 'hidden' : 'block'}`}>
+                <div className={`grid grid-cols-12 gap-6 my-2 ${!columns.all_header ? 'hidden' : 'block'} ${configData ? '' : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <T4P2_showingAllTable data={tableData} isLoading={isLoading} />
+                        <T4P2_showingAllTable checkData={configData} data={tableDataResult} isLoading={isLoading} />
                     </div>
                 </div>
-                <div className={`grid grid-cols-12 gap-6 my-2 ${columns.all_header ? 'hidden' : 'block'}`}>
+                <div className={`grid grid-cols-12 gap-6 my-2 ${columns.all_header ? 'hidden' : 'block'} ${configData ? '' : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
-                        <ShowAllDataTable part2={tableData} isLoading={isLoading} />
+                        <ShowAllDataTable checkData={configData} part2={tableData} isLoading={isLoading} />
                     </div>
                 </div>
             </div>

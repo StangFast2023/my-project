@@ -1,15 +1,10 @@
 "use client";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { motion } from 'framer-motion';
-import { LoadingScreen } from '../../../components/LoadingScreen';
-const MySwal = withReactContent(Swal);
 export default function T5P1_filterDlaSearch({ setIsOpen, details, data }) {
     const part5ForShow = data?.tab5?.part1 || {};
     const handleViewDetail = async () => {
         setIsOpen(true);
     };
-    if (!part5ForShow) return <LoadingScreen />;
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}

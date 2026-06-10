@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import Swal from 'sweetalert2';
 import { EmptyData } from '../../EmptyData';
 import { useColumnStore } from '../../useTableColumns';
-export default function ShowAllDataTable({ part2, isLoading }) {
-    const safePart2 = part2.tab4.part2.data || {};
+export default function ShowAllDataTable({ checkData, part2, isLoading }) {
+    const safePart2 = part2?.tab4?.part2?.data || {};
     const columns = useColumnStore((state) => state.columns);
     const maxRound = Math.max(10, part2?.tab4?.part2?.round || 0);
     const roundsArray = Array.from({ length: maxRound }, (_, i) => i + 1);
@@ -30,7 +30,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
     const statusText = percent === 100 ? 'หมดบัญชี' : (percent > 0 ? 'คงเหลือ' : null);
     const statusColor = percent < 30 ? "text-rose-400" : (percent < 70 ? "text-amber-400" : "text-emerald-400");
 
-    const has_data = Object.keys(part2.tab4.part2.data || {}).length > 0;
+    const has_data = Object.keys(part2?.tab4?.part2?.data || {}).length > 0;
     const regionColors = {
         1: "bg-rose-50 text-rose-800 font-bold",
         2: "bg-indigo-50 text-indigo-800 font-bold",
@@ -100,7 +100,7 @@ export default function ShowAllDataTable({ part2, isLoading }) {
         });
         return rows;
     }, [part2]);
-
+    if (!checkData) return <div className="h-[600px] flex flex-col items-center justify-center h-[400px]"></div>
     if (isLoading) {
         return (
             <div className="h-[600px] flex flex-col items-center justify-center h-[400px]">

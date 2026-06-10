@@ -1,27 +1,30 @@
 import "./globals.css";
-import type { Metadata }    from "next";
-import { Kanit }            from "next/font/google"; 
-import ThemeSwitcher        from "./components/ThemeSwitcher";
+import type { Metadata } from "next";
+import { Kanit } from "next/font/google";
+import ThemeSwitcher from "./components/ThemeSwitcher";
+import Providers from './components/providers';
 
-const kanit = Kanit({ 
-  weight: ['300', '400', '700'], 
-  subsets: ["thai", "latin"],    
-  display: 'swap',
+const kanit = Kanit({
+    weight: ['300', '400', '700'],
+    subsets: ["thai", "latin"],
+    display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "สถิติข้อมูลการเรียกบรรจุข้าราชการท้องถิ่นปี 2568",
-  description: "Built with Next.js by Stang",
+    title: "สถิติข้อมูลการเรียกบรรจุข้าราชการท้องถิ่นปี 2568",
+    description: "Built with Next.js by Stang",
 };
 
-export default function RootLayout({children}: {children: React.ReactNode;}) {
-  return (
-    <html lang="th" >
-        <body className={kanit.className}>
-            <ThemeSwitcher />
-                {children}
-        </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode; }) {
+    return (
+        <html lang="th" >
+            <body className={kanit.className}>
+                <Providers>
+                    <ThemeSwitcher />
+                    {children}
+                </Providers>
+            </body>
+        </html>
+    );
 }
 

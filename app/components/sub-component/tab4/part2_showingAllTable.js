@@ -2,11 +2,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { EmptyData } from '../../../components/EmptyData';
-import { LoadingScreen } from '../../../components/LoadingScreen';
+import LoadingScreen from '../../LoadingScreen';
 import { useColumnStore } from '../../useTableColumns';
 import Part1_TableContainer from '../tab4/TablePart2/Part1_TableContainer';
 
-export default function T2P7_TableAllType({ data, isLoading }) {
+export default function T2P7_TableAllType({ checkData, data, isLoading }) {
     const part2 = data?.tab4?.part2.data || null;
     const columns = useColumnStore((state) => state.columns);
     const [collapsedIDs, setCollapsedIDs] = React.useState({});
@@ -52,6 +52,7 @@ export default function T2P7_TableAllType({ data, isLoading }) {
     const statusText = percent === 100 ? 'หมดบัญชี' : (percent > 0 ? 'คงเหลือ' : null);
     const statusColor = percent < 30 ? "text-rose-400" : (percent < 70 ? "text-amber-400" : "text-emerald-400");
     const has_data = Object.keys(data.tab4.part2.data || {}).length > 0;
+    if (!checkData) return <div className="h-[600px] flex flex-col items-center justify-center h-[400px]"></div>
     if (isLoading) {
         return (
             <div className="h-[600px] flex flex-col items-center justify-center h-[400px]">

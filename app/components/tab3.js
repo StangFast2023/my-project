@@ -1,24 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { OctagonAlert } from 'lucide-react';
 import T3P8_TableAllType from './sub-component/tab3/part8_tablealltype';
-import LoadingSkeleton from '../components/sub-component/tab3/loading';
-
 export default function Tab3() {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true); useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab3`, { cache: 'no-store' });
-                const result = await res.json();
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchData();
-    }, []);
-    if (!data && loading) return <LoadingSkeleton />;
+    const { data, loading } = useQuery({
+        queryKey: ['tab3Data'],
+        queryFn: async () => {
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab3`);
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        },
+        staleTime: 10 * 60 * 1000,
+    });
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -34,10 +26,17 @@ export default function Tab3() {
                         </h2>
                     </div>
                 </div>
-                <div className="grid grid-cols-12 gap-6">
+                <div className={`${data ? '' : 'bg-white/50 animate-pulse rounded-2xl'} grid grid-cols-12 gap-6`} style={{ height: data ? 'auto' : '800px' }}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T3P8_TableAllType data={data} />
                     </div>
+                </div>
+                <div className="my-6 flex flex-col items-center justify-center h-[600px] bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
+                    <div className="text-gray-400 text-6xl mb-4">
+                        <OctagonAlert size={150} />
+                    </div>
+                    <h3 className="text-3xl font-bold text-gray-500">แถบที่ 3 ข้อมูลรายภาคและเขต ยังไม่เสร็จสมบูรณ์</h3>
+                    <p className="text-gray-400 text-xl mt-2">กำลังทำการอัปเดทเพิ่มเติมภายใน 4-5 วัน ขออภัยในความไม่สะดวกด้วยนะครับ</p>
                 </div>
             </div>
         </div>

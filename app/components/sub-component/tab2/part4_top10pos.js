@@ -1,12 +1,10 @@
 "use client";
-import { motion } from "framer-motion";
 import axios from 'axios';
+import { motion } from "framer-motion";
 import { Archive } from 'lucide-react';
-import { LoadingScreen } from '../../../components/LoadingScreen';
 
 export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
-    if (!data) return <LoadingScreen />;
-    const topTenData = data.tab2.part4 || [];
+    const topTenData = data?.tab2?.part4 || [];
     const handleViewDetail = async (id) => {
         try {
             const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
@@ -27,8 +25,7 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="w-full bg-white rounded-2xl overflow-hidden">
-
+            <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
                     <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         <Archive />
@@ -36,7 +33,6 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
                     </h3>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>
                 </div>
-
                 <div className="max-h-[500px] overflow-y-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>

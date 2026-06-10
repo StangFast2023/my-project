@@ -1,29 +1,21 @@
 
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import T1P1_StaticNumber from './sub-component/tab1/part1_statics';
 import T1P2_CallMonthly from './sub-component/tab1/part2_monthly';
 import T1P3_PieListed from './sub-component/tab1/part3_listed';
 import T1P4_Cumulative from './sub-component/tab1/part4_cumulative';
 import T1P5_PercentageRound from './sub-component/tab1/part5_percent_round';
 import T1P6_TableRoundCall from './sub-component/tab1/part6_table_round';
-import LoadingSkeleton from '../components/sub-component/tab1/loading';
 export default function Tab1() {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true); useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab1`, { cache: 'no-store' });
-                const result = await res.json();
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchData();
-    }, []);
-    if (!data && loading) return <LoadingSkeleton />;
+    const { data } = useQuery({
+        queryKey: ['tab1Data'],
+        queryFn: async () => {
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab1`);
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        },
+        staleTime: 10 * 60 * 1000,
+    });
     return (
         <div className="animate-fade-in">
             <div className="my-3">
@@ -40,22 +32,22 @@ export default function Tab1() {
                     </div>
                 </div>
                 <div className="grid grid-cols-12 gap-6">
-                    <div className="col-span-12 lg:col-span-12">
+                    <div className={`${data ? '' : 'bg-white/50 animate-pulse p-20 rounded-2xl'} col-span-12 lg:col-span-12`}>
                         <T1P1_StaticNumber data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9  p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P2_CallMonthly data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P5_PercentageRound data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-9 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9 p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P4_Cumulative data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P3_PieListed data={data} />
                     </div>
-                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm`}>
                         <T1P6_TableRoundCall data={data} />
                     </div>
                 </div>

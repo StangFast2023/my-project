@@ -1,4 +1,5 @@
 "use client";
+import { useQuery } from '@tanstack/react-query';
 import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -6,23 +7,17 @@ const MySwal = withReactContent(Swal);
 
 export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true); useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`, { cache: 'no-store' });
-                const result = await res.json();
-                setData(result);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchData();
-    }, []);
+    const { data: configData } = useQuery({
+        queryKey: ['tab5Config'],
+        queryFn: async () => {
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`);
+            if (!res.ok) throw new Error('Network response was not ok');
+            return res.json();
+        },
+        staleTime: 10 * 60 * 1000,
+    });
 
-    const part1 = data?.tab5?.part1 || {};
+    const part1 = configData?.tab5?.part1 || {};
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [regionKey, setRegionKey] = useState('');
     const [areaKey, setAreaKey] = useState('');
@@ -87,7 +82,7 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
     const filteredPositions = allPositions.filter(p => {
         const search = searchTerm.toLowerCase();
         const nameMatch = p.pos_name.toLowerCase().includes(search);
-        const idMatch = p.pos_id.toString().includes(search); // ค้นหาด้วย ID/ตัวเลข
+        const idMatch = p.pos_id.toString().includes(search);
         return nameMatch || idMatch;
     });
 

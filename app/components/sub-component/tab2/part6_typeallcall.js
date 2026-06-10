@@ -1,23 +1,20 @@
 "use client";
-import { motion }           from "framer-motion";
-import { Warehouse }        from 'lucide-react';
-import { LoadingScreen }    from '../../../components/LoadingScreen';
+import { motion } from "framer-motion";
+import { Warehouse } from 'lucide-react';
 export default function T2P5_PopularPosEmp({ data }) {
-    if(!data) return <LoadingScreen />;
-    const fastEmpty = data.tab2.part6 || [];
+    const fastEmpty = data?.tab2?.part6 || [];
     const typeStyles = {
         1: "bg-blue-100 text-blue-700",
         2: "bg-green-100 text-green-700",
         3: "bg-yellow-100 text-yellow-700"
     };
     return (
-        <motion.div 
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}   
-            transition={{ duration: 0.5 }}  
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
         >
-            <div className="w-full bg-white rounded-2xl overflow-hidden">
-                
+            <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
                     <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         <Warehouse />
@@ -25,7 +22,6 @@ export default function T2P5_PopularPosEmp({ data }) {
                     </h3>
                     <p className="text-sm md:text-base lg:text-sm text-gray-500">ข้อมูลสรุปภาพรวมทุกภาค/เขต</p>
                 </div>
-                
                 <div className="max-h-[500px] overflow-y-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -38,7 +34,7 @@ export default function T2P5_PopularPosEmp({ data }) {
                         </thead>
                         <tbody className="divide-y divide-gray-50">
                             {fastEmpty.map((pos, index) => (
-                                <tr key={`${index}-${pos.id_pos}-${pos.total_call}`}className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                                <tr key={`${index}-${pos.id_pos}-${pos.total_call}`} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                                     <td className="p-4 text-center">
                                         <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm md:text-base lg:text-xm font-bold ${index < 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
                                             {index + 1}
@@ -50,7 +46,7 @@ export default function T2P5_PopularPosEmp({ data }) {
                                     <td className="p-2">
                                         <div className="font-bold text-sm md:text-base lg:text-xm text-gray-800">
                                             <span className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${typeStyles[pos.pos_type_id]}`}>
-                                                { pos.pos_type }
+                                                {pos.pos_type}
                                             </span>
                                         </div>
                                     </td>
@@ -66,6 +62,5 @@ export default function T2P5_PopularPosEmp({ data }) {
                 </div>
             </div>
         </motion.div>
-        
     );
 }

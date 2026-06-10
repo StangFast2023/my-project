@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { Chart } from "react-chartjs-2";
-import { LoadingScreen } from '../../../components/LoadingScreen';
 import { TrendingUp } from 'lucide-react';
 import {
     Chart as ChartJS,
@@ -28,7 +27,6 @@ ChartJS.register(
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T1P4_Cumulative({ data }) {
-    if (!data) return <LoadingScreen />;
     const chartRawData = data?.tab1?.part3;
     if (!chartRawData) return null;
 
