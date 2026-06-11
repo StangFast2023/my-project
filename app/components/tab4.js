@@ -29,7 +29,10 @@ export default function Tab4() {
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
-        staleTime: 10 * 60 * 1000,
+        staleTime: 1000 * 60 * 60,
+        gcTime: 1000 * 60 * 60 * 2,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
 
     const { data: tableData, isLoading } = useQuery({
@@ -43,8 +46,11 @@ export default function Tab4() {
             });
             return response.data;
         },
-        enabled: !!filters,
-        staleTime: 5 * 60 * 1000,
+        enabled: !!filters.regions || !!filters.positions,
+        staleTime: 1000 * 60 * 60,
+        gcTime: 1000 * 60 * 60 * 2,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
 
     const columns = useColumnStore((state) => state.columns);

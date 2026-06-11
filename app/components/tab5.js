@@ -16,7 +16,10 @@ export default function Tab5({ setIsOpen, details }) {
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
-        staleTime: 10 * 60 * 1000,
+        staleTime: 1000 * 60 * 60,
+        gcTime: 1000 * 60 * 60 * 2,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
     const { data: dataforPrediction, isFetching } = useQuery({
         queryKey: ['predictionDetails', details],
@@ -29,7 +32,10 @@ export default function Tab5({ setIsOpen, details }) {
             return response.data;
         },
         enabled: !!details,
-        staleTime: 5 * 60 * 1000,
+        staleTime: 1000 * 60 * 60,
+        gcTime: 1000 * 60 * 60 * 2,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
     useEffect(() => {
         if (isFetching) {

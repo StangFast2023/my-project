@@ -17,7 +17,10 @@ export default function Tab1({ setIsOpen, setDetails }) {
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
-        staleTime: 10 * 60 * 1000,
+        staleTime: 1000 * 60 * 60,
+        gcTime: 1000 * 60 * 60 * 2,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
     return (
         <div className="animate-fade-in">
