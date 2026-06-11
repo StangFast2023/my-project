@@ -9,7 +9,7 @@ export default function Row3StatusRank({ region, zone, position, data }) {
     if (!ChartData) return null;
     return (
         <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-12 lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div className="col-span-8 lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                 <div className="flex text-gray-700 items-center">
                     <SquaresExclude />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
@@ -21,7 +21,7 @@ export default function Row3StatusRank({ region, zone, position, data }) {
                     <Row3Part1Bar data={ChartData} />
                 </div>
             </div>
-            <div className="col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div className="col-span-4 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                 <div className="flex text-gray-700 justify-center items-center">
                     <Rows3 />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">

@@ -2,7 +2,7 @@ import CountUp from 'react-countup';
 
 export default function Row1StaticNumber({ data }) {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4">
 
 
             <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
