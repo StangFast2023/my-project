@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.0",
+    "@vercel/analytics": "^2.0.1",
     "axios": "^1.16.0",
     "chart.js": "^4.5.1",
     "chartjs-plugin-zoom": "^2.2.0",

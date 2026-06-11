@@ -3,10 +3,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import withReactContent from 'sweetalert2-react-content';
 import T5P1_filterDlaSearch from './sub-component/tab5/part1_filterDropdownSearch';
 import T5P2_chartPrediction from './sub-component/tab5/part2_chartPredictions';
-const MySwal = withReactContent(Swal);
 export default function Tab5({ setIsOpen, details }) {
 
     const { data: configData } = useQuery({

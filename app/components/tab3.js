@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { OctagonAlert } from 'lucide-react';
 import T3P8_TableAllType from './sub-component/tab3/part8_tablealltype';
 export default function Tab3() {
-    const { data, loading } = useQuery({
+    const { data } = useQuery({
         queryKey: ['tab3Data'],
         queryFn: async () => {
             const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab3`);

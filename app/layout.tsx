@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import Providers from './components/providers';
+import { Analytics } from "@vercel/analytics/next"
 
 const kanit = Kanit({
     weight: ['300', '400', '700'],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                 <Providers>
                     <ThemeSwitcher />
                     {children}
+                    <Analytics />
                 </Providers>
             </body>
         </html>
