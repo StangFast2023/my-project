@@ -65,7 +65,7 @@ export default function InfoModal() {
                             className="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto p-4 md:p-8 shadow-2xl relative"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <button onClick={() => setIsOpen(false)} className=" absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl " >
+                            <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 w-10 h-10 rounded-full bg-rose-600 hover:bg-rose-400 hover:scale-[1.25] hover:text-gray-600 duration-300 transition-color flex items-center justify-center text-xl text-white font-bold" >
                                 <X />
                             </button>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
