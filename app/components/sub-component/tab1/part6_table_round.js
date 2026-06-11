@@ -34,9 +34,9 @@ export default function T1P3_PieListed({ data }) {
                     </div>
                 </div>
             )}
-            <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-                <div className="flex-1 overflow-x-auto">
-                    <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse whitespace-nowrap">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
+                <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
+                    <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         {data === null || data === undefined ? (null) : (
                             <thead className="bg-gray-50 text-gray-600 text-sm">
                                 <tr>

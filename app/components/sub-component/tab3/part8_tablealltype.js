@@ -50,9 +50,9 @@ export default function T2P7_TableAllType({ data }) {
                     <span className="ml-2">สรุปยอดเรียกรายงานตัวสะสมแยกตามเขตพื้นที่และประเภทตำแหน่ง</span>
                 </h3>
             </div>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="flex-1 overflow-x-auto min-h-[600px] max-h-[800px] shadow-sm">
-                    <table className="w-full min-w-[1200px] overflow-y-auto text-left border-collapse whitespace-nowrap">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
+                <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
+                    <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <thead className="bg-gray-50 text-gray-600 text-sm">
                             <tr>
                                 <th className="sticky left-0 top-0 z-40 w-[15%] px-6 py-4 font-semibold bg-gray-50">ภาค / เขตพื้นที่</th>

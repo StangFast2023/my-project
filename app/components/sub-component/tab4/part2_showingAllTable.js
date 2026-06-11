@@ -70,9 +70,9 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
             transition={{ duration: 0.5 }}
         >
             <h3 className="text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
-            <div className="flex flex-col h-full min-h-[100px] max-h-[800px]  border border-gray-300">
-                <div className="flex-1 overflow-x-auto shadow-sm">
-                    <table className="w-full min-w-[1200px] overflow-y-auto table-fixed border-collapse">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
+                <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
+                    <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                         <colgroup>
                             <col className="w-[400px] min-w-[400px] border-1 border-gray-200 border-r-[2px] border-r-gray-600" />
                             {!columns.all_header && (<col className="w-[200px] min-w-[200px] border-1 border-gray-200" />)}
