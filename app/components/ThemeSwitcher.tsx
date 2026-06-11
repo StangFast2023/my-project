@@ -22,10 +22,8 @@ export default function InfoModal() {
         "neon": "neon_34D59A.svg",
     };
     const getIconData = (key: keyof typeof iconFiles) => {
-        // 1. ดึงชื่อไฟล์จาก object ตาม key ที่ส่งเข้ามา
         const filename = iconFiles[key];
         const [name, color] = filename.replace('.svg', '').split('_');
-
         return {
             src: `/icons/${filename}`,
             name: name,
@@ -36,9 +34,11 @@ export default function InfoModal() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed top-4 right-4 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-xl transition-all duration-500 hover:scale-110 hover:bg-emerald-600"
+                className="fixed bottom-4 left-4 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-xl transition-all duration-500 hover:scale-110 hover:bg-emerald-600"
             >
-                <User size={40} />
+                <div className="flex justify-center items-center">
+                    <User size={30} /> สนับสนุนค่าโฮสติ้ง
+                </div>
             </button>
 
             <AnimatePresence>

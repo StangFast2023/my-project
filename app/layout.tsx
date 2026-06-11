@@ -4,7 +4,7 @@ import { Kanit } from "next/font/google";
 import ThemeSwitcher from "./components/ThemeSwitcher";
 import Providers from './components/providers';
 import { Analytics } from "@vercel/analytics/next"
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 const kanit = Kanit({
     weight: ['300', '400', '700'],
     subsets: ["thai", "latin"],
@@ -24,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                     <ThemeSwitcher />
                     {children}
                     <Analytics />
+                    <SpeedInsights />
                 </Providers>
             </body>
         </html>
