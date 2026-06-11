@@ -77,3 +77,11 @@ body.swal2-shown {
 .swal2-container {
     overflow-y: auto !important;
 }
+
+html,
+body {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+}

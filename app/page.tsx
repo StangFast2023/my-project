@@ -43,7 +43,7 @@ export default function App() {
     }, [activeTab]);
     return (
         <LoadingWrapper isLoading={loading}>
-            <main className="pb-5" style={{ minHeight: '100vh', background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(159, 209, 181, 1) 100%)' }}>
+            <main className="pb-5">
                 <div className="flex flex-col items-center pt-5">
                     <div className="flex items-center gap-3">
                         <h1 className="text-sm md:text-base lg:text-3xl font-black text-right text-gray-700">
