@@ -67,15 +67,13 @@ body {
     color: var(--foreground);
 }
 
-/* บังคับไม่ให้ Swal มาเปลี่ยนค่า padding ของ body */
 body.swal2-shown {
     padding-right: 0 !important;
-    overflow-y: auto !important;
+    overflow-y: hidden !important;
 }
 
-/* กรณีต้องการแก้ที่ตัว container ของ swal โดยตรง */
 .swal2-container {
-    overflow-y: auto !important;
+    overflow-y: hidden !important;
 }
 
 html,

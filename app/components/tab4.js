@@ -64,7 +64,6 @@ export default function Tab4() {
         });
         return { regions, subs };
     }, [configData]);
-
     const [selectedRegions, setSelectedRegions] = useState(initialConfig.regions);
     const [selectedSubRegions, setSelectedSubRegions] = useState(initialConfig.subs);
     const [selectedTypes, setSelectedTypes] = useState([]);
@@ -109,12 +108,12 @@ export default function Tab4() {
                         />
                     </div>
                 </div>
-                <div className={`g${!columns.all_header ? 'hidden' : 'block'} ${configData ? '' : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
+                <div className={`${configData ? (columns.all_header === true ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T4P2_showingAllTable checkData={configData} data={tableDataResult} isLoading={isLoading} />
                     </div>
                 </div>
-                <div className={`${columns.all_header ? 'hidden' : 'block'} ${configData ? '' : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
+                <div className={`${configData ? (columns.all_header === false ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
                         <ShowAllDataTable checkData={configData} part2={tableData} isLoading={isLoading} />
