@@ -20,6 +20,10 @@ export default function InfoModal() {
         "vercel": "vercel_000000.svg",
         "railway": "railway_0B0D0E.svg",
         "neon": "neon_34D59A.svg",
+
+
+        "facebook": "facebook_0866FF.svg",
+        "line": "line_00C300.svg",
     };
     const getIconData = (key: keyof typeof iconFiles) => {
         const filename = iconFiles[key];
@@ -30,6 +34,9 @@ export default function InfoModal() {
             color: `#${color}`
         };
     };
+    const currentAmount = 0;
+    const targetAmount = 350;
+    const percentage = Math.round((currentAmount / targetAmount) * 100);
     return (
         <>
             <button
@@ -59,7 +66,7 @@ export default function InfoModal() {
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button onClick={() => setIsOpen(false)} className=" absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl " >
-                                ✕
+                                <X />
                             </button>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
                                 <div className="md:col-span-2 space-y-8">
@@ -144,6 +151,9 @@ export default function InfoModal() {
                                     </div>
                                 </div>
                                 <div className="md:col-span-1 space-y-4 flex flex-col">
+                                    <span className="bg-gray-100 rounded-xl text-center text-gray-700">
+                                        สนับสนุนค่าโฮสติ้ง <br></br> เพื่อความต่อเนื่องของระบบ
+                                    </span>
                                     <motion.div
                                         whileHover={{ scale: 1.05 }}
                                         className="max-w-xs mx-auto md:max-w-full"
@@ -156,10 +166,77 @@ export default function InfoModal() {
                                             className="w-full h-auto rounded-lg"
                                         />
                                     </motion.div>
-                                    <div className="flex-1 mt-4 flex items-center justify-center bg-gray-200 rounded-lg p-4 font-semibold text-center text-gray-700">
-                                        สนับสนุนค่าโฮสติ้ง <br></br> เพื่อความต่อเนื่องของระบบ
-                                    </div>
                                 </div>
+                            </div>
+
+                            <div className="flex gap-3 mt-4">
+                                <a
+                                    href="https://www.facebook.com/kanesorn.kamthawee"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex flex-1 justify-center items-center border border-gray-600 rounded-lg text-center font-semibold transition-all duration-200 hover:brightness-120"
+                                    style={{ backgroundColor: getIconData('facebook').color }}
+                                >
+                                    <div
+                                        className="m-2 w-8 h-8"
+                                        style={{
+                                            backgroundColor: "#ffffff",
+                                            maskImage: `url('${getIconData('facebook').src}')`,
+                                            WebkitMaskImage: `url('${getIconData('facebook').src}')`,
+                                            maskSize: 'contain',
+                                            WebkitMaskSize: 'contain',
+                                            maskRepeat: 'no-repeat',
+                                            WebkitMaskRepeat: 'no-repeat'
+                                        }}
+                                    />
+                                    <span className="font-bold text-white mr-2">Facebook</span>
+                                </a>
+
+                                <a
+                                    href="https://line.me/ti/p/lYA5G6kG1Q"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex flex-1 justify-center items-center border border-gray-600 rounded-lg text-center font-semibold transition-all duration-200 hover:brightness-105"
+                                    style={{ backgroundColor: getIconData('line').color }}
+                                >
+                                    <div
+                                        className={`m-2 w-8 h-8 bg-current text-[${getIconData('line').color}]`}
+                                        style={{
+                                            backgroundColor: "#ffffff",
+                                            maskImage: `url('${getIconData('line').src}')`,
+                                            WebkitMaskImage: `url('${getIconData('line').src}')`,
+                                            maskSize: 'contain',
+                                            WebkitMaskSize: 'contain',
+                                            maskRepeat: 'no-repeat',
+                                            WebkitMaskRepeat: 'no-repeat'
+                                        }}
+                                    />
+                                    <span className={`font-bold text-white`}> Line </span>
+                                </a>
+                            </div>
+                            <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-sm font-semibold text-gray-700">เป้าหมายค่าโฮสติ้ง: {targetAmount} บาท / เดือน</span>
+                                </div>
+                                <div className="relative w-full mt-8">
+                                    <div className="absolute -top-8 left-[0%] -translate-x-1/2">
+                                        <div className="bg-emerald-700 text-white text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap shadow-sm">
+                                            {percentage}% - {currentAmount} / {targetAmount} บาท
+                                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-700 rotate-45"></div>
+                                        </div>
+                                    </div>
+                                    <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden border border-gray-300">
+                                        <div
+                                            className="bg-emerald-500 h-full rounded-full transition-all duration-1000 ease-out"
+                                            style={{ width: `${percentage}%` }}
+                                        />
+                                    </div>
+
+                                </div>
+                                <p className="text-xs text-gray-500 mt-3 text-center">
+                                    เว็บนี้ทำเพื่อเพื่อนๆ ให้ใช้งานฟรี ถ้าข้อมูลมีประโยชน์
+                                    ช่วยผมสนับสนุนค่าโฮสติ้งคนละเล็กละน้อยได้นะครับ
+                                </p>
                             </div>
                             <button
                                 onClick={() => setIsOpen(false)}
