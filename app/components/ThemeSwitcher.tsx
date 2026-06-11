@@ -47,7 +47,7 @@ export default function InfoModal() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+                        className="fixed inset-0 z-[10000] flex items-center justify-center p-2 md:p-4bg-black/50 backdrop-blur-sm overflow-y-auto"
                         onClick={() => setIsOpen(false)} // ปิดเมื่อคลิกที่พื้นหลัง
                     >
                         <motion.div
@@ -55,21 +55,25 @@ export default function InfoModal() {
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.8, opacity: 0, y: 50 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="bg-white rounded-3xl w-full max-w-6xl p-8 shadow-2xl relative"
+                            className="bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto p-4 md:p-8 shadow-2xl relative"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                            <button onClick={() => setIsOpen(false)} className=" absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-xl " >
+                                ✕
+                            </button>
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
                                 <div className="md:col-span-2 space-y-8">
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 border-t pt-8">
 
                                         <div className="space-y-4">
                                             <div className="flex flex-col items-center mb-2">
-                                                <motion.div whileHover={{ rotate: 25, scale: 1.25 }} className="relative w-50 h-50 mb-4">
+                                                <motion.div whileHover={{ rotate: 25, scale: 1.25 }} className="relative w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 mb-4">
                                                     <Image
                                                         src="https://scontent.fbkk12-6.fna.fbcdn.net/v/t39.30808-6/474109992_29035552372698722_123024478912346313_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1920&ctp=s1080x1920&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=gBPChkRIlbQQ7kNvwEDfzmX&_nc_oc=AdqWkovWz2ZkBkSLrwD1nYhBB_uBNUDomi8HPn7aHmgrkoO3iHd8oTYG71qQOOqQW4w&_nc_zt=23&_nc_ht=scontent.fbkk12-6.fna&_nc_gid=VvAe537UMlnSQTlTVjEwiA&_nc_ss=7b2a8&oh=00_Af9t5mMAEE8YBRpkasOtxNgxGka-YD27sz1qvYVbRopQxg&oe=6A2D9196"
                                                         alt="Profile"
                                                         fill
+                                                        priority={true}
                                                         sizes="250px"
                                                         className="rounded-full object-cover border-4 border-emerald-500"
                                                     />
@@ -86,10 +90,10 @@ export default function InfoModal() {
                                                 ].map((item, idx) => (
                                                     <div key={idx} className="flex items-center gap-2 hover:bg-gray-50 p-1 rounded transition-all">
                                                         <Circle size={10} className="text-emerald-500 shrink-0" fill="currentColor" />
-                                                        <div className="flex w-full text-sm md:text-base">
+                                                        <div className="flex flex-wrap w-full text-sm md:text-base">
                                                             <span className="font-semibold text-gray-700 w-24 shrink-0">{item.label}</span>
                                                             <span className="font-semibold text-gray-700 mx-2">:</span>
-                                                            <span className="font-semibold text-gray-700 truncate">{item.value}</span>
+                                                            <span className="font-semibold text-gray-700 break-words">{item.value}</span>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -113,7 +117,7 @@ export default function InfoModal() {
                                                                     {item.head}
                                                                 </h3>
                                                             </div>
-                                                            <div className="grid grid-cols-2 md:grid-cols-2">
+                                                            <div className="grid grid-cols-1 sm:grid-cols-2">
                                                                 {Object.values(subTech).map((tech_data, index) => (
                                                                     <div key={index} className={`flex items-center gap-2`}>
                                                                         <div
@@ -139,8 +143,11 @@ export default function InfoModal() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="md:col-span-1 space-y-2 flex flex-col h-full">
-                                    <motion.div whileHover={{ scale: 1.05 }} className="p-2 border-2 border-emerald-500 rounded-xl bg-white items-center">
+                                <div className="md:col-span-1 space-y-4 flex flex-col">
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        className="max-w-xs mx-auto md:max-w-full"
+                                    >
                                         <Image
                                             src="https://scontent.fbkk12-1.fna.fbcdn.net/v/t39.30808-6/719150799_37233442249576319_302443961188702046_n.jpg?stp=dst-jpg_tt6&cstp=mx1029x1336&ctp=s1029x1336&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=JKgKIVYVePgQ7kNvwEiJc2H&_nc_oc=AdoIX5itqpf-vXxgbm43fMgFK3_x41f_-DFFazEzbXETt2nR9xFuKlrnSj3b5P-LtaQ&_nc_zt=23&_nc_ht=scontent.fbkk12-1.fna&_nc_gid=J6GgbVStvMMXTiU130siVw&_nc_ss=7b2a8&oh=00_Af-M6wIBH3qNoBdXm5IhU6ZrExHgOzT--Q99Zz7FeiELgA&oe=6A2C19CE"
                                             alt="QR Code"
