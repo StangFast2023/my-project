@@ -65,8 +65,10 @@ export default function Tab1({ setIsOpen, setDetails }) {
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P6_TypeAllCall data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
-                        <T2P8_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
+                    <div className="grid lg:grid-cols-12 gap-2 my-2">
+                        <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                            <T2P8_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
+                        </div>
                     </div>
                 </div>
             </div>

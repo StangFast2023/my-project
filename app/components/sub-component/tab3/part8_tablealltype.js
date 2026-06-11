@@ -86,7 +86,7 @@ export default function T2P7_TableAllType({ data }) {
                                     <React.Fragment key={regionKey}>
                                         <tr className="bg-emerald-50/30">
                                             <td colSpan={roundColumns.length + 6} className="border-t-2 border-gray-500 px-6 py-2.5 text-emerald-800 font-bold text-base">
-                                                <span className="sticky left-[30px] z-40">
+                                                <span className="sticky left-[30px] z-30">
                                                     {regionName}
                                                 </span>
                                             </td>
