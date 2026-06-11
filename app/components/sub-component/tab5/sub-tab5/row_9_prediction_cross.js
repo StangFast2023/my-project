@@ -64,7 +64,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
                 <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getProbabilityStatus(true, summary?.owner_probability)['bg']} my-2 shadow-xs`}>
                     <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">โอกาสการได้รับการบรรจุของเขตตนเอง :</p>
                     <div className="items-baseline gap-2 text-right">

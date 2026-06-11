@@ -57,7 +57,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                                     <Completed />
                                 )
                                 : (
-                                    <table className="table-fixed w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
+                                    <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
                                         <thead className="bg-gray-50 text-gray-600 text-sm">
                                             <tr className="border-b-2 border-gray-600">
                                                 <th className="sticky top-0 left-[0] z-40 bg-gray-100 !w-[10%] px-6 py-4 text-sm md:text-base lg:text-ls font-semibold">เดือน \ รอบ</th>
