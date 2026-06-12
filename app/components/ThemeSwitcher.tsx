@@ -219,7 +219,7 @@ export default function InfoModal() {
                                     <span className="text-sm font-semibold text-gray-700">เป้าหมายค่าโฮสติ้ง: {targetAmount} บาท / เดือน</span>
                                 </div>
                                 <div className="relative w-full mt-8">
-                                    <div className="absolute -top-8 left-[0%] -translate-x-1/2">
+                                    <div className="absolute -top-8 left-[14%] -translate-x-1/2">
                                         <div className="bg-emerald-700 text-white text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap shadow-sm">
                                             {percentage}% - {currentAmount} / {targetAmount} บาท
                                             <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-700 rotate-45"></div>
