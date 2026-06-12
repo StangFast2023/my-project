@@ -34,7 +34,7 @@ export default function InfoModal() {
             color: `#${color}`
         };
     };
-    const currentAmount = 0;
+    const currentAmount = 50;
     const targetAmount = 350;
     const percentage = Math.round((currentAmount / targetAmount) * 100);
     return (
