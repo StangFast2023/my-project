@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import Image from 'next/image'; // 1. นำเข้า Image component
+import Image from 'next/image';
 import { User, Circle, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -70,9 +70,7 @@ export default function InfoModal() {
                             </button>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
                                 <div className="md:col-span-2 space-y-8">
-
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 border-t pt-8">
-
                                         <div className="space-y-4">
                                             <div className="flex flex-col items-center mb-2">
                                                 <motion.div whileHover={{ rotate: 25, scale: 1.25 }} className="relative w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 mb-4">
@@ -219,7 +217,7 @@ export default function InfoModal() {
                                     <span className="text-sm font-semibold text-gray-700">เป้าหมายค่าโฮสติ้ง: {targetAmount} บาท / เดือน</span>
                                 </div>
                                 <div className="relative w-full mt-8">
-                                    <div className="absolute -top-8 left-[14%] -translate-x-1/2">
+                                    <div className="absolute -top-8 -translate-x-1/2" style={{ left: `${percentage}%` }}>
                                         <div className="bg-emerald-700 text-white text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap shadow-sm">
                                             {percentage}% - {currentAmount} / {targetAmount} บาท
                                             <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-700 rotate-45"></div>
