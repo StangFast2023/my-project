@@ -63,7 +63,7 @@ export default function T1P3_PieListed({ data }) {
                                             reg.list += (Number(zone.total_listed) || 0);
                                             reg.call += (Number(zone.total_called) || 0);
                                             reg.remain += (Number(zone.total_remain) || 0);
-                                            roundColumns.forEach((n, i) => reg.rounds[i] += (zone['data-round']?.[n]?.total || 0));
+                                            roundColumns.forEach((n, i) => reg.rounds[i] += (zone['data-round']?.[n]?.total_called || 0));
                                             return (
                                                 <tr key={zone.full}>
                                                     <td className="bg-gray-50    w-[5%] px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{zone.name}</td>
