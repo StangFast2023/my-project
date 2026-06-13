@@ -69,9 +69,10 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                 <div className="flex-grow overflow-y-auto p-2 custom-scrollbar">
                                     {details.data && Object.entries(details.data).map(([key, zone]) => {
                                         const pro_main_name = zone[1]?.pro_main_name || null;
+                                        const unique_key_1 = details?.data[key]?.pro_full_name
                                         return (
                                             <>
-                                                <div key={key} className="mb-5">
+                                                <div key={`${key}-${unique_key_1}`} className="mb-5">
                                                     {pro_main_name && (
                                                         <div className="py-2 bg-gray-50/95 backdrop-blur-sm">
                                                             <h3 className="text-xl text-white p-4 bg-gray-800 rounded-2xl font-bold shadow-md">
@@ -83,7 +84,7 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                                         {Object.entries(zone)
                                                             .filter(([k, v]) => typeof v === "object")
                                                             .map(([subKey, item]) => (
-                                                                <div key={subKey} className="group p-1 border-0 rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" >
+                                                                <div key={`${key}-${unique_key_1}-${subKey}-${item.status_listed}`} className="group p-1 border-0 rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" >
                                                                     <div className="p-5">
                                                                         <div className="flex justify-between items-center border-b border-gray-50 pb-4">
                                                                             <div className="flex items-center gap-3">

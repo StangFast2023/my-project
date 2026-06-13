@@ -39,15 +39,21 @@ export default function App() {
         }
     }, [activeTab]);
 
-    const [showDisclaimer, setShowDisclaimer] = useState<boolean>(() => {
-        if (typeof window !== 'undefined') {
-            const hasSeen = localStorage.getItem('hasSeenDisclaimer');
-            return !hasSeen;
-        }
-        return false;
+    const [showDisclaimer, setShowDisclaimer] = useState(() => {
+        if (typeof window === 'undefined') return false;
+
+        const lastSeen = localStorage.getItem('lastSeenDisclaimer');
+        if (!lastSeen) return true;
+
+        const now = Date.now();
+        const HOURS_TO_WAIT = 24;
+        const isExpired = (now - parseInt(lastSeen)) > HOURS_TO_WAIT * 60 * 60 * 1000;
+
+        return isExpired;
     });
-    const handleAcceptDisclaimer = () => {
-        localStorage.setItem('hasSeenDisclaimer', 'true');
+
+    const handleAccept = () => {
+        localStorage.setItem('lastSeenDisclaimer', Date.now().toString());
         setShowDisclaimer(false);
     };
 
@@ -62,7 +68,7 @@ export default function App() {
                             <span className="font-bold text-blue-600"> PC หรือ Notebook</span> ครับ
                         </p>
                         <button
-                            onClick={handleAcceptDisclaimer}
+                            onClick={handleAccept}
                             className="w-full bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all active:scale-95"
                         >
                             รับทราบและเข้าใช้งาน
