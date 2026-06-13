@@ -112,7 +112,7 @@ export default function App() {
                 </div>
 
                 {/* for tap2 part6 */}
-                <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} loading={loading} />
+                <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} />
 
                 {/* for tap5 part1 */}
                 <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />

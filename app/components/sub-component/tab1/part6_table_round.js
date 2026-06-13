@@ -15,7 +15,7 @@ export default function T1P3_PieListed({ data }) {
     const grandTotalPerRound = roundColumns.map(num => {
         return allZones.reduce((sum, zone) => {
             const roundInfo = zone['data-round'][num];
-            return sum + (roundInfo ? roundInfo.total : 0);
+            return sum + (roundInfo ? roundInfo.total_called : 0);
         }, 0);
     });
     return (
@@ -79,12 +79,10 @@ export default function T1P3_PieListed({ data }) {
                                                                 key={num}
                                                                 className={`w-[5%] px-4 py-4 text-center ${bgClass}`}
                                                             >
-                                                                {roundInfo ? (
+                                                                {roundInfo && (
                                                                     <span className="text-gray-700 font-bold text-sm md:text-base lg:text-sm">
-                                                                        {roundInfo.total.toLocaleString()}
+                                                                        {roundInfo.total_called.toLocaleString()}
                                                                     </span>
-                                                                ) : (
-                                                                    null
                                                                 )}
                                                             </td>
                                                         );

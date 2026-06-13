@@ -66,7 +66,7 @@ export default function Tab1({ setIsOpen, setDetails }) {
                         <T2P6_TypeAllCall data={data} />
                     </div>
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
-                        <T2P8_TableAllType setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
+                        <T2P8_TableAllType data={data} />
                     </div>
                 </div>
             </div>

@@ -5,10 +5,11 @@ import { Building2 } from 'lucide-react';
 export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
     const fastEmpty = data?.tab2?.part7 || {};
     const handleViewDetail = async (id) => {
+        setDetails(null);
+        setIsOpen(true);
         try {
             const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
             setDetails(response.data);
-            setIsOpen(true);
         } catch (error) {
             console.error(error);
         }

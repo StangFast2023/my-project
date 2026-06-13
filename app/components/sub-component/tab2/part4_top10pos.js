@@ -6,10 +6,11 @@ import { Archive } from 'lucide-react';
 export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
     const topTenData = data?.tab2?.part4 || [];
     const handleViewDetail = async (id) => {
+        setDetails(null);
+        setIsOpen(true);
         try {
             const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
             setDetails(response.data);
-            setIsOpen(true);
         } catch (error) {
             console.error(error);
         }
