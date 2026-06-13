@@ -1,6 +1,6 @@
 "use client";
-import { motion } from "framer-motion";
 import axios from 'axios';
+import { motion } from "framer-motion";
 import { Building2 } from 'lucide-react';
 export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
     const fastEmpty = data?.tab2?.part7 || {};

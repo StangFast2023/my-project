@@ -1,8 +1,19 @@
 "use client";
+import axios from 'axios';
 import { motion } from "framer-motion";
 import { Warehouse } from 'lucide-react';
-export default function T2P5_PopularPosEmp({ data }) {
+export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
     const fastEmpty = data?.tab2?.part6 || [];
+    const handleViewDetail = async (id) => {
+        setDetails(null);
+        setIsOpen(true);
+        try {
+            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
+            setDetails(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
     const typeStyles = {
         1: "bg-blue-100 text-blue-700",
         2: "bg-green-100 text-green-700",
@@ -30,6 +41,7 @@ export default function T2P5_PopularPosEmp({ data }) {
                                 <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">ชื่อตำแหน่ง</th>
                                 <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">ประเภท</th>
                                 <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">อัตรา</th>
+                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600 text-center">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
@@ -53,6 +65,18 @@ export default function T2P5_PopularPosEmp({ data }) {
                                     <td className="p-2 text-right">
                                         <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-gray-700">
                                             {Number(pos.total_call).toLocaleString()}
+                                        </span>
+                                    </td>
+                                    <td className="p-4 text-center">
+                                        <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-blue-700">
+                                            <button onClick={() => handleViewDetail(pos.id_pos)} className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md text-sm transition-colors hover:shadow-xl transition-all duration-300">
+                                                <div className="flex items-center gap-1 ">
+                                                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                                    </svg>
+                                                    <span>รายละเอียด</span>
+                                                </div>
+                                            </button>
                                         </span>
                                     </td>
                                 </tr>
