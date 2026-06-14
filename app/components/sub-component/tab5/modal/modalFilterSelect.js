@@ -21,13 +21,13 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
     });
 
     const part1 = configData?.tab5?.part1 || {};
-    const [activeDropdown, setActiveDropdown] = useState(null);
-    const [regionKey, setRegionKey] = useState('');
     const [areaKey, setAreaKey] = useState('');
-    const [positionKey, setPositionKey] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
     const [sequence, setSequence] = useState('');
+    const [regionKey, setRegionKey] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [positionKey, setPositionKey] = useState('');
     const [dropdownStyle, setDropdownStyle] = useState({});
+    const [activeDropdown, setActiveDropdown] = useState(null);
     const isComplete = regionKey && areaKey && positionKey && sequence;
     const positionButtonRef = useRef(null);
     const modalRef = useRef(null);

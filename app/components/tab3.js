@@ -47,8 +47,8 @@ export default function Tab3() {
                         </p>
                     </div>
                 </div>
-                <div className={`${data ? '' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
-                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <div className={`${data ? 'bg-white p-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
+                    <div className="col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100">
                         <T3P8_TableAllType data={data} />
                     </div>
                 </div>
