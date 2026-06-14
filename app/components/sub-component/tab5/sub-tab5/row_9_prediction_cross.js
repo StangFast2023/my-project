@@ -50,17 +50,47 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
         };
     };
 
+    const [mode, setMode] = useState(() => {
+        if (typeof window === 'undefined') {
+            return 'chance';
+        }
+
+        return localStorage.getItem('tab5_display_mode') || 'chance';
+    });
+
+    const switchMode = (newMode) => {
+        setMode(newMode);
+        localStorage.setItem('tab5_display_mode', newMode);
+    };
+
     if (!summary && !max_round && !sim_state) return null;
     return (
         <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm">
 
-            <div className="text-center mb-4 text-gray-700">
-                <div className="flex items-center">
-                    <UserSearch />
-                    <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        สรุปวิเคราะห์แนวโน้มการเรียกบรรจุรายเขตและรอบการเรียก
-                        {region && zone && position ? " " + position + " " + region + " " + zone : null}
-                    </h3>
+            <div className="flex justify-center items-center">
+                <div className="text-center mb-4 text-gray-700">
+                    <div className="flex items-center">
+                        <UserSearch />
+                        <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                            สรุปวิเคราะห์แนวโน้มการเรียกบรรจุรายเขตและรอบการเรียก
+                            {region && zone && position ? " " + position + " " + region + " " + zone : null}
+                        </h3>
+                    </div>
+                </div>
+                <div className="flex items-center ml-auto">
+                    <span className="text-gray-600 font-bold mr-3">แสดงค่า :</span>
+                    <div className="flex p-1 bg-gray-200 rounded-lg w-fit my-4">
+                        {['chance', 'impact'].map((m) => (
+                            <button
+                                key={m}
+                                onClick={() => switchMode(m)}
+                                className={`px-4 py-2 text-sm font-semibold rounded-md transition-all ${mode === m ? 'bg-white shadow-sm text-blue-600' : 'text-gray-600 hover:text-blue-500'
+                                    }`}
+                            >
+                                {m === 'chance' ? 'โอกาสบรรจุ' : 'ผลกระทบข้ามเขต'}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -117,7 +147,6 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                     </div>
                 </div>
             </div>
-
             <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
                 <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
                     {
@@ -178,9 +207,10 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                                                                     {zone?.probability.toFixed(2) + "%"}
                                                                 </td>
                                                                 {Object.values(data_round).map((round, index) => {
+                                                                    console.log(round);
                                                                     const isHoveredCell = hoveredRowId === rowId && hoveredColIndex === index;
-                                                                    const colorStyle = getCrossColor(round.cross_zone_effect);
-                                                                    const handleCellClick = (round, data) => {
+                                                                    const colorStyle = getCrossColor(mode === 'chance' ? round.reach_probability : round.cross_zone_effect);
+                                                                    const handleCellClick = (data) => {
                                                                         let text_title = `รอบที่คาดการณ์ ${data.round}`;
                                                                         let text_content = `
                                                                             <table class="w-full text-left border-collapse">
@@ -219,12 +249,12 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                                                                             onMouseEnter={() => { setHoveredRowId(rowId); setHoveredColIndex(index); }}
                                                                             onMouseLeave={() => { setHoveredRowId(null); setHoveredColIndex(null); }}
                                                                             key={`${zone.main_id}-${zone.sub_id}-${index}-${round.round}`}
-                                                                            onClick={() => handleCellClick(round.round, round)}
+                                                                            onClick={() => handleCellClick(round)}
                                                                             className={`z-30 px-3 py-4 text-sm md:text-base lg:text-ls text-center font-semibold transition-all duration-200 cursor-pointer
                                                                                 ${isHoveredCell ? '!bg-indigo-50 !text-indigo-600 z-10 shadow-[inset_0_0_0_3px_#4338ca]' : ''}
                                                                                 `}
                                                                             style={colorStyle.style}>
-                                                                            {round?.cross_zone_effect.toFixed(2) + "%"}
+                                                                            {(mode === 'chance' ? round?.reach_probability : round?.cross_zone_effect).toFixed(2) + "%"}
                                                                         </td>
                                                                     );
                                                                 })}
