@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { OctagonAlert } from 'lucide-react';
+import T3P6_TablePositio from './sub-component/tab3/part6_tableposition';
 import T3P8_TableAllType from './sub-component/tab3/part8_tablealltype';
 export default function Tab3() {
     const { data } = useQuery({
@@ -30,9 +31,9 @@ export default function Tab3() {
                     </div>
                 </div>
 
-                <div className={`${data ? 'block' : 'hidden'}`}>
-                    <div className="my-6 flex flex-col items-center justify-center min-h-[250px] md:h-[300px] bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 p-4 md:p-8 text-center">
-                        <div className="text-gray-400 mb-4">
+                <div className={`${data ? 'block p-6' : 'hidden'}`}>
+                    <div className="flex flex-col items-center justify-center min-h-[250px] md:h-[350px] bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 p-6 md:p-8 text-center">
+                        <div className="text-gray-400 my-4">
                             <OctagonAlert className=" w-16 h-16 sm:w-20 sm:h-20 md:w-32 md:h-32" />
                         </div>
                         <h3 className="font-bold text-gray-500 leading-tight text-lg sm:text-xl md:text-2xl lg:text-3xl">
@@ -47,10 +48,15 @@ export default function Tab3() {
                         </p>
                     </div>
                 </div>
-                <div className={`${data ? 'bg-white p-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
-                    <div className="col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100">
-                        <T3P8_TableAllType data={data} />
-                    </div>
+            </div>
+            <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
+                <div className="col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white">
+                    <T3P6_TablePositio data={data} />
+                </div>
+            </div>
+            <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
+                <div className="col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white">
+                    <T3P8_TableAllType data={data} />
                 </div>
             </div>
         </div>

@@ -41,14 +41,11 @@ export default function App() {
 
     const [showDisclaimer, setShowDisclaimer] = useState(() => {
         if (typeof window === 'undefined') return false;
-
         const lastSeen = localStorage.getItem('lastSeenDisclaimer');
         if (!lastSeen) return true;
-
         const now = Date.now();
         const HOURS_TO_WAIT = 24;
         const isExpired = (now - parseInt(lastSeen)) > HOURS_TO_WAIT * 60 * 60 * 1000;
-
         return isExpired;
     });
 

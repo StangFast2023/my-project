@@ -69,11 +69,10 @@ body {
 
 body.swal2-shown {
     padding-right: 0 !important;
-    overflow-y: hidden !important;
 }
 
-.swal2-container {
-    overflow-y: hidden !important;
+html.swal2-shown {
+    padding-right: 0 !important;
 }
 
 html,
