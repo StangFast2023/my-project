@@ -50,12 +50,12 @@ export default function Tab3() {
                 </div>
             </div>
             <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
-                <div className="col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white">
+                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white`}>
                     <T3P6_TablePositio data={data} />
                 </div>
             </div>
             <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
-                <div className="col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white">
+                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white`}>
                     <T3P8_TableAllType data={data} />
                 </div>
             </div>
