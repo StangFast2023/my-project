@@ -119,15 +119,15 @@ export default function T2P7_TableAllType({ data }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="flex items-center mb-5">
-                <div className="text-center mb-2">
+            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-5">
+                <div className="col-span-6 text-center mb-2">
                     <h3 className="flex text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         <Zap />
                         <span className="ml-2">วิเคราะห์ตำแหน่งเชิงพื้นที่</span>
                     </h3>
                 </div>
-                <div className="flex gap-4 ml-auto">
-                    <div className="w-[600px]">
+                <div className="col-span-6 flex gap-4 ml-auto">
+                    <div className="w-full max-w-[600px]">
                         <Select
                             options={options}
                             components={{ Option: CustomOption }}
@@ -408,17 +408,17 @@ export default function T2P7_TableAllType({ data }) {
                                                             );
                                                         })}
                                                     </tbody>
-                                                    <tfoot className="sticky bottom-0 z-20 bg-[#2d3446] text-white">
+                                                    <tfoot className="sticky bottom-0 bg-[#2d3446] text-white">
                                                         <tr>
-                                                            <td colSpan={2} className="sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">รวมทั้งหมดทุกภาค</td>
-                                                            <td className="sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_listed.toLocaleString()}</td>
-                                                            <td className="sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_called.toLocaleString()}</td>
-                                                            <td className="sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{percent ? percent.toFixed(2) + " %" : ''}</td>
-                                                            <td className="sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_remain.toLocaleString()}</td>
+                                                            <td colSpan={2} className="bg-[#2d3446] sticky left-0 bottom-0 z-50 py-2 text-center font-semibold">รวมทั้งหมดทุกภาค</td>
+                                                            <td className="bg-[#2d3446] sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_listed.toLocaleString()}</td>
+                                                            <td className="bg-[#2d3446] sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_called.toLocaleString()}</td>
+                                                            <td className="bg-[#2d3446] sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{percent ? percent.toFixed(2) + " %" : ''}</td>
+                                                            <td className="bg-[#2d3446] sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_remain.toLocaleString()}</td>
                                                             {round_columns.map((index) => {
                                                                 const roundly = summary?.rounds[index] || '';
                                                                 return (
-                                                                    <td key={index} className="sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{roundly ? roundly.toLocaleString() : ''}</td>
+                                                                    <td key={index} className="bg-[#2d3446] sticky left-0 bottom-0 z-40 py-2 text-center font-semibold">{roundly ? roundly.toLocaleString() : ''}</td>
                                                                 );
                                                             })}
                                                         </tr>

@@ -42,7 +42,7 @@ export default function Tab3() {
                             ยังไม่เสร็จสมบูรณ์
                         </h3>
                         <p className="text-gray-400 mt-3 leading-relaxed text-sm sm:text-base md:text-lg lg:text-xl">
-                            กำลังทำการอัปเดตเพิ่มเติมภายใน 4-5 วัน
+                            กำลังทำการอัปเดตเพิ่มเติมเร็ว ๆ นี้
                             <br className="hidden sm:block" />
                             ขออภัยในความไม่สะดวกด้วยนะครับ
                         </p>
