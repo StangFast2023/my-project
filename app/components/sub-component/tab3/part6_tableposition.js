@@ -127,7 +127,7 @@ export default function T2P7_TableAllType({ data }) {
                     </h3>
                 </div>
                 <div className="col-span-6 flex gap-4 ml-auto">
-                    <div className="w-full max-w-[600px]">
+                    <div className="w-full max-w-[600px] lg:w-[600px]">
                         <Select
                             options={options}
                             components={{ Option: CustomOption }}
