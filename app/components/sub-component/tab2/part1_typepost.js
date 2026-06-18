@@ -12,7 +12,7 @@ export default function T2P3_TypePostPart1({ data }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="grid grid-cols-1 grid-cols-2 gap-1 md:grid-cols-4 lg:grid-cols-4 lg:gap-4">
+            <div className="grid grid-cols-1 gap-1 md:grid-cols-4 lg:grid-cols-4 lg:gap-4">
                 <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xs">
                     <p className=" text-sm md:text-base lg:text-xl text-shadow-sm font-bold text-gray-500">จำนวนตำแหน่งทั้งหมด</p>
                     <div className="items-baseline gap-2 text-right">

@@ -42,34 +42,34 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
                                 <th className="p-4 w-[35%] text-sm md:text-base lg:text-lg font-semibold text-gray-600">ชื่อตำแหน่ง</th>
                                 <th className="p-4 w-[15%] text-sm md:text-base lg:text-lg font-semibold text-gray-600">ประเภท</th>
                                 <th className="p-4 w-[20%] text-sm md:text-base lg:text-lg font-semibold text-gray-600 text-center">ขึ้นบัญชี (คน)</th>
-                                <th className="p-4 w-[20%] text-sm md:text-base lg:text-lg font-semibold text-gray-600 text-center">📃</th>
+                                <th className="p-4 w-[20%] text-sm md:text-base lg:text-lg font-semibold text-gray-600 text-center hidden lg:block">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
                             {topTenData.map((pos, index) => (
                                 <tr key={pos.id_pos} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                    <td className="p-4 text-center">
+                                    <td className="p-2 text-center">
                                         <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm md:text-base lg:text-xm font-bold 
                                             ${index < 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
                                             {index + 1}
                                         </span>
                                     </td>
-                                    <td className="p-4">
+                                    <td className="p-2 lg:p-4">
                                         <div className="font-bold text-sm md:text-base lg:text-xm text-gray-800">{pos.pos_name}</div>
                                     </td>
-                                    <td className="p-4">
+                                    <td className="p-2 lg:p-4">
                                         <div className="font-bold  text-sm md:text-base lg:text-xm text-gray-800">
-                                            <span className={`px-4 py-1.5 rounded-full font-bold shadow-sm ${typeStyles[pos.pos_type_id]}`}>
+                                            <span className={`p-1 lg:px-4 lg:py-1.5 rounded-full font-bold shadow-sm ${typeStyles[pos.pos_type_id]}`}>
                                                 {pos.pos_type}
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="p-4 text-right">
+                                    <td className="p-2 lg:p-4 text-right">
                                         <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-gray-700">
                                             {Number(pos.total).toLocaleString()}
                                         </span>
                                     </td>
-                                    <td className="p-4 text-center">
+                                    <td className="p-2 lg:p-4 text-center hidden lg:block">
                                         <span className="font-mono text-sm md:text-base lg:text-sm md:text-base lg:text-xm font-bold text-blue-700">
                                             <button onClick={() => handleViewDetail(pos.id_pos)} className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md transition-colors hover:shadow-xl transition-all duration-300">
                                                 <div className="flex items-center gap-1 ">

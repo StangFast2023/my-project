@@ -36,13 +36,13 @@ export default function Tab5_1({ details, base_data, data }) {
                 <div className="col-span-12 lg:col-span-12">
                     <Row3 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12">
+                <div className="col-span-12 lg:col-span-12 hidden lg:block">
                     <Row4 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12">
+                <div className="col-span-12 lg:col-span-12 hidden lg:block">
                     <Row5 position={PosSh} data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12">
+                <div className="col-span-12 lg:col-span-12 hidden lg:block">
                     <Row6 position={PosSh} data={dataforChart} />
                 </div>
             </div>

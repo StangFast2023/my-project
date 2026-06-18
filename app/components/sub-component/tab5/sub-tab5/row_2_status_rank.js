@@ -50,7 +50,7 @@ export default function Row3StatusRank({ data }) {
         return foundStatus || statusMap[0];
     };
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-0 lg:gap-4">
 
             <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getNextRound(data?.next_round)['bg']} my-2 shadow-xs`}>
                 <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">สถานะการเรียกบรรจุ :</p>

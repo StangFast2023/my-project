@@ -67,7 +67,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
     return (
         <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm">
 
-            <div className="flex justify-center items-center">
+            <div className="hidden lg:block lg:flex lg:justify-center lg:items-center">
                 <div className="text-center mb-4 text-gray-700">
                     <div className="flex items-center">
                         <UserSearch />
@@ -94,7 +94,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-0 lg:gap-4">
                 <div className={`flex-1 flex flex-col justify-center p-4 rounded-xl border-l-4  ${getProbabilityStatus(true, summary?.owner_probability)['bg']} my-2 shadow-xs`}>
                     <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">โอกาสการได้รับการบรรจุของเขตตนเอง :</p>
                     <div className="items-baseline gap-2 text-right">
@@ -102,7 +102,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                             {
                                 data ?
                                     (
-                                        <div className="text-lg md:text-base lg:text-5xl">
+                                        <div className="text-2xl md:text-base lg:text-5xl">
                                             <CountUp
                                                 end={summary?.owner_probability}
                                                 duration={3}
@@ -125,7 +125,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                             {
                                 data ?
                                     (
-                                        <div className="text-lg md:text-base lg:text-5xl">
+                                        <div className="text-2xl md:text-base lg:text-5xl flex flex-col lg:flex-row lg:items-center lg:justify-end">
                                             <span className={`px-5 text-lg md:text-base lg:text-2xl font-bold ${getProbabilityStatus(summary?.highest_other_probability?.status, summary?.highest_other_probability?.probability)['tx']}`}>
                                                 [
                                                 <span className="mx-2">{summary?.highest_other_probability?.region || null}</span>
@@ -147,7 +147,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                     </div>
                 </div>
             </div>
-            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
+            <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300 hidden lg:block">
                 <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
                     {
                         !data ? (<Waiting />) : (

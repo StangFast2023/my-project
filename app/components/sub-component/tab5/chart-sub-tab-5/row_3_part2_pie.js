@@ -7,13 +7,14 @@ export default function Row3Part2Pie({ data }) {
     const total_called = data?.total_called;
     const total_remain = data?.total_remain;
     const total_listed = data?.total_listed;
+    const real_remain = total_listed > 0 ? total_listed - total_called : 0;
     if (!total_listed && !total_called && !total_remain) return null;
 
     const pieData = {
         labels: [" เรียกรายงานตัวแล้ว", " คงเหลือในบัญชี"],
         datasets: [
             {
-                data: [total_called, total_remain],
+                data: [total_called, real_remain],
                 backgroundColor: [
                     "#10B981",
                     "#E5E7EB",

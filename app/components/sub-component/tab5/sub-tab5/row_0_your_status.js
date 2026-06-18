@@ -4,7 +4,7 @@ export default function Row1StaticNumber({ data }) {
     const status_work = data?.status_work || {};
     const status_out_list = data?.status_out_list || {};
     return (
-        <div className="grid grid-cols-5 md:grid-cols-5 lg:grid-cols-5 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-0 lg:gap-4">
 
             <div className={`flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs`}>
                 <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">ลำดับของคุณ : </p>

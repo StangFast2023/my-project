@@ -98,8 +98,8 @@ export default function App() {
                         <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
                             <button onClick={() => { setActiveTab('tab1'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
                             <button onClick={() => { setActiveTab('tab2'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
-                            <button onClick={() => { setActiveTab('tab3'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
-                            <button onClick={() => { setActiveTab('tab4'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
+                            {/* <button onClick={() => { setActiveTab('tab3'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
+                            <button onClick={() => { setActiveTab('tab4'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
                             <button onClick={() => { setActiveTab('tab5'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
                         </div>
                     )}

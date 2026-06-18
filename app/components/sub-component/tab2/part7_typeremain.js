@@ -43,7 +43,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                 <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">ชื่อตำแหน่ง</th>
                                 <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">ประเภท</th>
                                 <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">อัตรา</th>
-                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600 text-center">📃</th>
+                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600 text-center hidden lg:block">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
@@ -54,22 +54,22 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                             {index + 1}
                                         </span>
                                     </td>
-                                    <td className="p-2">
+                                    <td className="p-2 lg:p-4">
                                         <div className="font-bold text-sm md:text-base lg:text-xm text-gray-800">{pos.pos_name}</div>
                                     </td>
-                                    <td className="p-2">
+                                    <td className="p-2 lg:p-4">
                                         <div className="font-bold text-sm md:text-base lg:text-xm text-gray-800">
-                                            <span className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${typeStyles[pos.pos_type_id]}`}>
+                                            <span className={`p-1 lg:px-4 lg:py-1.5 rounded-full text-sm font-bold shadow-sm ${typeStyles[pos.pos_type_id]}`}>
                                                 {pos.pos_type}
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="p-2 text-right">
+                                    <td className="p-2 lg:p-4 text-right">
                                         <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-gray-700">
                                             {pos.total_remain.toLocaleString()}
                                         </span>
                                     </td>
-                                    <td className="p-4 text-center">
+                                    <td className="p-2 lg:p-4 text-center hidden lg:block">
                                         <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-blue-700">
                                             <button onClick={() => handleViewDetail(pos.id_pos)} className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md text-sm transition-colors hover:shadow-xl transition-all duration-300">
                                                 <div className="flex items-center gap-1 ">
