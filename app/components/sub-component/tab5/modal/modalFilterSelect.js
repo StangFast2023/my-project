@@ -53,9 +53,10 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                 setActiveDropdown(null);
                 return;
             }
+            const isMobile = window.innerWidth < 768;
             setDropdownStyle({
                 top: (rect.bottom + 8) + 'px',
-                left: (rect.left + window.scrollX) + 'px',
+                left: (rect.left + window.scrollX + (isMobile ? -100 : 0)) + 'px',
                 minWidth: positionButtonRef.current.offsetWidth + 'px',
                 width: 'max-content',
                 maxWidth: '90vw',
@@ -227,11 +228,11 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                                                     setSearchTerm('');
                                                     setActiveDropdown(null);
                                                 }}
-                                                className="px-4 py-3 hover:bg-blue-50 cursor-pointer text-gray-800 font-medium border-b border-gray-50"
+                                                className="p-1 lg:px-4 lg:py-3 hover:bg-blue-50 cursor-pointer text-gray-800 font-medium border-b border-gray-50 lg:flex lg:items-center"
                                             >
                                                 <b className="mr-2">[ {pos.pos_id} ]</b>
                                                 {pos.pos_name}
-                                                <span className={`ml-2 px-4 py-1 rounded-full shadow-sm ${typeStyles[pos.pos_type_id]}`}>
+                                                <span className={`hidden lg:block ml-2 px-4 py-1 rounded-full shadow-sm ${typeStyles[pos.pos_type_id]}`}>
                                                     {pos.pos_type_name}
                                                 </span>
                                             </div>
