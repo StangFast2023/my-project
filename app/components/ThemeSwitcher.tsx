@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { User, Circle, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import profilePic from '../../public/images/myProfile.webp';
+import QRCodePic from '../../public/images/myQRcode.webp';
 
 export default function InfoModal() {
     const [isOpen, setIsOpen] = useState(false);
@@ -75,7 +77,7 @@ export default function InfoModal() {
                                             <div className="flex flex-col items-center mb-2">
                                                 <motion.div whileHover={{ rotate: 25, scale: 1.25 }} className="relative w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 mb-4">
                                                     <Image
-                                                        src="https://scontent.fbkk12-6.fna.fbcdn.net/v/t39.30808-6/474109992_29035552372698722_123024478912346313_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1920&ctp=s1080x1920&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=gBPChkRIlbQQ7kNvwEDfzmX&_nc_oc=AdqWkovWz2ZkBkSLrwD1nYhBB_uBNUDomi8HPn7aHmgrkoO3iHd8oTYG71qQOOqQW4w&_nc_zt=23&_nc_ht=scontent.fbkk12-6.fna&_nc_gid=VvAe537UMlnSQTlTVjEwiA&_nc_ss=7b2a8&oh=00_Af9t5mMAEE8YBRpkasOtxNgxGka-YD27sz1qvYVbRopQxg&oe=6A2D9196"
+                                                        src={profilePic}
                                                         alt="Profile"
                                                         fill
                                                         priority={true}
@@ -157,7 +159,7 @@ export default function InfoModal() {
                                         className="max-w-xs mx-auto md:max-w-full"
                                     >
                                         <Image
-                                            src="https://scontent.fbkk12-1.fna.fbcdn.net/v/t39.30808-6/719150799_37233442249576319_302443961188702046_n.jpg?stp=dst-jpg_tt6&cstp=mx1029x1336&ctp=s1029x1336&_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=JKgKIVYVePgQ7kNvwEiJc2H&_nc_oc=AdoIX5itqpf-vXxgbm43fMgFK3_x41f_-DFFazEzbXETt2nR9xFuKlrnSj3b5P-LtaQ&_nc_zt=23&_nc_ht=scontent.fbkk12-1.fna&_nc_gid=J6GgbVStvMMXTiU130siVw&_nc_ss=7b2a8&oh=00_Af-M6wIBH3qNoBdXm5IhU6ZrExHgOzT--Q99Zz7FeiELgA&oe=6A2C19CE"
+                                            src={QRCodePic}
                                             alt="QR Code"
                                             width={500}
                                             height={500}
