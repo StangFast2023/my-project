@@ -36,9 +36,9 @@ export default function InfoModal() {
             color: `#${color}`
         };
     };
-    const currentAmount = 50;
-    const targetAmount = 350;
-    const percentage = Math.round((currentAmount / targetAmount) * 100);
+    // const currentAmount = 50;
+    // const targetAmount = 350;
+    // const percentage = Math.round((currentAmount / targetAmount) * 100);
     return (
         <>
             <button
@@ -93,7 +93,7 @@ export default function InfoModal() {
                                                     { label: 'ตำแหน่ง', value: 'นักวิชาการคอมพิวเตอร์' },
                                                     { label: 'ภาค', value: 'ภาคตะวันออกเฉียงเหนือ' },
                                                     { label: 'เขต', value: '2' },
-                                                    { label: 'ลำดับ', value: '32' },
+                                                    { label: 'ลำดับใหม่', value: '27' },
                                                 ].map((item, idx) => (
                                                     <div key={idx} className="flex items-center gap-2 hover:bg-gray-50 p-1 rounded transition-all">
                                                         <Circle size={10} className="text-emerald-500 shrink-0" fill="currentColor" />
@@ -104,6 +104,14 @@ export default function InfoModal() {
                                                         </div>
                                                     </div>
                                                 ))}
+                                                <div className="flex items-center gap-2 hover:bg-gray-50 p-1 rounded transition-all">
+                                                    <Circle size={10} className="text-emerald-500 shrink-0" fill="currentColor" />
+                                                    <div className="flex flex-wrap w-full text-sm md:text-base">
+                                                        <span className="font-semibold text-rose-700 w-24 shrink-0">ลำดับเก่า</span>
+                                                        <span className="font-semibold text-rose-700 mx-2">:</span>
+                                                        <span className="font-semibold text-rose-700 break-words">32</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="space-y-4">
@@ -214,36 +222,6 @@ export default function InfoModal() {
                                     <span className={`font-bold text-white`}> Line </span>
                                 </a>
                             </div>
-                            <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-dashed border-gray-300">
-                                <div className="flex justify-between items-center mb-2">
-                                    <span className="text-sm font-semibold text-gray-700">เป้าหมายค่าโฮสติ้ง: {targetAmount} บาท / เดือน</span>
-                                </div>
-                                <div className="relative w-full mt-8">
-                                    <div className="absolute -top-8 -translate-x-1/2" style={{ left: `${percentage}%` }}>
-                                        <div className="bg-emerald-700 text-white text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap shadow-sm">
-                                            {percentage}% - {currentAmount} / {targetAmount} บาท
-                                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-700 rotate-45"></div>
-                                        </div>
-                                    </div>
-                                    <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden border border-gray-300">
-                                        <div
-                                            className="bg-emerald-500 h-full rounded-full transition-all duration-1000 ease-out"
-                                            style={{ width: `${percentage}%` }}
-                                        />
-                                    </div>
-
-                                </div>
-                                <p className="text-xs text-gray-500 mt-3 text-center">
-                                    เว็บนี้ทำเพื่อเพื่อนๆ ให้ใช้งานฟรี ถ้าข้อมูลมีประโยชน์
-                                    ช่วยผมสนับสนุนค่าโฮสติ้งคนละเล็กละน้อยได้นะครับ
-                                </p>
-                            </div>
-                            <button
-                                onClick={() => setIsOpen(false)}
-                                className="mt-8 w-full py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
-                            >
-                                ปิด
-                            </button>
                         </motion.div>
                     </motion.div>
                 )}
