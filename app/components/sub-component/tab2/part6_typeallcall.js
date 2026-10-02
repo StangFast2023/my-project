@@ -8,7 +8,8 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         setDetails(null);
         setIsOpen(true);
         try {
-            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
+            // const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}/7`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/listed-position-detail/${id}/7`);
             setDetails(response.data);
         } catch (error) {
             console.error(error);
@@ -27,7 +28,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         >
             <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
-                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-sm font-bold text-gray-700">
                         <Warehouse />
                         <span className="ml-2">สรุปอันดับตำแหน่งที่มีการบรรจุสูงสุด</span>
                     </h3>
@@ -37,44 +38,43 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="sticky top-0 z-20 bg-gray-100 shadow-sm">
-                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">อันดับ</th>
-                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">ชื่อตำแหน่ง</th>
-                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">ประเภท</th>
-                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600">อัตรา</th>
-                                <th className="p-4 text-sm md:text-base lg:text-lg font-semibold text-gray-600 text-center hidden lg:block">📃</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">อันดับ</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ชื่อตำแหน่ง</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ประเภท</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">อัตรา</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center hidden lg:block">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
                             {fastEmpty.map((pos, index) => (
                                 <tr key={`${index}-${pos.id_pos}-${pos.total_call}`} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                    <td className="p-4 text-center">
-                                        <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm md:text-base lg:text-xm font-bold ${index < 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
+                                    <td className="p-3 text-center">
+                                        <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm md:text-base lg:text-sm font-bold ${index < 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
                                             {index + 1}
                                         </span>
                                     </td>
-                                    <td className="p-2 lg:p-4">
-                                        <div className="font-bold text-sm md:text-base lg:text-xm text-gray-800 ">{pos.pos_name}</div>
+                                    <td className="p-2 lg:p-2">
+                                        <div className="font-bold text-sm md:text-base lg:text-sm text-gray-800 ">{pos.pos_name}</div>
                                     </td>
-                                    <td className="p-2 lg:p-4">
-                                        <div className="font-bold text-sm md:text-base lg:text-xm text-gray-800">
-                                            <span className={`p-1 lg:px-4 lg:py-1.5 rounded-full text-sm font-bold shadow-sm ${typeStyles[pos.pos_type_id]}`}>
+                                    <td className={`${typeStyles[pos.pos_type_id]} text-center`}>
+                                        <div className="font-semibold text-sm md:text-base lg:text-sm text-gray-800">
+                                            <span className={`lg:px-1 lg:py-1 rounded-full text-sm ${typeStyles[pos.pos_type_id]}`}>
                                                 {pos.pos_type}
                                             </span>
                                         </div>
                                     </td>
-                                    <td className="p-2 lg:p-4 text-right">
-                                        <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-gray-700">
+                                    <td className="p-2 lg:p-2 text-right">
+                                        <span className="font-mono text-sm md:text-base lg:text-sm font-bold text-gray-700">
                                             {Number(pos.total_call).toLocaleString()}
                                         </span>
                                     </td>
-                                    <td className="p-2 lg:p-4 text-center hidden lg:block">
-                                        <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-blue-700">
+                                    <td className="p-2 lg:p-2">
+                                        <span className="font-mono text-sm md:text-base lg:text-sm font-bold text-blue-700">
                                             <button onClick={() => handleViewDetail(pos.id_pos)} className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md text-sm transition-colors hover:shadow-xl transition-all duration-300">
-                                                <div className="flex items-center gap-1 ">
+                                                <div className="flex items-center gap-1 px-2 py-1">
                                                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                                     </svg>
-                                                    <span>รายละเอียด</span>
                                                 </div>
                                             </button>
                                         </span>
