@@ -123,14 +123,14 @@ export default function T1P4_Cumulative({ data }) {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
-                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
+                ticks: { callback: (value) => value.toLocaleString() + ' คน' }
             },
             y1: {
                 type: 'linear',
                 position: 'right',
                 beginAtZero: true,
                 grid: { drawOnChartArea: false },
-                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
+                ticks: { callback: (value) => value.toLocaleString() + ' คน' }
             }
         },
     };

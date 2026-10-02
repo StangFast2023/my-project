@@ -58,6 +58,7 @@ export default function T2P5_PopularPosEmp({ data }) {
                                     <td className="p-2 text-right">
                                         <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-gray-700">
                                             {Number(pos.total_call).toLocaleString()}
+                                            {pos.over_status}
                                         </span>
                                     </td>
                                 </tr>

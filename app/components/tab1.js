@@ -10,7 +10,8 @@ export default function Tab1() {
     const { data } = useQuery({
         queryKey: ['tab1Data'],
         queryFn: async () => {
-            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab1`);
+            // const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab1`);
+            const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab1`);
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
@@ -38,7 +39,7 @@ export default function Tab1() {
                     <div className={`${data ? '' : 'bg-white/50 animate-pulse p-20 rounded-2xl'} col-span-12 lg:col-span-12`}>
                         <T1P1_StaticNumber data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9  p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9 p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P2_CallMonthly data={data} />
                     </div>
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 p-6 rounded-2xl shadow-sm border border-gray-100`}>

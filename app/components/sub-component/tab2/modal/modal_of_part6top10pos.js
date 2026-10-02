@@ -40,16 +40,24 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                             ปิดหน้าต่าง
                                         </button>
                                     </div>
-                                    <div className="grid grid-cols-12 gap-6">
-                                        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-gray-100 text-center">
-                                            <span className="text-sm text-gray-400 font-kanit">ขึ้นบัญชีทั้งหมด</span>
+                                    <div className="flex gap-3">
+                                        <div className="flex-1 bg-white rounded-2xl border border-gray-100 text-center">
+                                            <span className="text-sm text-gray-400 font-kanit">ขึ้นบัญชีทั้งหมด <b>(เก่า)</b></span>
                                             <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.listed.toLocaleString()}</h2>
                                         </div>
-                                        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-gray-100 text-center">
+                                        <div className="flex-1 bg-white rounded-2xl border border-gray-100 text-center">
+                                            <span className="text-sm text-gray-400 font-kanit">ขึ้นบัญชีทั้งหมด <b>(ใหม่)</b></span>
+                                            <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.listed_new.toLocaleString()}</h2>
+                                        </div>
+                                        <div className="flex-1 bg-white rounded-2xl border border-gray-100 text-center">
+                                            <span className="text-sm text-gray-400 font-kanit">ส่วนต่าง</span>
+                                            <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.diff.toLocaleString()}</h2>
+                                        </div>
+                                        <div className="flex-1 bg-white rounded-2xl border border-gray-100 text-center">
                                             <span className="text-sm text-gray-400 font-kanit">เรียกทั้งหมด</span>
                                             <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.called.toLocaleString()}</h2>
                                         </div>
-                                        <div className="col-span-12 lg:col-span-4 bg-white rounded-2xl border border-gray-100 text-center">
+                                        <div className="flex-1 bg-white rounded-2xl border border-gray-100 text-center">
                                             <span className="text-sm text-gray-400 font-kanit">คงเหลือ</span>
                                             <h2 className="text-2xl text-gray-800 font-bold font-kanit"> {details.total.remain.toLocaleString()}</h2>
                                         </div>
@@ -58,7 +66,7 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                         <div className="flex justify-between items-center mb-2">
                                             <p className="text-gray-500 text-sm font-medium">ความคืบหน้าการเรียกใช้บัญชีทั้งหมด</p>
                                             <span className="text-lg font-black text-gray-700">
-                                                {((details.total.called / details.total.listed) * 100).toFixed(2)} %
+                                                {((details.total.called / details.total.listed_new) * 100).toFixed(2)} %
                                             </span>
                                         </div>
                                         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -68,76 +76,87 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                 </div>
                                 <div className="flex-grow overflow-y-auto p-2 custom-scrollbar">
                                     {details.data && Object.entries(details.data).map(([key, zone]) => {
+                                        const part = details?.part;
                                         const pro_main_name = zone[1]?.pro_main_name || null;
-                                        const unique_key_1 = details?.data[key]?.pro_full_name
+                                        const unique_key_1 = details?.data[key]?.pro_full_name;
                                         return (
-                                            <>
-                                                <div key={`${key}-${unique_key_1}`} className="mb-5">
-                                                    {pro_main_name && (
-                                                        <div className="py-2 bg-gray-50/95 backdrop-blur-sm">
-                                                            <h3 className="text-xl text-white p-4 bg-gray-800 rounded-2xl font-bold shadow-md">
-                                                                {pro_main_name}
-                                                            </h3>
-                                                        </div>
-                                                    )}
-                                                    <div className="grid grid-cols-1 gap-3 lg:pl-4">
-                                                        {Object.entries(zone)
-                                                            .filter(([k, v]) => typeof v === "object")
-                                                            .map(([subKey, item]) => (
-                                                                <div key={`${key}-${unique_key_1}-${subKey}-${item.status_listed}`} className="group p-1 border-0 rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" >
-                                                                    <div className="p-5">
-                                                                        <div className="flex justify-between items-center border-b border-gray-50 pb-4">
-                                                                            <div className="flex items-center gap-3">
-                                                                                <span className="font-bold text-gray-700 text-lg">เขต</span>
-                                                                                <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-bold text-xl">
-                                                                                    {item.pro_sub_id}
-                                                                                </div>
-                                                                            </div>
-                                                                            <span className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${item.status_listed ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                                                                                {item.status_listed ? "● เปิดสอบ" : "● ไม่เปิดสอบ"}
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
-                                                                            <div className="bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
-                                                                                <p className="text-gray-400 text-[12px] mb-1">ขึ้นบัญชี</p>
-                                                                                <p className="text-right text-xl font-bold text-gray-600">
-                                                                                    {item.status_listed ? item.total_listed.toLocaleString() : "-"}
-                                                                                </p>
-                                                                            </div>
-                                                                            <div className="bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
-                                                                                <p className="text-gray-400 text-[12px] mb-1">จำนวนรอบ</p>
-                                                                                <p className="text-right text-xl font-bold text-blue-600">
-                                                                                    {item.status_listed ? item.total_round.toLocaleString() : "-"}
-                                                                                </p>
-                                                                            </div>
-                                                                            <div className="bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
-                                                                                <p className="text-gray-400 text-[12px] mb-1">เรียกแล้ว</p>
-                                                                                <p className="text-right text-xl font-bold text-green-600">
-                                                                                    {item.status_listed ? item.total_called.toLocaleString() : "-"}
-                                                                                </p>
-                                                                            </div>
-                                                                            <div className="bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
-                                                                                <p className="text-gray-400 text-[12px] mb-1">คงเหลือ</p>
-                                                                                <p className="text-right text-xl font-bold text-orange-600">
-                                                                                    {item.status_listed ? item.total_remain.toLocaleString() : "-"}
-                                                                                </p>
+                                            <div key={`${part}${key}${unique_key_1}`} className="mb-5">
+                                                {pro_main_name && (
+                                                    <div className="py-2 bg-gray-50/95 backdrop-blur-sm">
+                                                        <h3 className="text-xl text-white p-4 bg-gray-800 rounded-2xl font-bold shadow-md">
+                                                            {pro_main_name}
+                                                        </h3>
+                                                    </div>
+                                                )}
+                                                <div className="grid grid-cols-1 gap-3 lg:pl-4">
+                                                    {Object.entries(zone)
+                                                        .filter(([k, v]) => typeof v === "object")
+                                                        .map(([subKey, item]) => (
+                                                            <div key={`${part}${key}${subKey}${unique_key_1}${item.status_listed}${pro_main_name}${item.pro_sub_id}`} className="group p-1 border-0 rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" >
+                                                                <div className="p-5">
+                                                                    <div className="flex justify-between items-center border-b border-gray-50 pb-4">
+                                                                        <div className="flex items-center gap-3">
+                                                                            <span className="font-bold text-gray-700 text-lg">เขต</span>
+                                                                            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-bold text-xl">
+                                                                                {item.pro_sub_id}
                                                                             </div>
                                                                         </div>
-                                                                        <div className="mt-2 bg-gray-50 p-4 rounded-2xl">
-                                                                            <div className="flex justify-between items-center mb-2">
-                                                                                <p className="text-gray-500 text-sm font-medium">ความคืบหน้าการเรียกใช้บัญชี</p>
-                                                                                <span className="text-lg font-black text-gray-700">{item.total_process.toFixed(2)} %</span>
-                                                                            </div>
-                                                                            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                                                                                <div className={`h-full rounded-full transition-all duration-1000 ${item.total_process >= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(item.total_process, 100)}%` }} />
-                                                                            </div>
+                                                                        <span className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm ${item.status_listed ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                                                                            {item.status_listed ? "● เปิดสอบ" : "● ไม่เปิดสอบ"}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className="flex gap-3 gap-2 w-full">
+                                                                        <div className="flex-1 bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
+                                                                            <p className="text-gray-400 text-[12px] mb-1">ขึ้นบัญชี <b>เก่า</b></p>
+                                                                            <p className="text-right text-xl font-bold text-gray-600">
+                                                                                {item.status_listed ? item.total_listed.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="flex-1 bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
+                                                                            <p className="text-gray-400 text-[12px] mb-1">ขึ้นบัญชี <b>ใหม่</b></p>
+                                                                            <p className="text-right text-xl font-bold text-gray-600">
+                                                                                {item.status_listed ? item.total_listed_n.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="flex-1 bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
+                                                                            <p className="text-gray-400 text-[12px] mb-1">ส่วนต่าง</p>
+                                                                            <p className="text-right text-xl font-bold text-rose-600">
+                                                                                {item.status_listed ? item.total_diff.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="flex-1 bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
+                                                                            <p className="text-gray-400 text-[12px] mb-1">จำนวนรอบที่เรียกไปแล้ว</p>
+                                                                            <p className="text-right text-xl font-bold text-blue-600">
+                                                                                {item.status_listed ? item.total_round.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="flex-1 bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
+                                                                            <p className="text-gray-400 text-[12px] mb-1">เรียกแล้ว</p>
+                                                                            <p className="text-right text-xl font-bold text-green-600">
+                                                                                {item.status_listed ? item.total_called.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="flex-1 bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
+                                                                            <p className="text-gray-400 text-[12px] mb-1">คงเหลือ</p>
+                                                                            <p className={`text-right text-xl font-bold ${item.status_listed ? item.total_remain > 0 ? 'text-violet-600' : 'text-rose-600' : 'text-gray-600'}`}>
+                                                                                {item.status_listed ? item.total_remain.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="mt-2 bg-gray-50 p-4 rounded-2xl">
+                                                                        <div className="flex justify-between items-center mb-2">
+                                                                            <p className="text-gray-500 text-sm font-medium">ความคืบหน้าการเรียกใช้บัญชี</p>
+                                                                            <span className="text-lg font-black text-gray-700">{item.total_process.toFixed(2)} %</span>
+                                                                        </div>
+                                                                        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                                                            <div className={`h-full rounded-full transition-all duration-1000 ${item.total_process >= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(item.total_process, 100)}%` }} />
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            ))}
-                                                    </div>
+                                                            </div>
+                                                        ))}
                                                 </div>
-                                            </>
+                                            </div>
                                         );
                                     })}
                                 </div>

@@ -16,7 +16,7 @@ export default function T2P10_PosTypePeople({ data }) {
         datasets: [
             {
                 label: 'จำนวนตำแหน่ง',
-                data: Object.values(dataArray).map(item => item.total_person),
+                data: Object.values(dataArray).map(item => item.total_person_new),
                 backgroundColor: ROUND_COLORS.slice(0, dataArray.length),
                 borderColor: ROUND_COLORS.slice(0, dataArray.length).map(color => color.replace('ab', 'ff')),
                 borderWidth: 1,
@@ -61,7 +61,7 @@ export default function T2P10_PosTypePeople({ data }) {
                         <Layers />
                         <span className="ml-2">สัดส่วนจำนวนผู้สอบแข่งขันได้ แบ่งตามประเภท</span>
                     </h3>
-                    <p className=" text-sm md:text-base lg:text-sm text-gray-500">มีทั้งหมด {part10.t.total_person.toLocaleString()} คน</p>
+                    <p className=" text-sm md:text-base lg:text-sm text-gray-500">มีทั้งหมด {part10.t.total_person_new.toLocaleString()} คน</p>
                 </div>
 
                 <div className="h-[370px] w-full relative">

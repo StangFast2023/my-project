@@ -43,10 +43,10 @@ export default function InfoModal() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-4 left-4 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-xl transition-all duration-500 hover:scale-110 hover:bg-emerald-600"
+                className="fixed top-2 right-2 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-3xl transition-all duration-500 hover:scale-110 hover:bg-emerald-600"
             >
                 <div className="flex justify-center items-center">
-                    <User size={30} /> สนับสนุนค่าโฮสติ้ง
+                    <User size={30} />
                 </div>
             </button>
 

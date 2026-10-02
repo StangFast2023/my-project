@@ -9,7 +9,8 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
         setDetails(null);
         setIsOpen(true);
         try {
-            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
+            // const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}/4`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/listed-position-detail/${id}/4`);
             setDetails(response.data);
         } catch (error) {
             console.error(error);

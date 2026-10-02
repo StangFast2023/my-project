@@ -11,7 +11,7 @@ export default function T1P3_PieListed({ data }) {
     const part1 = data?.tab1?.part1;
     if (!part1) return null;
 
-    const totalRegistered = part1.TotalList;
+    const totalRegistered = part1.NewTotalList;
     const totalCalled = part1.TotalCall;
     const remaining = totalRegistered - totalCalled;
 

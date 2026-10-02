@@ -8,7 +8,8 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         setDetails(null);
         setIsOpen(true);
         try {
-            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
+            // const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}/7`);
+            const response = await axios.get(`http://127.0.0.1:8000/api/listed-position-detail/${id}/7`);
             setDetails(response.data);
         } catch (error) {
             console.error(error);
@@ -66,7 +67,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                     </td>
                                     <td className="p-2 lg:p-4 text-right">
                                         <span className="font-mono text-sm md:text-base lg:text-xm font-bold text-gray-700">
-                                            {pos.total_remain.toLocaleString()}
+                                            {pos.total_list.toLocaleString()}
                                         </span>
                                     </td>
                                     <td className="p-2 lg:p-4 text-center hidden lg:block">

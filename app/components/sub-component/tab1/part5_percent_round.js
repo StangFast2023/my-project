@@ -94,7 +94,7 @@ export default function T1P3_PieListed({ data }) {
                                 useEasing={true}
                             />
                         </span>
-                        <span className="text-sm md:text-base lg:text-lg text-gray-600 pl-2">อัตรา</span>
+                        <span className="text-sm md:text-base lg:text-lg text-gray-600 pl-2">คน</span>
                     </div>
                 </div>
             </div>

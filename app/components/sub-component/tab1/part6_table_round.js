@@ -9,6 +9,7 @@ export default function T1P3_PieListed({ data }) {
     const max_rounds_all_zones = Math.max(...allZones.map(zone => zone.total_round));
     const maxRounds = Math.max(10, max_rounds_all_zones);
     const roundColumns = Array.from({ length: maxRounds }, (_, i) => i + 1);
+    const grandTotalListedNew = allZones.reduce((sum, zone) => sum + zone.total_listed_new, 0);
     const grandTotalListed = allZones.reduce((sum, zone) => sum + zone.total_listed, 0);
     const grandTotalCalled = allZones.reduce((sum, zone) => sum + zone.total_called, 0);
     const grandTotalRemain = allZones.reduce((sum, zone) => sum + zone.total_remain, 0);
@@ -41,7 +42,9 @@ export default function T1P3_PieListed({ data }) {
                             <thead className="bg-gray-50 text-gray-600 text-sm">
                                 <tr>
                                     <th className="bg-gray-50    w-[5%] px-6 py-4 text-sm md:text-base lg:text-lg font-semibold sticky left-[0] z-30">ภาค / เขต</th>
-                                    <th className="bg-amber-50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี</th>
+                                    <th className="bg-amber-50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี (เก่า)</th>
+                                    <th className="bg-amber-100  w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี (ใหม่)</th>
+                                    <th className="bg-red-100    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ส่วนต่าง</th>
                                     <th className="bg-emerald-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-emerald-700">เรียกแล้ว</th>
                                     <th className="bg-blue-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-blue-700">ความคืบหน้า</th>
                                     <th className="bg-rose-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-rose-500">คงเหลือ</th>
@@ -51,7 +54,7 @@ export default function T1P3_PieListed({ data }) {
                         )}
                         <tbody>
                             {Object.values(part6).map((region) => {
-                                let reg = { list: 0, call: 0, remain: 0, rounds: Array(roundColumns.length).fill(0) };
+                                let reg = { list: 0, new_list: 0, diff: 0, call: 0, remain: 0, rounds: Array(roundColumns.length).fill(0) };
                                 return (
                                     <React.Fragment key={region.name}>
                                         <tr className="bg-emerald-50/20">
@@ -61,6 +64,8 @@ export default function T1P3_PieListed({ data }) {
                                         </tr>
                                         {Object.values(region.data).map((zone) => {
                                             reg.list += (Number(zone.total_listed) || 0);
+                                            reg.new_list += (Number(zone.total_listed_new) || 0);
+                                            reg.diff += (Number(zone.total_listed - zone.total_listed_new) || 0);
                                             reg.call += (Number(zone.total_called) || 0);
                                             reg.remain += (Number(zone.total_remain) || 0);
                                             roundColumns.forEach((n, i) => reg.rounds[i] += (zone['data-round']?.[n]?.total_called || 0));
@@ -68,8 +73,10 @@ export default function T1P3_PieListed({ data }) {
                                                 <tr key={zone.full}>
                                                     <td className="bg-gray-50    w-[5%] px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{zone.name}</td>
                                                     <td className="bg-amber-50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed.toLocaleString()}</td>
+                                                    <td className="bg-amber-100  w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed_new.toLocaleString()}</td>
+                                                    <td className="bg-red-100    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{(zone.total_listed - zone.total_listed_new).toLocaleString()}</td>
                                                     <td className="bg-emerald-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{zone.total_called.toLocaleString()}</td>
-                                                    <td className="bg-blue-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((zone.total_called / zone.total_listed) * 100).toFixed(2)} %</td>
+                                                    <td className="bg-blue-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((zone.total_called / zone.total_listed_new) * 100).toFixed(2)} %</td>
                                                     <td className="bg-rose-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{zone.total_remain.toLocaleString()}</td>
                                                     {roundColumns.map(num => {
                                                         const roundInfo = zone['data-round'][num];
@@ -93,8 +100,10 @@ export default function T1P3_PieListed({ data }) {
                                         <tr key={region.name}>
                                             <td className="bg-white         w-[5%] px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
                                             <td className="bg-amber-50/50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
+                                            <td className="bg-amber-100/50  w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.new_list.toLocaleString()}</td>
+                                            <td className="bg-red-100/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-600">{reg.diff.toLocaleString()}</td>
                                             <td className="bg-emerald-50/50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
-                                            <td className="bg-blue-50/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.list) * 100).toFixed(2)} %</td>
+                                            <td className="bg-blue-50/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.new_list) * 100).toFixed(2)} %</td>
                                             <td className="bg-rose-50/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
                                             {reg.rounds.map((v, i) => <td key={i} className={`w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm text-center font-semibold text-gray-700 ${v > 0 ? 'bg-white' : 'bg-gray-200'}`} >{v > 0 ? v.toLocaleString() : null}</td>)}
                                         </tr>
@@ -105,8 +114,10 @@ export default function T1P3_PieListed({ data }) {
                                 <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
                                     <td className="bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
                                     <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalListed.toLocaleString()}</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalListedNew.toLocaleString()}</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center">{(grandTotalListed - grandTotalListedNew).toLocaleString()}</td>
                                     <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalCalled.toLocaleString()}</td>
-                                    <td className="bg-gray-700 px-4 py-4 text-center text-blue-300">{((grandTotalCalled / grandTotalListed) * 100).toFixed(2)} %</td>
+                                    <td className="bg-gray-700 px-4 py-4 text-center text-blue-300">{((grandTotalCalled / grandTotalListedNew) * 100).toFixed(2)} %</td>
                                     <td className="bg-gray-700 px-6 py-4 text-center text-rose-300">{grandTotalRemain.toLocaleString()}</td>
                                     {grandTotalPerRound.map((total, index) => (<td key={index} className="w-[120px] px-4 py-4 text-center">{total > 0 ? total.toLocaleString() : null}</td>))}
                                 </tr>
@@ -114,7 +125,6 @@ export default function T1P3_PieListed({ data }) {
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </motion.div>
     );

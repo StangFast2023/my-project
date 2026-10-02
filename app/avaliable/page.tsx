@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from 'react';
-import Tab1 from './components/tab1';
-import Tab2 from './components/tab2';
-import Tab3 from './components/tab3';
-import Tab4 from './components/tab4';
-import Tab5 from './components/tab5';
-import ModalTab2Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos';
-import ModalFilterSelect from './components/sub-component/tab5/modal/modalFilterSelect';
+import Tab1 from '../components/tab1';
+import Tab2 from '../components/tab2';
+import Tab3 from '../components/tab3';
+import Tab4 from '../components/tab4';
+import Tab5 from '../components/tab5';
+import ModalTab2Part6 from '../components/sub-component/tab2/modal/modal_of_part6top10pos';
+import ModalFilterSelect from '../components/sub-component/tab5/modal/modalFilterSelect';
 export interface FilterData {
     id_region: number;
     id_sub_regoin: number;
@@ -39,8 +39,41 @@ export default function App() {
         }
     }, [activeTab]);
 
+    const [showDisclaimer, setShowDisclaimer] = useState(() => {
+        if (typeof window === 'undefined') return false;
+        const lastSeen = localStorage.getItem('lastSeenDisclaimer');
+        if (!lastSeen) return true;
+        const now = Date.now();
+        const HOURS_TO_WAIT = 24;
+        const isExpired = (now - parseInt(lastSeen)) > HOURS_TO_WAIT * 60 * 60 * 1000;
+        return isExpired;
+    });
+
+    const handleAccept = () => {
+        localStorage.setItem('lastSeenDisclaimer', Date.now().toString());
+        setShowDisclaimer(false);
+    };
+
     return (
-        <main className="pb-10">
+        <main className="pb-5">
+            {showDisclaimer && (
+                <div className="fixed inset-0 z-80 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg text-center max-h-[90vh] overflow-y-auto">
+                        <h2 className="text-gray-800 text-xl lg:text-2xl font-bold mb-3">แนะนำการใช้งาน</h2>
+                        <p className="mb-6 text-gray-600 text-sm lg:text-lg">
+                            เพื่อให้ได้รับประสิทธิภาพสูงสุดในการดูข้อมูล<br></br>แนะนำให้เปิดใช้งานผ่าน
+                            <span className="font-bold text-blue-600"> PC หรือ Notebook</span> ครับ
+                        </p>
+                        <button
+                            onClick={handleAccept}
+                            className="w-full bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all active:scale-95"
+                        >
+                            รับทราบและเข้าใช้งาน
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className="flex flex-col items-center pt-5">
                 <div className="flex items-center gap-3">
                     <h1 className="text-sm md:text-base lg:text-3xl font-black text-right text-gray-700">
@@ -71,6 +104,7 @@ export default function App() {
                         </div>
                     )}
                 </div>
+
                 <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
                     <button onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
@@ -82,7 +116,7 @@ export default function App() {
                             ข้อมูลประเภทและตำแหน่ง
                         </span>
                     </button>
-                    {/* <button onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลรายภาคและเขต
                         </span>
@@ -96,14 +130,14 @@ export default function App() {
                         <span className={`${activeTab === 'tab5' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             วิเคราะห์โอกาสเรียกตัว
                         </span>
-                    </button> */}
+                    </button>
                 </div>
                 <div className="mt-6">
                     {activeTab === 'tab1' && (<div className="animate-fade-in"> <Tab1 /> </div>)}
                     {activeTab === 'tab2' && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} /> </div>)}
-                    {/* {activeTab === 'tab3' && (<div className="animate-fade-in"> <Tab3 /> </div>)}
+                    {activeTab === 'tab3' && (<div className="animate-fade-in"> <Tab3 /> </div>)}
                     {activeTab === 'tab4' && (<div className="animate-fade-in"> <Tab4 /> </div>)}
-                    {activeTab === 'tab5' && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)} */}
+                    {activeTab === 'tab5' && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)}
                 </div>
             </div>
 
@@ -111,20 +145,7 @@ export default function App() {
             <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} />
 
             {/* for tap5 part1 */}
-            {/* <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} /> */}
-
-            <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white shadow-xl">
-                <div className="mx-auto flex full-max-w items-center gap-4 px-4 py-3 border-2 border-gray-400">
-                    <p className="flex-1 leading-6 text-gray-700 text-center">
-                        <span className="font-semibold">หมายเหตุ</span>
-                        <span className="mx-2">:</span>
-                        <span className="text-sm">
-                            ยอดเรียกบรรจุ 3 รอบแรกเป็นยอดที่เรียกจากบัญชีเดิม ก่อนการปรับปรุงบัญชี จึงไม่สามารถระบุได้ว่าผู้ที่ถูกเรียกทั้งหมดมีจำนวนเท่าใดที่ยังคงอยู่ในบัญชีใหม่
-                            การคำนวณความคืบหน้าเป็นการนำยอดเรียกสะสมจากบัญชีเดิมมาเปรียบเทียบกับจำนวนผู้สอบแข่งขันได้ตามบัญชีใหม่ เพื่อใช้เป็นข้อมูลประกอบเท่านั้น
-                        </span>
-                    </p>
-                </div>
-            </div>
+            <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
         </main>
     );
 }

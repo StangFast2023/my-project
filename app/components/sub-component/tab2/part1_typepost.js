@@ -26,11 +26,38 @@ export default function T2P3_TypePostPart1({ data }) {
                             />   <b className=" text-sm md:text-base lg:text-xl"> ตำแหน่ง </b>
                         </span>
                     </div>
-                    <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด</p>
+                    <div className="border-t border-gray-400 mb-1"></div>
+                    <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด<b className="ml-1">(เก่า)</b></p>
                     <div className="items-baseline gap-2 text-right">
                         <span className=" text-sm md:text-base lg:text-3xl font-bold text-gray-600">
                             <CountUp
-                                end={part7?.t?.total_person}
+                                end={part7?.t?.total_person_old}
+                                duration={3}
+                                separator=","
+                                decimals={0}
+                                useEasing={true}
+                            />   <b className=" text-sm md:text-base lg:text-xl"> คน </b>
+                        </span>
+                    </div>
+                    <div className="border-t border-gray-400 mb-1"></div>
+                    <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด<b className="ml-1">(ใหม่)</b></p>
+                    <div className="items-baseline gap-2 text-right">
+                        <span className=" text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <CountUp
+                                end={part7?.t?.total_person_new}
+                                duration={3}
+                                separator=","
+                                decimals={0}
+                                useEasing={true}
+                            />   <b className=" text-sm md:text-base lg:text-xl"> คน </b>
+                        </span>
+                    </div>
+                    <div className="border-t border-gray-400 mb-1"></div>
+                    <p className="text-gray-500 text-sm">ส่วนต่าง</p>
+                    <div className="items-baseline gap-2 text-right">
+                        <span className=" text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <CountUp
+                                end={part7?.t?.diff}
                                 duration={3}
                                 separator=","
                                 decimals={0}
@@ -53,12 +80,38 @@ export default function T2P3_TypePostPart1({ data }) {
                                 />   <b className=" text-sm md:text-base lg:text-xl"> ตำแหน่ง </b>
                             </span>
                         </div>
-                        <div className="border-t border-gray-100"></div>
-                        <p className="text-gray-500 text-sm">ผู้ขึ้นบัญชี</p>
+                        <div className="border-t border-gray-400 mb-1"></div>
+                        <p className="text-gray-500 text-sm">ผู้ขึ้นบัญชี<b className="ml-1">(เก่า)</b></p>
                         <div className="items-baseline gap-2 text-right">
                             <span className=" text-sm md:text-base lg:text-3xl font-bold text-gray-600">
                                 <CountUp
-                                    end={value.total_person}
+                                    end={value.total_person_old}
+                                    duration={3}
+                                    separator=","
+                                    decimals={0}
+                                    useEasing={true}
+                                />   <b className=" text-sm md:text-base lg:text-xl"> คน </b>
+                            </span>
+                        </div>
+                        <div className="border-t border-gray-400 mb-1"></div>
+                        <p className="text-gray-500 text-sm">ผู้ขึ้นบัญชี<b className="ml-1">(ใหม่)</b></p>
+                        <div className="items-baseline gap-2 text-right">
+                            <span className=" text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                                <CountUp
+                                    end={value.total_person_new}
+                                    duration={3}
+                                    separator=","
+                                    decimals={0}
+                                    useEasing={true}
+                                />   <b className=" text-sm md:text-base lg:text-xl"> คน </b>
+                            </span>
+                        </div>
+                        <div className="border-t border-gray-400 mb-1"></div>
+                        <p className="text-gray-500 text-sm">ส่วนต่าง</p>
+                        <div className="items-baseline gap-2 text-right">
+                            <span className=" text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                                <CountUp
+                                    end={value.diff}
                                     duration={3}
                                     separator=","
                                     decimals={0}
