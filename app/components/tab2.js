@@ -3,7 +3,6 @@ import T2P1_TypePostNum from './sub-component/tab2/part1_typepost';
 import T2P2_TypePerMonth from './sub-component/tab2/part2_typepermonth';
 import T2P3_TypePerRound from './sub-component/tab2/part3_typeperround';
 import T2P4_Top10ListPos from './sub-component/tab2/part4_top10pos';
-import T2P5_PopularPosEmp from './sub-component/tab2/part5_posiempty';
 import T2P6_TypeAllCall from './sub-component/tab2/part6_typeallcall';
 import T2P7_TypeAllRemain from './sub-component/tab2/part7_typeremain';
 import T2P8_TableAllType from './sub-component/tab2/part8_tablealltype';
