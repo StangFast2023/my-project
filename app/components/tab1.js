@@ -35,7 +35,7 @@ export default function Tab1() {
                         </h2>
                     </div>
                 </div>
-                <div className="grid grid-cols-12 gap-6">
+                <div className="grid grid-cols-12 gap-4">
                     <div className={`${data ? '' : 'bg-white/50 animate-pulse p-20 rounded-2xl'} col-span-12 lg:col-span-12`}>
                         <T1P1_StaticNumber data={data} />
                     </div>

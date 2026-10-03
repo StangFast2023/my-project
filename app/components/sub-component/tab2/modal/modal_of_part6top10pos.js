@@ -138,7 +138,7 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                                                         </div>
                                                                         <div className="flex-1 bg-white p-3 border border-gray-50 rounded-2xl shadow-inner">
                                                                             <p className="text-gray-400 text-[12px] mb-1">คงเหลือ</p>
-                                                                            <p className={`text-right text-xl font-bold ${item.status_listed ? item.total_remain > 0 ? 'text-violet-600' : 'text-rose-600' : 'text-gray-600'}`}>
+                                                                            <p className={`text-right text-xl font-bold ${item.status_listed !== 0 ? item.total_remain > 0 ? 'text-orange-600' : 'text-rose-600' : 'text-gray-600'}`}>
                                                                                 {item.status_listed ? item.total_remain.toLocaleString() : "-"}
                                                                             </p>
                                                                         </div>

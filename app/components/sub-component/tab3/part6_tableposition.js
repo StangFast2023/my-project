@@ -231,7 +231,7 @@ export default function T2P7_TableAllType({ data }) {
                                                             return (
                                                                 <tr key={full_key}>
                                                                     <td className="bg-gray-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{full_name_province}</td>
-                                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700 ${status_open === true ? 'bg-blue-100' : 'bg-rose-100'}`}>{status_open === true ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}</td>
+                                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700 ${status_open === true ? 'bg-emerald-100' : 'bg-rose-100'}`}>{status_open === true ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}</td>
                                                                     <td className="bg-amber-50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_listed.toLocaleString()}</td>
                                                                     <td className="bg-amber-100  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_listed_new.toLocaleString()}</td>
                                                                     <td className="bg-rose-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_diff.toLocaleString()}</td>
@@ -300,7 +300,6 @@ export default function T2P7_TableAllType({ data }) {
                                                                                     }
                                                                                     const val = percent_change;
                                                                                     const formatted = Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                                                                                    console.log(percent_change);
                                                                                     if (val > 0) {
                                                                                         return {
                                                                                             text: ` ${formatted} %`,

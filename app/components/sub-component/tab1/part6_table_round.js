@@ -99,12 +99,12 @@ export default function T1P3_PieListed({ data }) {
                                         })}
                                         <tr key={region.name}>
                                             <td className="bg-white         w-[5%] px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
-                                            <td className="bg-amber-50/50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
-                                            <td className="bg-amber-100/50  w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.new_list.toLocaleString()}</td>
-                                            <td className="bg-red-100/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-600">{reg.diff.toLocaleString()}</td>
-                                            <td className="bg-emerald-50/50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
-                                            <td className="bg-blue-50/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.new_list) * 100).toFixed(2)} %</td>
-                                            <td className="bg-rose-50/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
+                                            <td className="bg-amber-200/50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
+                                            <td className="bg-amber-300/50  w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.new_list.toLocaleString()}</td>
+                                            <td className="bg-red-300/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-600">{reg.diff.toLocaleString()}</td>
+                                            <td className="bg-emerald-200/50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
+                                            <td className="bg-blue-200/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.new_list) * 100).toFixed(2)} %</td>
+                                            <td className="bg-rose-200/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
                                             {reg.rounds.map((v, i) => <td key={i} className={`w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm text-center font-semibold text-gray-700 ${v > 0 ? 'bg-white' : 'bg-gray-200'}`} >{v > 0 ? v.toLocaleString() : null}</td>)}
                                         </tr>
                                     </React.Fragment>
