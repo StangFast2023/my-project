@@ -28,6 +28,8 @@ export default function T2P7_TableAllType({ data }) {
 
     if (allZones.length === 0) return null;
     const grandTotalListed = allZones.reduce((sum, zone) => sum + (zone.total_list || 0), 0);
+    const grandTotalListedNew = allZones.reduce((sum, zone) => sum + (zone.total_list_new || 0), 0);
+    const grandTotalDiff = allZones.reduce((sum, zone) => sum + (zone.total_diff || 0), 0);
     const grandTotalCalled = allZones.reduce((sum, zone) => sum + (zone.total_call || 0), 0);
     const grandTotalRemain = allZones.reduce((sum, zone) => sum + (zone.total_remain || 0), 0);
 
@@ -57,10 +59,12 @@ export default function T2P7_TableAllType({ data }) {
                             <tr>
                                 <th className="sticky left-0 top-0 z-40 w-[15%] px-6 py-4 font-semibold bg-gray-50">ภาค / เขตพื้นที่</th>
                                 <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-gray-50">ประเภท</th>
-                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-amber-50 text-amber-700">ขึ้นบัญชี</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-amber-50   text-amber-600">ขึ้นบัญชี (เก่า)</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-amber-100  text-amber-700">ขึ้นบัญชี (ใหม่)</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-rose-100   text-rose-700">ส่วนต่าง</th>
                                 <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกแล้วรวม</th>
-                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-blue-50 text-blue-700">ความคืบหน้า</th>
-                                <th className="sticky top-0 z-30 w-[7%] px-6 py-4 font-semibold text-center bg-rose-50 text-rose-500">คงเหลือ</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-4 py-4 font-semibold text-center bg-blue-50    text-blue-700">ความคืบหน้า</th>
+                                <th className="sticky top-0 z-30 w-[7%] px-6 py-4 font-semibold text-center bg-orange-50  text-orange-500">คงเหลือ</th>
                                 {roundColumns.map(num => (<th key={num} className="sticky top-0 z-30 px-4 py-4 font-semibold text-center bg-amber-50">รอบที่ {num}</th>))}
                             </tr>
                         </thead>
@@ -78,6 +82,8 @@ export default function T2P7_TableAllType({ data }) {
                                     });
                                 });
                                 let regionTotalList = 0;
+                                let regionTotalListNew = 0;
+                                let regionTotalDiff = 0;
                                 let regionTotalCall = 0;
                                 let regionTotalRemain = 0;
                                 let regionTotalPerRound = Array(roundColumns.length).fill(0);
@@ -94,12 +100,16 @@ export default function T2P7_TableAllType({ data }) {
                                         {Object.entries(zonesBySubId).map(([subId, zoneList]) => {
                                             const rowCount = zoneList.length + 1;
                                             const zoneTotalList = zoneList.reduce((s, z) => s + (z.total_list || 0), 0);
+                                            const zoneTotalListNew = zoneList.reduce((s, z) => s + (z.total_list_new || 0), 0);
+                                            const zoneTotalDiff = zoneList.reduce((s, z) => s + (z.total_diff || 0), 0);
                                             const zoneTotalCall = zoneList.reduce((s, z) => s + (z.total_call || 0), 0);
                                             const zoneTotalRemain = zoneList.reduce((s, z) => s + (z.total_remain || 0), 0);
                                             const zoneTotalPerRound = roundColumns.map(num => {
                                                 return zoneList.reduce((s, z) => s + (z.round_data?.[num]?.total || 0), 0);
                                             });
                                             regionTotalList += zoneTotalList;
+                                            regionTotalListNew += zoneTotalListNew;
+                                            regionTotalDiff += zoneTotalDiff;
                                             regionTotalCall += zoneTotalCall;
                                             regionTotalRemain += zoneTotalRemain;
                                             zoneTotalPerRound.forEach((val, i) => regionTotalPerRound[i] += val);
@@ -109,10 +119,14 @@ export default function T2P7_TableAllType({ data }) {
                                                         <tr key={`${subId}-${zone.pos_type_id}`}>
                                                             {index === 0 && (<td rowSpan={rowCount} className="sticky left-0 z-20 bg-white px-6 py-4 text-gray-800 bg-gray-50 text-sm font-semibold  text-center" style={{ verticalAlign: 'middle' }}>{zone.prov_full_name}</td>)}
                                                             <td className={`px-4 py-4 text-sm font-semibold text-center ${zone.pos_type_id === 1 ? "bg-blue-50 text-blue-700" : zone.pos_type_id === 2 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{zone.pos_type}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-50 text-amber-500">{zone.total_list.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-50  text-amber-500">{zone.total_list.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-100 text-amber-600">{zone.total_list_new.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-rose-100  text-rose-600">{zone.total_diff.toLocaleString()}</td>
                                                             <td className="px-4 py-4  text-sm font-semibold text-center bg-emerald-50 text-emerald-600">{zone.total_call.toLocaleString()}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-blue-50 text-blue-600">{((zone.total_call / zone.total_list) * 100).toFixed(2)} %</td>
-                                                            <td className="px-6 py-4  text-sm font-semibold text-center bg-rose-50 text-rose-500">{zone.total_remain.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-blue-50 text-blue-600">{((zone.total_call / zone.total_list_new) * 100).toFixed(2)} %</td>
+                                                            <td className={`px-6 py-4  text-sm font-semibold text-center ${zone.total_remain === 0 ? 'bg-blue-50 text-blue-500' : zone.total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
+                                                                {zone.total_remain.toLocaleString()}
+                                                            </td>
                                                             {roundColumns.map(num => { const roundInfo = zone.round_data?.[num]; const bgClass = roundInfo ? "bg-white" : "bg-gray-100"; return (<td key={num} className={`px-4 py-4 text-center text-sm font-semibold ${bgClass}`}>{roundInfo ? roundInfo.total.toLocaleString() : null}</td>); })}
 
                                                         </tr>
@@ -120,9 +134,13 @@ export default function T2P7_TableAllType({ data }) {
                                                     <tr className="bg-slate-50/60 font-semibold text-gray-900 ">
                                                         <td className="px-4 py-3 text-center text-xs text-slate-500 bg-slate-50/40 font-bold">รวมประจำเขต</td>
                                                         <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalList.toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalListNew.toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalDiff.toLocaleString()}</td>
                                                         <td className="px-4 py-3 text-center text-sm font-semibold bg-emerald-50/20 text-emerald-700 ">{zoneTotalCall.toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-sm font-semibold bg-blue-50/20 text-blue-700 ">{((zoneTotalCall / zoneTotalList) * 100).toFixed(2)} %</td>
-                                                        <td className="px-6 py-3 text-center text-sm font-semibold text-rose-600 font-bold ">{zoneTotalRemain.toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-sm font-semibold bg-blue-50/20 text-blue-700 ">{((zoneTotalCall / zoneTotalListNew) * 100).toFixed(2)} %</td>
+                                                        <td className={`px-6 py-3 text-center text-sm font-semibold ${zoneTotalRemain === 0 ? 'text-blue-600' : zoneTotalRemain < 0 ? 'text-rose-600' : 'text-orange-600'}`}>
+                                                            {zoneTotalRemain.toLocaleString()}
+                                                        </td>
                                                         {zoneTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3 text-center text-sm font-semibold font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
                                                     </tr>
                                                 </React.Fragment>
@@ -131,9 +149,11 @@ export default function T2P7_TableAllType({ data }) {
                                         <tr className="bg-emerald-100 text-emerald-900 text-sm">
                                             <td className="sticky left-0 z-20 bg-emerald-100 px-6 py-3.5 text-center text-sm font-semibold ">รวม{regionName}</td>
                                             <td className="px-6 py-3.5 text-center text-sm font-semibold  "></td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-50 text-amber-700">{regionTotalList.toLocaleString()}</td>
+                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-50  text-amber-600">{regionTotalList.toLocaleString()}</td>
+                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-100 text-amber-700">{regionTotalListNew.toLocaleString()}</td>
+                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-rose-50   text-rose-700">{regionTotalDiff.toLocaleString()}</td>
                                             <td className="px-4 py-3.5 text-center text-sm font-semibold bg-emerald-100 text-emerald-700 ">{regionTotalCall.toLocaleString()}</td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-blue-100 text-blue-700 ">{((regionTotalCall / regionTotalList) * 100).toFixed(2)} %</td>
+                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-blue-100 text-blue-700 ">{((regionTotalCall / regionTotalListNew) * 100).toFixed(2)} %</td>
                                             <td className="px-6 py-3.5 text-center text-sm font-semibold bg-rose-50 text-rose-600">{regionTotalRemain.toLocaleString()}</td>
                                             {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-sm font-semibold ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
 
@@ -145,8 +165,10 @@ export default function T2P7_TableAllType({ data }) {
                                 <td className="sticky left-0 bottom-0 z-40 px-6 py-4 bg-gray-700 text-center uppercase tracking-wider">รวมทั้งหมดทุกภาค</td>
                                 <td className="sticky bottom-0 z-30 px-6 py-4 bg-gray-700 text-center uppercase tracking-wider"></td>
                                 <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalListed.toLocaleString()}</td>
+                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalListedNew.toLocaleString()}</td>
+                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalDiff.toLocaleString()}</td>
                                 <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center font-mono">{grandTotalCalled.toLocaleString()}</td>
-                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center text-blue-300 font-mono">{((grandTotalCalled / grandTotalListed) * 100).toFixed(2)} %</td>
+                                <td className="sticky bottom-0 z-30 px-4 bg-gray-700 py-4 text-center text-blue-300 font-mono">{((grandTotalCalled / grandTotalListedNew) * 100).toFixed(2)} %</td>
                                 <td className="sticky bottom-0 z-30 px-6 bg-gray-700 py-4 text-center text-rose-300 font-mono">{grandTotalRemain.toLocaleString()}</td>
                                 {grandTotalPerRound.map((total, index) => (<td key={index} className="sticky bottom-0 z-30 px-4 py-4 bg-gray-700 text-center font-mono">{total > 0 ? total.toLocaleString() : null}</td>))}
                             </tr>

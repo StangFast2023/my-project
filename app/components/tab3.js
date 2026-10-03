@@ -7,8 +7,8 @@ export default function Tab3() {
     const { data } = useQuery({
         queryKey: ['tab3Data'],
         queryFn: async () => {
-            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab3`);
-            // const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab3`);
+            // const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab3`);
+            const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab3`);
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },

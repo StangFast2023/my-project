@@ -48,7 +48,7 @@ export default function T2P7_TableSummary({ data }) {
                                     <th className="bg-rose-100   px-4 py-4 text-center text-sm md:text-base lg:text-sm font-semibold sticky top-0 z-30 ">ส่วนต่าง</th>
                                     <th className="bg-emerald-50 px-4 py-4 text-center text-sm md:text-base lg:text-sm font-semibold sticky top-0 z-30 text-emerald-700">เรียกแล้วรวม</th>
                                     <th className="bg-blue-50    px-4 py-4 text-center text-sm md:text-base lg:text-sm font-semibold sticky top-0 z-30 text-blue-700">ความคืบหน้า</th>
-                                    <th className="bg-rose-50    px-6 py-4 text-center text-sm md:text-base lg:text-sm font-semibold sticky top-0 z-30 text-rose-600">คงเหลือ</th>
+                                    <th className="bg-orange-50  px-6 py-4 text-center text-sm md:text-base lg:text-sm font-semibold sticky top-0 z-30 text-orange-600">คงเหลือ</th>
                                     {roundColumns.map(num => <th key={num} className="bg-white sticky top-0 z-30 px-4 py-4 text-center text-sm md:text-base lg:text-sm font-semibold bg-amber-50/50">รอบที่ {num}</th>)}
                                 </tr>
                             </thead>
@@ -79,19 +79,19 @@ export default function T2P7_TableSummary({ data }) {
                                                         <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-rose-100     group-hover:bg-transparent text-gray-600 ">{(Number(zone.total_diff) || 0).toLocaleString()}</td>
                                                         <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-emerald-50   group-hover:bg-transparent text-emerald-600 ">{(Number(zone.total_call) || 0).toLocaleString()}</td>
                                                         <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-blue-50      group-hover:bg-transparent text-blue-600 ">{(Number((zone.total_call / zone.total_list_n) * 100) || 0).toFixed(2)} %</td>
-                                                        <td className="px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-rose-50      group-hover:bg-transparent text-rose-600 ">{(Number(zone.total_remain) || 0).toLocaleString()}</td>
+                                                        <td className={`px-4 py-3 text-center text-sm md:text-base lg:text-sm font-semibold bg-orange-50    group-hover:bg-transparent ${zone.total_remain === 0 ? 'bg-blue-50 text-blue-600' : zone.total_remain > 0 ? 'bg-orange-50 text-orange-600' : 'bg-rose-50 text-rose-600'}`}>{(Number(zone.total_remain) || 0).toLocaleString()}</td>
                                                         {roundColumns.map(num => <td key={num} className={`px-4 py-3 text-center text-sm font-semibold text-gray-600 group-hover:bg-transparent ${zone.round_data?.[num]?.total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{(zone.round_data?.[num]?.total > 0 ? zone.round_data?.[num]?.total.toLocaleString() : null) || null}</td>)}
                                                     </tr>
                                                 );
                                             })}
                                             <tr className="bg-gray-50 font-bold text-gray-800 group hover:bg-gray-200 duration-200">
                                                 <td className="sticky left-0 z-20 px-6 py-3 text-sm md:text-base lg:text-sm  bg-inherit    group-hover:bg-transparent font-semibold text-left">รวม {Object.values(posTypes)[0]?.prov_main_name}</td>
-                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-amber-50   group-hover:bg-transparent ">{reg.list.toLocaleString()}</td>
-                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-amber-100  group-hover:bg-transparent ">{reg.list_new.toLocaleString()}</td>
-                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-rose-100   group-hover:bg-transparent ">{reg.diff.toLocaleString()}</td>
-                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-emerald-50 group-hover:bg-transparent text-emerald-700 ">{reg.call.toLocaleString()}</td>
-                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-blue-50    group-hover:bg-transparent text-blue-700 ">{((reg.call / reg.list_new) * 100).toFixed(2)} %</td>
-                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center bg-rose-50    group-hover:bg-transparent text-rose-700 ">{reg.remain.toLocaleString()}</td>
+                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center  bg-amber-50   group-hover:bg-transparent ">{reg.list.toLocaleString()}</td>
+                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center  bg-amber-100  group-hover:bg-transparent ">{reg.list_new.toLocaleString()}</td>
+                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center  bg-rose-100   group-hover:bg-transparent ">{reg.diff.toLocaleString()}</td>
+                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center  bg-emerald-50 group-hover:bg-transparent text-emerald-700 ">{reg.call.toLocaleString()}</td>
+                                                <td className="px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center  bg-blue-50    group-hover:bg-transparent text-blue-700  ">{((reg.call / reg.list_new) * 100).toFixed(2)} %</td>
+                                                <td className={`px-4 py-3 text-sm md:text-base lg:text-sm font-semibold text-center group-hover:bg-transparent bg-orange-50 text-orange-700`}>{reg.remain.toLocaleString()}</td>
                                                 {reg.rounds.map((v, i) => <td key={i} className={`px-4 py-3 text-center text-sm font-semibold group-hover:bg-transparent ${v > 0 ? 'bg-white' : 'bg-gray-100'} `}>{v > 0 ? v.toLocaleString() : null}</td>)}
                                             </tr>
                                         </React.Fragment>

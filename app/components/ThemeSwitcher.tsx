@@ -57,7 +57,7 @@ export default function InfoModal() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[10000] flex items-center justify-center p-2 md:p-4bg-black/50 backdrop-blur-sm overflow-y-auto"
-                        onClick={() => setIsOpen(false)} // ปิดเมื่อคลิกที่พื้นหลัง
+                        onClick={() => setIsOpen(false)}
                     >
                         <motion.div
                             initial={{ scale: 0.8, opacity: 0, y: 50 }}
@@ -72,7 +72,7 @@ export default function InfoModal() {
                             </button>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
                                 <div className="md:col-span-2 space-y-8">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 border-t pt-8">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 border-t">
                                         <div className="space-y-4">
                                             <div className="flex flex-col items-center mb-2">
                                                 <motion.div whileHover={{ rotate: 25, scale: 1.25 }} className="relative w-32 h-32 md:w-40 md:h-40 lg:w-52 lg:h-52 mb-4">
@@ -93,7 +93,9 @@ export default function InfoModal() {
                                                     { label: 'ตำแหน่ง', value: 'นักวิชาการคอมพิวเตอร์' },
                                                     { label: 'ภาค', value: 'ภาคตะวันออกเฉียงเหนือ' },
                                                     { label: 'เขต', value: '2' },
+                                                    { label: 'ลำดับเก่า', value: '32' },
                                                     { label: 'ลำดับใหม่', value: '27' },
+                                                    { label: 'สถานะ', value: 'รอการเรียกบรรจุ' },
                                                 ].map((item, idx) => (
                                                     <div key={idx} className="flex items-center gap-2 hover:bg-gray-50 p-1 rounded transition-all">
                                                         <Circle size={10} className="text-emerald-500 shrink-0" fill="currentColor" />
@@ -104,14 +106,6 @@ export default function InfoModal() {
                                                         </div>
                                                     </div>
                                                 ))}
-                                                <div className="flex items-center gap-2 hover:bg-gray-50 p-1 rounded transition-all">
-                                                    <Circle size={10} className="text-emerald-500 shrink-0" fill="currentColor" />
-                                                    <div className="flex flex-wrap w-full text-sm md:text-base">
-                                                        <span className="font-semibold text-rose-700 w-24 shrink-0">ลำดับเก่า</span>
-                                                        <span className="font-semibold text-rose-700 mx-2">:</span>
-                                                        <span className="font-semibold text-rose-700 break-words">32</span>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <div className="space-y-4">
