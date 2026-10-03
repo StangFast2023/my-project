@@ -58,7 +58,7 @@ export default function T1P3_PieListed({ data }) {
                                 return (
                                     <React.Fragment key={region.name}>
                                         <tr className="bg-emerald-50/20">
-                                            <td colSpan={roundColumns.length + 5} className="border-t-2 border-gray-700 px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
+                                            <td colSpan={roundColumns.length + 7} className="border-t-2 border-gray-700 px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
                                                 <span className="sticky left-[30px]">{region.name}</span>
                                             </td>
                                         </tr>
