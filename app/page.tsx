@@ -17,25 +17,47 @@ export interface FilterData {
 
 export default function App() {
 
-    const [activeTab, setActiveTab] = useState<number>(1);
-    const [isMounted, setIsMounted] = useState<boolean>(false);
-
+    const [activeTab, setActiveTab] = useState(1);
     useEffect(() => {
-        setIsMounted(true);
         const savedTab = sessionStorage.getItem("activeMainTab");
-        if (savedTab) {
-            const parsed = Number(savedTab);
-            if (!isNaN(parsed)) {
+        const parsed = Number(savedTab);
+        if (savedTab && parsed >= 1 && parsed <= 5) {
+            const timer = setTimeout(() => {
                 setActiveTab(parsed);
-            }
+            }, 0);
+
+            return () => clearTimeout(timer);
         }
     }, []);
 
+    const handleTabChange = (tabId: number) => {
+        if (tabId < 1 || tabId > 5) return;
+        setActiveTab(tabId);
+        sessionStorage.setItem("activeMainTab", String(tabId));
+    };
+
+    const [stats, setStats] = useState({
+        total_views: 0,
+        unique_visitors: 0,
+        today_views: 0,
+    });
     useEffect(() => {
-        if (isMounted) {
-            sessionStorage.setItem("activeMainTab", activeTab.toString());
-        }
-    }, [activeTab, isMounted]);
+        fetch("http://127.0.0.1:8000/api/track-view", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page_name: "tab5_recruitment" }),
+        })
+            .then(() => {
+                return fetch("http://127.0.0.1:8000/api/visitor-stats");
+            })
+            .then((res) => res.json())
+            .then((resData) => {
+                if (resData.status === "success") {
+                    setStats(resData.data);
+                }
+            })
+            .catch((err) => console.error("Tracking Error:", err));
+    }, []);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -59,10 +81,6 @@ export default function App() {
             });
         }
     }, [activeTab]);
-
-    if (!isMounted) {
-        return <div className="min-h-screen bg-gray-50" />; // หรือใส่ Skeleton Loading สั้นๆ ได้
-    }
 
     return (
         <main className="pb-10">
@@ -88,38 +106,38 @@ export default function App() {
                     </button>
                     {isMenuOpen && (
                         <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
-                            <button onClick={() => { setActiveTab(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
-                            <button onClick={() => { setActiveTab(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
-                            <button onClick={() => { setActiveTab(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
+                            <button onClick={() => { handleTabChange(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
+                            <button onClick={() => { handleTabChange(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
+                            <button onClick={() => { handleTabChange(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
                             {/* 
-                            <button onClick={() => { setActiveTab(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
-                            <button onClick={() => { setActiveTab(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
+                            <button onClick={() => { handleTabChange(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
+                            <button onClick={() => { handleTabChange(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
                         </div>
                     )}
                 </div>
                 <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                    <button onClick={() => setActiveTab(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 1 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             สรุปภาพรวม
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 2 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลประเภทและตำแหน่ง
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 3 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลรายภาคและเขต
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 4 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลเจาะลึกรายเขตและตำแหน่ง
                         </span>
                     </button>
                     {/* 
-                    <button onClick={() => setActiveTab(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 5 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             วิเคราะห์โอกาสเรียกตัว
                         </span>
@@ -141,6 +159,31 @@ export default function App() {
 
             {/* for tap5 part1 */}
             {/* <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} /> */}
+
+            <div className="mb-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+                    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                        <p className="text-gray-500 text-sm font-medium">เข้าชมทั้งหมด</p>
+                        <p className="text-3xl font-bold text-gray-800 text-right">
+                            {stats.total_views.toLocaleString()} <span className="text-base font-normal text-gray-500">ครั้ง</span>
+                        </p>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                        <p className="text-gray-500 text-sm font-medium">ผู้เข้าชมไม่ซ้ำ</p>
+                        <p className="text-3xl font-bold text-blue-600 text-right">
+                            {stats.unique_visitors.toLocaleString()} <span className="text-base font-normal text-gray-500">คน</span>
+                        </p>
+                    </div>
+
+                    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                        <p className="text-gray-500 text-sm font-medium">เข้าชมวันนี้</p>
+                        <p className="text-3xl font-bold text-green-600 text-right">
+                            {stats.today_views.toLocaleString()} <span className="text-base font-normal text-gray-500">ครั้ง</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white shadow-xl">
                 <div className="mx-auto flex full-max-w items-center gap-4 px-4 py-3 border-2 border-gray-400">
