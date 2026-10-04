@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Swal from 'sweetalert2';
-import { Zap, Search, OctagonAlert } from 'lucide-react';
+import { NotepadText } from 'lucide-react';
 import LoadingScreen from '../../LoadingScreen';
 import { motion, AnimatePresence } from "framer-motion";
 import Select, { components } from 'react-select';
@@ -38,7 +38,7 @@ export default function T2P7_TableAllType({ data }) {
             <div className="flex flex-col md:flex-row md:items-center gap-4 mb-5">
                 <div className="col-span-6 text-center mb-2">
                     <h3 className="flex text-sm md:text-base lg:text-lg font-bold text-gray-700">
-                        <Zap />
+                        <NotepadText />
                         <span className="ml-2">ภาพรวมการเรียกบรรจุ จำแนกตามภาคและเขต</span>
                     </h3>
                 </div>

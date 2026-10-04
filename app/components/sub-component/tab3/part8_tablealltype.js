@@ -123,7 +123,9 @@ export default function T2P7_TableAllType({ data }) {
                                                             <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-100 text-amber-600">{zone.total_list_new.toLocaleString()}</td>
                                                             <td className="px-4 py-4  text-sm font-semibold text-center bg-rose-100  text-rose-600">{zone.total_diff.toLocaleString()}</td>
                                                             <td className="px-4 py-4  text-sm font-semibold text-center bg-emerald-50 text-emerald-600">{zone.total_call.toLocaleString()}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-blue-50 text-blue-600">{((zone.total_call / zone.total_list_new) * 100).toFixed(2)} %</td>
+                                                            <td className={`px-4 py-4  text-sm font-semibold text-center ${zone.total_remain === 0 ? 'bg-rose-50 text-rose-600' : (((zone.total_call / zone.total_list_new) * 100) === 100 ? 'bg-emerald-50 text-emerald-600' : (((zone.total_call / zone.total_list_new) * 100) <= 100 ? 'bg-blue-50 text-blue-600' : 'bg-violet-50 text-violet-600'))}`}>
+                                                                {(zone.total_remain !== 0 ? ((zone.total_call / zone.total_list_new) * 100) : 0).toFixed(2)} %
+                                                            </td>
                                                             <td className={`px-6 py-4  text-sm font-semibold text-center ${zone.total_remain === 0 ? 'bg-blue-50 text-blue-500' : zone.total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
                                                                 {zone.total_remain.toLocaleString()}
                                                             </td>
@@ -137,7 +139,9 @@ export default function T2P7_TableAllType({ data }) {
                                                         <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalListNew.toLocaleString()}</td>
                                                         <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalDiff.toLocaleString()}</td>
                                                         <td className="px-4 py-3 text-center text-sm font-semibold bg-emerald-50/20 text-emerald-700 ">{zoneTotalCall.toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-sm font-semibold bg-blue-50/20 text-blue-700 ">{((zoneTotalCall / zoneTotalListNew) * 100).toFixed(2)} %</td>
+                                                        <td className={`px-4 py-3 text-center text-sm font-semibold ${zoneTotalRemain === 0 ? 'bg-rose-50/20 text-rose-700' : (zoneTotalRemain === 100 ? 'bg-emerald-50/20 text-emerald-700' : (zoneTotalRemain <= 100 ? 'bg-blue-100/20 text-blue-700' : 'bg-violet-100/20 text-violet-700'))}`}>
+                                                            {(zoneTotalRemain !== 0 ? (zoneTotalCall / zoneTotalListNew) * 100 : 0).toFixed(2)} %
+                                                        </td>
                                                         <td className={`px-6 py-3 text-center text-sm font-semibold ${zoneTotalRemain === 0 ? 'text-blue-600' : zoneTotalRemain < 0 ? 'text-rose-600' : 'text-orange-600'}`}>
                                                             {zoneTotalRemain.toLocaleString()}
                                                         </td>
@@ -153,9 +157,13 @@ export default function T2P7_TableAllType({ data }) {
                                             <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-100 text-amber-700">{regionTotalListNew.toLocaleString()}</td>
                                             <td className="px-4 py-3.5 text-center text-sm font-semibold bg-rose-50   text-rose-700">{regionTotalDiff.toLocaleString()}</td>
                                             <td className="px-4 py-3.5 text-center text-sm font-semibold bg-emerald-100 text-emerald-700 ">{regionTotalCall.toLocaleString()}</td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-blue-100 text-blue-700 ">{((regionTotalCall / regionTotalListNew) * 100).toFixed(2)} %</td>
-                                            <td className="px-6 py-3.5 text-center text-sm font-semibold bg-rose-50 text-rose-600">{regionTotalRemain.toLocaleString()}</td>
-                                            {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-sm font-semibold ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
+                                            <td className={`px-4 py-3.5 text-center text-sm font-semibold ${regionTotalRemain === 0 ? 'bg-rose-100 text-rose-700' : (regionTotalRemain === 100 ? 'bg-emerald-100 text-emerald-700' : (regionTotalRemain <= 100 ? 'bg-blue-100 text-blue-700' : 'bg-violet-100 text-violet-700'))}`}>
+                                                {((regionTotalCall / regionTotalListNew) * 100).toFixed(2)} %
+                                            </td>
+                                            <td className={`px-6 py-3.5 text-center text-sm font-semibold ${regionTotalRemain === 0 ? 'bg-emerald-50 text-emerald-600' : (regionTotalRemain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600')}`}>
+                                                {regionTotalRemain.toLocaleString()}
+                                            </td>
+                                            {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-sm font-semibold text-gray-700 ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
 
                                         </tr>
                                     </React.Fragment>
@@ -176,6 +184,6 @@ export default function T2P7_TableAllType({ data }) {
                     </table>
                 </div>
             </div>
-        </motion.div>
+        </motion.div >
     );
 }

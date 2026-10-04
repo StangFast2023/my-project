@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import Swal from 'sweetalert2';
 import { EmptyData } from '../../EmptyData';
 import { useColumnStore } from '../../useTableColumns';
@@ -180,7 +180,7 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                             return 'bg-rose-50/90 py-1 text-rose-800';
                                         };
                                         const button_color = getButtonColor(has_no_data, status_call, status_list);
-                                        const handleCellClick = (roundIndex, roundData, status_call, status_list, item, isPopup = false) => {
+                                        const handleCellClick = (roundIndex, roundData, status_call, status_list, item) => {
                                             const status_cross = roundData?.[i + 1]?.status_cross ?? 'no-data';
                                             const crossed_region = roundData?.[i + 1]?.crossed_region ?? 'no-data';
                                             const crossed_zone = roundData?.[i + 1]?.crossed_zone ?? 'no-data';

@@ -227,7 +227,7 @@ export default function T2P7_TableAllType({ data }) {
                                                             const total_diff = status_open === true ? item.total_diff : '';
                                                             const total_called = status_open === true ? item.total_called : '';
                                                             const total_remain = status_open === true ? item.total_remain : '';
-                                                            const total_process = status_open === true ? ((total_called / total_listed_new) * 100) : '';
+                                                            const total_process = status_open === true ? (total_listed_new !== 0 ? ((total_called / total_listed_new) * 100) : 0) : '';
                                                             return (
                                                                 <tr key={full_key}>
                                                                     <td className="bg-gray-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{full_name_province}</td>
@@ -236,7 +236,7 @@ export default function T2P7_TableAllType({ data }) {
                                                                     <td className="bg-amber-100  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_listed_new.toLocaleString()}</td>
                                                                     <td className="bg-rose-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_diff.toLocaleString()}</td>
                                                                     <td className="bg-emerald-50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{total_called.toLocaleString()}</td>
-                                                                    <td className="bg-blue-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{total_process ? total_process.toFixed(2) + " %" : ''}</td>
+                                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${status_open ? (total_process === 100 ? 'bg-emerald-50 text-emerald-600' : (total_process === 0 ? 'bg-rose-50 text-rose-600' : (total_process >= 100 ? 'bg-violet-50 text-violet-600' : 'bg-blue-50 text-blue-600'))) : 'bg-gray-50 text-gray-600'}`}>{status_open ? total_process.toFixed(2) + " %" : ''}</td>
                                                                     <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${total_remain === 0 ? 'bg-blue-50 text-blue-500' : total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
                                                                         {total_remain.toLocaleString()}
                                                                     </td>

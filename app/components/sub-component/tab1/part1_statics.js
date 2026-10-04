@@ -163,7 +163,7 @@ export default function StaticNumber({ data }) {
                             </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                            <div className={`h-full rounded-full transition-all duration-1000 ${activeAccount.progress >= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(activeAccount.progress, 100)}%` }} />
+                            <div className={`h-full rounded-full transition-all duration-1000 ${activeAccount.progress <= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(activeAccount.progress, 100)}%` }} />
                         </div>
                     </div>
                 </div>
