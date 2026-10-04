@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Tab1 from './components/tab1';
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3';
@@ -17,47 +17,45 @@ export interface FilterData {
 
 export default function App() {
 
-    const [activeTab, setActiveTab] = useState(1);
-    useEffect(() => {
-        const savedTab = sessionStorage.getItem("activeMainTab");
-        const parsed = Number(savedTab);
-        if (savedTab && parsed >= 1 && parsed <= 5) {
-            const timer = setTimeout(() => {
-                setActiveTab(parsed);
-            }, 0);
-
-            return () => clearTimeout(timer);
+    // 1. อ่านค่าจาก sessionStorage ตั้งแต่ตอนเริ่มต้นประกาศ State (ทำแบบนี้จะไม่ติด Error และเร็วกว่าด้วย)
+    const [activeTab, setActiveTab] = useState<number>(() => {
+        if (typeof window !== "undefined") {
+            const savedTab = sessionStorage.getItem("activeMainTab");
+            return savedTab ? Number(savedTab) : 1;
         }
-    }, []);
-
-    const handleTabChange = (tabId: number) => {
-        if (tabId < 1 || tabId > 5) return;
-        setActiveTab(tabId);
-        sessionStorage.setItem("activeMainTab", String(tabId));
-    };
+        return 1;
+    });
 
     const [stats, setStats] = useState({
         total_views: 0,
         unique_visitors: 0,
         today_views: 0,
     });
-    useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/track-view", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ page_name: "tab5_recruitment" }),
-        })
-            .then(() => {
-                return fetch("http://127.0.0.1:8000/api/visitor-stats");
-            })
+
+    const fetchStats = () => {
+        fetch("http://127.0.0.1:8000/api/visitor-stats")
             .then((res) => res.json())
             .then((resData) => {
-                if (resData.status === "success") {
+                if (resData.status === "success" && resData.data) {
                     setStats(resData.data);
                 }
             })
+            .catch((err) => console.error("Fetch Stats Error:", err));
+    };
+
+    // 2. useEffect เหลือแค่ทำหน้าที่ยิง API บันทึกการเข้าชมตอนโหลดหน้าครั้งแรก
+    useEffect(() => {
+        // ใช้ค่า activeTab ที่เราได้ตั้งต้นไว้แล้วส่งไปยิง API
+        fetch("http://127.0.0.1:8000/api/track-view", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page_name: `tab${activeTab}_recruitment` }),
+        })
+            .then(() => {
+                fetchStats();
+            })
             .catch((err) => console.error("Tracking Error:", err));
-    }, []);
+    }, []); // รันครั้งเดียวตอนโหลดหน้าเว็บ
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -106,38 +104,38 @@ export default function App() {
                     </button>
                     {isMenuOpen && (
                         <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
-                            <button onClick={() => { handleTabChange(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
-                            <button onClick={() => { handleTabChange(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
-                            <button onClick={() => { handleTabChange(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
+                            <button onClick={() => { setActiveTab(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
+                            <button onClick={() => { setActiveTab(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
+                            <button onClick={() => { setActiveTab(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
                             {/* 
-                            <button onClick={() => { handleTabChange(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
-                            <button onClick={() => { handleTabChange(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
+                            <button onClick={() => { setActiveTab(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
+                            <button onClick={() => { setActiveTab(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
                         </div>
                     )}
                 </div>
                 <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                    <button onClick={() => handleTabChange(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => setActiveTab(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 1 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             สรุปภาพรวม
                         </span>
                     </button>
-                    <button onClick={() => handleTabChange(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => setActiveTab(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 2 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลประเภทและตำแหน่ง
                         </span>
                     </button>
-                    <button onClick={() => handleTabChange(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => setActiveTab(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 3 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลรายภาคและเขต
                         </span>
                     </button>
-                    <button onClick={() => handleTabChange(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => setActiveTab(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 4 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลเจาะลึกรายเขตและตำแหน่ง
                         </span>
                     </button>
                     {/* 
-                    <button onClick={() => handleTabChange(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => setActiveTab(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 5 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             วิเคราะห์โอกาสเรียกตัว
                         </span>
@@ -148,9 +146,7 @@ export default function App() {
                     {activeTab === 2 && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} /> </div>)}
                     {activeTab === 3 && (<div className="animate-fade-in"> <Tab3 /> </div>)}
                     {activeTab === 4 && (<div className="animate-fade-in"> <Tab4 /> </div>)}
-                    {/* 
-                    
-                    {activeTab === 5 && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)} */}
+                    {activeTab === 5 && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)}
                 </div>
             </div>
 
@@ -158,7 +154,7 @@ export default function App() {
             <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} />
 
             {/* for tap5 part1 */}
-            {/* <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} /> */}
+            <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
             <div className="mb-5">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">

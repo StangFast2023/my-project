@@ -10,7 +10,8 @@ export default function Tab5({ setIsOpen, details }) {
     const { data: configData } = useQuery({
         queryKey: ['tab5Config'],
         queryFn: async () => {
-            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`);
+            // const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab5`);
+            const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab5`);
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
@@ -24,8 +25,11 @@ export default function Tab5({ setIsOpen, details }) {
         queryFn: async () => {
             if (!details) return null;
             const { regionId, areaId, positionId, sequence, frequency } = details;
+            // const response = await axios.get(
+            //     `https://dla-backend-production.up.railway.app/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`
+            // );
             const response = await axios.get(
-                `https://dla-backend-production.up.railway.app/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`
+                `http://127.0.0.1:8000/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`
             );
             return response.data;
         },
