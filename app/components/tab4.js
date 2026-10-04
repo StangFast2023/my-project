@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Sheet } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo, useEffect } from 'react';
 import T4P1_filterDlaListed from './sub-component/tab4/part1_filterDlaListed';
@@ -25,7 +26,8 @@ export default function Tab4() {
     const { data: configData } = useQuery({
         queryKey: ['tab4Config'],
         queryFn: async () => {
-            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab4`);
+            // const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab4`);
+            const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab4`);
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
@@ -38,7 +40,8 @@ export default function Tab4() {
     const { data: tableData, isLoading } = useQuery({
         queryKey: ['tab4Table', filters],
         queryFn: async () => {
-            const response = await axios.post(`https://dla-backend-production.up.railway.app/api/updating-tab4-table`, {
+            // const response = await axios.post(`https://dla-backend-production.up.railway.app/api/updating-tab4-table`, {
+            const response = await axios.post(`http://127.0.0.1:8000/api/updating-tab4-table`, {
                 cleanRegions: filters.regions,
                 cleanPositions: filters.positions,
                 showEmpty: filters.showEmpty,
@@ -115,7 +118,7 @@ export default function Tab4() {
                 </div>
                 <div className={`${configData ? (columns.all_header === false ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
+                        <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700 flex"><Sheet className="mr-2" /> ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
                         <ShowAllDataTable checkData={configData} part2={tableData} isLoading={isLoading} />
                     </div>
                 </div>

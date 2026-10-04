@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { Sheet } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { EmptyData } from '../../../components/EmptyData';
 import LoadingScreen from '../../LoadingScreen';
@@ -28,11 +29,13 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
     };
     const maxRound = Math.max(10, data?.tab4?.part2?.round || 0);
     const roundsArray = Array.from({ length: maxRound }, (_, i) => i + 1);
-    let summary = { total_listed: 0, total_called: 0, total_remain: 0, rounds: {} };
+    let summary = { total_listed: 0, total_listed_n: 0, total_diff: 0, total_called: 0, total_remain: 0, rounds: {} };
 
     if (part2 && Object.keys(part2).length > 0) {
         summary = Object.values(part2).reduce((acc, curr) => {
             acc.total_listed += (Number(curr.total_listed) || 0);
+            acc.total_listed_n += (Number(curr.total_listed_n) || 0);
+            acc.total_diff += (Number(curr.total_diff) || 0);
             acc.total_called += (Number(curr.total_called) || 0);
             acc.total_remain += (Number(curr.total_remain) || 0);
 
@@ -43,11 +46,11 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
                 });
             }
             return acc;
-        }, { total_listed: 0, total_called: 0, total_remain: 0, rounds: {} });
+        }, { total_listed: 0, total_listed_n: 0, total_diff: 0, total_called: 0, total_remain: 0, rounds: {} });
     }
-    const percent = (summary?.total_listed > 0)
-        ? (summary.total_called / summary.total_listed) * 100
-        : 0;
+    console.log(part2);
+
+    const percent = (summary?.total_listed_n > 0) ? (summary.total_called / summary.total_listed_n) * 100 : 0;
 
     const statusText = percent === 100 ? 'หมดบัญชี' : (percent > 0 ? 'คงเหลือ' : null);
     const statusColor = percent < 30 ? "text-rose-400" : (percent < 70 ? "text-amber-400" : "text-emerald-400");
@@ -69,7 +72,7 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <h3 className="text-lg font-bold mb-6 text-gray-700">📅 ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
+            <h3 className="flex text-lg font-bold mb-6 text-gray-700"><Sheet className="mr-2" /> ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
             <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-300">
                 <div className="flex-1 min-h-[400px] max-h-[800px] overflow-x-auto">
                     <table className="w-full h-full overflow-y-auto text-left border-collapse whitespace-nowrap">
@@ -81,7 +84,9 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
                             {columns.column_part1 && (<col className="w-[100px] min-w-[100px] border-1 border-gray-200" />)}
                             {columns.column_part2 && (<col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
                             {columns.column_part3 && (<col className="w-[120px] min-w-[120px] border-1 border-gray-200" />)}
-                            <col className="w-[100px] min-w-[100px] border-1 border-gray-200" />
+                            <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />
+                            <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />
+                            <col className="w-[120px] min-w-[120px] border-1 border-gray-200" />
                             <col className="w-[120px] min-w-[120px] border-1 border-emerald-400" />
                             <col className="w-[120px] min-w-[120px] border-1 border-amber-400" />
                             {roundsArray.map((_, i) => <col key={i} className="w-[100px] min-w-[100px] border-y-[1px] border-l-[1px] border-gray-200" />)}
@@ -96,7 +101,9 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
                                 {columns.column_part1 && (<th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะเปิด</th>)}
                                 {columns.column_part2 && (<th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">สถานะบัญชี</th>)}
                                 {columns.column_part3 && (<th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ความคืบหน้า</th>)}
-                                <th className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">ขึ้นบัญชี</th>
+                                <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50  text-gray-500">ขึ้นบัญชี (เก่า)</th>
+                                <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-100 text-gray-700">ขึ้นบัญชี (ใหม่)</th>
+                                <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-rose-50  text-rose-700">ส่วนต่าง</th>
                                 <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-emerald-50 text-emerald-700">เรียกทั้งหมด</th>
                                 <th className="w-[120px] min-w-[120px] sticky top-0 z-30 p-4 font-semibold text-center bg-amber-50 text-amber-500">คงเหลือ</th>
                                 {roundsArray.map((_, index) => (<th key={index} className="w-[100px] min-w-[100px] sticky top-0 z-30 p-4 font-semibold text-center bg-gray-50">รอบ {index + 1}</th>))}
@@ -113,14 +120,16 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
                     <table className="sticky bottom-0 z-20 w-full min-w-[1200px] table-fixed border-collapse">
                         <tfoot className="sticky bottom-0 z-20 bg-[#2d3446] text-white">
                             <tr>
-                                <td className="sticky left-0 bottom-0 z-30 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center">รวมทั้งหมดทุกภาค</td>
+                                <td className="sticky left-0 bottom-0 z-60 bg-[#2d3446] px-6 py-3 w-[400px] min-w-[400px] text-center uppercase tracking-widest text-center">รวมทั้งหมดทุกภาค</td>
                                 {!columns.all_header && (<td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[200px] min-w-[200px] p-4 text-center font-bold"></td>)}
                                 {!columns.all_header && (<td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>)}
                                 <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>
                                 {columns.column_part1 && (<td className=" sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold"></td>)}
                                 {columns.column_part2 && (<td className=" sticky left-0 bottom-0 z-30 px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">{statusText}</td>)}
                                 {columns.column_part3 && (<td className={`sticky left-0 bottom-0 z-30 ${statusColor} px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold`}>{summary?.total_listed > 0 ? `${percent.toFixed(2)} %` : 0}</td>)}
-                                <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[100px] min-w-[100px] p-4 text-center font-bold">{summary ? summary.total_listed.toLocaleString() : null}</td>
+                                <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_listed.toLocaleString() : null}</td>
+                                <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_listed_n.toLocaleString() : null}</td>
+                                <td className="sticky left-0 bottom-0 z-30 px-4 py-3 w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_diff.toLocaleString() : null}</td>
                                 <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_called.toLocaleString() : null}</td>
                                 <td className="sticky left-0 bottom-0 z-30 top-0 z-30 px-4 py-3 bg-[#2d3446] w-[120px] min-w-[120px] p-4 text-center font-bold">{summary ? summary.total_remain.toLocaleString() : null}</td>
                                 {roundsArray.map((_, i) => (<td key={i} className={`sticky left-0 bottom-0 z-30 w-[100px] min-w-[100px] p-4 text-center text-center font-bold`} >{summary && summary !== 0 ? summary.rounds?.[i + 1]?.toLocaleString() : null}</td>))}

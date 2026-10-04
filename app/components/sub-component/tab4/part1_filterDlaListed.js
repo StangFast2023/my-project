@@ -380,7 +380,7 @@ export default function T4P1_TableAllListed({
                         <button
                             key={`pos-${index}`}
                             type="button"
-                            className="text-sm md:text-base lg:text-xm flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 font-medium rounded-full border border-blue-200 hover:bg-blue-200 transition-colors"
+                            className="text-sm md:text-base lg:text-sm flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 font-medium rounded-full border border-blue-200 hover:bg-blue-200 transition-colors"
                         >
                             {chip.label}
                         </button>

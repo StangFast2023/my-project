@@ -136,7 +136,7 @@ const ModalBody = ({ items, selectedItems, onSelectChange, columns = 3 }) => {
                         onSelectChange(allIds);
                         showToast("เลือกรายการทั้งหมดแล้ว", "bg-green-600");
                     }}
-                    className="absolute px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg shadow hover:bg-blue-700 transition-all cursor-pointer"
+                    className="absolute px-4 py-2 bg-blue-600 text-white text-lg font-bold rounded-lg shadow hover:bg-blue-700 transition-all cursor-pointer"
                     style={{ right: '2%', top: '5%' }}
                 >
                     เลือกทั้งหมด
@@ -165,14 +165,14 @@ const ModalBody = ({ items, selectedItems, onSelectChange, columns = 3 }) => {
                                 <label className="font-bold text-slate-800 flex items-center cursor-pointer">
                                     {r.name}
                                     {isAllSelected && (
-                                        <span className="ml-2 text-xs font-normal text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+                                        <span className="ml-2 text-sm font-normal text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
                                             (เลือกทั้งหมดแล้ว)
                                         </span>
                                     )}
                                 </label>
                                 <button
                                     onClick={() => toggleRegion(r.id)}
-                                    className={`text-[11px] font-medium px-3 py-1 rounded-full border transition-colors ${selectedItems.includes(r.id)
+                                    className={`text-sm font-medium px-3 py-1 rounded-full border transition-colors ${selectedItems.includes(r.id)
                                         ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
                                         : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
                                         }`}

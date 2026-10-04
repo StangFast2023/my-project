@@ -1,10 +1,18 @@
 "use client";
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import CountUp from 'react-countup';
 import { motion } from "framer-motion";
 export default function StaticNumber({ data }) {
-
-    const [accountType, setAccountType] = useState(1);
+    const [accountType, setAccountType] = useState(() => {
+        if (typeof window !== "undefined") {
+            const savedType = localStorage.getItem("selectedAccountType");
+            return savedType !== null ? Number(savedType) : 1;
+        }
+        return 1;
+    });
+    useEffect(() => {
+        localStorage.setItem("selectedAccountType", accountType.toString());
+    }, [accountType]);
     const accounts = useMemo(
         () => [
             {

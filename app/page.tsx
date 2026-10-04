@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Tab1 from './components/tab1';
 import Tab2 from './components/tab2';
 import Tab3 from './components/tab3';
@@ -7,15 +7,36 @@ import Tab4 from './components/tab4';
 import Tab5 from './components/tab5';
 import ModalTab2Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos';
 import ModalFilterSelect from './components/sub-component/tab5/modal/modalFilterSelect';
+
 export interface FilterData {
     id_region: number;
     id_sub_regoin: number;
     id_position: number;
     number_rank: number;
 }
+
 export default function App() {
 
-    const [activeTab, setActiveTab] = useState('tab1');
+    const [activeTab, setActiveTab] = useState<number>(1);
+    const [isMounted, setIsMounted] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+        const savedTab = sessionStorage.getItem("activeMainTab");
+        if (savedTab) {
+            const parsed = Number(savedTab);
+            if (!isNaN(parsed)) {
+                setActiveTab(parsed);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isMounted) {
+            sessionStorage.setItem("activeMainTab", activeTab.toString());
+        }
+    }, [activeTab, isMounted]);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     {/* for tap2 part6 */ }
@@ -38,6 +59,10 @@ export default function App() {
             });
         }
     }, [activeTab]);
+
+    if (!isMounted) {
+        return <div className="min-h-screen bg-gray-50" />; // หรือใส่ Skeleton Loading สั้นๆ ได้
+    }
 
     return (
         <main className="pb-10">
@@ -63,49 +88,51 @@ export default function App() {
                     </button>
                     {isMenuOpen && (
                         <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
-                            <button onClick={() => { setActiveTab('tab1'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
-                            <button onClick={() => { setActiveTab('tab2'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
-                            {/* <button onClick={() => { setActiveTab('tab3'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
-                            <button onClick={() => { setActiveTab('tab4'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
-                            <button onClick={() => { setActiveTab('tab5'); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
+                            <button onClick={() => { setActiveTab(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
+                            <button onClick={() => { setActiveTab(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
+                            <button onClick={() => { setActiveTab(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
+                            {/* 
+                            <button onClick={() => { setActiveTab(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
+                            <button onClick={() => { setActiveTab(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
                         </div>
                     )}
                 </div>
                 <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                    <button onClick={() => setActiveTab('tab1')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab1' ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 'tab1' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => setActiveTab(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
+                        <span className={`${activeTab === 1 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             สรุปภาพรวม
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab('tab2')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab2' ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 'tab2' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => setActiveTab(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
+                        <span className={`${activeTab === 2 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลประเภทและตำแหน่ง
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab('tab3')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab3' ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 'tab3' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => setActiveTab(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
+                        <span className={`${activeTab === 3 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลรายภาคและเขต
                         </span>
                     </button>
-                    {/* 
-                    <button onClick={() => setActiveTab('tab4')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab4' ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 'tab4' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => setActiveTab(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
+                        <span className={`${activeTab === 4 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลเจาะลึกรายเขตและตำแหน่ง
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab('tab5')} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 'tab5' ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 'tab5' ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    {/* 
+                    <button onClick={() => setActiveTab(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
+                        <span className={`${activeTab === 5 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             วิเคราะห์โอกาสเรียกตัว
                         </span>
                     </button> */}
                 </div>
                 <div className="mt-6">
-                    {activeTab === 'tab1' && (<div className="animate-fade-in"> <Tab1 /> </div>)}
-                    {activeTab === 'tab2' && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} /> </div>)}
-                    {activeTab === 'tab3' && (<div className="animate-fade-in"> <Tab3 /> </div>)}
+                    {activeTab === 1 && (<div className="animate-fade-in"> <Tab1 /> </div>)}
+                    {activeTab === 2 && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} /> </div>)}
+                    {activeTab === 3 && (<div className="animate-fade-in"> <Tab3 /> </div>)}
+                    {activeTab === 4 && (<div className="animate-fade-in"> <Tab4 /> </div>)}
                     {/* 
-                    {activeTab === 'tab4' && (<div className="animate-fade-in"> <Tab4 /> </div>)}
-                    {activeTab === 'tab5' && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)} */}
+                    
+                    {activeTab === 5 && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)} */}
                 </div>
             </div>
 
