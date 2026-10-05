@@ -107,14 +107,14 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
             title: 'ระบุลำดับ',
             html: `
                 <div style="margin-bottom: 10px;">
-                    ตำแหน่งนี้มีผู้ขึ้นบัญชีทั้งหมด <b>${maxLimitNew} คน</b> <br> ( บัญชีเก่ามีจำนวน ${maxLimit} คน )
+                    ตำแหน่งนี้มีผู้ขึ้นบัญชีทั้งหมด <b>${maxLimitNew}</b> คน <br> ( บัญชีเก่ามีผู้ขึ้นบัญชีทั้งหมด <b>${maxLimit}</b> คน )
                 </div>
                 <div></div>
             `,
             input: 'number',
             inputAttributes: {
                 min: 1,
-                max: maxLimit,
+                max: maxLimitNew,
                 step: 1
             },
             inputValidator: (value) => {
@@ -122,14 +122,28 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                     return 'กรุณาระบุลำดับที่มากกว่า 0';
                 }
             },
-            inputPlaceholder: maxLimit === 1 ? 'กรุณากรอกลำดับ 1' : `กรุณากรอกลำดับ (1 - ${maxLimitNew})`,
+            inputPlaceholder: maxLimitNew > 0 ? (maxLimitNew === 1 ? 'กรุณากรอกลำดับ 1' : `กรุณากรอกลำดับ (1 - ${maxLimitNew})`) : 'ไม่มีผู้สอบผ่าน',
             inputValue: sequence,
             showCancelButton: true,
             inputValidator: (value) => {
                 const num = parseInt(value);
                 if (!value) return 'กรุณากรอกตัวเลข';
                 if (num <= 0) return 'ต้องมากกว่า 0';
-                if (num > maxLimit) return `ห้ามเกิน ${maxLimitNew} นะครับ!`;
+                if (maxLimitNew === 0) return `ไม่มีผู้สอบผ่าน`;
+                if (num > maxLimitNew) return `ห้ามเกิน ${maxLimitNew} นะครับ!`;
+            },
+            didOpen: () => {
+                const input = Swal.getInput();
+                const confirmButton = Swal.getConfirmButton();
+                const toggleDisable = () => {
+                    if (maxLimitNew === 0) {
+                        input.disabled = true;
+                    } else {
+                        input.disabled = false;
+                    }
+                    confirmButton.disabled = (maxLimitNew === 0 || isNaN(maxLimitNew));
+                };
+                toggleDisable();
             }
         }).then((result) => {
             if (result.isConfirmed) {
