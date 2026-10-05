@@ -13,7 +13,7 @@ export default function T5P1_filterDlaSearch({ setIsOpen, details, data }) {
         >
             <div className="grid grid-cols-12 gap-6 my-2">
                 <div className="col-span-12 lg:col-span-12 bg-white lg:p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <span className="font-medium text-gray-700 whitespace-nowrap">คำนวณโดย :</span>
+                    <span className="font-medium text-gray-700 whitespace-nowrap">คำนวณข้อมูล :</span>
                     <div
                         onClick={() => handleViewDetail()}
                         className="group relative w-full h-auto bg-white rounded-3xl cursor-pointer overflow-hidden transition-all duration-300"

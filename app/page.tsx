@@ -7,7 +7,7 @@ import Tab4 from './components/tab4';
 import Tab5 from './components/tab5';
 import ModalTab2Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos';
 import ModalFilterSelect from './components/sub-component/tab5/modal/modalFilterSelect';
-
+import { useSyncExternalStore } from "react";
 export interface FilterData {
     id_region: number;
     id_sub_regoin: number;
@@ -17,14 +17,34 @@ export interface FilterData {
 
 export default function App() {
 
-    // 1. อ่านค่าจาก sessionStorage ตั้งแต่ตอนเริ่มต้นประกาศ State (ทำแบบนี้จะไม่ติด Error และเร็วกว่าด้วย)
-    const [activeTab, setActiveTab] = useState<number>(() => {
-        if (typeof window !== "undefined") {
-            const savedTab = sessionStorage.getItem("activeMainTab");
-            return savedTab ? Number(savedTab) : 1;
-        }
-        return 1;
-    });
+    const subscribe = (callback: () => void) => {
+        window.addEventListener("activeMainTabChange", callback);
+
+        return () => {
+            window.removeEventListener("activeMainTabChange", callback);
+        };
+    };
+
+    const getActiveTab = () => {
+        const savedTab = sessionStorage.getItem("activeMainTab");
+        const parsed = Number(savedTab);
+
+        return parsed >= 1 && parsed <= 5 ? parsed : 1;
+    };
+
+    const getServerActiveTab = () => 1;
+
+    const activeTab = useSyncExternalStore(
+        subscribe,
+        getActiveTab,
+        getServerActiveTab
+    );
+
+    const handleTabChange = (tabId: number) => {
+        sessionStorage.setItem("activeMainTab", String(tabId));
+
+        window.dispatchEvent(new Event("activeMainTabChange"));
+    };
 
     const [stats, setStats] = useState({
         total_views: 0,
@@ -42,10 +62,7 @@ export default function App() {
             })
             .catch((err) => console.error("Fetch Stats Error:", err));
     };
-
-    // 2. useEffect เหลือแค่ทำหน้าที่ยิง API บันทึกการเข้าชมตอนโหลดหน้าครั้งแรก
     useEffect(() => {
-        // ใช้ค่า activeTab ที่เราได้ตั้งต้นไว้แล้วส่งไปยิง API
         fetch("http://127.0.0.1:8000/api/track-view", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -55,7 +72,7 @@ export default function App() {
                 fetchStats();
             })
             .catch((err) => console.error("Tracking Error:", err));
-    }, []); // รันครั้งเดียวตอนโหลดหน้าเว็บ
+    }, []);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -104,42 +121,40 @@ export default function App() {
                     </button>
                     {isMenuOpen && (
                         <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
-                            <button onClick={() => { setActiveTab(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
-                            <button onClick={() => { setActiveTab(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
-                            <button onClick={() => { setActiveTab(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
-                            {/* 
-                            <button onClick={() => { setActiveTab(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button> */}
-                            <button onClick={() => { setActiveTab(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
+                            <button onClick={() => { handleTabChange(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
+                            <button onClick={() => { handleTabChange(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
+                            <button onClick={() => { handleTabChange(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
+                            <button onClick={() => { handleTabChange(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
+                            <button onClick={() => { handleTabChange(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
                         </div>
                     )}
                 </div>
                 <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                    <button onClick={() => setActiveTab(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 1 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             สรุปภาพรวม
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 2 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลประเภทและตำแหน่ง
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 3 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลรายภาคและเขต
                         </span>
                     </button>
-                    <button onClick={() => setActiveTab(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 4 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             ข้อมูลเจาะลึกรายเขตและตำแหน่ง
                         </span>
                     </button>
-                    {/* 
-                    <button onClick={() => setActiveTab(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
+                    <button onClick={() => handleTabChange(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
                         <span className={`${activeTab === 5 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
                             วิเคราะห์โอกาสเรียกตัว
                         </span>
-                    </button> */}
+                    </button>
                 </div>
                 <div className="mt-6">
                     {activeTab === 1 && (<div className="animate-fade-in"> <Tab1 /> </div>)}
@@ -157,22 +172,22 @@ export default function App() {
             <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
             <div className="mb-5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
-                    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                <div className="flex item-end gap-4 p-4">
+                    <div className="flex-1 bg-white p-5 rounded-xl shadow-md border border-gray-100">
                         <p className="text-gray-500 text-sm font-medium">เข้าชมทั้งหมด</p>
                         <p className="text-3xl font-bold text-gray-800 text-right">
                             {stats.total_views.toLocaleString()} <span className="text-base font-normal text-gray-500">ครั้ง</span>
                         </p>
                     </div>
 
-                    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                    <div className="flex-1 bg-white p-5 rounded-xl shadow-md border border-gray-100">
                         <p className="text-gray-500 text-sm font-medium">ผู้เข้าชมไม่ซ้ำ</p>
                         <p className="text-3xl font-bold text-blue-600 text-right">
                             {stats.unique_visitors.toLocaleString()} <span className="text-base font-normal text-gray-500">คน</span>
                         </p>
                     </div>
 
-                    <div className="bg-white p-5 rounded-xl shadow-md border border-gray-100">
+                    <div className="flex-1 bg-white p-5 rounded-xl shadow-md border border-gray-100">
                         <p className="text-gray-500 text-sm font-medium">เข้าชมวันนี้</p>
                         <p className="text-3xl font-bold text-green-600 text-right">
                             {stats.today_views.toLocaleString()} <span className="text-base font-normal text-gray-500">ครั้ง</span>

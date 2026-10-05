@@ -102,11 +102,12 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
         }
         const selectedPosData = allPositions.find(p => p.key === positionKey);
         const maxLimit = selectedPosData?.total_listed || 0;
+        const maxLimitNew = selectedPosData?.total_listed_n || 0;
         MySwal.fire({
             title: 'ระบุลำดับ',
             html: `
                 <div style="margin-bottom: 10px;">
-                    ตำแหน่งนี้มีผู้ขึ้นบัญชีทั้งหมด <b>${maxLimit} คน</b>
+                    ตำแหน่งนี้มีผู้ขึ้นบัญชีทั้งหมด <b>${maxLimitNew} คน</b> <br> ( บัญชีเก่ามีจำนวน ${maxLimit} คน )
                 </div>
                 <div></div>
             `,
@@ -121,14 +122,14 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                     return 'กรุณาระบุลำดับที่มากกว่า 0';
                 }
             },
-            inputPlaceholder: maxLimit === 1 ? 'กรุณากรอกลำดับ 1' : `กรุณากรอกลำดับ (1 - ${maxLimit})`,
+            inputPlaceholder: maxLimit === 1 ? 'กรุณากรอกลำดับ 1' : `กรุณากรอกลำดับ (1 - ${maxLimitNew})`,
             inputValue: sequence,
             showCancelButton: true,
             inputValidator: (value) => {
                 const num = parseInt(value);
                 if (!value) return 'กรุณากรอกตัวเลข';
                 if (num <= 0) return 'ต้องมากกว่า 0';
-                if (num > maxLimit) return `ห้ามเกิน ${maxLimit} นะครับ!`;
+                if (num > maxLimit) return `ห้ามเกิน ${maxLimitNew} นะครับ!`;
             }
         }).then((result) => {
             if (result.isConfirmed) {
