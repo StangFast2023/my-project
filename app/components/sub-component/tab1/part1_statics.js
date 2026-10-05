@@ -1,18 +1,41 @@
 "use client";
-import { useState, useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useSyncExternalStore } from 'react';
 import CountUp from 'react-countup';
 import { motion } from "framer-motion";
 export default function StaticNumber({ data }) {
-    const [accountType, setAccountType] = useState(() => {
-        if (typeof window !== "undefined") {
-            const savedType = localStorage.getItem("selectedAccountType");
-            return savedType !== null ? Number(savedType) : 1;
-        }
-        return 1;
-    });
+    const subscribeAccountType = (callback) => {
+        window.addEventListener("accountTypeChange", callback);
+
+        return () => {
+            window.removeEventListener("accountTypeChange", callback);
+        };
+    };
+
+    const getAccountType = () => {
+        const savedType = localStorage.getItem("selectedAccountType");
+        const parsed = Number(savedType);
+
+        return parsed === 1 || parsed === 2 ? parsed : 1;
+    };
+
+    const getServerAccountType = () => 1;
+
+    const accountType = useSyncExternalStore(
+        subscribeAccountType,
+        getAccountType,
+        getServerAccountType
+    );
+
     useEffect(() => {
         localStorage.setItem("selectedAccountType", accountType.toString());
     }, [accountType]);
+
+    const handleAccountTypeChange = (type) => {
+        localStorage.setItem("selectedAccountType", String(type));
+
+        window.dispatchEvent(new Event("accountTypeChange"));
+    };
+
     const accounts = useMemo(
         () => [
             {
@@ -97,7 +120,7 @@ export default function StaticNumber({ data }) {
                             return (
                                 <button
                                     key={acc.accountType}
-                                    onClick={() => setAccountType(acc.accountType)}
+                                    onClick={() => handleAccountTypeChange(acc.accountType)}
                                     className={`lg:w-100 px-3 py-1.5 rounded-sm text-sm transition-all duration-300 ease-in-out whitespace-nowrap
                                             ${isActive
                                             ? "bg-blue-200 text-blue-600 font-bold shadow-sm"
