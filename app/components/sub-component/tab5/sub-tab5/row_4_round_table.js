@@ -50,13 +50,13 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                 <th className="bg-sky-50     border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-sky-700">สัดส่วนการใช้บัญชี (%)</th>
                                 <th className="bg-blue-50    border-b-2 border-gray-700 px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-700">สถานะดำเนินการ</th>
                                 <th className="bg-gray-50    border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700">สถานะการเรียกบรรจุข้ามเขต</th>
-                                <th className="bg-rose-50    border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-700">ยอดคงเหลือ (คน)</th>
+                                <th className="bg-amber-50   border-b-2 border-gray-700 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-amber-700">ยอดคงเหลือ (คน)</th>
                             </tr>
                         </thead>
                         <tbody>
                             {round_columns.map(key => {
                                 const round_data = TableData[key] || {};
-                                const total_listed = data?.total_listed || 0;
+                                const total_listed = data?.total_listed_n || 0;
                                 cumulative_total += parseInt(round_data?.call_status === true && round_data?.list_status === true ? round_data?.total : 0);
                                 cumulative_total_call += parseInt(round_data?.call_status === true && round_data?.list_status === true ? round_data?.total : 0);
                                 total_remain = total_listed - cumulative_total;
@@ -103,7 +103,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                                 : null
                                             }
                                         </td>
-                                        <td className={`bg-rose-50    w-[10%]  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status ? 'text-rose-600' : 'text-gray-600'}`}>
+                                        <td className={`w-[10%]  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${round_data?.list_status ? (total_remain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600') : 'bg-amber-50 text-gray-600'}`}>
                                             {round_data?.list_status ? (round_data?.list_status === true ? total_remain.toLocaleString() : '-') : null}
                                         </td>
                                     </tr>

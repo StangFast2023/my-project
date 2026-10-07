@@ -48,8 +48,8 @@ export default function Row1StaticNumber({ data }) {
             <div className={`flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs`}>
                 <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">สถานะบัญชีตำแหน่ง : </p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className={`text-lg md:text-base lg:text-3xl font-bold ${data ? (status_out_list === true ? 'text-emerald-600' : 'text-amber-600') : 'text-gray-600'}`}>
-                        {data ? (status_out_list === true ? 'บัญชีสิ้นสุดแล้ว' : 'บัญชีปกติ') : '\u00A0\u00A0'}
+                    <span className={`text-lg md:text-base lg:text-3xl font-bold ${data ? (status_out_list === true ? 'text-emerald-600' : (data?.process_bars <= 100 ? 'text-amber-600' : 'text-rose-600')) : 'text-gray-600'}`}>
+                        {data ? (status_out_list === true ? 'บัญชีสิ้นสุดแล้ว' : (data?.process_bars <= 100 ? 'บัญชีปกติ' : 'ขาดแคลน')) : '\u00A0\u00A0'}
                     </span>
                 </div>
                 <div className="w-full bg-gray-50 rounded-full h-3 overflow-hidden">
@@ -60,7 +60,7 @@ export default function Row1StaticNumber({ data }) {
             <div className={`flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs`}>
                 <p className="text-gray-700 text-lg md:text-base lg:text-sm font-bold">ความคืบหน้าในการเรียกใช้บัญชี : </p>
                 <div className="items-baseline gap-2 text-right">
-                    <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
+                    <span className={`text-lg md:text-base lg:text-3xl font-bold ${data?.process_bars <= 100 ? 'text-gray-600' : 'text-violet-600'} `}>
                         {
                             data
                                 ?
@@ -81,7 +81,7 @@ export default function Row1StaticNumber({ data }) {
                     </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <div className={`h-full rounded-full transition-all duration-1000 ${data ? (data?.process_bars >= 100 ? 'bg-green-500' : 'bg-blue-500') : 'bg-white'}`} style={{ width: `${Math.min(data?.process_bars, 100)}%` }} />
+                    <div className={`h-full rounded-full transition-all duration-1000 ${data ? (data?.process_bars <= 100 ? 'bg-green-500' : (data?.process_bars === 100 ? 'bg-blue-500' : 'bg-violet-500')) : 'bg-white'}`} style={{ width: `${Math.min(data?.process_bars, 100)}%` }} />
                 </div>
             </div>
 
@@ -101,7 +101,7 @@ export default function Row1StaticNumber({ data }) {
                                             separator=","
                                             decimals={2}
                                             useEasing={true}
-                                        /> <span className="text-sm">อัตรา/รอบ</span>
+                                        /> <span className="text-sm">คน/รอบ</span>
                                     </div>
                                 )
                                 : '\u00A0\u00A0'

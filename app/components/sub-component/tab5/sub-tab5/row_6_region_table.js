@@ -165,7 +165,7 @@ export default function Row6RegionTable({ position, data }) {
             confirmButtonColor: '#10b981'
         });
     };
-    let last = { list: 0, call: 0, remain: 0, rounds: roundColumns.map(() => ({ status: '-', total: null })) };
+    let last = { list: 0, list_n: 0, diff: 0, call: 0, remain: 0, rounds: roundColumns.map(() => ({ status: '-', total: null })) };
     return (
         <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm">
 
@@ -185,30 +185,37 @@ export default function Row6RegionTable({ position, data }) {
                             <tr>
                                 <th className="sticky top-0 left-[0] z-40 bg-gray-50   w-[10%] px-6 py-4 text-sm md:text-base lg:text-ls font-semibold">ภาค / เขต</th>
                                 <th className="sticky top-0 z-30 bg-sky-50     w-[7%]  px-6 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">สถานะเปิดสอบ</th>
-                                <th className="sticky top-0 z-30 bg-amber-50   w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">ขึ้นบัญชี</th>
+                                <th className="sticky top-0 z-30 bg-amber-50   w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">ขึ้นบัญชี (เก่า)</th>
+                                <th className="sticky top-0 z-30 bg-amber-100  w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center">ขึ้นบัญชี (ใหม่)</th>
+                                <th className="sticky top-0 z-30 bg-rose-50    w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-rose-700">ส่วนต่าง</th>
                                 <th className="sticky top-0 z-30 bg-emerald-50 w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-emerald-700">เรียกแล้ว</th>
                                 <th className="sticky top-0 z-30 bg-blue-50    w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-blue-700">ความคืบหน้า</th>
-                                <th className="sticky top-0 z-30 bg-rose-50    w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-rose-500">คงเหลือ</th>
+                                <th className="sticky top-0 z-30 bg-gray-50   w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-gray-700">สถานะตำแหน่ง</th>
+                                <th className="sticky top-0 z-30 bg-amber-50   w-[5%]  px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center text-amber-500">คงเหลือ</th>
                                 {roundColumns.map(num => (<th key={num} className="sticky top-0 z-30 bg-rose-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-ls font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
                             </tr>
                         </thead>
                         <tbody>
                             {Object.values(TableData).map((region) => {
-                                let reg = { list: 0, call: 0, remain: 0, rounds: roundColumns.map(() => ({ status: '-', total: null })) };
+                                let reg = { list: 0, list_n: 0, diff: 0, call: 0, remain: 0, rounds: roundColumns.map(() => ({ status: '-', total: null })) };
                                 return (
                                     <React.Fragment key={region.name}>
                                         <tr className="bg-emerald-50/20 border-t-2 border-t-gray-700 border-b border-b-gray-200">
-                                            <td colSpan={roundColumns.length + 6} className="px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
+                                            <td colSpan={roundColumns.length + 9} className="px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
                                                 <span className="sticky left-[30px]">{region.name}</span>
                                             </td>
                                         </tr>
                                         {Object.values(region.sub_province).map((zone) => {
                                             const status_open = zone.status_open || {};
                                             const listed = Number(zone.total_listed) || 0;
+                                            const listed_n = Number(zone.total_listed_n) || 0;
+                                            const diff = Number(zone.total_diff) || 0;
                                             const called = Number(zone.total_called) || 0;
                                             const remain = Number(zone.total_remaining) || 0;
                                             [reg, last].forEach(target => {
                                                 target.list += listed;
+                                                target.list_n += listed_n;
+                                                target.diff += diff;
                                                 target.call += called;
                                                 target.remain += remain;
                                             });
@@ -231,9 +238,12 @@ export default function Row6RegionTable({ position, data }) {
                                                     <td className="bg-gray-50    px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{zone.name}</td>
                                                     <td className={`${status_open === true ? 'bg-emerald-100 text-emerald-500' : 'bg-rose-100 text-rose-500'} px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center`}>{status_open === true ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}</td>
                                                     <td className="bg-amber-50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-500">{status_open === true ? zone.total_listed.toLocaleString() : '-'}</td>
+                                                    <td className="bg-amber-100  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{status_open === true ? zone.total_listed_n.toLocaleString() : '-'}</td>
+                                                    <td className="bg-rose-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{status_open === true ? zone.total_diff.toLocaleString() : '-'}</td>
                                                     <td className="bg-emerald-50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{status_open === true ? zone.total_called.toLocaleString() : '-'}</td>
-                                                    <td className="bg-blue-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{status_open === true ? zone.processing.toFixed(2) + " %" : '-'}</td>
-                                                    <td className="bg-rose-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{status_open === true ? zone.total_remaining.toLocaleString() : '-'}</td>
+                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${status_open === true ? (zone.processing < 100 ? (zone.processing === 100 ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600') : 'bg-violet-50 text-violet-600') : 'bg-blue-50 text-blue-600'}`}>{status_open === true ? zone.processing.toFixed(2) + " %" : '-'}</td>
+                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${status_open === true ? (zone.total_remaining > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-500 text-white') : 'bg-gray-50 text-gray-500'} `}>{status_open === true ? (zone.total_remaining === 0 ? 'หมดบัญชึแล้ว' : (zone.total_remaining > 0 ? 'คงเหลือ' : 'ขาดแคลน')) : '-'}</td>
+                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${status_open === true ? (zone.total_remaining > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500') : 'bg-gray-50 text-gray-500'} `}>{status_open === true ? zone.total_remaining.toLocaleString() : '-'}</td>
                                                     {roundColumns.map(num => {
                                                         const roundInfo = zone['data_rounds'][num];
                                                         const bgClass = roundInfo ? "bg-white" : "bg-gray-100";
@@ -263,12 +273,15 @@ export default function Row6RegionTable({ position, data }) {
                                             );
                                         })}
                                         <tr key={region.name} className="border-t border-gray-200">
-                                            <td className="bg-white         px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
-                                            <td className="bg-amber-50/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600"></td>
-                                            <td className="bg-amber-50/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
-                                            <td className="bg-emerald-50/50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
-                                            <td className="bg-blue-50/50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.list) * 100).toFixed(2)} %</td>
-                                            <td className="bg-rose-50/50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
+                                            <td className="bg-white          px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
+                                            <td className="bg-white          px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600"></td>
+                                            <td className="bg-amber-100/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
+                                            <td className="bg-amber-300/50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700">{reg.list_n.toLocaleString()}</td>
+                                            <td className="bg-rose-200/50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-700">{reg.diff.toLocaleString()}</td>
+                                            <td className="bg-emerald-200/50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
+                                            <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${((reg.call / reg.list_n) * 100) === 100 ? 'bg-emerald-50/50 text-emerald-600' : ((reg.call / reg.list_n) * 100) < 100 ? 'bg-blue-50/50 text-blue-600' : 'bg-violet-300/50 text-violet-700'}`}>{((reg.call / reg.list_n) * 100).toFixed(2)} %</td>
+                                            <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${reg.remain > 0 ? 'bg-orange-200/50 text-orange-600' : 'bg-rose-700 text-white'}`}>{reg.remain === 0 ? 'หมดบัญชี' : (reg.remain > 0 ? 'คงเหลือ' : 'ขาดแคลน')}</td>
+                                            <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${reg.remain > 0 ? 'bg-amber-200/50 text-amber-600' : 'bg-rose-300/50 text-rose-700'}`}>{reg.remain.toLocaleString()}</td>
                                             {reg.rounds.map((v, i) => {
                                                 return (
                                                     <td key={i} className={`px-4 py-4 text-sm md:text-base lg:text-sm text-center font-semibold text-gray-700 ${v.total ? 'bg-white' : 'bg-gray-100'}`} >{v.total ? v.total.toLocaleString() : null}</td>
@@ -283,8 +296,11 @@ export default function Row6RegionTable({ position, data }) {
                                     <td className="sticky bottom-0 z-40 bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center"></td>
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.list.toLocaleString()}</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.list_n.toLocaleString()}</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.diff.toLocaleString()}</td>
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.call.toLocaleString()}</td>
-                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.list > 0 ? (((last.call / last.list) * 100).toFixed(2) + " %") : 0}</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-4 py-4 text-center">{last.list_n > 0 ? (((last.call / last.list_n) * 100).toFixed(2) + " %") : 0}</td>
+                                    <td className="sticky bottom-0 z-30 bg-gray-700 px-6 py-4 text-center">{last.remain === 0 ? 'หมดบัญชีแล้ว' : (last.remain > 0 ? 'คงเหลือ' : 'ขาดแคลน')}</td>
                                     <td className="sticky bottom-0 z-30 bg-gray-700 px-6 py-4 text-center">{last.remain.toLocaleString()}</td>
                                     {last.rounds.map((item, index) => {
                                         return (
