@@ -26,8 +26,8 @@ export default function Tab4() {
     const { data: configData } = useQuery({
         queryKey: ['tab4Config'],
         queryFn: async () => {
-            // const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab4`);
-            const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab4`);
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab4`);
+            // const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab4`);
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
@@ -40,8 +40,8 @@ export default function Tab4() {
     const { data: tableData, isLoading } = useQuery({
         queryKey: ['tab4Table', filters],
         queryFn: async () => {
-            // const response = await axios.post(`https://dla-backend-production.up.railway.app/api/updating-tab4-table`, {
-            const response = await axios.post(`http://127.0.0.1:8000/api/updating-tab4-table`, {
+            const response = await axios.post(`https://dla-backend-production.up.railway.app/api/updating-tab4-table`, {
+                // const response = await axios.post(`http://127.0.0.1:8000/api/updating-tab4-table`, {
                 cleanRegions: filters.regions,
                 cleanPositions: filters.positions,
                 showEmpty: filters.showEmpty,

@@ -12,8 +12,8 @@ export default function Tab1({ setIsOpen, setDetails }) {
     const { data } = useQuery({
         queryKey: ['tab2Data'],
         queryFn: async () => {
-            // const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab2`);
-            const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab2`);
+            const res = await fetch(`https://dla-backend-production.up.railway.app/api/recruitment/tab2`);
+            // const res = await fetch(`http://127.0.0.1:8000/api/recruitment/tab2`);
             if (!res.ok) throw new Error('Network response was not ok');
             return res.json();
         },
