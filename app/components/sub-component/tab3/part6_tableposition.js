@@ -58,12 +58,12 @@ export default function T2P7_TableAllType({ data }) {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                // const response = await fetch(`https://dla-backend-production.up.railway.app/api/updating-tab3-part6/${selectedOption.value}`, {
-                //     signal: controller.signal
-                // });
-                const response = await fetch(`http://127.0.0.1:8000/api/updating-tab3-part6/${selectedOption.value}`, {
+                const response = await fetch(`https://dla-backend-production.up.railway.app/api/updating-tab3-part6/${selectedOption.value}`, {
                     signal: controller.signal
                 });
+                // const response = await fetch(`http://127.0.0.1:8000/api/updating-tab3-part6/${selectedOption.value}`, {
+                //     signal: controller.signal
+                // });
                 if (!response.ok) throw new Error('Network response was not ok');
                 const result = await response.json();
                 setTableData(result);

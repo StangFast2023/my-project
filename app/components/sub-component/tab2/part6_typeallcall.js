@@ -8,8 +8,8 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         setDetails(null);
         setIsOpen(true);
         try {
-            // const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}/7`);
-            const response = await axios.get(`http://127.0.0.1:8000/api/listed-position-detail/${id}/7`);
+            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}/7`);
+            // const response = await axios.get(`http://127.0.0.1:8000/api/listed-position-detail/${id}/7`);
             setDetails(response.data);
         } catch (error) {
             console.error(error);
