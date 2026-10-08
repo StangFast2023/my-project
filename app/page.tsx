@@ -53,7 +53,8 @@ export default function App() {
     });
 
     const fetchStats = () => {
-        fetch("http://127.0.0.1:8000/api/visitor-stats")
+        fetch("https://dla-backend-production.up.railway.app/api/visitor-stats")
+            // fetch("http://127.0.0.1:8000/api/visitor-stats")
             .then((res) => res.json())
             .then((resData) => {
                 if (resData.status === "success" && resData.data) {
@@ -63,7 +64,8 @@ export default function App() {
             .catch((err) => console.error("Fetch Stats Error:", err));
     };
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/track-view", {
+        fetch("https://dla-backend-production.up.railway.app/api/track-view", {
+            // fetch("http://127.0.0.1:8000/api/track-view", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ page_name: `tab${activeTab}_recruitment` }),
