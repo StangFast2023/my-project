@@ -42,8 +42,8 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">อันดับ</th>
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ชื่อตำแหน่ง</th>
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ประเภท</th>
-                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center">ขึ้นบัญชี</th>
-                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center hidden lg:block">📃</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center">อัตรา</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
@@ -70,7 +70,7 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
                                             {Number(pos.total).toLocaleString()}
                                         </span>
                                     </td>
-                                    <td className="p-2 lg:p-2 text-center hidden lg:block">
+                                    <td className="p-2 lg:p-2 text-center">
                                         <span className="font-mono text-sm md:text-base lg:text-sm md:text-base lg:text-sm font-bold text-blue-700">
                                             <button onClick={() => handleViewDetail(pos.id_pos)} className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md transition-colors hover:shadow-xl transition-all duration-300">
                                                 <div className="flex items-center gap-1 px-2 py-1">

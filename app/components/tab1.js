@@ -51,7 +51,7 @@ export default function Tab1() {
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P3_PieListed data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm hidden lg:block`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm`}>
                         <T1P6_TableRoundCall data={data} />
                     </div>
                 </div>

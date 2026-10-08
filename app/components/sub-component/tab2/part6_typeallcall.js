@@ -42,7 +42,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ชื่อตำแหน่ง</th>
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ประเภท</th>
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">อัตรา</th>
-                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center hidden lg:block">📃</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">

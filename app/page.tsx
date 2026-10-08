@@ -100,7 +100,7 @@ export default function App() {
     }, [activeTab]);
 
     return (
-        <main className="pb-10">
+        <main className="pb-35">
             <div className="flex flex-col items-center pt-5">
                 <div className="flex items-center gap-3">
                     <h1 className="text-sm md:text-base lg:text-3xl font-black text-right text-gray-700">
@@ -173,33 +173,32 @@ export default function App() {
             {/* for tap5 part1 */}
             <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
-            <div className="mb-5">
-                <div className="flex item-end gap-4 p-4">
-                    <div className="flex-1 bg-white p-5 rounded-xl shadow-md border border-gray-100">
-                        <p className="text-gray-500 text-sm font-medium">เข้าชมทั้งหมด</p>
-                        <p className="text-3xl font-bold text-gray-800 text-right">
-                            {stats.total_views.toLocaleString()} <span className="text-base font-normal text-gray-500">ครั้ง</span>
-                        </p>
-                    </div>
 
-                    <div className="flex-1 bg-white p-5 rounded-xl shadow-md border border-gray-100">
-                        <p className="text-gray-500 text-sm font-medium">ผู้เข้าชมไม่ซ้ำ</p>
-                        <p className="text-3xl font-bold text-blue-600 text-right">
-                            {stats.unique_visitors.toLocaleString()} <span className="text-base font-normal text-gray-500">คน</span>
+            <div className="fixed bottom-0 left-0 right-0 z-50">
+                <div className="flex justify-end">
+                    <div className="flex items-end gap-4 p-4">
+                        <p className="text-3xl font-bold text-gray-800 text-right bg-white p-2 rounded-xl shadow-xl">
+                            <span className="text-base font-normal text-gray-500 mr-2">
+                                เข้าชมทั้งหมด
+                            </span>
+                            {stats.total_views.toLocaleString()}
+                            <span className="text-base font-normal text-gray-500 ml-2">
+                                ครั้ง
+                            </span>
                         </p>
-                    </div>
 
-                    <div className="flex-1 bg-white p-5 rounded-xl shadow-md border border-gray-100">
-                        <p className="text-gray-500 text-sm font-medium">เข้าชมวันนี้</p>
-                        <p className="text-3xl font-bold text-green-600 text-right">
-                            {stats.today_views.toLocaleString()} <span className="text-base font-normal text-gray-500">ครั้ง</span>
+                        <p className="text-3xl font-bold text-green-600 text-right bg-white p-2 rounded-xl shadow-xl">
+                            <span className="text-base font-normal text-gray-500 mr-2">
+                                เข้าชมวันนี้
+                            </span>
+                            {stats.today_views.toLocaleString()}
+                            <span className="text-base font-normal text-gray-500 ml-2">
+                                ครั้ง
+                            </span>
                         </p>
                     </div>
                 </div>
-            </div>
-
-            <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white shadow-xl">
-                <div className="mx-auto flex full-max-w items-center gap-4 px-4 py-3 border-2 border-gray-400">
+                <div className="mx-auto flex full-max-w items-center gap-4 px-4 py-3 border-2 border-gray-400 border-t bg-white shadow-xl">
                     <p className="flex-1 leading-6 text-gray-700 text-center">
                         <span className="font-semibold">หมายเหตุ</span>
                         <span className="mx-2">:</span>
