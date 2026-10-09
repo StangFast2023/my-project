@@ -47,7 +47,7 @@ export default function T2P7_TableAllType({ data }) {
             transition={{ duration: 0.5 }}
         >
             <div className="text-center mb-2">
-                <h3 className="flex text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                <h3 className="flex text-base md:text-base lg:text-lg font-bold text-gray-700">
                     <BookMarked />
                     <span className="ml-2">สรุปยอดเรียกรายงานตัวสะสมแยกตามเขตพื้นที่และประเภทตำแหน่ง</span>
                 </h3>
@@ -68,7 +68,7 @@ export default function T2P7_TableAllType({ data }) {
                                 {roundColumns.map(num => (<th key={num} className="sticky top-0 z-30 px-4 py-4 font-semibold text-center bg-amber-50">รอบที่ {num}</th>))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100 text-sm text-gray-700">
+                        <tbody className="divide-y divide-gray-100 text-base text-gray-700">
                             {Object.entries(part8).map(([regionKey, regionData]) => {
                                 const firstTypeGroup = Object.values(regionData)[0];
                                 const firstZone = firstTypeGroup ? Object.values(firstTypeGroup)[0] : null;
@@ -117,53 +117,53 @@ export default function T2P7_TableAllType({ data }) {
                                                 <React.Fragment key={subId}>
                                                     {zoneList.map((zone, index) => (
                                                         <tr key={`${subId}-${zone.pos_type_id}`}>
-                                                            {index === 0 && (<td rowSpan={rowCount} className="sticky left-0 z-20 bg-white px-6 py-4 text-gray-800 bg-gray-50 text-sm font-semibold  text-center" style={{ verticalAlign: 'middle' }}>{zone.prov_full_name}</td>)}
-                                                            <td className={`px-4 py-4 text-sm font-semibold text-center ${zone.pos_type_id === 1 ? "bg-blue-50 text-blue-700" : zone.pos_type_id === 2 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{zone.pos_type}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-50  text-amber-500">{zone.total_list.toLocaleString()}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-amber-100 text-amber-600">{zone.total_list_new.toLocaleString()}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-rose-100  text-rose-600">{zone.total_diff.toLocaleString()}</td>
-                                                            <td className="px-4 py-4  text-sm font-semibold text-center bg-emerald-50 text-emerald-600">{zone.total_call.toLocaleString()}</td>
-                                                            <td className={`px-4 py-4  text-sm font-semibold text-center ${zone.total_remain === 0 ? 'bg-rose-50 text-rose-600' : (((zone.total_call / zone.total_list_new) * 100) === 100 ? 'bg-emerald-50 text-emerald-600' : (((zone.total_call / zone.total_list_new) * 100) <= 100 ? 'bg-blue-50 text-blue-600' : 'bg-violet-50 text-violet-600'))}`}>
+                                                            {index === 0 && (<td rowSpan={rowCount} className="sticky left-0 z-20 bg-white px-6 py-4 text-gray-800 bg-gray-50 text-base font-semibold  text-center" style={{ verticalAlign: 'middle' }}>{zone.prov_full_name}</td>)}
+                                                            <td className={`px-4 py-4 text-base font-semibold text-center ${zone.pos_type_id === 1 ? "bg-blue-50 text-blue-700" : zone.pos_type_id === 2 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{zone.pos_type}</td>
+                                                            <td className="px-4 py-4  text-base font-semibold text-center bg-amber-50  text-amber-500">{zone.total_list.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-base font-semibold text-center bg-amber-100 text-amber-600">{zone.total_list_new.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-base font-semibold text-center bg-rose-100  text-rose-600">{zone.total_diff.toLocaleString()}</td>
+                                                            <td className="px-4 py-4  text-base font-semibold text-center bg-emerald-50 text-emerald-600">{zone.total_call.toLocaleString()}</td>
+                                                            <td className={`px-4 py-4 text-base font-semibold text-center ${zone.total_remain === 0 ? 'bg-rose-50 text-rose-600' : (((zone.total_call / zone.total_list_new) * 100) === 100 ? 'bg-emerald-50 text-emerald-600' : (((zone.total_call / zone.total_list_new) * 100) <= 100 ? 'bg-blue-50 text-blue-600' : 'bg-violet-50 text-violet-600'))}`}>
                                                                 {(zone.total_remain !== 0 ? ((zone.total_call / zone.total_list_new) * 100) : 0).toFixed(2)} %
                                                             </td>
-                                                            <td className={`px-6 py-4  text-sm font-semibold text-center ${zone.total_remain === 0 ? 'bg-blue-50 text-blue-500' : zone.total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
+                                                            <td className={`px-6 py-4  text-base font-semibold text-center ${zone.total_remain === 0 ? 'bg-blue-50 text-blue-500' : zone.total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
                                                                 {zone.total_remain.toLocaleString()}
                                                             </td>
-                                                            {roundColumns.map(num => { const roundInfo = zone.round_data?.[num]; const bgClass = roundInfo ? "bg-white" : "bg-gray-100"; return (<td key={num} className={`px-4 py-4 text-center text-sm font-semibold ${bgClass}`}>{roundInfo ? roundInfo.total.toLocaleString() : null}</td>); })}
+                                                            {roundColumns.map(num => { const roundInfo = zone.round_data?.[num]; const bgClass = roundInfo ? "bg-white" : "bg-gray-100"; return (<td key={num} className={`px-4 py-4 text-center text-base font-semibold ${bgClass}`}>{roundInfo ? roundInfo.total.toLocaleString() : null}</td>); })}
 
                                                         </tr>
                                                     ))}
                                                     <tr className="bg-slate-50/60 font-semibold text-gray-900 ">
-                                                        <td className="px-4 py-3 text-center text-xs text-slate-500 bg-slate-50/40 font-bold">รวมประจำเขต</td>
-                                                        <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalList.toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalListNew.toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-sm font-semibold ">{zoneTotalDiff.toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-sm font-semibold bg-emerald-50/20 text-emerald-700 ">{zoneTotalCall.toLocaleString()}</td>
-                                                        <td className={`px-4 py-3 text-center text-sm font-semibold ${zoneTotalRemain === 0 ? 'bg-rose-50/20 text-rose-700' : (zoneTotalRemain === 100 ? 'bg-emerald-50/20 text-emerald-700' : (zoneTotalRemain <= 100 ? 'bg-blue-100/20 text-blue-700' : 'bg-violet-100/20 text-violet-700'))}`}>
+                                                        <td className="px-4 py-3  text-center text-xs text-slate-500 bg-slate-50/40 font-bold">รวมประจำเขต</td>
+                                                        <td className="px-4 py-3  text-center text-base font-semibold ">{zoneTotalList.toLocaleString()}</td>
+                                                        <td className="px-4 py-3  text-center text-base font-semibold ">{zoneTotalListNew.toLocaleString()}</td>
+                                                        <td className="px-4 py-3  text-center text-base font-semibold ">{zoneTotalDiff.toLocaleString()}</td>
+                                                        <td className="px-4 py-3  text-center text-base font-semibold bg-emerald-50/20 text-emerald-700 ">{zoneTotalCall.toLocaleString()}</td>
+                                                        <td className={`px-4 py-3 text-center text-base font-semibold ${zoneTotalRemain === 0 ? 'bg-rose-50/20 text-rose-700' : (zoneTotalRemain === 100 ? 'bg-emerald-50/20 text-emerald-700' : (zoneTotalRemain <= 100 ? 'bg-blue-100/20 text-blue-700' : 'bg-violet-100/20 text-violet-700'))}`}>
                                                             {(zoneTotalRemain !== 0 ? (zoneTotalCall / zoneTotalListNew) * 100 : 0).toFixed(2)} %
                                                         </td>
-                                                        <td className={`px-6 py-3 text-center text-sm font-semibold ${zoneTotalRemain === 0 ? 'text-blue-600' : zoneTotalRemain < 0 ? 'text-rose-600' : 'text-orange-600'}`}>
+                                                        <td className={`px-6 py-3 text-center text-base font-semibold ${zoneTotalRemain === 0 ? 'text-blue-600' : zoneTotalRemain < 0 ? 'text-rose-600' : 'text-orange-600'}`}>
                                                             {zoneTotalRemain.toLocaleString()}
                                                         </td>
-                                                        {zoneTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3 text-center text-sm font-semibold font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
+                                                        {zoneTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3 text-center text-base font-semibold font-mono text-slate-700 ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
                                                     </tr>
                                                 </React.Fragment>
                                             );
                                         })}
                                         <tr className="bg-emerald-100 text-emerald-900 text-sm">
-                                            <td className="sticky left-0 z-20 bg-emerald-100 px-6 py-3.5 text-center text-sm font-semibold ">รวม{regionName}</td>
-                                            <td className="px-6 py-3.5 text-center text-sm font-semibold  "></td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-50  text-amber-600">{regionTotalList.toLocaleString()}</td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-amber-100 text-amber-700">{regionTotalListNew.toLocaleString()}</td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-rose-50   text-rose-700">{regionTotalDiff.toLocaleString()}</td>
-                                            <td className="px-4 py-3.5 text-center text-sm font-semibold bg-emerald-100 text-emerald-700 ">{regionTotalCall.toLocaleString()}</td>
-                                            <td className={`px-4 py-3.5 text-center text-sm font-semibold ${regionTotalRemain === 0 ? 'bg-rose-100 text-rose-700' : (regionTotalRemain === 100 ? 'bg-emerald-100 text-emerald-700' : (regionTotalRemain <= 100 ? 'bg-blue-100 text-blue-700' : 'bg-violet-100 text-violet-700'))}`}>
+                                            <td className="sticky left-0 z-20 bg-emerald-100 px-6 py-3.5 text-center text-base font-semibold ">รวม{regionName}</td>
+                                            <td className="px-6 py-3.5 text-center  text-base font-semibold  "></td>
+                                            <td className="px-4 py-3.5 text-center  text-base font-semibold bg-amber-50  text-amber-600">{regionTotalList.toLocaleString()}</td>
+                                            <td className="px-4 py-3.5 text-center  text-base font-semibold bg-amber-100 text-amber-700">{regionTotalListNew.toLocaleString()}</td>
+                                            <td className="px-4 py-3.5 text-center  text-base font-semibold bg-rose-50   text-rose-700">{regionTotalDiff.toLocaleString()}</td>
+                                            <td className="px-4 py-3.5 text-center  text-base font-semibold bg-emerald-100 text-emerald-700 ">{regionTotalCall.toLocaleString()}</td>
+                                            <td className={`px-4 py-3.5 text-center text-base font-semibold ${regionTotalRemain === 0 ? 'bg-rose-100 text-rose-700' : (regionTotalRemain === 100 ? 'bg-emerald-100 text-emerald-700' : (regionTotalRemain <= 100 ? 'bg-blue-100 text-blue-700' : 'bg-violet-100 text-violet-700'))}`}>
                                                 {((regionTotalCall / regionTotalListNew) * 100).toFixed(2)} %
                                             </td>
-                                            <td className={`px-6 py-3.5 text-center text-sm font-semibold ${regionTotalRemain === 0 ? 'bg-emerald-50 text-emerald-600' : (regionTotalRemain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600')}`}>
+                                            <td className={`px-6 py-3.5 text-center text-base font-semibold ${regionTotalRemain === 0 ? 'bg-emerald-50 text-emerald-600' : (regionTotalRemain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600')}`}>
                                                 {regionTotalRemain.toLocaleString()}
                                             </td>
-                                            {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-sm font-semibold text-gray-700 ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
+                                            {regionTotalPerRound.map((total, idx) => (<td key={idx} className={`px-4 py-3.5 text-center text-base font-semibold text-gray-700 ${total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{total > 0 ? total.toLocaleString() : null}</td>))}
 
                                         </tr>
                                     </React.Fragment>

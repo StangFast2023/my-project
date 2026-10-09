@@ -16,7 +16,7 @@ export default function T2P5_PopularPosEmp({ data }) {
         >
             <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
-                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                    <h3 className="flex justify-center text-xl lg:text-lg font-bold text-gray-700">
                         <BookDown />
                         <span className="ml-2">สรุปอันดับตำแหน่งที่มีการบรรจุเต็มอัตราในรอบที่ 1</span>
                     </h3>

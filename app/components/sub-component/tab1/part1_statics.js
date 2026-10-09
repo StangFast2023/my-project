@@ -121,7 +121,7 @@ export default function StaticNumber({ data }) {
                                 <button
                                     key={acc.accountType}
                                     onClick={() => handleAccountTypeChange(acc.accountType)}
-                                    className={`lg:w-100 px-3 py-1.5 rounded-sm text-sm transition-all duration-300 ease-in-out whitespace-nowrap
+                                    className={`w-full lg:w-100 px-3 py-1.5 rounded-sm text-sm transition-all duration-300 ease-in-out whitespace-nowrap
                                             ${isActive
                                             ? "bg-blue-200 text-blue-600 font-bold shadow-sm"
                                             : "bg-gray-200 text-gray-600 font-semibold hover:bg-gray-300"
@@ -139,7 +139,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">วันประกาศขึ้นบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 {activeAccount.startDateFormatted}
                             </span>
                         </div>
@@ -149,7 +149,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">วันสิ้นสุดอายุบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 {activeAccount.expireDateFormatted}
                             </span>
                         </div>
@@ -159,14 +159,14 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">อายุบัญชี (วัน) </p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={activeAccount.daysPassed}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl"> / {activeAccount.totalDays} วัน</b>
+                                />   <b className="text-xl lg:text-xl"> / {activeAccount.totalDays} วัน</b>
                             </span>
                         </div>
                         <div className="w-full rounded-full h-3 overflow-hidden">
@@ -175,14 +175,14 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">ความคืบหน้าอายุบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={activeAccount.progress}
                                     duration={3}
                                     separator=","
                                     decimals={2}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl">  / 100.00 %</b>
+                                />   <b className="text-xl lg:text-xl">  / 100.00 %</b>
                             </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -194,88 +194,88 @@ export default function StaticNumber({ data }) {
             </div>
 
             <div className={`${data ? 'block' : 'opacity-0'} p-2 pb-0 rounded-xl`}>
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-6 lg:grid-cols-6 lg:gap-2 ">
+                <div className="grid grid-cols-2 gap-2 md:grid-cols-6 lg:grid-cols-6 lg:gap-2 ">
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด <b>(เก่า)</b></p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.OldTotalList}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl">  คน</b>
+                                />   <b className="text-xl lg:text-xl">  คน</b>
                             </span>
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด <b>(ใหม่)</b></p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.NewTotalList}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl">  คน</b>
+                                />   <b className="text-xl lg:text-xl">  คน</b>
                             </span>
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">ส่วนต่างของบัญชีเก่าและใหม่</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.DiffTotalList}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl">  คน</b>
+                                />   <b className="text-xl lg:text-xl">  คน</b>
                             </span>
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">เรียกไปแล้ว {data?.tab1?.part1?.CurRound} รอบ</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.TotalCall}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl">  คน</b>
+                                />   <b className="text-xl lg:text-xl">  คน</b>
                             </span>
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">คงเหลือตามบัญชีใหม่</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.NewTotalList - data?.tab1?.part1?.TotalCall}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl">  คน</b>
+                                />   <b className="text-xl lg:text-xl">  คน</b>
                             </span>
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">เรียกเฉลี่ยรอบละ</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-sm md:text-base lg:text-3xl font-bold text-gray-600">
+                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.AvgCall}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-sm md:text-base lg:text-xl">  คน</b>
+                                />   <b className="text-xl lg:text-xl">  คน</b>
                             </span>
                         </div>
                     </div>

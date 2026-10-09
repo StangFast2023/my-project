@@ -14,9 +14,9 @@ const typeStyles = {
 const CustomOption = (props) => (
     <components.Option {...props}>
         <div className="flex items-center">
-            <span className="font-bold mr-2 text-gray-700">[ {props.data.pos_id} ]</span>
+            <span className="font-semibold mr-1 text-gray-700">({props.data.pos_id})</span>
             <span className="text-gray-700">{props.data.label}</span>
-            <span className={`ml-auto px-4 py-1 rounded-full font-bold shadow-sm ${typeStyles[props.data.type_id]}`}>
+            <span className={`ml-auto px-4 py-1 rounded-full font-bold shadow-sm ${typeStyles[props.data.type_id]} hidden md:block lg:block`}>
                 {props.data.type_name}
             </span>
         </div>
@@ -125,13 +125,13 @@ export default function T2P7_TableAllType({ data }) {
             transition={{ duration: 0.5 }}
         >
             <div className="flex flex-col md:flex-row md:items-center gap-4 mb-5">
-                <div className="col-span-6 text-center mb-2">
-                    <h3 className="flex text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                <div className="lg:col-span-6 text-center mb-2">
+                    <h3 className="flex text-xl lg:text-lg font-bold text-gray-700">
                         <Zap />
                         <span className="ml-2">วิเคราะห์ตำแหน่งเชิงพื้นที่</span>
                     </h3>
                 </div>
-                <div className="col-span-6 flex gap-4 ml-auto">
+                <div className="lg:col-span-6 flex gap-4 lg:ml-auto">
                     <div className="w-full max-w-[600px] lg:w-[600px]">
                         <Select
                             options={options}
@@ -141,14 +141,13 @@ export default function T2P7_TableAllType({ data }) {
                             placeholder="ค้นหาตำแหน่ง..."
                             isSearchable
                             isClearable
-                            className="w-full"
                             menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
                             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                             formatOptionLabel={(item) => (
-                                <div className="flex items-center gap-2">
-                                    <span className="font-bold text-gray-700">[{item.pos_id}]</span>
+                                <div className="flex items-center gap-1">
+                                    <span className="font-semibold text-gray-700">({item.pos_id})</span>
                                     <span className="text-gray-700">{`${item.pre_name || ''}${item.pos_name || ''}${item.suf_name || ''}`}</span>
-                                    <span className={`ml-auto px-4 py-1 rounded-full font-bold shadow-sm ${typeStyles[item.type_id]}`}>{item.type_name}</span>
+                                    <span className={`ml-auto px-4 py-1 rounded-full font-bold shadow-sm ${typeStyles[item.type_id]}`}>{item.type_name} 6555</span>
                                 </div>
                             )}
                         />
@@ -187,9 +186,9 @@ export default function T2P7_TableAllType({ data }) {
 
                                             <div className="flex flex-col items-center justify-center h-[600px] bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
                                                 <div className="text-gray-400 text-6xl mb-4">
-                                                    <OctagonAlert size={150} />
+                                                    <OctagonAlert size={100} />
                                                 </div>
-                                                <h3 className="text-3xl font-bold text-gray-500">กรุณาเลือกตำแหน่งเพื่อแสดงข้อมูล</h3>
+                                                <h3 className="text-xl lg:text-3xl font-bold text-gray-500">กรุณาเลือกตำแหน่งเพื่อแสดงข้อมูล</h3>
                                             </div>
                                         </motion.div>
                                     ) : (
@@ -204,16 +203,16 @@ export default function T2P7_TableAllType({ data }) {
                                                 <table className="min-w-[1400px] w-full border-collapse whitespace-nowrap text-left">
                                                     <thead className="bg-gray-50 text-gray-600 text-sm">
                                                         <tr>
-                                                            <th className="bg-gray-50    px-4 py-4 text-sm md:text-base lg:text-sm font-bold sticky left-[0] z-30">ภาค - เขต</th>
-                                                            <th className="bg-gray-100   px-4 py-4 text-sm md:text-base lg:text-sm font-bold text-center">สถานะเปิดสอบ</th>
-                                                            <th className="bg-amber-50   px-4 py-4 text-sm md:text-base lg:text-sm font-bold text-center">ขึ้นบัญชี (เก่า)</th>
-                                                            <th className="bg-amber-100  px-4 py-4 text-sm md:text-base lg:text-sm font-bold text-center">ขึ้นบัญชี (ใหม่)</th>
-                                                            <th className="bg-rose-100   px-4 py-4 text-sm md:text-base lg:text-sm font-bold text-center">ส่วนต่าง</th>
-                                                            <th className="bg-emerald-50 px-4 py-4 text-sm md:text-base lg:text-sm font-bold text-center text-emerald-700">เรียกแล้ว</th>
-                                                            <th className="bg-blue-50    px-4 py-4 text-sm md:text-base lg:text-sm font-bold text-center text-blue-700">ความคืบหน้า</th>
-                                                            <th className="bg-orange-100 px-4 py-4 text-sm md:text-base lg:text-sm font-bold text-center text-orange-500">คงเหลือ</th>
+                                                            <th className="bg-gray-50    px-4 py-4 text-base lg:text-sm font-bold sticky left-[0] z-30">ภาค - เขต</th>
+                                                            <th className="bg-gray-100   px-4 py-4 text-base lg:text-sm font-bold text-center">สถานะเปิดสอบ</th>
+                                                            <th className="bg-amber-50   px-4 py-4 text-base lg:text-sm font-bold text-center">ขึ้นบัญชี (เก่า)</th>
+                                                            <th className="bg-amber-100  px-4 py-4 text-base lg:text-sm font-bold text-center">ขึ้นบัญชี (ใหม่)</th>
+                                                            <th className="bg-rose-100   px-4 py-4 text-base lg:text-sm font-bold text-center">ส่วนต่าง</th>
+                                                            <th className="bg-emerald-50 px-4 py-4 text-base lg:text-sm font-bold text-center text-emerald-700">เรียกแล้ว</th>
+                                                            <th className="bg-blue-50    px-4 py-4 text-base lg:text-sm font-bold text-center text-blue-700">ความคืบหน้า</th>
+                                                            <th className="bg-orange-100 px-4 py-4 text-base lg:text-sm font-bold text-center text-orange-500">คงเหลือ</th>
                                                             {round_columns.map(num => (
-                                                                <th key={num} className="bg-amber-50/30 px-4 py-2 text-sm md:text-base lg:text-sm font-bold text-center">รอบ {num}</th>
+                                                                <th key={num} className="bg-amber-50/30 px-4 py-2 text-base lg:text-sm font-bold text-center">รอบ {num}</th>
                                                             ))}
                                                         </tr>
                                                     </thead>
@@ -230,14 +229,14 @@ export default function T2P7_TableAllType({ data }) {
                                                             const total_process = status_open === true ? (total_listed_new !== 0 ? ((total_called / total_listed_new) * 100) : 0) : '';
                                                             return (
                                                                 <tr key={full_key}>
-                                                                    <td className="bg-gray-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{full_name_province}</td>
-                                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-700 ${status_open === true ? 'bg-emerald-100' : 'bg-rose-100'}`}>{status_open === true ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}</td>
-                                                                    <td className="bg-amber-50   px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_listed.toLocaleString()}</td>
-                                                                    <td className="bg-amber-100  px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_listed_new.toLocaleString()}</td>
-                                                                    <td className="bg-rose-50    px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{total_diff.toLocaleString()}</td>
-                                                                    <td className="bg-emerald-50 px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{total_called.toLocaleString()}</td>
-                                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${status_open ? (total_process === 100 ? 'bg-emerald-50 text-emerald-600' : (total_process === 0 ? 'bg-rose-50 text-rose-600' : (total_process >= 100 ? 'bg-violet-50 text-violet-600' : 'bg-blue-50 text-blue-600'))) : 'bg-gray-50 text-gray-600'}`}>{status_open ? total_process.toFixed(2) + " %" : ''}</td>
-                                                                    <td className={`px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center ${total_remain === 0 ? 'bg-blue-50 text-blue-500' : total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
+                                                                    <td className="bg-gray-50    px-4 py-4 text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{full_name_province}</td>
+                                                                    <td className={`px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-700 ${status_open === true ? 'bg-emerald-100' : 'bg-rose-100'}`}>{status_open === true ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}</td>
+                                                                    <td className="bg-amber-50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{total_listed.toLocaleString()}</td>
+                                                                    <td className="bg-amber-100  px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{total_listed_new.toLocaleString()}</td>
+                                                                    <td className="bg-rose-50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{total_diff.toLocaleString()}</td>
+                                                                    <td className="bg-emerald-50 px-4 py-4 text-base lg:text-sm font-semibold text-center text-emerald-600">{total_called.toLocaleString()}</td>
+                                                                    <td className={`px-4 py-4 text-base lg:text-sm font-semibold text-center ${status_open ? (total_process === 100 ? 'bg-emerald-50 text-emerald-600' : (total_process === 0 ? 'bg-rose-50 text-rose-600' : (total_process >= 100 ? 'bg-violet-50 text-violet-600' : 'bg-blue-50 text-blue-600'))) : 'bg-gray-50 text-gray-600'}`}>{status_open ? total_process.toFixed(2) + " %" : ''}</td>
+                                                                    <td className={`px-4 py-4 text-base lg:text-sm font-semibold text-center ${total_remain === 0 ? 'bg-blue-50 text-blue-500' : total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
                                                                         {total_remain.toLocaleString()}
                                                                     </td>
                                                                     {
@@ -396,7 +395,7 @@ export default function T2P7_TableAllType({ data }) {
                                                                                             (
                                                                                                 <>
                                                                                                     {has_data ? (
-                                                                                                        <div className={`transition-transform duration-300 group-hover:-translate-y-2 text-sm md:text-base lg:text-sm`}>
+                                                                                                        <div className={`transition-transform duration-300 group-hover:-translate-y-2 text-base lg:text-sm`}>
                                                                                                             <span className={`font-bold ${call_status === true ? 'text-gray-600' : 'text-rose-600'}`}>
                                                                                                                 {data_round.total.toLocaleString()}
                                                                                                             </span>
@@ -424,17 +423,17 @@ export default function T2P7_TableAllType({ data }) {
                                                     </tbody>
                                                     <tfoot className="sticky bottom-0 bg-[#2d3446] text-white">
                                                         <tr>
-                                                            <td colSpan={2} className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-50 py-2 text-center font-semibold">รวมทั้งหมดทุกภาค</td>
-                                                            <td className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_listed.toLocaleString()}</td>
-                                                            <td className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_listed_new.toLocaleString()}</td>
-                                                            <td className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_diff.toLocaleString()}</td>
-                                                            <td className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_called.toLocaleString()}</td>
-                                                            <td className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{percent ? percent.toFixed(2) + " %" : ''}</td>
-                                                            <td className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_remain.toLocaleString()}</td>
+                                                            <td colSpan={2} className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-50 py-2 text-center font-semibold">รวมทั้งหมดทุกภาค</td>
+                                                            <td className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_listed.toLocaleString()}</td>
+                                                            <td className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_listed_new.toLocaleString()}</td>
+                                                            <td className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_diff.toLocaleString()}</td>
+                                                            <td className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_called.toLocaleString()}</td>
+                                                            <td className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{percent ? percent.toFixed(2) + " %" : ''}</td>
+                                                            <td className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{summary.total_remain.toLocaleString()}</td>
                                                             {round_columns.map((index) => {
                                                                 const roundly = summary?.rounds[index] || '';
                                                                 return (
-                                                                    <td key={index} className="bg-[#2d3446] sticky text-sm md:text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{roundly ? roundly.toLocaleString() : ''}</td>
+                                                                    <td key={index} className="bg-[#2d3446] sticky text-base lg:text-sm left-0 bottom-0 z-40 py-2 text-center font-semibold">{roundly ? roundly.toLocaleString() : ''}</td>
                                                                 );
                                                             })}
                                                         </tr>

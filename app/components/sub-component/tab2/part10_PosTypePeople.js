@@ -57,11 +57,11 @@ export default function T2P10_PosTypePeople({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                    <h3 className="flex justify-center text-xl lg:text-lg font-bold text-gray-700">
                         <Layers />
                         <span className="ml-2">สัดส่วนจำนวนผู้สอบแข่งขันได้ แบ่งตามประเภท</span>
                     </h3>
-                    <p className=" text-sm md:text-base lg:text-sm text-gray-500">มีทั้งหมด {part10.t.total_person_new.toLocaleString()} คน</p>
+                    <p className="text-sm md:text-base lg:text-sm text-gray-500">มีทั้งหมด {part10.t.total_person_new.toLocaleString()} คน</p>
                 </div>
 
                 <div className="h-[370px] w-full relative">

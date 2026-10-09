@@ -120,7 +120,7 @@ export default function T2P2_TypePerMonth({ data }) {
             transition={{ duration: 0.5 }}
         >
             <div>
-                <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
+                <h3 className="flex text-xl lg:text-lg font-bold mb-6 text-gray-700">
                     <Bolt />
                     <span className="ml-2">สถิติการเรียกบรรจุรายเดือน จำแนกตามประเภทตำแหน่ง</span>
                 </h3>

@@ -25,14 +25,14 @@ export default function Tab1() {
             <div className="my-3">
                 <div className="flex items-center gap-4 mb-8">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
-                        <span className=" text-lg md:text-base lg:text-4xl font-black text-white drop-shadow-sm">
+                        <span className="text-4xl font-black text-white drop-shadow-sm">
                             1
                         </span>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h2 className=" text-sm md:text-base lg:text-3xl font-black text-gray-800 leading-none font-kanit">
+                        <span className="text-xl font-black text-gray-800">
                             รายงานสรุปสถิติการเรียกมารายงานตัวเพื่อบรรจุข้าราชการหรือพนักงานส่วนท้องถิ่นประจำปี 2568
-                        </h2>
+                        </span>
                     </div>
                 </div>
                 <div className="grid grid-cols-12 gap-4">
@@ -51,7 +51,7 @@ export default function Tab1() {
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P3_PieListed data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm`}>
                         <T1P6_TableRoundCall data={data} />
                     </div>
                 </div>

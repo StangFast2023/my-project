@@ -57,7 +57,7 @@ export default function T2P9_PosTypePose({ data }) {
         >
             <div>
                 <div className="text-center mb-4">
-                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                    <h3 className="flex justify-center text-xl lg:text-lg font-bold text-gray-700">
                         <LayoutGrid />
                         <span className="ml-2">สัดส่วนตำแหน่งที่เปิดรับ แบ่งตามประเภท</span>
                     </h3>

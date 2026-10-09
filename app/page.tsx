@@ -100,18 +100,15 @@ export default function App() {
     }, [activeTab]);
 
     return (
-        <main className="pb-35">
+        <main>
             <div className="flex flex-col items-center pt-5">
-                <div className="flex items-center gap-3">
-                    <h1 className="text-sm md:text-base lg:text-3xl font-black text-right text-gray-700">
-                        DLA {" "}
-                        <span className="bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent [-webkit-text-stroke:_2px_gray]">
-                            Dashboard
-                        </span>
+                <div className="flex items-center gap-3 text-xl lg:text-3xl text-gray-700 font-bold">
+                    <h1 className="text-right">
+                        DLA Dashboard
                         <br></br>
                         สถิติการเรียกบรรจุข้าราชการท้องถิ่น
                     </h1>
-                    <div className="text-sm md:text-base lg:text-5xl text-gray-700 shadow-lg bg-white px-4 py-1 rounded-3xl shadow-md border border-emerald-100 text-2xl font-bold bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-600">
+                    <div className="text-3xl lg:text-3xl shadow-lg bg-white px-4 py-1 rounded-3xl border border-emerald-100 text-2xl bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-600">
                         2568
                     </div>
                 </div>
@@ -174,10 +171,10 @@ export default function App() {
             <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
 
-            <div className="fixed bottom-0 left-0 right-0 z-50">
+            <div>
                 <div className="flex justify-end">
                     <div className="flex items-end gap-4 p-4">
-                        <p className="text-3xl font-bold text-gray-800 text-right bg-white p-2 rounded-xl shadow-xl">
+                        <p className="text-2xl font-bold text-gray-800 text-right bg-white p-2 rounded-xl shadow-xl">
                             <span className="text-base font-normal text-gray-500 mr-2">
                                 เข้าชมทั้งหมด
                             </span>
@@ -187,7 +184,7 @@ export default function App() {
                             </span>
                         </p>
 
-                        <p className="text-3xl font-bold text-green-600 text-right bg-white p-2 rounded-xl shadow-xl">
+                        <p className="text-2xl font-bold text-green-600 text-right bg-white p-2 rounded-xl shadow-xl">
                             <span className="text-base font-normal text-gray-500 mr-2">
                                 เข้าชมวันนี้
                             </span>

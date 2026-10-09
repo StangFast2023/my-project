@@ -30,7 +30,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         >
             <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
-                    <h3 className="flex justify-center text-sm md:text-base lg:text-sm font-bold text-gray-700">
+                    <h3 className="flex justify-center text-xl lg:text-sm font-bold text-gray-700">
                         <Building2 />
                         <span className="ml-2">สรุปตำแหน่งที่มีอัตราคงเหลือสูงสุด</span>
                     </h3>
@@ -42,9 +42,9 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                             <tr className="sticky top-0 z-20 bg-gray-100 shadow-sm">
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">อันดับ</th>
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ชื่อตำแหน่ง</th>
-                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">ประเภท</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 hidden md:block lg:block">ประเภท</th>
                                 <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600">อัตรา</th>
-                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center">📃</th>
+                                <th className="p-2 text-sm md:text-base lg:text-sm font-semibold text-gray-600 text-center hidden md:block lg:block">📃</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-50">
@@ -58,7 +58,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                     <td className="p-2 lg:p-2">
                                         <div className="font-bold text-sm md:text-base lg:text-sm text-gray-800">{pos.pos_name}</div>
                                     </td>
-                                    <td className={`${typeStyles[pos.pos_type_id]} text-center`}>
+                                    <td className={`${typeStyles[pos.pos_type_id]} text-center hidden md:block lg:block`}>
                                         <div className="font-semibold text-sm md:text-base lg:text-sm text-gray-800">
                                             <span className={`lg:px-1 lg:py-1 rounded-full text-sm ${typeStyles[pos.pos_type_id]}`}>
                                                 {pos.pos_type}
@@ -70,7 +70,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                             {pos.total_list.toLocaleString()}
                                         </span>
                                     </td>
-                                    <td className="p-2 lg:p-2 text-center">
+                                    <td className="p-2 lg:p-2 text-center hidden md:block lg:block">
                                         <span className="font-mono text-sm md:text-base lg:text-sm font-bold text-blue-700">
                                             <button onClick={() => handleViewDetail(pos.id_pos)} className="bg-gray-400 hover:bg-sky-700 text-white px-3 py-1 rounded-md text-sm transition-colors hover:shadow-xl transition-all duration-300">
                                                 <div className="flex items-center gap-1 px-2 py-1">

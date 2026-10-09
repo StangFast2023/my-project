@@ -78,14 +78,14 @@ export default function Tab4() {
             <div className="my-3">
                 <div className="flex items-center gap-4 mb-8">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
-                        <span className="text-sm md:text-base lg:text-4xl font-black text-white drop-shadow-sm">
+                        <span className="text-4xl font-black text-white drop-shadow-sm">
                             4
                         </span>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <h2 className="text-sm md:text-base lg:text-3xl font-black text-gray-800 leading-none font-kanit text-center">
+                        <span className="text-xl font-black text-gray-800">
                             ระบบสืบค้นและเจาะลึกสถิติการเรียกรายงานตัวรายเขตพื้นที่
-                        </h2>
+                        </span>
                     </div>
                 </div>
                 <div className={`${configData ? '' : 'bg-white/50 animate-pulse rounded-2xl mb-6'} grid grid-cols-12 gap-6 my-2`} style={{ height: configData ? 'auto' : '150px' }}>

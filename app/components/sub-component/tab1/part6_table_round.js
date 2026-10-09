@@ -29,7 +29,7 @@ export default function T1P3_PieListed({ data }) {
                 <div className="text-center mb-4 text-gray-700">
                     <div className="flex items-center">
                         <AppWindow />
-                        <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
+                        <h3 className="ml-2 text-base lg:text-lg font-bold text-gray-700">
                             สรุปข้อมูลการเรียกบรรจุสะสม จำแนกตามเขตพื้นที่
                         </h3>
                     </div>
@@ -37,18 +37,18 @@ export default function T1P3_PieListed({ data }) {
             )}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="min-w-[1400px] w-full border-collapse whitespace-nowrap text-left">
+                    <table className="w-full border-collapse whitespace-nowrap text-left">
                         {data === null || data === undefined ? (null) : (
                             <thead className="bg-gray-50 text-gray-600 text-sm">
                                 <tr>
-                                    <th className="bg-gray-50    w-[5%] px-6 py-4 text-sm md:text-base lg:text-lg font-semibold sticky left-[0] z-30">ภาค / เขต</th>
-                                    <th className="bg-amber-50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี (เก่า)</th>
-                                    <th className="bg-amber-100  w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี (ใหม่)</th>
-                                    <th className="bg-red-100    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center">ส่วนต่าง</th>
-                                    <th className="bg-emerald-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-emerald-700">เรียกแล้ว</th>
-                                    <th className="bg-blue-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-blue-700">ความคืบหน้า</th>
-                                    <th className="bg-rose-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center text-rose-500">คงเหลือ</th>
-                                    {roundColumns.map(num => (<th key={num} className="w-[5%] px-4 py-4 text-sm md:text-base lg:text-lg font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
+                                    <th className="bg-gray-50    px-6 py-4 text-base lg:text-lg font-semibold sticky left-[0] z-30">ภาค / เขต</th>
+                                    <th className="bg-amber-50   px-4 py-4 text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี (เก่า)</th>
+                                    <th className="bg-amber-100  px-4 py-4 text-base lg:text-lg font-semibold text-center">ขึ้นบัญชี (ใหม่)</th>
+                                    <th className="bg-red-100    px-4 py-4 text-base lg:text-lg font-semibold text-center">ส่วนต่าง</th>
+                                    <th className="bg-emerald-50 px-4 py-4 text-base lg:text-lg font-semibold text-center text-emerald-700">เรียกแล้ว</th>
+                                    <th className="bg-blue-50    px-4 py-4 text-base lg:text-lg font-semibold text-center text-blue-700">ความคืบหน้า</th>
+                                    <th className="bg-rose-50    px-4 py-4 text-base lg:text-lg font-semibold text-center text-rose-500">คงเหลือ</th>
+                                    {roundColumns.map(num => (<th key={num} className="px-4 py-4 text-base lg:text-lg font-semibold text-center bg-amber-50/30">รอบ {num}</th>))}
                                 </tr>
                             </thead>
                         )}
@@ -58,7 +58,7 @@ export default function T1P3_PieListed({ data }) {
                                 return (
                                     <React.Fragment key={region.name}>
                                         <tr className="bg-emerald-50/20">
-                                            <td colSpan={roundColumns.length + 7} className="border-t-2 border-gray-700 px-6 py-2 text-emerald-700 font-bold text-sm md:text-base lg:text-lg uppercase tracking-wider">
+                                            <td colSpan={roundColumns.length + 7} className="border-t-2 border-gray-700 px-6 py-2 text-emerald-700 font-bold text-base lg:text-lg uppercase tracking-wider">
                                                 <span className="sticky left-[30px]">{region.name}</span>
                                             </td>
                                         </tr>
@@ -71,23 +71,23 @@ export default function T1P3_PieListed({ data }) {
                                             roundColumns.forEach((n, i) => reg.rounds[i] += (zone['data-round']?.[n]?.total_called || 0));
                                             return (
                                                 <tr key={zone.full}>
-                                                    <td className="bg-gray-50    w-[5%] px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{zone.name}</td>
-                                                    <td className="bg-amber-50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed.toLocaleString()}</td>
-                                                    <td className="bg-amber-100  w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed_new.toLocaleString()}</td>
-                                                    <td className="bg-red-100    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{(zone.total_listed - zone.total_listed_new).toLocaleString()}</td>
-                                                    <td className="bg-emerald-50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{zone.total_called.toLocaleString()}</td>
-                                                    <td className="bg-blue-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((zone.total_called / zone.total_listed_new) * 100).toFixed(2)} %</td>
-                                                    <td className="bg-rose-50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{zone.total_remain.toLocaleString()}</td>
+                                                    <td className="bg-gray-50    px-6 py-4 text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{zone.name}</td>
+                                                    <td className="bg-amber-50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed.toLocaleString()}</td>
+                                                    <td className="bg-amber-100  px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed_new.toLocaleString()}</td>
+                                                    <td className="bg-red-100    px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-500">{(zone.total_listed - zone.total_listed_new).toLocaleString()}</td>
+                                                    <td className="bg-emerald-50 px-4 py-4 text-base lg:text-sm font-semibold text-center text-emerald-600">{zone.total_called.toLocaleString()}</td>
+                                                    <td className="bg-blue-50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-blue-600">{((zone.total_called / zone.total_listed_new) * 100).toFixed(2)} %</td>
+                                                    <td className="bg-rose-50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-500">{zone.total_remain.toLocaleString()}</td>
                                                     {roundColumns.map(num => {
                                                         const roundInfo = zone['data-round'][num];
                                                         const bgClass = roundInfo ? "bg-white" : "bg-gray-200";
                                                         return (
                                                             <td
                                                                 key={num}
-                                                                className={`w-[5%] px-4 py-4 text-center ${bgClass}`}
+                                                                className={`px-4 py-4 text-center ${bgClass}`}
                                                             >
                                                                 {roundInfo && (
-                                                                    <span className="text-gray-700 font-bold text-sm md:text-base lg:text-sm">
+                                                                    <span className="text-gray-700 font-bold text-base lg:text-sm">
                                                                         {roundInfo.total_called.toLocaleString()}
                                                                     </span>
                                                                 )}
@@ -98,20 +98,20 @@ export default function T1P3_PieListed({ data }) {
                                             );
                                         })}
                                         <tr key={region.name}>
-                                            <td className="bg-white         w-[5%] px-6 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
-                                            <td className="bg-amber-200/50   w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
-                                            <td className="bg-amber-300/50  w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-gray-600">{reg.new_list.toLocaleString()}</td>
-                                            <td className="bg-red-300/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-600">{reg.diff.toLocaleString()}</td>
-                                            <td className="bg-emerald-200/50 w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
-                                            <td className="bg-blue-200/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.new_list) * 100).toFixed(2)} %</td>
-                                            <td className="bg-rose-200/50    w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
-                                            {reg.rounds.map((v, i) => <td key={i} className={`w-[5%] px-4 py-4 text-sm md:text-base lg:text-sm text-center font-semibold text-gray-700 ${v > 0 ? 'bg-white' : 'bg-gray-200'}`} >{v > 0 ? v.toLocaleString() : null}</td>)}
+                                            <td className="bg-white          px-6 py-4 text-base lg:text-sm font-semibold text-center text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
+                                            <td className="bg-amber-200/50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
+                                            <td className="bg-amber-300/50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{reg.new_list.toLocaleString()}</td>
+                                            <td className="bg-red-300/50     px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-600">{reg.diff.toLocaleString()}</td>
+                                            <td className="bg-emerald-200/50 px-4 py-4 text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
+                                            <td className="bg-blue-200/50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.new_list) * 100).toFixed(2)} %</td>
+                                            <td className="bg-rose-200/50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
+                                            {reg.rounds.map((v, i) => <td key={i} className={`px-4 py-4 text-base lg:text-sm text-center font-semibold text-gray-700 ${v > 0 ? 'bg-white' : 'bg-gray-200'}`} >{v > 0 ? v.toLocaleString() : null}</td>)}
                                         </tr>
                                     </React.Fragment>
                                 );
                             })}
                             {data === null || data === undefined ? (null) : (
-                                <tr className="bg-gray-700 text-white text-sm md:text-base lg:text-sm font-bold">
+                                <tr className="bg-gray-700 text-white text-base lg:text-sm font-bold">
                                     <td className="bg-gray-700 px-6 py-4 text-center uppercase tracking-wider sticky left-[0] z-30">รวมทั้งหมด</td>
                                     <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalListed.toLocaleString()}</td>
                                     <td className="bg-gray-700 px-4 py-4 text-center">{grandTotalListedNew.toLocaleString()}</td>
