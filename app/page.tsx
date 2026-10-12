@@ -9,6 +9,7 @@ import Tab5 from "./components/tab5";
 import ModalTab2Part6 from "./components/sub-component/tab2/modal/modal_of_part6top10pos";
 import ModalFilterSelect from "./components/sub-component/tab5/modal/modalFilterSelect";
 import { useSyncExternalStore } from "react";
+import LastUpdated from "@/app/avaliable/LastUpdated";
 export interface FilterData {
     id_region: number;
     id_sub_regoin: number;
@@ -175,7 +176,7 @@ export default function App() {
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <div className="p-2 text-center">
                         <span className="text-base text-gray-600 font-bold">
-                            อัปเดตล่าสุด ณ วันที่ 12 ตุลาคม 2569 เวลา 16:27 น.
+                            <LastUpdated />
                         </span>
                     </div>
 
