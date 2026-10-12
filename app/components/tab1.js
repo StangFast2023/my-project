@@ -6,6 +6,8 @@ import T1P3_PieListed from './sub-component/tab1/part3_listed';
 import T1P4_Cumulative from './sub-component/tab1/part4_cumulative';
 import T1P5_PercentageRound from './sub-component/tab1/part5_percent_round';
 import T1P6_TableRoundCall from './sub-component/tab1/part6_table_round';
+import T1P6_TableRoundCallMobile from './sub-component/tab1/part6_table_round_for_mobile';
+
 export default function Tab1() {
     const { data } = useQuery({
         queryKey: ['tab1Data'],
@@ -51,8 +53,11 @@ export default function Tab1() {
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P3_PieListed data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm hidden md:block lg:block`}>
                         <T1P6_TableRoundCall data={data} />
+                    </div>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm block md:hidden lg:hidden`}>
+                        <T1P6_TableRoundCallMobile data={data} />
                     </div>
                 </div>
             </div>

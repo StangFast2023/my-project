@@ -29,7 +29,7 @@ export default function T1P3_PieListed({ data }) {
                 <div className="text-center mb-4 text-gray-700">
                     <div className="flex items-center">
                         <AppWindow />
-                        <h3 className="ml-2 text-base lg:text-lg font-bold text-gray-700">
+                        <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">
                             สรุปข้อมูลการเรียกบรรจุสะสม จำแนกตามเขตพื้นที่
                         </h3>
                     </div>

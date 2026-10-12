@@ -1,7 +1,8 @@
 "use client";
-import { motion } from "framer-motion";
-import { Chart } from "react-chartjs-2";
+import { motion } from 'framer-motion';
+import { Chart } from 'react-chartjs-2';
 import { TrendingUp } from 'lucide-react';
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -27,16 +28,14 @@ ChartJS.register(
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T1P4_Cumulative({ data }) {
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const chartRawData = data?.tab1?.part3;
     if (!chartRawData) return null;
-
     const keys = Object.keys(chartRawData);
     const labels = keys.map(key => chartRawData[key].label_th_s);
-
     let runningTotal = 0;
     const monthlyTotals = [];
     const cumulativeData = [];
-
     keys.forEach(key => {
         const monthData = chartRawData[key];
         const monthTotal = monthData.total_per_month || 0;
@@ -49,7 +48,6 @@ export default function T1P4_Cumulative({ data }) {
             cumulativeData.push(null);
         }
     });
-
     const chartData = {
         labels: labels,
         datasets: [
@@ -76,7 +74,6 @@ export default function T1P4_Cumulative({ data }) {
             }
         ]
     };
-
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -123,6 +120,7 @@ export default function T1P4_Cumulative({ data }) {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
+                display: !isMobile,
                 ticks: { callback: (value) => value.toLocaleString() + ' คน' }
             },
             y1: {
@@ -130,6 +128,7 @@ export default function T1P4_Cumulative({ data }) {
                 position: 'right',
                 beginAtZero: true,
                 grid: { drawOnChartArea: false },
+                display: !isMobile,
                 ticks: { callback: (value) => value.toLocaleString() + ' คน' }
             }
         },

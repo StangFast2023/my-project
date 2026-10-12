@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { User, Circle, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import profilePic from '../../public/images/myProfile.webp';
-import QRCodePic from '../../public/images/myQRcode.webp';
+import { useState } from "react";
+import Image from "next/image";
+import { User, Circle, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import profilePic from "../../public/images/myProfile.webp";
+import QRCodePic from "../../public/images/myQRcode.webp";
 
 export default function InfoModal() {
     const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function InfoModal() {
     };
     const getIconData = (key: keyof typeof iconFiles) => {
         const filename = iconFiles[key];
-        const [name, color] = filename.replace('.svg', '').split('_');
+        const [name, color] = filename.replace(".svg", "").split("_");
         return {
             src: `/icons/${filename}`,
             name: name,
@@ -43,8 +43,7 @@ export default function InfoModal() {
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed top-2 right-2 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-3xl transition-all duration-500 hover:scale-110 hover:bg-emerald-600"
-            >
+                className="fixed bottom-4 left-4 p-4 z-[9999] rounded-full bg-emerald-500 text-white shadow-2xl transition-all duration-500 hover:scale-110 hover:bg-emerald-600 lg:bottom-auto lg:left-auto lg:top-4 lg:right-4"            >
                 <div className="flex justify-center items-center">
                     <User size={30} />
                 </div>
@@ -89,13 +88,13 @@ export default function InfoModal() {
                                             </div>
                                             <div className="flex flex-col gap-2 w-full">
                                                 {[
-                                                    { label: 'ผู้พัฒนา', value: 'นายเคณศร คำทวี (สตางค์)' },
-                                                    { label: 'ตำแหน่ง', value: 'นักวิชาการคอมพิวเตอร์' },
-                                                    { label: 'ภาค', value: 'ภาคตะวันออกเฉียงเหนือ' },
-                                                    { label: 'เขต', value: '2' },
-                                                    { label: 'ลำดับเก่า', value: '32' },
-                                                    { label: 'ลำดับใหม่', value: '27' },
-                                                    { label: 'สถานะ', value: 'รอการเรียกบรรจุ' },
+                                                    { label: "ผู้พัฒนา", value: "นายเคณศร คำทวี (สตางค์)" },
+                                                    { label: "ตำแหน่ง", value: "นักวิชาการคอมพิวเตอร์" },
+                                                    { label: "ภาค", value: "ภาคตะวันออกเฉียงเหนือ" },
+                                                    { label: "เขต", value: "2" },
+                                                    { label: "ลำดับเก่า", value: "32" },
+                                                    { label: "ลำดับใหม่", value: "27" },
+                                                    { label: "สถานะ", value: "รอการเรียกบรรจุ" },
                                                 ].map((item, idx) => (
                                                     <div key={idx} className="flex items-center gap-2 hover:bg-gray-50 p-1 rounded transition-all">
                                                         <Circle size={10} className="text-emerald-500 shrink-0" fill="currentColor" />
@@ -112,10 +111,10 @@ export default function InfoModal() {
                                             <h2 className="text-xl text-center font-bold text-gray-800 mb-6">กลุ่มเทคโนโลยีที่ใช้พัฒนา</h2>
                                             <div>
                                                 {[
-                                                    { head: 'Front-end', data: { 0: { value: 'Next.js', logo: "nextdotjs" }, 1: { value: 'Tailwind Css', logo: "tailwindcss" } } },
-                                                    { head: 'Back-end', data: { 0: { value: 'Laravel', logo: "laravel" }, 1: { value: 'Prisma', logo: "prisma" } } },
-                                                    { head: 'Database', data: { 0: { value: 'PostgreSql', logo: "postgresql" } } },
-                                                    { head: 'Infrastructure & Services', data: { 0: { value: 'Vercel', logo: "vercel" }, 1: { value: 'Railway', logo: "railway" }, 2: { value: 'Neon', logo: "neon" } } },
+                                                    { head: "Front-end", data: { 0: { value: "Next.js", logo: "nextdotjs" }, 1: { value: "Tailwind Css", logo: "tailwindcss" } } },
+                                                    { head: "Back-end", data: { 0: { value: "Laravel", logo: "laravel" }, 1: { value: "Prisma", logo: "prisma" } } },
+                                                    { head: "Database", data: { 0: { value: "PostgreSql", logo: "postgresql" } } },
+                                                    { head: "Infrastructure & Services", data: { 0: { value: "Vercel", logo: "vercel" }, 1: { value: "Railway", logo: "railway" }, 2: { value: "Neon", logo: "neon" } } },
                                                 ].map((item, idx) => {
                                                     const subTech = item.data || {};
                                                     return (
@@ -133,12 +132,12 @@ export default function InfoModal() {
                                                                             className={`m-2 w-8 h-8 bg-current text-[${getIconData(tech_data.logo).color}]`}
                                                                             style={{
                                                                                 backgroundColor: getIconData(tech_data.logo).color,
-                                                                                maskImage: `url('${getIconData(tech_data.logo).src}')`,
-                                                                                WebkitMaskImage: `url('${getIconData(tech_data.logo).src}')`,
-                                                                                maskSize: 'contain',
-                                                                                WebkitMaskSize: 'contain',
-                                                                                maskRepeat: 'no-repeat',
-                                                                                WebkitMaskRepeat: 'no-repeat'
+                                                                                maskImage: `url("${getIconData(tech_data.logo).src}")`,
+                                                                                WebkitMaskImage: `url("${getIconData(tech_data.logo).src}")`,
+                                                                                maskSize: "contain",
+                                                                                WebkitMaskSize: "contain",
+                                                                                maskRepeat: "no-repeat",
+                                                                                WebkitMaskRepeat: "no-repeat"
                                                                             }}
                                                                         />
                                                                         <span className={`font-bold`} style={{ color: getIconData(tech_data.logo).color }}>{tech_data.value}</span>
@@ -177,18 +176,18 @@ export default function InfoModal() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex flex-1 justify-center items-center border border-gray-600 rounded-lg text-center font-semibold transition-all duration-200 hover:brightness-120"
-                                    style={{ backgroundColor: getIconData('facebook').color }}
+                                    style={{ backgroundColor: getIconData("facebook").color }}
                                 >
                                     <div
                                         className="m-2 w-8 h-8"
                                         style={{
                                             backgroundColor: "#ffffff",
-                                            maskImage: `url('${getIconData('facebook').src}')`,
-                                            WebkitMaskImage: `url('${getIconData('facebook').src}')`,
-                                            maskSize: 'contain',
-                                            WebkitMaskSize: 'contain',
-                                            maskRepeat: 'no-repeat',
-                                            WebkitMaskRepeat: 'no-repeat'
+                                            maskImage: `url("${getIconData("facebook").src}")`,
+                                            WebkitMaskImage: `url("${getIconData("facebook").src}")`,
+                                            maskSize: "contain",
+                                            WebkitMaskSize: "contain",
+                                            maskRepeat: "no-repeat",
+                                            WebkitMaskRepeat: "no-repeat"
                                         }}
                                     />
                                     <span className="font-bold text-white mr-2">Facebook</span>
@@ -199,18 +198,18 @@ export default function InfoModal() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex flex-1 justify-center items-center border border-gray-600 rounded-lg text-center font-semibold transition-all duration-200 hover:brightness-105"
-                                    style={{ backgroundColor: getIconData('line').color }}
+                                    style={{ backgroundColor: getIconData("line").color }}
                                 >
                                     <div
-                                        className={`m-2 w-8 h-8 bg-current text-[${getIconData('line').color}]`}
+                                        className={`m-2 w-8 h-8 bg-current text-[${getIconData("line").color}]`}
                                         style={{
                                             backgroundColor: "#ffffff",
-                                            maskImage: `url('${getIconData('line').src}')`,
-                                            WebkitMaskImage: `url('${getIconData('line').src}')`,
-                                            maskSize: 'contain',
-                                            WebkitMaskSize: 'contain',
-                                            maskRepeat: 'no-repeat',
-                                            WebkitMaskRepeat: 'no-repeat'
+                                            maskImage: `url("${getIconData("line").src}")`,
+                                            WebkitMaskImage: `url("${getIconData("line").src}")`,
+                                            maskSize: "contain",
+                                            WebkitMaskSize: "contain",
+                                            maskRepeat: "no-repeat",
+                                            WebkitMaskRepeat: "no-repeat"
                                         }}
                                     />
                                     <span className={`font-bold text-white`}> Line </span>

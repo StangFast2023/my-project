@@ -1,12 +1,13 @@
 "use client";
-import { useState, useEffect } from 'react';
-import Tab1 from './components/tab1';
-import Tab2 from './components/tab2';
-import Tab3 from './components/tab3';
-import Tab4 from './components/tab4';
-import Tab5 from './components/tab5';
-import ModalTab2Part6 from './components/sub-component/tab2/modal/modal_of_part6top10pos';
-import ModalFilterSelect from './components/sub-component/tab5/modal/modalFilterSelect';
+import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import Tab1 from "./components/tab1";
+import Tab2 from "./components/tab2";
+import Tab3 from "./components/tab3";
+import Tab4 from "./components/tab4";
+import Tab5 from "./components/tab5";
+import ModalTab2Part6 from "./components/sub-component/tab2/modal/modal_of_part6top10pos";
+import ModalFilterSelect from "./components/sub-component/tab5/modal/modalFilterSelect";
 import { useSyncExternalStore } from "react";
 export interface FilterData {
     id_region: number;
@@ -33,7 +34,6 @@ export default function App() {
     };
 
     const getServerActiveTab = () => 1;
-
     const activeTab = useSyncExternalStore(
         subscribe,
         getActiveTab,
@@ -91,10 +91,10 @@ export default function App() {
     };
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth'
+                behavior: "smooth"
             });
         }
     }, [activeTab]);
@@ -102,7 +102,7 @@ export default function App() {
     return (
         <main>
             <div className="flex flex-col items-center pt-5">
-                <div className="flex items-center gap-3 text-xl lg:text-3xl text-gray-700 font-bold">
+                <div className="flex items-center gap-3 text-base lg:text-3xl text-gray-700 font-bold">
                     <h1 className="text-right">
                         DLA Dashboard
                         <br></br>
@@ -115,11 +115,12 @@ export default function App() {
             </div>
             <div className="my-2 p-2 text-sm md:text-base lg:text-lg">
                 <div className="md:hidden">
-                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-4 bg-gray-100 rounded-xl w-full text-left font-bold text-emerald-600">
-                        {isMenuOpen ? "✕ ปิดเมนู" : "☰ เลือกเมนูวิเคราะห์"}
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex items-center p-4 bg-gray-100 rounded-xl w-full text-xl text-left font-bold text-gray-600">
+                        <span>{isMenuOpen ? <X /> : <Menu />}</span>
+                        <span className="ml-3">{isMenuOpen ? "ปิดเมนู" : "เลือกเมนูวิเคราะห์"}</span>
                     </button>
                     {isMenuOpen && (
-                        <div className="flex flex-col text-sm text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
+                        <div className="flex flex-col text-base text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
                             <button onClick={() => { handleTabChange(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
                             <button onClick={() => { handleTabChange(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
                             <button onClick={() => { handleTabChange(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
@@ -129,28 +130,28 @@ export default function App() {
                     )}
                 </div>
                 <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
-                    <button onClick={() => handleTabChange(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 1 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => handleTabChange(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 1 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
                             สรุปภาพรวม
                         </span>
                     </button>
-                    <button onClick={() => handleTabChange(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 2 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => handleTabChange(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 2 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
                             ข้อมูลประเภทและตำแหน่ง
                         </span>
                     </button>
-                    <button onClick={() => handleTabChange(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 3 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => handleTabChange(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 3 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
                             ข้อมูลรายภาคและเขต
                         </span>
                     </button>
-                    <button onClick={() => handleTabChange(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 4 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => handleTabChange(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 4 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
                             ข้อมูลเจาะลึกรายเขตและตำแหน่ง
                         </span>
                     </button>
-                    <button onClick={() => handleTabChange(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? 'bg-white shadow text-green-600' : null}`} >
-                        <span className={`${activeTab === 5 ? 'bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600' : 'text-gray-400'}`}>
+                    <button onClick={() => handleTabChange(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 5 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
                             วิเคราะห์โอกาสเรียกตัว
                         </span>
                     </button>
@@ -170,11 +171,11 @@ export default function App() {
             {/* for tap5 part1 */}
             <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
-
             <div>
+                <span>อัปเดตล่าสุด ณ วันที่ 12 ตุลาคม 2569 เวลา 14:20 น.</span>
                 <div className="flex justify-end">
                     <div className="flex items-end gap-4 p-4">
-                        <p className="text-2xl font-bold text-gray-800 text-right bg-white p-2 rounded-xl shadow-xl">
+                        <p className="text-xl font-bold text-gray-800 text-right bg-white p-2 rounded-xl shadow-xl">
                             <span className="text-base font-normal text-gray-500 mr-2">
                                 เข้าชมทั้งหมด
                             </span>
@@ -183,8 +184,7 @@ export default function App() {
                                 ครั้ง
                             </span>
                         </p>
-
-                        <p className="text-2xl font-bold text-green-600 text-right bg-white p-2 rounded-xl shadow-xl">
+                        <p className="text-xl font-bold text-green-600 text-right bg-white p-2 rounded-xl shadow-xl">
                             <span className="text-base font-normal text-gray-500 mr-2">
                                 เข้าชมวันนี้
                             </span>
@@ -195,6 +195,7 @@ export default function App() {
                         </p>
                     </div>
                 </div>
+
                 <div className="mx-auto flex full-max-w items-center gap-4 px-4 py-3 border-2 border-gray-400 border-t bg-white shadow-xl">
                     <p className="flex-1 leading-6 text-gray-700 text-center">
                         <span className="font-semibold">หมายเหตุ</span>

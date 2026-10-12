@@ -139,7 +139,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">วันประกาศขึ้นบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 {activeAccount.startDateFormatted}
                             </span>
                         </div>
@@ -149,7 +149,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">วันสิ้นสุดอายุบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 {activeAccount.expireDateFormatted}
                             </span>
                         </div>
@@ -159,14 +159,14 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">อายุบัญชี (วัน) </p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={activeAccount.daysPassed}
                                     duration={3}
                                     separator=","
                                     decimals={0}
                                     useEasing={true}
-                                />   <b className="text-xl lg:text-xl"> / {activeAccount.totalDays} วัน</b>
+                                />   <b className="text-2xl lg:text-xl"> / {activeAccount.totalDays} วัน</b>
                             </span>
                         </div>
                         <div className="w-full rounded-full h-3 overflow-hidden">
@@ -175,7 +175,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">ความคืบหน้าอายุบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={activeAccount.progress}
                                     duration={3}
@@ -198,7 +198,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด <b>(เก่า)</b></p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.OldTotalList}
                                     duration={3}
@@ -212,7 +212,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด <b>(ใหม่)</b></p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.NewTotalList}
                                     duration={3}
@@ -224,9 +224,9 @@ export default function StaticNumber({ data }) {
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
-                        <p className="text-gray-500 text-sm">ส่วนต่างของบัญชีเก่าและใหม่</p>
+                        <p className="text-gray-500 text-sm">ส่วนต่าง</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.DiffTotalList}
                                     duration={3}
@@ -238,9 +238,9 @@ export default function StaticNumber({ data }) {
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
-                        <p className="text-gray-500 text-sm">เรียกไปแล้ว {data?.tab1?.part1?.CurRound} รอบ</p>
+                        <p className="text-gray-500 text-sm">เรียกไปแล้ว</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.TotalCall}
                                     duration={3}
@@ -254,7 +254,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">คงเหลือตามบัญชีใหม่</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.NewTotalList - data?.tab1?.part1?.TotalCall}
                                     duration={3}
@@ -268,7 +268,7 @@ export default function StaticNumber({ data }) {
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">เรียกเฉลี่ยรอบละ</p>
                         <div className="items-baseline gap-2 text-right">
-                            <span className="text-xl lg:text-3xl font-bold text-gray-600">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 <CountUp
                                     end={data?.tab1?.part1?.AvgCall}
                                     duration={3}

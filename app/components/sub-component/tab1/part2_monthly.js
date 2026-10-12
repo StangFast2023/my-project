@@ -1,7 +1,8 @@
-"use client";
-import { motion } from "framer-motion";
-import { Bar } from "react-chartjs-2";
+'use client';
+import { motion } from 'framer-motion';
+import { Bar } from 'react-chartjs-2';
 import { ChartColumn } from 'lucide-react';
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -34,10 +35,9 @@ export default function T1P2_CallMonthly({ data }) {
         "#0ea5e9ab", "#d946efab", "#22c55eab", "#eab308ab", "#64748bab",
         "#475569ab", "#be123cab", "#15803dab", "#1d4ed8ab", "#7c3aedab"
     ];
-
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const chartRawData = data?.tab1?.part2;
     if (!chartRawData) return null;
-
     const keys = Object.keys(chartRawData);
     const labels = keys.map(key => chartRawData[key].label_th_s);
     const fullNames = keys.map(key => chartRawData[key].label_th_f);
@@ -49,7 +49,6 @@ export default function T1P2_CallMonthly({ data }) {
             })
         )
     ).sort((a, b) => a - b);
-
     const barDatasets = allRounds.map((roundNum, index) => ({
         type: 'bar',
         label: ` รอบที่ ${roundNum}`,
@@ -66,7 +65,6 @@ export default function T1P2_CallMonthly({ data }) {
         borderRadius: 6,
         order: 2,
     }));
-
     const lineDataset = {
         type: 'line',
         label: ' ยอดรวมการเรียกรายงานตัว ',
@@ -145,6 +143,7 @@ export default function T1P2_CallMonthly({ data }) {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
+                display: !isMobile,
                 ticks: { callback: (value) => value.toLocaleString() + ' คน' }
             },
             y1: {
@@ -152,6 +151,7 @@ export default function T1P2_CallMonthly({ data }) {
                 position: 'right',
                 beginAtZero: true,
                 grid: { drawOnChartArea: false },
+                display: !isMobile,
                 ticks: { callback: (value) => value.toLocaleString() + ' คน' }
             }
         },
