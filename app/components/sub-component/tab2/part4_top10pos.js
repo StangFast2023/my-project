@@ -29,7 +29,7 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
         >
             <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
-                    <h3 className="flex justify-center text-xl lg:text-lg font-bold text-gray-700">
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         <Archive />
                         <span className="ml-2">สรุปตำแหน่งที่มีการแข่งขันสูงสุด</span>
                     </h3>

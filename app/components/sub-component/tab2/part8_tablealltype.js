@@ -32,7 +32,7 @@ export default function T2P7_TableSummary({ data }) {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-1">
             <div className={`${data ? '' : 'opacity-0'}`}>
-                <h3 className="flex text-base lg:text-lg font-bold mb-4 text-gray-700">
+                <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-4 text-gray-700">
                     <Newspaper />
                     <span className="ml-2">สรุปสถิติการเรียกบรรจุสะสม จำแนกตามภูมิภาคและประเภทตำแหน่ง</span>
                 </h3>

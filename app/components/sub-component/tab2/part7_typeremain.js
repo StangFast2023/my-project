@@ -30,7 +30,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         >
             <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
-                    <h3 className="flex justify-center text-xl lg:text-sm font-bold text-gray-700">
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         <Building2 />
                         <span className="ml-2">สรุปตำแหน่งที่มีอัตราคงเหลือสูงสุด</span>
                     </h3>
@@ -50,7 +50,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                         <tbody className="divide-y divide-gray-50">
                             {sortedData.map((pos, index) => (
                                 <tr key={`${index}-${pos.id_pos}${pos.total_list}-${pos.total_call}-${pos.total_remain}`} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                    <td className="p-4 text-center">
+                                    <td className="p-2 text-center">
                                         <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm md:text-base lg:text-sm font-bold ${index < 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
                                             {index + 1}
                                         </span>

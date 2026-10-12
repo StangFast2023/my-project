@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { Bar } from "react-chartjs-2";
 import { Bolt } from 'lucide-react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T2P3_TypePerRound({ data }) {
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const part3 = data?.tab2?.part3;
     if (!part3) return null;
     const keys = Object.keys(part3);
@@ -93,12 +95,14 @@ export default function T2P3_TypePerRound({ data }) {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
+                display: !isMobile,
                 ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
             },
             y1: {
                 type: 'linear',
                 position: 'right',
                 beginAtZero: true,
+                display: !isMobile,
                 grid: { drawOnChartArea: false },
                 ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
             }
@@ -112,7 +116,7 @@ export default function T2P3_TypePerRound({ data }) {
             transition={{ duration: 0.5 }}
         >
             <div>
-                <h3 className="flex text-xl lg:text-lg font-bold mb-6 text-gray-700">
+                <h3 className="flex text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700">
                     <Bolt />
                     <span className="ml-2">เปรียบเทียบผลการเรียกบรรจุรายรอบ จำแนกตามประเภทตำแหน่ง</span>
                 </h3>

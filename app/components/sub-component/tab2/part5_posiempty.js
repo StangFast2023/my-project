@@ -16,7 +16,7 @@ export default function T2P5_PopularPosEmp({ data }) {
         >
             <div className={`${data ? '' : 'opacity-0'} w-full bg-white rounded-2xl overflow-hidden`}>
                 <div className="text-center mb-2">
-                    <h3 className="flex justify-center text-xl lg:text-lg font-bold text-gray-700">
+                    <h3 className="flex justify-center text-sm md:text-base lg:text-lg font-bold text-gray-700">
                         <BookDown />
                         <span className="ml-2">สรุปอันดับตำแหน่งที่มีการบรรจุเต็มอัตราในรอบที่ 1</span>
                     </h3>
@@ -36,7 +36,7 @@ export default function T2P5_PopularPosEmp({ data }) {
                         <tbody className="divide-y divide-gray-50">
                             {fastEmpty.map((pos, index) => (
                                 <tr key={`${pos.prov_main_id}-${pos.prov_sub_id}-${pos.id_pos}`} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                                    <td className="p-4 text-center">
+                                    <td className="p-2 text-center">
                                         <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-sm md:text-base lg:text-xm font-bold 
                                             ${index < 3 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}>
                                             {index + 1}

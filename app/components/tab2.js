@@ -8,6 +8,8 @@ import T2P7_TypeAllRemain from './sub-component/tab2/part7_typeremain';
 import T2P8_TableAllType from './sub-component/tab2/part8_tablealltype';
 import T2P9_PosTypePose from './sub-component/tab2/part9_PosTypePos';
 import T2P10_PosTypePeople from './sub-component/tab2/part10_PosTypePeople';
+import T2P11_TableAllTypeforMobile from './sub-component/tab2/part11_table_all_type_for_mobile';
+
 export default function Tab1({ setIsOpen, setDetails }) {
     const { data } = useQuery({
         queryKey: ['tab2Data'],
@@ -62,7 +64,10 @@ export default function Tab1({ setIsOpen, setDetails }) {
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P6_TypeAllCall setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hidden md:block lg:block`}>
+                        <T2P8_TableAllType data={data} />
+                    </div>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 block md:hidden lg:hidden`}>
                         <T2P8_TableAllType data={data} />
                     </div>
                 </div>

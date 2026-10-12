@@ -117,15 +117,15 @@ export default function App() {
                 <div className="md:hidden">
                     <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex items-center p-4 bg-gray-100 rounded-xl w-full text-xl text-left font-bold text-gray-600">
                         <span>{isMenuOpen ? <X /> : <Menu />}</span>
-                        <span className="ml-3">{isMenuOpen ? "ปิดเมนู" : "เลือกเมนูวิเคราะห์"}</span>
+                        <span className="ml-auto">{isMenuOpen ? "ปิดเมนู" : "เลือกเมนู"}</span>
                     </button>
                     {isMenuOpen && (
                         <div className="flex flex-col text-base text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
-                            <button onClick={() => { handleTabChange(1); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">สรุปภาพรวม</button>
-                            <button onClick={() => { handleTabChange(2); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลประเภทและตำแหน่ง</button>
-                            <button onClick={() => { handleTabChange(3); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลรายภาคและเขต</button>
-                            <button onClick={() => { handleTabChange(4); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
-                            <button onClick={() => { handleTabChange(5); setIsMenuOpen(false) }} className="p-3 bg-white rounded-lg">วิเคราะห์โอกาสเรียกตัว</button>
+                            <button onClick={() => { handleTabChange(1); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 1 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>สรุปภาพรวม</button>
+                            <button onClick={() => { handleTabChange(2); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 2 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>ข้อมูลประเภทและตำแหน่ง</button>
+                            <button onClick={() => { handleTabChange(3); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 3 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>ข้อมูลรายภาคและเขต</button>
+                            <button onClick={() => { handleTabChange(4); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 4 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
+                            <button onClick={() => { handleTabChange(5); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 5 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>วิเคราะห์โอกาสเรียกตัว</button>
                         </div>
                     )}
                 </div>
@@ -172,24 +172,30 @@ export default function App() {
             <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
             <div>
-                <span>อัปเดตล่าสุด ณ วันที่ 12 ตุลาคม 2569 เวลา 14:20 น.</span>
-                <div className="flex justify-end">
-                    <div className="flex items-end gap-4 p-4">
-                        <p className="text-xl font-bold text-gray-800 text-right bg-white p-2 rounded-xl shadow-xl">
-                            <span className="text-base font-normal text-gray-500 mr-2">
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <div className="p-2 text-center">
+                        <span className="text-base text-gray-600 font-bold">
+                            อัปเดตล่าสุด ณ วันที่ 12 ตุลาคม 2569 เวลา 16:27 น.
+                        </span>
+                    </div>
+
+                    <div className="flex flex-wrap items-end justify-start gap-4 p-2 md:justify-end">
+                        <p className="rounded-xl bg-white p-2 text-xl font-bold text-gray-800 shadow-xl">
+                            <span className="mr-2 text-base font-normal text-gray-500">
                                 เข้าชมทั้งหมด
                             </span>
                             {stats.total_views.toLocaleString()}
-                            <span className="text-base font-normal text-gray-500 ml-2">
+                            <span className="ml-2 text-base font-normal text-gray-500">
                                 ครั้ง
                             </span>
                         </p>
-                        <p className="text-xl font-bold text-green-600 text-right bg-white p-2 rounded-xl shadow-xl">
-                            <span className="text-base font-normal text-gray-500 mr-2">
+
+                        <p className="rounded-xl bg-white p-2 text-xl font-bold text-green-600 shadow-xl">
+                            <span className="mr-2 text-base font-normal text-gray-500">
                                 เข้าชมวันนี้
                             </span>
                             {stats.today_views.toLocaleString()}
-                            <span className="text-base font-normal text-gray-500 ml-2">
+                            <span className="ml-2 text-base font-normal text-gray-500">
                                 ครั้ง
                             </span>
                         </p>
