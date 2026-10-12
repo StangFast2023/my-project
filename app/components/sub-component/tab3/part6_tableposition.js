@@ -147,7 +147,7 @@ export default function T2P7_TableAllType({ data }) {
                                 <div className="flex items-center gap-1">
                                     <span className="font-semibold text-gray-700">({item.pos_id})</span>
                                     <span className="text-gray-700">{`${item.pre_name || ''}${item.pos_name || ''}${item.suf_name || ''}`}</span>
-                                    <span className={`ml-auto px-4 py-1 rounded-full font-bold shadow-sm ${typeStyles[item.type_id]}`}>{item.type_name} 6555</span>
+                                    <span className={`ml-auto px-4 py-1 rounded-full font-bold shadow-sm ${typeStyles[item.type_id]}`}>{item.type_name}</span>
                                 </div>
                             )}
                         />
