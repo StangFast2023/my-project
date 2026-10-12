@@ -68,7 +68,7 @@ export default function Tab1({ setIsOpen, setDetails }) {
                         <T2P8_TableAllType data={data} />
                     </div>
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 block md:hidden lg:hidden`}>
-                        <T2P8_TableAllType data={data} />
+                        <T2P11_TableAllTypeforMobile data={data} />
                     </div>
                 </div>
             </div>
