@@ -74,7 +74,7 @@ export default function T2P11_TableSummaryforMobile({ data }) {
                     return (
                         <section
                             key={regId}
-                            className="w-[88%] min-w-[88%] snap-start self-start overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
+                            className="w-[100%] min-w-[100%] snap-start self-start overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
                         >
                             <div className="border-b border-emerald-100 bg-emerald-50 p-4">
                                 <h5 className="text-xl font-bold text-emerald-800">
