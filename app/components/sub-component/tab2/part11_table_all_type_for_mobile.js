@@ -81,7 +81,7 @@ export default function T2P11_TableSummaryforMobile({ data }) {
                                     {regionName}
                                 </h5>
                                 <p className="mt-1 text-right text-xs text-gray-500">
-                                    รวม {zones.length} ประเภทตำแหน่ง
+                                    รวม {zones.length} ประเภทตำแหน่งและทุกเขต
                                 </p>
                             </div>
                             <div className="grid grid-cols-2 gap-2 p-3">
@@ -165,116 +165,113 @@ export default function T2P11_TableSummaryforMobile({ data }) {
                                 <hr className="border-gray-200" />
                             </div>
                             <div className="space-y-3 p-3">
-                                <h6 className="text-sm font-bold text-gray-700">
+                                <h6 className="text-sm font-bold text-gray-700 mb-0">
                                     รายละเอียดแต่ละประเภทตำแหน่ง
                                 </h6>
-                                {zones.map((zone) => {
-                                    const zoneProgress = Number(zone.total_list_n) > 0 ? (Number(zone.total_call || 0) / Number(zone.total_list_n)) * 100 : 0;
-                                    const typeColor = zone.pos_type_id === 1 ? "border-blue-200 bg-blue-50 text-blue-700" : zone.pos_type_id === 2 ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-amber-200 bg-amber-50 text-amber-700";
-                                    const roundsWithData = roundColumns.filter((num) => Number(zone.round_data?.[num]?.total) > 0);
-                                    return (
-                                        <details
-                                            key={zone.pos_type_id}
-                                            className="overflow-hidden rounded-xl border border-gray-200"
-                                        >
-                                            <summary className="cursor-pointer list-none p-3">
-                                                <div className="flex items-center justify-start gap-2">
-                                                    <span className="text-base text-gray-600 font-semibold">ประเภท : </span>
-                                                    <span className={`rounded-lg border px-2 py-1 text-lg font-bold ${typeColor}`}>
-                                                        {zone.pos_type}
-                                                    </span>
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-x-3 gap-y-3 text-sm mt-2 mb-4">
-                                                    <div className="bg-emerald-100 rounded-xl border-gray-200 shadow-sm p-2">
-                                                        <p className="text-xs text-gray-500">
-                                                            เรียกแล้ว
-                                                        </p>
-                                                        <p className="font-bold text-right text-xl text-emerald-700">
-                                                            {(Number(zone.total_call) || 0).toLocaleString()}
-                                                        </p>
-                                                    </div>
-                                                    <div className="bg-blue-100 rounded-xl border-gray-200 shadow-sm p-2">
-                                                        <p className="text-xs text-gray-500">
-                                                            ความคืบหน้า
-                                                        </p>
-                                                        <p className="font-bold text-right text-xl text-blue-700">
-                                                            {zoneProgress.toFixed(2)}%
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div className="mb-2">
-                                                    <span className="shrink-0 flex justify-end text-gray-400 font-bold shadow-sm p-2 mt-2">
-                                                        ดูรายละเอียด <ChevronRight />
-                                                    </span>
-                                                </div>
-                                            </summary>
-                                            <div className="space-y-3 border-t border-gray-100 bg-gray-50 p-3">
-                                                <div className="grid grid-cols-2 gap-x-3 gap-y-3 text-sm">
-
-                                                    <div className="bg-amber-100 rounded-xl border-gray-200 shadow-sm p-2">
-                                                        <p className="text-xs text-gray-500">
-                                                            ขึ้นบัญชี (เก่า)
-                                                        </p>
-                                                        <p className="font-bold text-right text-xl text-gray-700">
-                                                            {(Number(zone.total_list) || 0).toLocaleString()}
-                                                        </p>
-                                                    </div>
-                                                    <div className="bg-amber-200 rounded-xl border-gray-200 shadow-sm p-2">
-                                                        <p className="text-xs text-gray-500">
-                                                            ขึ้นบัญชี (ใหม่)
-                                                        </p>
-                                                        <p className="font-bold text-right text-xl text-gray-700">
-                                                            {(Number(zone.total_list_n) || 0).toLocaleString()}
-                                                        </p>
-                                                    </div>
-                                                    <div className="bg-rose-100 rounded-xl border-gray-200 shadow-sm p-2">
-                                                        <p className="text-xs text-gray-500">
-                                                            ส่วนต่าง
-                                                        </p>
-                                                        <p className="font-bold text-right text-xl text-rose-700">
-                                                            {(Number(zone.total_diff) || 0).toLocaleString()}
-                                                        </p>
-                                                    </div>
-                                                    <div className="bg-orange-100 rounded-xl border-gray-200 shadow-sm p-2">
-                                                        <p className="text-xs text-gray-500">
-                                                            คงเหลือ
-                                                        </p>
-                                                        <p className="font-bold text-right text-xl text-orange-700">
-                                                            {(Number(zone.total_remain) || 0).toLocaleString()}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <hr className="border-gray-200" />
-                                                <p className="text-xs font-bold text-gray-600">
-                                                    จำนวนเรียกบรรจุแยกรอบ
-                                                </p>
-                                                {roundsWithData.length > 0 ? (
-                                                    <div className="space-y-2">
-                                                        {roundsWithData.map((num) => (
-                                                            <div
-                                                                key={num}
-                                                                className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-3"
-                                                            >
-                                                                <span className="text-sm text-gray-600">
-                                                                    รอบที่ {num}
-                                                                </span>
-                                                                <span className="text-sm font-bold text-emerald-700">
-                                                                    {Number(zone.round_data?.[num]?.total).toLocaleString()} คน
-                                                                </span>
+                                <div className="w-full text-xs text-center text-gray-400 mb-2">
+                                    เลื่อนซ้าย–ขวาเพื่อดูประเภทตำแหน่งอื่น
+                                </div>
+                                <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3">
+                                    {zones.map((zone) => {
+                                        const zoneProgress = Number(zone.total_list_n) > 0 ? (Number(zone.total_call || 0) / Number(zone.total_list_n)) * 100 : 0;
+                                        const typeColor = Number(zone.pos_type_id) === 1 ? "border-blue-200 bg-blue-50 text-blue-700" : Number(zone.pos_type_id) === 2 ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-amber-200 bg-amber-50 text-amber-700";
+                                        const roundsWithData = roundColumns.filter((num) => Number(zone.round_data?.[num]?.total) > 0);
+                                        return (
+                                            <div
+                                                key={zone.pos_type_id}
+                                                className="w-[100%] min-w-[100%] snap-start self-start sm:w-[65%] sm:min-w-[65%]"
+                                            >
+                                                <div className={`h-full overflow-hidden rounded-xl shadow-sm bg-white border-3 ${Number(zone.pos_type_id) === 1 ? 'border-blue-400' : Number(zone.pos_type_id) === 2 ? 'border-emerald-400' : 'border-amber-400'}`}>
+                                                    <div className="cursor-pointer list-none p-3">
+                                                        <div className="flex items-center justify-start gap-2">
+                                                            <span className="flex-1 text-base text-gray-600 font-semibold">ประเภท : </span>
+                                                            <span className={`flex-3 rounded-lg border px-2 py-1 text-center text-lg font-bold ${typeColor}`}>
+                                                                {zone.pos_type}
+                                                            </span>
+                                                        </div>
+                                                        <div className="grid grid-cols-2 gap-x-3 gap-y-3 text-sm mt-2">
+                                                            <div className="bg-amber-100 rounded-xl border-gray-200 shadow-sm p-2">
+                                                                <p className="text-xs text-gray-500">
+                                                                    ขึ้นบัญชี (เก่า)
+                                                                </p>
+                                                                <p className="font-bold text-right text-xl text-gray-700">
+                                                                    {(Number(zone.total_list) || 0).toLocaleString()}
+                                                                </p>
                                                             </div>
-                                                        ))}
+                                                            <div className="bg-amber-200 rounded-xl border-gray-200 shadow-sm p-2">
+                                                                <p className="text-xs text-gray-500">
+                                                                    ขึ้นบัญชี (ใหม่)
+                                                                </p>
+                                                                <p className="font-bold text-right text-xl text-gray-700">
+                                                                    {(Number(zone.total_list_n) || 0).toLocaleString()}
+                                                                </p>
+                                                            </div>
+                                                            <div className="bg-rose-100 rounded-xl border-gray-200 shadow-sm p-2">
+                                                                <p className="text-xs text-gray-500">
+                                                                    ส่วนต่าง
+                                                                </p>
+                                                                <p className="font-bold text-right text-xl text-rose-700">
+                                                                    {(Number(zone.total_diff) || 0).toLocaleString()}
+                                                                </p>
+                                                            </div>
+                                                            <div className="bg-emerald-100 rounded-xl border-gray-200 shadow-sm p-2">
+                                                                <p className="text-xs text-gray-500">
+                                                                    เรียกแล้ว
+                                                                </p>
+                                                                <p className="font-bold text-right text-xl text-emerald-700">
+                                                                    {(Number(zone.total_call) || 0).toLocaleString()}
+                                                                </p>
+                                                            </div>
+                                                            <div className="bg-blue-100 rounded-xl border-gray-200 shadow-sm p-2">
+                                                                <p className="text-xs text-gray-500">
+                                                                    ความคืบหน้า
+                                                                </p>
+                                                                <p className="font-bold text-right text-xl text-blue-700">
+                                                                    {zoneProgress.toFixed(2)}%
+                                                                </p>
+                                                            </div>
+                                                            <div className="bg-orange-100 rounded-xl border-gray-200 shadow-sm p-2">
+                                                                <p className="text-xs text-gray-500">
+                                                                    คงเหลือ
+                                                                </p>
+                                                                <p className="font-bold text-right text-xl text-orange-700">
+                                                                    {(Number(zone.total_remain) || 0).toLocaleString()}
+                                                                </p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                ) : (
-                                                    <p className="py-2 text-center text-xs text-gray-400">
-                                                        ยังไม่มีข้อมูลรอบเรียกบรรจุ
-                                                    </p>
-                                                )}
+                                                    <div className="space-y-3 border-t border-gray-100 bg-gray-50 p-3">
+                                                        <p className="text-base font-bold text-gray-600">
+                                                            จำนวนเรียกบรรจุแยกรอบ
+                                                        </p>
+                                                        {roundsWithData.length > 0 ? (
+                                                            <div className="space-y-2">
+                                                                {roundsWithData.map((num) => (
+                                                                    <div
+                                                                        key={num}
+                                                                        className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-3"
+                                                                    >
+                                                                        <span className="text-sm text-gray-600">
+                                                                            รอบที่ {num}
+                                                                        </span>
+                                                                        <span className="text-sm font-bold text-emerald-700">
+                                                                            {Number(zone.round_data?.[num]?.total).toLocaleString()} คน
+                                                                        </span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        ) : (
+                                                            <p className="py-2 text-center text-xs text-gray-400">
+                                                                ยังไม่มีข้อมูลรอบเรียกบรรจุ
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </details>
-                                    );
-                                })}
+                                        );
+                                    })}
+                                </div>
                             </div>
-
                         </section>
                     );
                 })}
