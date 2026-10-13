@@ -42,22 +42,102 @@ export default function StaticNumber({ data }) {
         ],
         []
     );
+
     const calculatedAccounts = useMemo(() => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+
+        // คำนวณระยะเวลาระหว่างวันที่ในรูปแบบปี เดือน วัน
+        const getDuration = (start, end) => {
+            if (end <= start) {
+                return { years: 0, months: 0, days: 0, formatted: "0 วัน" };
+            }
+
+            const addMonthsClamped = (date, count) => {
+                const result = new Date(date);
+                const originalDay = result.getDate();
+
+                result.setDate(1);
+                result.setMonth(result.getMonth() + count);
+
+                const lastDay = new Date(
+                    result.getFullYear(),
+                    result.getMonth() + 1,
+                    0
+                ).getDate();
+
+                result.setDate(Math.min(originalDay, lastDay));
+                return result;
+            };
+
+            let years = end.getFullYear() - start.getFullYear();
+            let cursor = addMonthsClamped(start, years * 12);
+
+            if (cursor > end) {
+                years--;
+                cursor = addMonthsClamped(start, years * 12);
+            }
+
+            let months =
+                (end.getFullYear() - cursor.getFullYear()) * 12 +
+                end.getMonth() - cursor.getMonth();
+
+            let monthCursor = addMonthsClamped(cursor, months);
+
+            if (monthCursor > end) {
+                months--;
+                monthCursor = addMonthsClamped(cursor, months);
+            }
+
+            const MS_PER_DAY = 1000 * 60 * 60 * 24;
+            const days = Math.round((end - monthCursor) / MS_PER_DAY);
+
+            const parts = [];
+            if (years > 0) parts.push(`${years} ปี`);
+            if (months > 0) parts.push(`${months} เดือน`);
+            if (days > 0) parts.push(`${days} วัน`);
+
+            return {
+                years,
+                months,
+                days,
+                formatted: parts.length > 0 ? parts.join(" ") : "ครบ 0 วัน",
+            };
+        };
+
         return accounts.map((item) => {
             const [year, month, day] = item.startDate.split("-").map(Number);
             const startDate = new Date(year, month - 1, day);
             startDate.setHours(0, 0, 0, 0);
+
             const expireDate = new Date(startDate);
             expireDate.setFullYear(expireDate.getFullYear() + 2);
+
             const MS_PER_DAY = 1000 * 60 * 60 * 24;
-            const totalDays = Math.round((expireDate - startDate) / MS_PER_DAY);
-            let daysPassed = Math.floor((today - startDate) / MS_PER_DAY);
+            const totalDays = Math.round(
+                (expireDate - startDate) / MS_PER_DAY
+            );
+
+            let daysPassed = Math.floor(
+                (today - startDate) / MS_PER_DAY
+            );
+
             if (daysPassed < 0) daysPassed = 0;
             if (daysPassed > totalDays) daysPassed = totalDays;
-            const progress = totalDays > 0 ? (daysPassed / totalDays) * 100 : 0;
+
+            const progress =
+                totalDays > 0 ? (daysPassed / totalDays) * 100 : 0;
+
+            // อายุบัญชีที่ผ่านไปแล้ว (จำกัดไม่เกินวันสิ้นสุดบัญชี)
+            const elapsedDate = new Date(
+                Math.min(Math.max(today.getTime(), startDate.getTime()), expireDate.getTime())
+            );
+
+            const passedTime = getDuration(startDate, elapsedDate);
+
+            // ระยะเวลาที่เหลือก่อนบัญชีสิ้นสุด
             let remainingTime;
+
             if (today >= expireDate) {
                 remainingTime = {
                     years: 0,
@@ -67,31 +147,18 @@ export default function StaticNumber({ data }) {
                     formatted: "บัญชีสิ้นสุดแล้ว",
                 };
             } else {
-                let years = expireDate.getFullYear() - today.getFullYear();
-                let months = expireDate.getMonth() - today.getMonth();
-                let days = expireDate.getDate() - today.getDate();
-                if (days < 0) {
-                    months--;
-                    const previousMonth = new Date(expireDate.getFullYear(), expireDate.getMonth(), 0);
-                    days += previousMonth.getDate();
-                }
-                if (months < 0) {
-                    years--;
-                    months += 12;
-                }
-                const parts = [];
-                if (years > 0) parts.push(`${years} ปี`);
-                if (months > 0) parts.push(`${months} เดือน`);
-                if (days > 0) parts.push(`${days} วัน`);
+                const duration = getDuration(today, expireDate);
 
                 remainingTime = {
-                    years,
-                    months,
-                    days,
+                    ...duration,
                     expired: false,
-                    formatted: parts.length > 0 ? parts.join(" ") : "ครบกำหนดวันนี้",
+                    formatted:
+                        today.getTime() === expireDate.getTime()
+                            ? "ครบกำหนดวันนี้"
+                            : duration.formatted,
                 };
             }
+
             const formattedExpireDate = expireDate.toLocaleDateString(
                 "th-TH",
                 {
@@ -100,6 +167,7 @@ export default function StaticNumber({ data }) {
                     day: "numeric",
                 }
             );
+
             const formattedStartDate = startDate.toLocaleDateString(
                 "th-TH",
                 {
@@ -108,11 +176,13 @@ export default function StaticNumber({ data }) {
                     day: "numeric",
                 }
             );
+
             const todayFormatted = today.toLocaleDateString("th-TH", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
             });
+
             return {
                 ...item,
                 startDateFormatted: formattedStartDate,
@@ -120,11 +190,13 @@ export default function StaticNumber({ data }) {
                 todayDateFormatted: todayFormatted,
                 totalDays,
                 daysPassed,
+                passedTime,
                 progress: Number(progress.toFixed(2)),
                 remainingTime,
             };
         });
     }, [accounts]);
+
     const activeAccount = calculatedAccounts.find((acc) => acc.accountType === accountType);
     return (
         <motion.div
@@ -171,26 +243,20 @@ export default function StaticNumber({ data }) {
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
-                        <p className="text-gray-500 text-sm">ระยะเวลาที่เหลือก่อนบัญชีหมดอายุ</p>
+                        <p className="text-gray-500 text-sm">อายุบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                {activeAccount.remainingTime.formatted}
+                                {activeAccount.passedTime.formatted}
                             </span>
                         </div>
                         <div className="w-full rounded-full h-3 overflow-hidden">
                         </div>
                     </div>
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
-                        <p className="text-gray-500 text-sm">อายุบัญชี (วัน) </p>
+                        <p className="text-gray-500 text-sm">ระยะเวลาที่เหลือก่อนบัญชีหมดอายุ</p>
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={activeAccount.daysPassed}
-                                    duration={3}
-                                    separator=","
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-2xl lg:text-xl"> / {activeAccount.totalDays} วัน</b>
+                                {activeAccount.remainingTime.formatted}
                             </span>
                         </div>
                         <div className="w-full rounded-full h-3 overflow-hidden">
