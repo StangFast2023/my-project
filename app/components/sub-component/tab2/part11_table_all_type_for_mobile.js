@@ -222,19 +222,19 @@ export default function T2P11_TableSummaryforMobile({ data }) {
                                                                     {(Number(zone.total_call) || 0).toLocaleString()}
                                                                 </p>
                                                             </div>
-                                                            <div className="bg-blue-100 rounded-xl border-gray-200 shadow-sm p-2">
+                                                            <div className={`rounded-xl border-gray-200 shadow-sm p-2 ${zoneProgress === 100 ? ' bg-emerald-100' : (zoneProgress < 100 ? ' bg-blue-100' : ' bg-violet-100')} `}>
                                                                 <p className="text-xs text-gray-500">
                                                                     ความคืบหน้า
                                                                 </p>
-                                                                <p className="font-bold text-right text-xl text-blue-700">
+                                                                <p className={`font-bold text-right text-xl ${zoneProgress === 100 ? ' text-emerald-700' : (zoneProgress < 100 ? ' text-blue-700' : ' text-violet-700')} `}>
                                                                     {zoneProgress.toFixed(2)}%
                                                                 </p>
                                                             </div>
-                                                            <div className="bg-orange-100 rounded-xl border-gray-200 shadow-sm p-2">
+                                                            <div className={`rounded-xl border-gray-200 shadow-sm p-2  ${zone.total_remain === 0 ? 'bg-emerald-100' : (zone.total_remain > 0 ? 'bg-orange-100' : 'bg-rose-100')}`}>
                                                                 <p className="text-xs text-gray-500">
                                                                     คงเหลือ
                                                                 </p>
-                                                                <p className="font-bold text-right text-xl text-orange-700">
+                                                                <p className={`font-bold text-right text-xl ${zone.total_remain === 0 ? 'text-emerald-700' : (zone.total_remain > 0 ? 'text-orange-700' : 'text-rose-700')}`}>
                                                                     {(Number(zone.total_remain) || 0).toLocaleString()}
                                                                 </p>
                                                             </div>
