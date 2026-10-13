@@ -10,32 +10,23 @@ export default function StaticNumber({ data }) {
             window.removeEventListener("accountTypeChange", callback);
         };
     };
-
     const getAccountType = () => {
         const savedType = localStorage.getItem("selectedAccountType");
         const parsed = Number(savedType);
 
         return parsed === 1 || parsed === 2 ? parsed : 1;
     };
-
     const getServerAccountType = () => 1;
-
     const accountType = useSyncExternalStore(
         subscribeAccountType,
         getAccountType,
         getServerAccountType
     );
-
-    useEffect(() => {
-        localStorage.setItem("selectedAccountType", accountType.toString());
-    }, [accountType]);
-
+    useEffect(() => { localStorage.setItem("selectedAccountType", accountType.toString()); }, [accountType]);
     const handleAccountTypeChange = (type) => {
         localStorage.setItem("selectedAccountType", String(type));
-
         window.dispatchEvent(new Event("accountTypeChange"));
     };
-
     const accounts = useMemo(
         () => [
             {
@@ -54,42 +45,74 @@ export default function StaticNumber({ data }) {
     const calculatedAccounts = useMemo(() => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-
         return accounts.map((item) => {
             const [year, month, day] = item.startDate.split("-").map(Number);
             const startDate = new Date(year, month - 1, day);
             startDate.setHours(0, 0, 0, 0);
-
             const expireDate = new Date(startDate);
             expireDate.setFullYear(expireDate.getFullYear() + 2);
-
             const MS_PER_DAY = 1000 * 60 * 60 * 24;
             const totalDays = Math.round((expireDate - startDate) / MS_PER_DAY);
-
             let daysPassed = Math.floor((today - startDate) / MS_PER_DAY);
             if (daysPassed < 0) daysPassed = 0;
             if (daysPassed > totalDays) daysPassed = totalDays;
-
             const progress = totalDays > 0 ? (daysPassed / totalDays) * 100 : 0;
+            let remainingTime;
+            if (today >= expireDate) {
+                remainingTime = {
+                    years: 0,
+                    months: 0,
+                    days: 0,
+                    expired: true,
+                    formatted: "บัญชีสิ้นสุดแล้ว",
+                };
+            } else {
+                let years = expireDate.getFullYear() - today.getFullYear();
+                let months = expireDate.getMonth() - today.getMonth();
+                let days = expireDate.getDate() - today.getDate();
+                if (days < 0) {
+                    months--;
+                    const previousMonth = new Date(expireDate.getFullYear(), expireDate.getMonth(), 0);
+                    days += previousMonth.getDate();
+                }
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+                const parts = [];
+                if (years > 0) parts.push(`${years} ปี`);
+                if (months > 0) parts.push(`${months} เดือน`);
+                if (days > 0) parts.push(`${days} วัน`);
 
-            const formattedExpireDate = expireDate.toLocaleDateString("th-TH", {
-                year: "numeric",
-                month: "long",
+                remainingTime = {
+                    years,
+                    months,
+                    days,
+                    expired: false,
+                    formatted: parts.length > 0 ? parts.join(" ") : "ครบกำหนดวันนี้",
+                };
+            }
+            const formattedExpireDate = expireDate.toLocaleDateString(
+                "th-TH",
+                {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                }
+            );
+            const formattedStartDate = startDate.toLocaleDateString(
+                "th-TH",
+                {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                }
+            );
+            const todayFormatted = today.toLocaleDateString("th-TH", {
                 day: "numeric",
-            });
-
-            const formattedStartDate = startDate.toLocaleDateString("th-TH", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-            });
-
-            const todayFormatted = new Date().toLocaleDateString("th-TH", {
-                day: "numeric",
                 month: "long",
                 year: "numeric",
             });
-
             return {
                 ...item,
                 startDateFormatted: formattedStartDate,
@@ -98,14 +121,11 @@ export default function StaticNumber({ data }) {
                 totalDays,
                 daysPassed,
                 progress: Number(progress.toFixed(2)),
+                remainingTime,
             };
         });
     }, [accounts]);
-
-    const activeAccount = calculatedAccounts.find(
-        (acc) => acc.accountType === accountType
-    );
-
+    const activeAccount = calculatedAccounts.find((acc) => acc.accountType === accountType);
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -121,21 +141,15 @@ export default function StaticNumber({ data }) {
                                 <button
                                     key={acc.accountType}
                                     onClick={() => handleAccountTypeChange(acc.accountType)}
-                                    className={`w-full lg:w-100 px-3 py-1.5 rounded-sm text-sm transition-all duration-300 ease-in-out whitespace-nowrap
-                                            ${isActive
-                                            ? "bg-blue-200 text-blue-600 font-bold shadow-sm"
-                                            : "bg-gray-200 text-gray-600 font-semibold hover:bg-gray-300"
-                                        }`}
+                                    className={`w-full lg:w-100 px-3 py-1.5 rounded-sm text-sm transition-all duration-300 ease-in-out whitespace-nowrap ${isActive ? "bg-blue-200 text-blue-600 font-bold shadow-sm" : "bg-gray-200 text-gray-600 font-semibold hover:bg-gray-300"}`}
                                 >
-                                    {acc.accountType === 1
-                                        ? "8 เขต (ยกเว้นภาคใต้เขต 1 & 2)"
-                                        : "เฉพาะภาคใต้ เขต 1 & 2"}
+                                    {acc.accountType === 1 ? "8 เขต (ยกเว้นภาคใต้เขต 1 & 2)" : "เฉพาะภาคใต้ เขต 1 & 2"}
                                 </button>
                             );
                         })}
                     </div>
                 </div>
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-4 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-5 lg:grid-cols-5">
                     <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
                         <p className="text-gray-500 text-sm">วันประกาศขึ้นบัญชี</p>
                         <div className="items-baseline gap-2 text-right">
@@ -151,6 +165,16 @@ export default function StaticNumber({ data }) {
                         <div className="items-baseline gap-2 text-right">
                             <span className="text-2xl lg:text-3xl font-bold text-gray-600">
                                 {activeAccount.expireDateFormatted}
+                            </span>
+                        </div>
+                        <div className="w-full rounded-full h-3 overflow-hidden">
+                        </div>
+                    </div>
+                    <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-emerald-500 my-2 shadow-xl">
+                        <p className="text-gray-500 text-sm">ระยะเวลาที่เหลือก่อนบัญชีหมดอายุ</p>
+                        <div className="items-baseline gap-2 text-right">
+                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
+                                {activeAccount.remainingTime.formatted}
                             </span>
                         </div>
                         <div className="w-full rounded-full h-3 overflow-hidden">
