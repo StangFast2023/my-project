@@ -99,7 +99,7 @@ export default function T2P7_TableAllType({ data }) {
             </div>
             {isMobile ? (
                 <div>
-                    <div className="space-y-4 p-3 md:hidden">
+                    <div className="space-y-4">
                         <section>
                             <h3 className="mb-2 text-sm font-bold text-gray-700">
                                 ชั้นที่ 1 · ระดับภาค
