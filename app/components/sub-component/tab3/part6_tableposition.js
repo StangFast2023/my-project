@@ -204,7 +204,7 @@ export default function T2P7_TableAllType({ data }) {
                                         >
                                             {isMobile ? (
                                                 <div className="p-1 w-full h-auto">
-                                                    <div className="rounded-2xl bg-white p-2">
+                                                    <div className="rounded-2xl bg-white p-1">
                                                         <h3 className="mb-2 text-base font-bold text-gray-800">
                                                             สรุปยอดรวมทุกภาค
                                                         </h3>
@@ -262,7 +262,7 @@ export default function T2P7_TableAllType({ data }) {
                                                             <span className="shrink-0 text-xs text-gray-400">
                                                                 เลื่อนซ้าย–ขวา
                                                             </span>
-                                                        </div><div className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-4">
+                                                        </div><div className="flex snap-x snap-mandatory gap-3 overflow-x-auto p-1">
                                                             {Object.values(displayData).map((item) => {
                                                                 const statusOpen = item.status_open === true;
                                                                 const totalListed = Number(item.total_listed) || 0;
@@ -281,7 +281,7 @@ export default function T2P7_TableAllType({ data }) {
                                                                 return (
                                                                     <section
                                                                         key={item.full_key_province}
-                                                                        className="h-auto w-full min-w-full snap-start rounded-xl border border-gray-200 bg-white p-2"
+                                                                        className="h-auto w-full min-w-full snap-start rounded-xl border border-gray-200 bg-white p-1 shadow-sm"
                                                                     >
                                                                         <div className="flex flex-col items-center border-b border-gray-200 p-2">
                                                                             <h4 className="w-full text-center text-base font-bold text-gray-800">
@@ -291,7 +291,7 @@ export default function T2P7_TableAllType({ data }) {
                                                                                 {statusOpen ? "เปิดสอบ" : "ไม่เปิดสอบ"}
                                                                             </span>
                                                                         </div>
-                                                                        <div className="grid grid-cols-2 gap-2 p-2">
+                                                                        <div className="grid grid-cols-2 gap-1 p-1">
                                                                             <div className="rounded-xl bg-amber-50 p-2">
                                                                                 <p className="text-xs text-gray-500">ขึ้นบัญชีเก่า</p>
                                                                                 <p className="mt-0.5 font-bold text-sm text-gray-700 text-right">
@@ -333,6 +333,9 @@ export default function T2P7_TableAllType({ data }) {
                                                                                     {statusOpen ? totalRemain.toLocaleString() : "-"}
                                                                                 </p>
                                                                             </div>
+                                                                            <div className={`rounded-xl p-2 col-span-2 text-center text-sm font-semibold ${totalRemain === 0 ? "bg-emerald-100 text-emerald-700" : (totalRemain > 0 ? "bg-orange-100 text-orange-700" : "bg-rose-100 text-rose-700")}`}>
+                                                                                สถานะบัญชี : {statusOpen ? (totalRemain === 0 ? "หมดบัญชี" : (totalRemain > 0 ? "คงเหลือ" : "ขาดแคลน")) : "-"}
+                                                                            </div>
                                                                         </div>
                                                                         <div className="border-t border-gray-200">
                                                                             <div className="flex items-center justify-between gap-2 p-2">
@@ -344,10 +347,9 @@ export default function T2P7_TableAllType({ data }) {
                                                                                 </span>
                                                                             </div>
                                                                             {rounds.length > 0 ? (
-                                                                                <div className="flex w-full min-w-full items-start snap-x snap-mandatory gap-2 overflow-x-auto pb-3">
+                                                                                <div className="flex w-full min-w-full items-start snap-x snap-mandatory gap-2 overflow-x-auto">
                                                                                     {rounds.map(({ num, data: round }) => {
                                                                                         const called = round.call_status === true;
-                                                                                        const cross = round.is_cross_region === true;
                                                                                         const change = round.percent_change;
                                                                                         const hasChange = change !== null && change !== undefined && Number.isFinite(Number(change));
                                                                                         const workStatus = {
@@ -355,42 +357,35 @@ export default function T2P7_TableAllType({ data }) {
                                                                                             "not-used": "ไม่มีการใช้บัญชี",
                                                                                             exhaustion: "บัญชีสิ้นสุด",
                                                                                         }[round.status_work] || "ได้รับการบรรจุแล้ว";
-                                                                                        const regionName = {
-                                                                                            1: "ภาคเหนือ",
-                                                                                            2: "ภาคกลาง",
-                                                                                            3: "ภาคตะวันออกเฉียงเหนือ",
-                                                                                            4: "ภาคใต้",
-                                                                                        }[round.crossed_region] || "-";
                                                                                         return (
                                                                                             <div
                                                                                                 key={num}
-                                                                                                className="h-auto min-h-fit w-[100%] min-w-[100%] shrink-0 snap-start rounded-xl border border-gray-200 bg-white p-2"
+                                                                                                className="h-auto min-h-fit w-[100%] min-w-[100%] shrink-0 snap-start rounded-xl border border-gray-200 bg-white p-1"
                                                                                             >
                                                                                                 <div className="space-y-2">
                                                                                                     <div className="flex items-center justify-between gap-2">
                                                                                                         <span className="text-xs font-bold text-gray-800">
                                                                                                             รอบที่ {round.round || num}
                                                                                                         </span>
-                                                                                                        <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${called ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>
+                                                                                                        <span className={`rounded-full px-3 py-0.5 text-xs font-semibold ${called ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>
                                                                                                             {called ? "เรียกบรรจุแล้ว" : "ไม่ได้เรียก"}
                                                                                                         </span>
                                                                                                     </div>
-                                                                                                    <div className="flex items-center justify-between">
-                                                                                                        <p className="text-xs text-gray-500">
-                                                                                                            จำนวนที่เรียกบรรจุ
-                                                                                                        </p>
-                                                                                                        <p className="text-lg font-bold text-emerald-700">
-                                                                                                            {(Number(round.total) || 0).toLocaleString()}
-                                                                                                            <span className="ml-1 text-sm font-normal text-gray-500">คน</span>
-                                                                                                        </p>
-                                                                                                    </div>
-                                                                                                    <div className="space-y-1">
+                                                                                                    <div className="grid grid-cols-2 gap-2">
+                                                                                                        <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                            <p className="text-xs text-gray-400">จำนวนที่เรียกบรรจุ</p>
+                                                                                                            <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                                {(Number(round.total) || 0).toLocaleString()}
+                                                                                                            </p>
+                                                                                                        </div>
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
                                                                                                             <p className="text-xs text-gray-400">ลำดับที่เรียก</p>
                                                                                                             <p className="text-right text-sm font-semibold text-gray-800">
                                                                                                                 {called ? round.start_end || "-" : "-"}
                                                                                                             </p>
                                                                                                         </div>
+                                                                                                    </div>
+                                                                                                    <div className="space-y-1">
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
                                                                                                             <p className="text-xs text-gray-400">วันที่บรรจุ</p>
                                                                                                             <p className="text-right text-sm font-semibold text-gray-800">
@@ -399,7 +394,7 @@ export default function T2P7_TableAllType({ data }) {
                                                                                                         </div>
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
                                                                                                             <p className="text-xs text-gray-400">สถานะการทำงาน</p>
-                                                                                                            <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                            <p className={`text-right text-sm font-semibold text-gray-800`}>
                                                                                                                 {workStatus}
                                                                                                             </p>
                                                                                                         </div>

@@ -222,7 +222,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
         return <EmptyData />;
     }
     return (
-        <div className="fade-in space-y-4 pb-6">
+        <div className="fade-in space-y-3 pb-6">
             <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
                 <div className="bg-[#2d3446] px-4 py-4 text-white">
                     <h2 className="text-base font-bold">สรุปข้อมูลทุกภาค</h2>
@@ -268,7 +268,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                         </p>
                     </div>
                     <div className={`rounded-xl border border-gray-200 p-2 col-span-2 text-white ${summaryPercent === 100 ? "bg-emerald-600" : (summaryPercent < 100 ? "bg-amber-600" : "bg-rose-600")}`}>
-                        <p className="text-xl text-center">สถานะบัญชี : {summaryStatus}</p>
+                        <p className="text-base text-center">สถานะบัญชี : {summaryStatus}</p>
                     </div>
                 </div>
                 <div className="px-3 pb-3">
@@ -297,7 +297,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                 </div>
             </section>
             <section className="rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-                <div className="flex items-center gap-2">
+                <div className="mb-3 flex items-center gap-2">
                     <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-800 text-sm font-bold text-white">
                         1
                     </span>
@@ -447,7 +447,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                         <div className="grid grid-cols-2 gap-px bg-gray-200">
                             <div className="bg-white p-2">
                                 <p className="text-xs text-gray-500">สถานะเปิดสอบ</p>
-                                <p className={`mt-1 p-2 rounded-xl font-bold text-center shadow-sm ${activePosition.status_open ? 'text-emerald-700 bg-emerald-100' : 'text-rose-700'}`}>
+                                <p className={`mt-1 p-2 rounded-xl font-bold text-center shadow-sm ${activePosition.status_open ? 'text-emerald-700 bg-emerald-100' : 'text-rose-700  bg-rose-100'}`}>
                                     {activePosition.status_open ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}
                                 </p>
                             </div>
@@ -499,7 +499,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                         </div>
                     </div>
                     <div className="rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-                        <div className="flex items-center gap-2">
+                        <div className="mb-3 flex items-center gap-2">
                             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-800 text-sm font-bold text-white">
                                 4
                             </span>
@@ -507,7 +507,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                 รายละเอียดการเรียกแต่ละรอบ
                             </h2>
                         </div>
-                        <div className="text-xs text-gray-400 text-center mb-3">
+                        <div className="text-xs text-gray-400 text-center mb-2">
                             กรุณาเลื่อนซ้าย-ขวาเพื่อเลือกดูรอบ
                         </div>
 

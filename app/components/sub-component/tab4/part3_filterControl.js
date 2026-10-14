@@ -1,8 +1,11 @@
+
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 export const T4P3_filterControl = (data, filters) => {
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const rawObj = data?.tab4?.part2?.data || {};
     let list = Object.values(rawObj);
-    const cleanRegions      = filters?.regions?.filter(id => !id.startsWith('reg-')) || [];
-    const cleanPositions    = filters?.positions?.filter(id => !id.startsWith('type-')) || [];
-    const showEmpty         = filters?.showEmpty ? ( filters.showEmpty === true ? true : false ) : false ;
+    const cleanRegions = filters?.regions?.filter(id => !id.startsWith('reg-')) || [];
+    const cleanPositions = filters?.positions?.filter(id => !id.startsWith('type-')) || [];
+    const showEmpty = filters?.showEmpty ? (isMobile ? true : (filters.showEmpty === true ? true : false)) : false;
     return { list, cleanRegions, cleanPositions, showEmpty };
-};
+}

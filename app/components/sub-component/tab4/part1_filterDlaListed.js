@@ -296,7 +296,7 @@ export default function T4P1_TableAllListed({
             }
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const { all_header, column_part1, column_part2, column_part3, position_not_open } = result.value;
+                const { all_header, position_not_open } = result.value;
                 const shouldShowWarning = (filters.all_header === true && all_header === false);
                 if (shouldShowWarning) {
                     const text = `หากคุณซ่อนหัวแถวและสรุปของระดับ <b>ภาค , เขต และประเภท</b> <br> ระบบจะเพิ่มคอลัมน์ <b>ภาค</b> กับ <b>เขต</b> เข้ามาแทน <br> และ <b>สรุปรวม</b> ของ ภาค , เขต และประเภท จะไม่แสดงผล`;
@@ -334,7 +334,7 @@ export default function T4P1_TableAllListed({
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
-                <div className="flex flex-col lg:flex-row flex-1 gap-4 min-w-0">
+                <div className="flex flex-col lg:flex-row flex-1 gap-2 min-w-0">
                     <div className="w-full lg:w-1/3 min-w-0">
                         <FilterDropdown
                             label="ภาค & เขต"

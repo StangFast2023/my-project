@@ -2,7 +2,6 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { createRoot } from 'react-dom/client';
-import useMediaQuery from '@/app/avaliable/useMediaQuery';
 const MySwal = withReactContent(Swal);
 export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, columns = 2, onSelectionChange }) => {
     const showModal = () => {
@@ -50,7 +49,6 @@ export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, 
 };
 
 const ModalBody = ({ items, selectedItems, onSelectChange }) => {
-    const isMobile = useMediaQuery("(max-width: 767px)");
     const [toast, setToast] = React.useState({ show: false, msg: "", color: "" });
     const toastTimer = React.useRef(null);
     const showToast = (msg, color = "bg-green-500") => {
