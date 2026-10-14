@@ -2,12 +2,14 @@ import axios from 'axios';
 import { Sheet } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo, useEffect } from 'react';
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
+import { useColumnStore } from '../components/useTableColumns';
+import ShowAllDataTable from './sub-component/tab4/showallDataTable';
 import T4P1_filterDlaListed from './sub-component/tab4/part1_filterDlaListed';
 import T4P2_showingAllTable from './sub-component/tab4/part2_showingAllTable';
-import ShowAllDataTable from './sub-component/tab4/showallDataTable';
-import { useColumnStore } from '../components/useTableColumns';
+import ShowAllDataTableMobile from './sub-component/tab4/ShowAllDataTableMobile';
 export default function Tab4() {
-
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const [filters, setFilters] = useState(() => {
         const saved = localStorage.getItem('tab4Filters');
         return saved ? JSON.parse(saved) : {
@@ -18,11 +20,9 @@ export default function Tab4() {
             all_header: null
         };
     });
-
     useEffect(() => {
         localStorage.setItem('tab4Filters', JSON.stringify(filters));
     }, [filters]);
-
     const { data: configData } = useQuery({
         queryKey: ['tab4Config'],
         queryFn: async () => {
@@ -36,7 +36,6 @@ export default function Tab4() {
         refetchOnWindowFocus: false,
         refetchOnMount: false,
     });
-
     const { data: tableData, isLoading } = useQuery({
         queryKey: ['tab4Table', filters],
         queryFn: async () => {
@@ -55,9 +54,7 @@ export default function Tab4() {
         refetchOnWindowFocus: false,
         refetchOnMount: false,
     });
-
     const columns = useColumnStore((state) => state.columns);
-
     const initialConfig = useMemo(() => {
         const regions = Object.keys(configData?.tab4?.part1?.region || {});
         const subs = [];
@@ -71,7 +68,6 @@ export default function Tab4() {
     const [selectedSubRegions, setSelectedSubRegions] = useState(initialConfig.subs);
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [selectedPositions, setSelectedPositions] = useState([]);
-
     const tableDataResult = tableData || { tab4: { part2: { data: {} } } };
     return (
         <div className="animate-fade-in">
@@ -91,35 +87,35 @@ export default function Tab4() {
                 <div className={`${configData ? '' : 'bg-white/50 animate-pulse rounded-2xl mb-6'} grid grid-cols-12 gap-6 my-2`} style={{ height: configData ? 'auto' : '150px' }}>
                     <div className="col-span-12 lg:col-span-12">
                         <T4P1_filterDlaListed
-
                             data={configData}
-
                             selectedRegions={selectedRegions}
                             setSelectedRegions={setSelectedRegions}
-
                             selectedSubRegions={selectedSubRegions}
                             setSelectedSubRegions={setSelectedSubRegions}
-
                             selectedTypes={selectedTypes}
                             setSelectedTypes={setSelectedTypes}
-
                             selectedPositions={selectedPositions}
                             setSelectedPositions={setSelectedPositions}
-
                             filters={filters}
                             setFilters={setFilters}
                         />
                     </div>
                 </div>
-                <div className={`${configData ? (columns.all_header === true ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
+                <div className={`${configData ? (columns.all_header === true && !isMobile ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <T4P2_showingAllTable checkData={configData} data={tableDataResult} isLoading={isLoading} />
                     </div>
                 </div>
-                <div className={`${configData ? (columns.all_header === false ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
+                <div className={`${configData ? (columns.all_header === false && !isMobile ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
                     <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700 flex"><Sheet className="mr-2" /> ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
                         <ShowAllDataTable checkData={configData} part2={tableData} isLoading={isLoading} />
+                    </div>
+                </div>
+                <div className={`${configData ? (isMobile ? 'block' : 'hidden') : 'bg-white/50 animate-pulse rounded-2xl mb-6'}`}>
+                    <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 className="text-sm md:text-base lg:text-lg font-bold mb-6 text-gray-700 flex"><Sheet className="mr-2" /> ข้อมูลสรุปการเรียกบรรจุรายเขต</h3>
+                        <ShowAllDataTableMobile checkData={configData} part2={tableData} isLoading={isLoading} />
                     </div>
                 </div>
             </div>

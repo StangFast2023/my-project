@@ -131,9 +131,6 @@ export default function T2P7_TableAllType({ data }) {
                                         className={`min-w-36 shrink-0 snap-start rounded-lg border p-3 text-center ${mobileZoneIndex === index ? "border-violet-600 bg-violet-50 text-violet-800" : "border-gray-200 bg-white text-gray-700"}`}
                                     >
                                         <div className="text-sm font-semibold">{zone.name}</div>
-                                        <div className="mt-1 text-xs text-gray-700 font-bold">
-                                            เรียกแล้ว {zone.totalCall.toLocaleString()} คน
-                                        </div>
                                     </button>
                                 ))}
                             </div>
@@ -150,9 +147,6 @@ export default function T2P7_TableAllType({ data }) {
                                         className={`min-w-36 shrink-0 snap-start rounded-lg border p-3 text-center ${mobileTypeIndex === index ? (Number(item.pos_type_id) === 1 ? 'border-blue-200 bg-blue-200 text-blue-700 shadow-sm' : Number(item.pos_type_id) === 2 ? 'border-emerald-200 bg-emerald-200 text-emerald-700 shadow-sm' : 'border-amber-200 bg-amber-200 text-amber-700 shadow-sm') : "border-gray-200 bg-white text-gray-700"}`}
                                     >
                                         <div className="text-sm font-semibold">{item.pos_type}</div>
-                                        <div className="mt-1 text-xs text-gray-700 font-bold">
-                                            ขึ้นบัญชีใหม่ {item.total_list_new.toLocaleString()}
-                                        </div>
                                     </button>
                                 ))}
                             </div>

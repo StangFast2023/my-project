@@ -64,7 +64,6 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                 {!isRegionCollapsed && (
                     <>
                         {Object.entries(regionData.pro_sub).map(([provSubID, provSubData]) => {
-                            console.log(provSubData);
                             const currentID = `${regionKey}_${provSubID}`;
                             const isCollapsed = !!collapsedIDs[currentID];
                             const s_listed = Number(provSubData.total_listed) || 0;

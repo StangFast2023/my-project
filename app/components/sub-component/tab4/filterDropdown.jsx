@@ -2,6 +2,7 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { createRoot } from 'react-dom/client';
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 const MySwal = withReactContent(Swal);
 export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, columns = 2, onSelectionChange }) => {
     const showModal = () => {
@@ -48,7 +49,8 @@ export const FilterDropdown = ({ items, selectedItems, setSelectedItems, label, 
     );
 };
 
-const ModalBody = ({ items, selectedItems, onSelectChange, columns = 3 }) => {
+const ModalBody = ({ items, selectedItems, onSelectChange }) => {
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const [toast, setToast] = React.useState({ show: false, msg: "", color: "" });
     const toastTimer = React.useRef(null);
     const showToast = (msg, color = "bg-green-500") => {
@@ -127,7 +129,6 @@ const ModalBody = ({ items, selectedItems, onSelectChange, columns = 3 }) => {
 
     return (
         <div className="text-left">
-
             {selectedItems.length === 0 && (
                 <button
                     type="button"
@@ -142,13 +143,11 @@ const ModalBody = ({ items, selectedItems, onSelectChange, columns = 3 }) => {
                     เลือกทั้งหมด
                 </button>
             )}
-
             {toast.show && (
                 <div className={`absolute top-0 right-0 z-[100] ${toast.color} text-white px-4 py-2 rounded-lg shadow-lg animate-bounce`}>
                     {toast.msg}
                 </div>
             )}
-
             <input
                 className="w-full p-2 border rounded-lg mb-4"
                 placeholder="ค้นหา..."
@@ -161,38 +160,45 @@ const ModalBody = ({ items, selectedItems, onSelectChange, columns = 3 }) => {
                     const isAllSelected = subIds.length > 0 && subIds.every(id => selectedItems.includes(id));
                     return (
                         <div key={r.id} className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                            <div className="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center">
-                                <label className="font-bold text-slate-800 flex items-center cursor-pointer">
-                                    {r.name}
-                                    {isAllSelected && (
-                                        <span className="ml-2 text-sm font-normal text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
-                                            (เลือกทั้งหมดแล้ว)
-                                        </span>
-                                    )}
+                            <div className="bg-slate-50 p-3 border-b border-slate-100 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                                <label className="text-sx lg:text-xl font-bold text-slate-800 flex flex-wrap items-center gap-2 min-w-0">
+                                    <span>{r.name}</span>
                                 </label>
-                                <button
-                                    onClick={() => toggleRegion(r.id)}
-                                    className={`text-sm font-medium px-3 py-1 rounded-full border transition-colors ${selectedItems.includes(r.id)
-                                        ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
-                                        : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100"
-                                        }`}
-                                >
-                                    {selectedItems.includes(r.id) ? "ล้างกลุ่มนี้" : "เลือกกลุ่มนี้"}
-                                </button>
+                                <div className="flex justify-end">
+                                    {isAllSelected && (
+                                        <button className="mx-1 text-xs sm:text-sm font-medium text-blue-600 bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-full">
+                                            เลือกทั้งหมดแล้ว
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={() => toggleRegion(r.id)}
+                                        className={`mx-1 self-start sm:self-auto shrink-0 text-xs sm:text-sm font-medium px-3 py-1.5 rounded-full border transition-colors ${ selectedItems.includes(r.id) ? "bg-red-50 text-red-700 border-red-200 hover:bg-red-100" : "bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100" }`}
+                                    >
+                                        {selectedItems.includes(r.id) ? "ล้างกลุ่มนี้" : "เลือกกลุ่มนี้"}
+                                    </button>
+                                </div>
                             </div>
                             <div
-                                className="p-4 grid gap-3"
-                                style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
+                                className="p-1 sm:p-4 grid grid-cols-1 sm:grid-cols-3 gap-2 lg:gap-3"
+                                style={{ gridTemplateColumns: undefined,  }}
                             >
-                                {items
-                                    .filter(i => i.parentId === r.id && (i.name.toLowerCase().includes(s) || r.name.toLowerCase().includes(s)))
-                                    .map(s => (
-                                        <label key={s.id} className="flex items-center text-sm text-slate-600 hover:text-slate-900 cursor-pointer p-2 rounded-lg hover:bg-slate-50 transition-colors">
-                                            <input type="checkbox" checked={selectedItems.includes(s.id)} onChange={() => handleToggle(s.id, false, r.id)} className="mr-2 w-4 h-4 shrink-0" />
-                                            {s.name}
+                                {items.filter( i => i.parentId === r.id && (i.name.toLowerCase().includes(s) || r.name.toLowerCase().includes(s)) )
+                                    .map(item => (
+                                        <label
+                                            key={item.id}
+                                            className="flex items-start gap-2 text-sm md:text-lg lg:text-xl text-slate-600 hover:text-slate-900 cursor-pointer py-2 rounded-lg hover:bg-slate-50 transition-colors min-w-0"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedItems.includes(item.id)}
+                                                onChange={() => handleToggle(item.id, false, r.id)}
+                                                className="mt-1 w-4 h-4 shrink-0"
+                                            />
+                                            <span className="min-w-0 break-words">
+                                                {item.name}
+                                            </span>
                                         </label>
-                                    ))
-                                }
+                                    ))}
                             </div>
                         </div>
                     );

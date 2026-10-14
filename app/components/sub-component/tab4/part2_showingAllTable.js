@@ -48,7 +48,6 @@ export default function T2P7_TableAllType({ checkData, data, isLoading }) {
             return acc;
         }, { total_listed: 0, total_listed_n: 0, total_diff: 0, total_called: 0, total_remain: 0, rounds: {} });
     }
-    console.log(part2);
 
     const percent = (summary?.total_listed_n > 0) ? (summary.total_called / summary.total_listed_n) * 100 : 0;
 

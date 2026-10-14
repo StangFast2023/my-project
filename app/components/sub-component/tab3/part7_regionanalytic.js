@@ -27,7 +27,6 @@ export default function T2P7_TableAllType({ data }) {
     const data_select = useMemo(() => {
         return data?.tab3?.part7 || {};
     }, [data?.tab3?.part7]);
-    console.log(data_select);
     if (!data) return <LoadingScreen />;
     return (
         <motion.div
@@ -184,7 +183,6 @@ export default function T2P7_TableAllType({ data }) {
                                                                                 }
                                                                                 const val = percent_change;
                                                                                 const formatted = Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                                                                                console.log(percent_change);
                                                                                 if (val > 0) {
                                                                                     return {
                                                                                         text: ` ${formatted} %`,

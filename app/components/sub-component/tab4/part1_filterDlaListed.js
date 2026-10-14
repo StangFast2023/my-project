@@ -333,9 +333,9 @@ export default function T4P1_TableAllListed({
     if (!data) return <LoadingScreen />;
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <div className="flex flex-wrap items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
-                <div className="flex flex-1 gap-4">
-                    <div className="w-1/2">
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+                <div className="flex flex-col lg:flex-row flex-1 gap-4 min-w-0">
+                    <div className="w-full lg:w-1/3 min-w-0">
                         <FilterDropdown
                             label="ภาค & เขต"
                             items={items}
@@ -344,7 +344,7 @@ export default function T4P1_TableAllListed({
                             columns={3}
                         />
                     </div>
-                    <div className="w-1/2">
+                    <div className="w-full lg:w-1/3 min-w-0">
                         <FilterDropdown
                             label="ประเภท & ตำแหน่ง"
                             items={posItems}
@@ -353,25 +353,28 @@ export default function T4P1_TableAllListed({
                             columns={4}
                         />
                     </div>
+                    <div className="flex flex-col lg:flex-row lg:w-1/3 lg:flex-1 gap-2 min-w-0">
+                        <button
+                            onClick={openSettingsModal}
+                            className="hidden lg:flex items-center justify-center gap-2 flex-1 px-4 py-2 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all whitespace-nowrap"
+                        >
+                            <Settings />
+                            <span className="font-medium">ตั้งค่าตาราง</span>
+                        </button>
+
+                        <button
+                            onClick={handleReset}
+                            className="flex items-center justify-center gap-2 w-full lg:flex-1 lg:w-auto px-4 py-2 bg-slate-100 text-slate-600 rounded-lg shadow-sm border border-slate-200 hover:bg-slate-200 transition-all whitespace-nowrap"
+                        >
+                            <RotateCcw />
+                            <span className="font-medium">คืนค่าเริ่มต้น</span>
+                        </button>
+                    </div>
                 </div>
-                <button
-                    onClick={openSettingsModal}
-                    className="flex items-center gap-2 px-5 py-2 px-4 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all whitespace-nowrap"
-                >
-                    <Settings />
-                    <span className="font-medium">ตั้งค่าตาราง</span>
-                </button>
-                <button
-                    onClick={handleReset}
-                    className="flex items-center gap-2 px-5 py-2 px-4 bg-slate-100 text-slate-600 rounded-lg shadow-sm border border-slate-200 hover:bg-slate-200 transition-all whitespace-nowrap"
-                >
-                    <RotateCcw />
-                    <span className="font-medium">คืนค่าเริ่มต้น</span>
-                </button>
             </div>
 
 
-            <div className="flex items-center gap-4 my-2">
+            <div className="flex items-center gap-4 my-2 hidden md:block lg:block">
                 <span className="text-gray-600 font-medium whitespace-nowrap">
                     แสดงข้อมูลตาม :
                 </span>

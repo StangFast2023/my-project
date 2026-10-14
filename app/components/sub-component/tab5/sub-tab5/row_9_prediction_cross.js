@@ -207,7 +207,6 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
                                                                     {zone?.probability.toFixed(2) + "%"}
                                                                 </td>
                                                                 {Object.values(data_round).map((round, index) => {
-                                                                    console.log(round);
                                                                     const isHoveredCell = hoveredRowId === rowId && hoveredColIndex === index;
                                                                     const colorStyle = getCrossColor(mode === 'chance' ? round.reach_probability : round.cross_zone_effect);
                                                                     const handleCellClick = (data) => {
