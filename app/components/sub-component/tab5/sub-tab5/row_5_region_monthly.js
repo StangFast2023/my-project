@@ -1,7 +1,7 @@
 
 "use client";
-import { FolderKanban } from 'lucide-react';
 import { Bar } from "react-chartjs-2";
+import { FolderKanban } from 'lucide-react';
 import useMediaQuery from '@/app/avaliable/useMediaQuery';
 
 export default function Row5RegionMonthly({ position, data }) {
@@ -120,7 +120,8 @@ export default function Row5RegionMonthly({ position, data }) {
         },
         plugins: {
             legend: {
-                position: 'bottom'
+                position: 'bottom',
+                display: !isMobile,
             },
             tooltip: {
                 labels: {

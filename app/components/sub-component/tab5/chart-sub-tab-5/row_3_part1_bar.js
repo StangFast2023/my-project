@@ -2,8 +2,10 @@
 "use client";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
 export default function Row3Part1Bar({ data }) {
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const chartRawData = data?.chart_1_round;
     if (!chartRawData) return null;
     const keys = Object.keys(chartRawData);
@@ -100,12 +102,14 @@ export default function Row3Part1Bar({ data }) {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
+                display: !isMobile,
                 ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
             },
             y1: {
                 type: 'linear',
                 position: 'right',
                 beginAtZero: true,
+                display: !isMobile,
                 grid: { drawOnChartArea: false },
                 ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
             }

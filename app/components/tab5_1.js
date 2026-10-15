@@ -27,22 +27,22 @@ export default function Tab5_1({ details, base_data, data }) {
                 </div>
             </div>
             <div className="grid lg:grid-cols-12 gap-2 my-2">
-                <div className="col-span-12 lg:col-span-12">
+                <div className="lg:col-span-12">
                     <Row0 data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12">
+                <div className="lg:col-span-12">
                     <Row1 data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12">
+                <div className="lg:col-span-12">
                     <Row3 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12 hidden lg:block">
+                <div className="lg:col-span-12">
                     <Row4 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12 hidden lg:block">
+                <div className="lg:col-span-12">
                     <Row5 position={PosSh} data={dataforChart} />
                 </div>
-                <div className="col-span-12 lg:col-span-12 hidden lg:block">
+                <div className="lg:col-span-12">
                     <Row6 position={PosSh} data={dataforChart} />
                 </div>
             </div>

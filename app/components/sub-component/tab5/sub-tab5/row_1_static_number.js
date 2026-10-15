@@ -4,7 +4,7 @@ export default function Row1StaticNumber({ data }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-0 lg:gap-4">
 
-            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
+            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-1 shadow-xs">
                 <p className="text-gray-700 text-sm md:text-base lg:text-sm font-bold">ขึ้นบัญชีทั้งหมด : </p>
                 <div className="items-baseline gap-2 text-right">
                     <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
@@ -28,7 +28,7 @@ export default function Row1StaticNumber({ data }) {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
+            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-1 shadow-xs">
                 <p className="text-gray-700 text-sm md:text-base lg:text-sm font-bold">เรียกไปแล้ว : </p>
                 <div className="items-baseline gap-2 text-right">
                     <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
@@ -52,7 +52,7 @@ export default function Row1StaticNumber({ data }) {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
+            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-1 shadow-xs">
                 <p className="text-gray-700 text-sm md:text-base lg:text-sm font-bold">คงเหลือทั้งหมด : </p>
                 <div className="items-baseline gap-2 text-right">
                     <span className={`text-lg md:text-base lg:text-3xl font-bold ${data?.total_remain < 0 ? 'text-rose-600' : 'text-gray-600'}`}>
@@ -76,7 +76,7 @@ export default function Row1StaticNumber({ data }) {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-2 shadow-xs">
+            <div className="flex-1 flex flex-col justify-center p-4 bg-gray-50 rounded-xl border-l-4 border-gray-500 my-1 shadow-xs">
                 <p className="text-gray-700 text-sm md:text-base lg:text-sm font-bold">เหลืออีกกี่ลำดับก่อนถึงคุณ :</p>
                 <div className="items-baseline gap-2 text-right">
                     <span className="text-lg md:text-base lg:text-3xl font-bold text-gray-600">
