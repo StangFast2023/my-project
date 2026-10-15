@@ -115,10 +115,10 @@ export default function App() {
                 </div>
             </div>
             <div className="my-2 p-2 text-sm md:text-base lg:text-lg">
-                <div className="md:hidden">
-                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex items-center p-4 bg-gray-100 rounded-xl w-full text-xl text-left font-bold text-gray-600">
+                <div className="block lg:hidden">
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex items-center p-2 bg-gray-100 rounded-xl w-full text-xl text-left font-bold text-gray-600">
                         <span>{isMenuOpen ? <X /> : <Menu />}</span>
-                        <span className="ml-auto">{isMenuOpen ? "ปิดเมนู" : "เลือกเมนู"}</span>
+                        <span className="ml-auto text-base">{isMenuOpen ? "ปิดเมนู" : "เลือกเมนู"}</span>
                     </button>
                     {isMenuOpen && (
                         <div className="flex flex-col text-base text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
@@ -130,7 +130,7 @@ export default function App() {
                         </div>
                     )}
                 </div>
-                <div className="hidden md:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
+                <div className="hidden lg:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
                     <button onClick={() => handleTabChange(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? "bg-white shadow text-green-600" : null}`} >
                         <span className={`${activeTab === 1 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
                             สรุปภาพรวม

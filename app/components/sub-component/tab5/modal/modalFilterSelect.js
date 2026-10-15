@@ -167,7 +167,7 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
         <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div ref={modalRef} className="bg-white w-full max-w-2xl md:max-w-2xl lg:max-w-[40%] flex flex-col rounded-2xl shadow-2xl overflow-visible animate-in fade-in zoom-in duration-300">
                 <div className="px-8 py-5 shadow-lg text-center font-bold text-2xl text-gray-900 font-kanit">รายละเอียดข้อมูล</div>
-                <div className="flex-grow p-8 space-y-6">
+                <div className="flex-grow p-4 md:p-6 lg:p-8  space-y-4 lg:space-y-6">
                     <div className="grid grid-cols-12 gap-4 items-center dropdown-container">
                         <div className="col-span-3 font-bold text-gray-800">ภาค</div>
                         <div className="col-span-9 relative">
@@ -205,20 +205,29 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                             onClick={() => areaKey && setActiveDropdown(activeDropdown === 'pos' ? null : 'pos')}
                             className={`col-span-9 px-4 py-3 bg-white rounded-2xl border-2 border-gray-200 font-medium flex justify-between items-center ${areaKey ? 'text-gray-900 cursor-pointer' : 'text-gray-400 opacity-50'}`}
                         >
-                            <div>
-                                <b className="mr-2">
-                                    {positionKey ? "[ " + allPositions.find(p => p.key === positionKey)?.pos_id + " ]" : null}
-                                </b>
-                                {positionKey ? allPositions.find(p => p.key === positionKey)?.pos_name : "กรุณาเลือกตำแหน่ง"}
-                                {positionKey
-                                    ?
-                                    (
-                                        <span className={`ml-2 px-4 py-1 rounded-full shadow-sm ${typeStyles[allPositions.find(p => p.key === positionKey)?.pos_type_id]}`}>
-                                            {allPositions.find(p => p.key === positionKey)?.pos_type_name}
-                                        </span>
-                                    )
-                                    : null
-                                }
+                            <div className="flex items-center min-w-0 w-full">
+                                <div className="min-w-0 flex-1 overflow-x-hidden whitespace-nowrap">
+                                    <b className="mr-2">
+                                        {positionKey
+                                            ? "[ " + allPositions.find(p => p.key === positionKey)?.pos_id + " ]"
+                                            : null}
+                                    </b>
+
+                                    {positionKey
+                                        ? allPositions.find(p => p.key === positionKey)?.pos_name
+                                        : "กรุณาเลือกตำแหน่ง"}
+                                </div>
+
+                                {positionKey && (
+                                    <span
+                                        className={`hidden md:block ml-2 px-4 py-1 rounded-full shadow-sm shrink-0 ${typeStyles[
+                                            allPositions.find(p => p.key === positionKey)?.pos_type_id
+                                        ]
+                                            }`}
+                                    >
+                                        {allPositions.find(p => p.key === positionKey)?.pos_type_name}
+                                    </span>
+                                )}
                             </div>
                         </div>
                         {activeDropdown === 'pos' && (
@@ -248,7 +257,7 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                                             >
                                                 <b className="mr-2">[ {pos.pos_id} ]</b>
                                                 {pos.pos_name}
-                                                <span className={`hidden lg:block ml-2 px-4 py-1 rounded-full shadow-sm ${typeStyles[pos.pos_type_id]}`}>
+                                                <span className={`hidden md:block lg:block ml-2 px-4 py-1 rounded-full shadow-sm ${typeStyles[pos.pos_type_id]}`}>
                                                     {pos.pos_type_name}
                                                 </span>
                                             </div>
@@ -288,6 +297,12 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                         รีเซ็ต
                     </button>
                     <button
+                        onClick={() => setIsOpen(false)}
+                        className="px-6 py-2 bg-rose-600 text-white font-bold rounded-lg hover:bg-rose-700 transition-all"
+                    >
+                        ยกเลิก
+                    </button>
+                    <button
                         disabled={!isComplete}
                         onClick={() => {
                             MySwal.fire({
@@ -322,12 +337,6 @@ export default function ModalFilterSelect({ isOpen, setIsOpen, onSave }) {
                             }`}
                     >
                         ยืนยันข้อมูล
-                    </button>
-                    <button
-                        onClick={() => setIsOpen(false)}
-                        className="px-6 py-2 bg-rose-600 text-white font-bold rounded-lg hover:bg-rose-700 transition-all"
-                    >
-                        ยกเลิก
                     </button>
                 </div>
             </div>

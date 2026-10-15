@@ -25,14 +25,14 @@ export default function Tab1() {
     return (
         <div className="animate-fade-in">
             <div className="my-3">
-                <div className="flex items-center gap-4 mb-8">
+                <div className="flex items-center gap-4 mb-4">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
                         <span className="text-4xl font-black text-white drop-shadow-sm">
                             1
                         </span>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <span className="text-xl font-black text-gray-800">
+                        <span className="text-base md:text-xl lg:text-xl font-black text-gray-800">
                             รายงานสรุปสถิติการเรียกมารายงานตัวเพื่อบรรจุข้าราชการหรือพนักงานส่วนท้องถิ่นประจำปี 2568
                         </span>
                     </div>
@@ -41,22 +41,22 @@ export default function Tab1() {
                     <div className={`${data ? '' : 'bg-white/50 animate-pulse p-20 rounded-2xl'} col-span-12 lg:col-span-12`}>
                         <T1P1_StaticNumber data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9 p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9 p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P2_CallMonthly data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P5_PercentageRound data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9 p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-9 p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P4_Cumulative data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-3 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T1P3_PieListed data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm hidden md:block lg:block`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-4 rounded-2xl shadow-sm hidden md:block lg:block`}>
                         <T1P6_TableRoundCall data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-6 rounded-2xl shadow-sm block md:hidden lg:hidden`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse min-h-[800px]'} col-span-12 lg:col-span-12 p-4 rounded-2xl shadow-sm block md:hidden lg:hidden`}>
                         <T1P6_TableRoundCallMobile data={data} />
                     </div>
                 </div>

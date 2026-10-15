@@ -2,8 +2,10 @@
 "use client";
 import { FolderKanban } from 'lucide-react';
 import { Bar } from "react-chartjs-2";
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 
 export default function Row5RegionMonthly({ position, data }) {
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const chartRawData = data?.chart_3_region || {};
     if (!chartRawData) return null;
 
@@ -104,12 +106,14 @@ export default function Row5RegionMonthly({ position, data }) {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
+                display: !isMobile,
                 ticks: { callback: (value) => value + ' อัตรา' }
             },
             y1: {
                 type: 'linear',
                 position: 'right',
                 beginAtZero: true,
+                display: !isMobile,
                 grid: { drawOnChartArea: false },
                 ticks: { callback: (value) => value + ' อัตรา' }
             }
@@ -161,7 +165,7 @@ export default function Row5RegionMonthly({ position, data }) {
     };
     return (
         <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div className="col-span-12 lg:col-span-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
                 <div className="flex text-gray-700 items-center">
                     <FolderKanban />
                     <h3 className="ml-2 text-sm md:text-base lg:text-lg font-bold text-gray-700">

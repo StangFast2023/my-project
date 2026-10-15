@@ -24,7 +24,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
         return full;
     };
     return (
-        <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div className="col-span-12 lg:col-span-1 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
 
             <div className="text-center mb-4 text-gray-700">
                 <div className="flex items-center">

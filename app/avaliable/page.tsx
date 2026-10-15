@@ -58,7 +58,7 @@ export default function App() {
         <main className="pb-5">
             {showDisclaimer && (
                 <div className="fixed inset-0 z-80 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg text-center max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white p-4 rounded-2xl shadow-2xl w-full max-w-lg text-center max-h-[90vh] overflow-y-auto">
                         <h2 className="text-gray-800 text-xl lg:text-2xl font-bold mb-3">แนะนำการใช้งาน</h2>
                         <p className="mb-6 text-gray-600 text-sm lg:text-lg">
                             เพื่อให้ได้รับประสิทธิภาพสูงสุดในการดูข้อมูล<br></br>แนะนำให้เปิดใช้งานผ่าน

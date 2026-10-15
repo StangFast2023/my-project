@@ -1,5 +1,4 @@
 import CountUp from 'react-countup';
-
 export default function Row3StatusRank({ data }) {
     const status_work = data?.status_work || {};
     const getRiskStatus = (riskValue) => {

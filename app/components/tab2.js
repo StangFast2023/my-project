@@ -27,14 +27,14 @@ export default function Tab1({ setIsOpen, setDetails }) {
     return (
         <div className="animate-fade-in">
             <div className="my-3">
-                <div className="flex items-center gap-4 mb-8">
+                <div className="flex items-center gap-4 mb-4">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
                         <span className="text-4xl font-black text-white drop-shadow-sm">
                             2
                         </span>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <span className="text-xl font-black text-gray-800">
+                        <span className="text-base md:text-xl lg:text-xl font-black text-gray-800">
                             รายงานสรุปสถิติบัญชีผู้สอบแข่งขันได้แบบแบ่งประเภทและตำแหน่ง
                         </span>
                     </div>
@@ -43,31 +43,31 @@ export default function Tab1({ setIsOpen, setDetails }) {
                     <div className={`${data ? '' : 'bg-white/50 animate-pulse rounded-2xl'} col-span-12 lg:col-span-12`} style={{ height: data ? 'auto' : '180px' }}>
                         <T2P1_TypePostNum data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-6 p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-6 p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P9_PosTypePose data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-6 p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-6 p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P10_PosTypePeople data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P2_TypePerMonth data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P3_TypePerRound data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P4_Top10ListPos setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P7_TypeAllRemain setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P6_TypeAllCall setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hidden md:block lg:block`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hidden md:block lg:block`}>
                         <T2P8_TableAllType data={data} />
                     </div>
-                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 block md:hidden lg:hidden`}>
+                    <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 block md:hidden lg:hidden`}>
                         <T2P11_TableAllTypeforMobile data={data} />
                     </div>
                 </div>

@@ -65,7 +65,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
 
     if (!summary && !max_round && !sim_state) return null;
     return (
-        <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm">
+        <div className="col-span-12 lg:col-span-1 bg-white p-4 rounded-2xl shadow-sm">
 
             <div className="hidden lg:block lg:flex lg:justify-center lg:items-center">
                 <div className="text-center mb-4 text-gray-700">

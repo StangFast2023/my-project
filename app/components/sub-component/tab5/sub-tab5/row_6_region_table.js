@@ -167,7 +167,7 @@ export default function Row6RegionTable({ position, data }) {
     };
     let last = { list: 0, list_n: 0, diff: 0, call: 0, remain: 0, rounds: roundColumns.map(() => ({ status: '-', total: null })) };
     return (
-        <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm">
+        <div className="col-span-12 lg:col-span-1 bg-white p-4 rounded-2xl shadow-sm">
 
             <div className="text-center mb-4 text-gray-700">
                 <div className="flex items-center">

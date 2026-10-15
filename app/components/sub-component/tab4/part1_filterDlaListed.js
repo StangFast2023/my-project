@@ -356,7 +356,7 @@ export default function T4P1_TableAllListed({
                     <div className="flex flex-col lg:flex-row lg:w-1/3 lg:flex-1 gap-2 min-w-0">
                         <button
                             onClick={openSettingsModal}
-                            className="hidden lg:flex items-center justify-center gap-2 flex-1 px-4 py-2 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all whitespace-nowrap"
+                            className="hidden md:flex lg:flex items-center justify-center gap-2 flex-1 px-4 py-2 bg-blue-100 text-blue-600 rounded-lg shadow-sm border border-blue-200 hover:bg-blue-200 transition-all whitespace-nowrap"
                         >
                             <Settings />
                             <span className="font-medium">ตั้งค่าตาราง</span>

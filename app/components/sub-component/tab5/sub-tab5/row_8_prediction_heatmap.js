@@ -37,7 +37,7 @@ export default function Row7ChanceforEmpty({ region, zone, position, data }) {
     };
     if (!heatmap_matrix && !rounds_header) return null;
     return (
-        <div className="col-span-12 lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm">
+        <div className="col-span-12 lg:col-span-1 bg-white p-4 rounded-2xl shadow-sm">
             <div className="text-center mb-4 text-gray-700">
                 <div className="flex items-center">
                     <UserSearch />

@@ -21,31 +21,31 @@ export default function Tab3() {
     return (
         <div className="animate-fade-in">
             <div className="my-3">
-                <div className="flex items-center gap-4 mb-8">
+                <div className="flex items-center gap-4 mb-4">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
                         <span className="text-4xl font-black text-white drop-shadow-sm">
                             3
                         </span>
                     </div>
                     <div className="flex flex-col justify-center">
-                        <span className="text-xl font-black text-gray-800">
+                        <span className="text-base md:text-xl lg:text-xl font-black text-gray-800">
                             สรุปสถิติการเรียกบรรจุสะสม แยกตามเขตพื้นที่และประเภทตำแหน่ง
                         </span>
                     </div>
                 </div>
             </div>
             <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
-                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white`}>
+                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-4 bg-white`}>
                     <T3P6_TablePositio data={data} />
                 </div>
             </div>
             {/* <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
-                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white`}>
+                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-4 bg-white`}>
                     <T3P7_RegoinAnalytics data={data} />
                 </div>
             </div> */}
             <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
-                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-6 bg-white`}>
+                <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-4 bg-white`}>
                     <T3P8_TableAllType data={data} />
                 </div>
             </div>
