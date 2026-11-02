@@ -8,8 +8,8 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
         setDetails(null);
         setIsOpen(true);
         try {
-            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}/7`);
-            // const response = await axios.get(`http://127.0.0.1:8000/api/listed-position-detail/${id}/7`);
+            const response = await axios.get(`https://dla-backend-production.up.railway.app/api/listed-position-detail/${id}`);
+            // const response = await axios.get(`http://127.0.0.1:8000/api/listed-position-detail/${id}`);
             setDetails(response.data);
         } catch (error) {
             console.error(error);
@@ -58,9 +58,9 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                     <td className="p-2 lg:p-2">
                                         <div className="font-bold text-sm md:text-base lg:text-sm text-gray-800">{pos.pos_name}</div>
                                     </td>
-                                    <td className={`${typeStyles[pos.pos_type_id]} text-center hidden md:block lg:block`}>
-                                        <div className="font-semibold text-sm md:text-base lg:text-sm text-gray-800">
-                                            <span className={`lg:px-1 lg:py-1 rounded-full text-sm ${typeStyles[pos.pos_type_id]}`}>
+                                    <td className="text-center hidden md:block lg:block">
+                                        <div className={`font-semibold text-sm md:text-base lg:text-sm rounded-full ${typeStyles[pos.pos_type_id]}`}>
+                                            <span className="lg:px-2 lg:py-2 text-sm">
                                                 {pos.pos_type}
                                             </span>
                                         </div>

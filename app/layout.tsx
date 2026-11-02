@@ -5,6 +5,8 @@ import ThemeSwitcher from "./components/ThemeSwitcher";
 import Providers from './components/providers';
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import MaintenanceNotice from '@/app/components/MaintenanceNotice';
+
 const kanit = Kanit({
     weight: ['300', '400', '700'],
     subsets: ["thai", "latin"],
@@ -25,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                     {children}
                     <Analytics />
                     <SpeedInsights />
+                    <MaintenanceNotice />
                 </Providers>
             </body>
         </html>

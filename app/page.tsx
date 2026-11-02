@@ -10,6 +10,7 @@ import ModalTab2Part6 from "./components/sub-component/tab2/modal/modal_of_part6
 import ModalFilterSelect from "./components/sub-component/tab5/modal/modalFilterSelect";
 import { useSyncExternalStore } from "react";
 import LastUpdated from "@/app/avaliable/LastUpdated";
+
 export interface FilterData {
     id_region: number;
     id_sub_regoin: number;

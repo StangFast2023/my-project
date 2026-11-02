@@ -15,7 +15,9 @@ export default function T1P3_PieListed({ data }) {
     const grandTotalRemain = allZones.reduce((sum, zone) => sum + zone.total_remain, 0);
     const grandTotalPerRound = roundColumns.map(num => {
         return allZones.reduce((sum, zone) => {
-            const roundInfo = zone['data-round'][num];
+            const roundInfo = zone['data-round']?.find(
+                item => item.round === num
+            );
             return sum + (roundInfo ? roundInfo.total_called : 0);
         }, 0);
     });
@@ -72,24 +74,29 @@ export default function T1P3_PieListed({ data }) {
                                             return (
                                                 <tr key={zone.full}>
                                                     <td className="bg-gray-50    px-6 py-4 text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{zone.name}</td>
-                                                    <td className="bg-amber-50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed.toLocaleString()}</td>
-                                                    <td className="bg-amber-100  px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-500">{zone.total_listed_new.toLocaleString()}</td>
+                                                    <td className="bg-amber-50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-700">{zone.total_listed.toLocaleString()}</td>
+                                                    <td className="bg-amber-100  px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-700">{zone.total_listed_new.toLocaleString()}</td>
                                                     <td className="bg-red-100    px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-500">{(zone.total_listed - zone.total_listed_new).toLocaleString()}</td>
                                                     <td className="bg-emerald-50 px-4 py-4 text-base lg:text-sm font-semibold text-center text-emerald-600">{zone.total_called.toLocaleString()}</td>
                                                     <td className="bg-blue-50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-blue-600">{((zone.total_called / zone.total_listed_new) * 100).toFixed(2)} %</td>
                                                     <td className="bg-rose-50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-500">{zone.total_remain.toLocaleString()}</td>
                                                     {roundColumns.map(num => {
-                                                        const roundInfo = zone['data-round'][num];
+                                                        const roundInfo = zone['data-round']?.find(item => item.round === num);
                                                         const bgClass = roundInfo ? "bg-white" : "bg-gray-200";
                                                         return (
                                                             <td
                                                                 key={num}
-                                                                className={`px-4 py-4 text-center ${bgClass}`}
+                                                                className={`px-2 py-2 text-center align-bottom ${bgClass}`}
                                                             >
                                                                 {roundInfo && (
-                                                                    <span className="text-gray-700 font-bold text-base lg:text-sm">
-                                                                        {roundInfo.total_called.toLocaleString()}
-                                                                    </span>
+                                                                    <div className="flex h-full flex-col items-center justify-between gap-1">
+                                                                        <span className="text-gray-700 font-bold text-base lg:text-sm">
+                                                                            {roundInfo.total_called.toLocaleString()}
+                                                                        </span>
+                                                                        <span className={`block w-[calc(100%+1rem)] -mx-2 -mb-2 text-center text-xs font-normal whitespace-nowrap ${roundInfo.list_new_status ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                                                            {roundInfo.list_new_status ? "บัญชีใหม่" : "บัญชีเก่า"}
+                                                                        </span>
+                                                                    </div>
                                                                 )}
                                                             </td>
                                                         );
