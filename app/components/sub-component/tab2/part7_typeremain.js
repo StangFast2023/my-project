@@ -67,7 +67,7 @@ export default function T2P5_PopularPosEmp({ setIsOpen, setDetails, data }) {
                                     </td>
                                     <td className="p-2 lg:p-2 text-right">
                                         <span className="font-mono text-sm md:text-base lg:text-sm font-bold text-gray-700">
-                                            {pos.total_list.toLocaleString()}
+                                            {pos.total_remain.toLocaleString()}
                                         </span>
                                     </td>
                                     <td className="p-2 lg:p-2 text-center hidden md:block lg:block">

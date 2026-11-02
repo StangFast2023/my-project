@@ -59,7 +59,9 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                         </div>
                                         <div className="flex-1 bg-white rounded-2xl border border-gray-100 text-center">
                                             <span className="text-sm text-gray-400 font-kanit">คงเหลือ</span>
-                                            <h2 className={`text-2xl font-bold font-kanit ${details.total.remain !== 0 ? details.total.remain > 0 ? 'text-orange-600' : 'text-rose-600' : 'text-blue-600'}`}> {details.total.remain.toLocaleString()}</h2>
+                                            <h2 className={`text-2xl font-bold font-kanit ${details.total.remain !== 0 ? details.total.remain > 0 ? 'text-orange-600' : 'text-rose-600' : 'text-blue-600'}`}>
+                                                {details.total.remain.toLocaleString()}
+                                            </h2>
                                         </div>
                                     </div>
                                     <div className="mt-2 bg-gray-50 p-4 rounded-2xl">
@@ -70,7 +72,7 @@ export default function PositionDetailModal({ isOpen, setIsOpen, details }) {
                                             </span>
                                         </div>
                                         <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                                            <div className={`h-full rounded-full transition-all duration-1000 ${(((details.total.called / details.total.listed) * 100)) <= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(((details.total.called / details.total.listed) * 100), 100)}%` }} />
+                                            <div className={`h-full rounded-full transition-all duration-1000 ${(((details.total.called / details.total.listed_new) * 100)) <= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(((details.total.called / details.total.listed_new) * 100), 100)}%` }} />
                                         </div>
                                     </div>
                                 </div>

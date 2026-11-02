@@ -74,13 +74,31 @@ export default function T2P7_TableSummary({ data }) {
                                                 return (
                                                     <tr key={zone.pos_type_id} className="group hover:bg-gray-200 duration-300">
                                                         <td className={`sticky left-0 z-20 px-6 py-3 pl-10 text-sm                  group-hover:bg-transparent font-semibold ${zone.pos_type_id === 1 ? "bg-blue-100 text-blue-700" : zone.pos_type_id === 2 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>{zone.pos_type}</td>
-                                                        <td className="px-4 py-3 text-center text-base lg:text-sm font-semibold bg-amber-50     group-hover:bg-transparent text-gray-600 ">{(Number(zone.total_list) || 0).toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-base lg:text-sm font-semibold bg-amber-100    group-hover:bg-transparent text-gray-600 ">{(Number(zone.total_list_n) || 0).toLocaleString()}</td>
-                                                        <td className="px-4 py-3 text-center text-base lg:text-sm font-semibold bg-rose-100     group-hover:bg-transparent text-gray-600 ">{(Number(zone.total_diff) || 0).toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-base lg:text-sm font-semibold bg-amber-50     group-hover:bg-transparent text-gray-700 ">{(Number(zone.total_list) || 0).toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-base lg:text-sm font-semibold bg-amber-100    group-hover:bg-transparent text-gray-700 ">{(Number(zone.total_list_n) || 0).toLocaleString()}</td>
+                                                        <td className="px-4 py-3 text-center text-base lg:text-sm font-semibold bg-rose-100     group-hover:bg-transparent text-gray-700 ">{(Number(zone.total_diff) || 0).toLocaleString()}</td>
                                                         <td className="px-4 py-3 text-center text-base lg:text-sm font-semibold bg-emerald-50   group-hover:bg-transparent text-emerald-600 ">{(Number(zone.total_call) || 0).toLocaleString()}</td>
                                                         <td className={`px-4 py-3 text-center text-base lg:text-sm font-semibold bg-blue-50     group-hover:bg-transparent ${zone.total_remain === 0 ? 'text-rose-600' : (((zone.total_call / zone.total_list_n) * 100) === 100 ? 'text-emerald-600' : (((zone.total_call / zone.total_list_n) * 100) <= 100 ? 'text-blue-600' : 'text-violet-600'))}`}>{(Number((zone.total_call / zone.total_list_n) * 100) || 0).toFixed(2)} %</td>
                                                         <td className={`px-4 py-3 text-center text-base lg:text-sm font-semibold bg-orange-50   group-hover:bg-transparent ${zone.total_remain === 0 ? 'bg-emerald-50 text-emerald-600' : zone.total_remain > 0 ? 'bg-orange-50 text-orange-600' : 'bg-rose-50 text-rose-600'}`}>{(Number(zone.total_remain) || 0).toLocaleString()}</td>
-                                                        {roundColumns.map(num => <td key={num} className={`px-4 py-3 text-center text-sm font-semibold text-gray-600 group-hover:bg-transparent ${zone.round_data?.[num]?.total > 0 ? 'bg-white' : 'bg-gray-100'} `}>{(zone.round_data?.[num]?.total > 0 ? zone.round_data?.[num]?.total.toLocaleString() : null) || null}</td>)}
+                                                        {roundColumns.map(num => {
+                                                            const list_new_status = zone.round_data?.[num]?.list_new_status || false;
+                                                            return (
+                                                                <td key={num} className={`px-4 py-3 text-center align-middle group-hover:bg-transparent ${zone.round_data?.[num]?.total > 0 ? 'bg-white' : 'bg-gray-100'}`}>
+                                                                    {zone.round_data?.[num] ? (
+                                                                        <div className="flex flex-col items-center justify-center gap-1.5">
+                                                                            <span className="text-base font-bold tabular-nums text-gray-800">
+                                                                                {zone.round_data[num].total > 0 ? zone.round_data[num].total.toLocaleString() : '-'}
+                                                                            </span>
+                                                                            <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap ${list_new_status ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}
+                                                                            >
+                                                                                {list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                                                            </span>
+
+                                                                        </div>
+                                                                    ) : null}
+                                                                </td>
+                                                            );
+                                                        })}
                                                     </tr>
                                                 );
                                             })}

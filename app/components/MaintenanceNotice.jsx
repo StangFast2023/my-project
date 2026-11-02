@@ -65,14 +65,9 @@ export default function MaintenanceNotice() {
                             />
                         </svg>
                     </div>
-
                     <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-800">
                         อยู่ระหว่างปรับปรุงข้อมูล
                     </h2>
-
-                    <p className="mt-1 text-xs md:text-sm lg:text-base text-amber-700">
-                        Maintenance Notice
-                    </p>
                 </div>
 
                 <div className="px-6 py-6 text-center">
@@ -110,8 +105,8 @@ export default function MaintenanceNotice() {
                                 <tbody className="divide-y divide-gray-100">
                                     {[
                                         { id: 1, name: '1. สรุปภาพรวม', status: 'done' },
-                                        { id: 2, name: '2. ข้อมูลประเภทและตำแหน่ง', status: 'working' },
-                                        { id: 3, name: '3. ข้อมูลรายภาคและเขต', status: 'waiting' },
+                                        { id: 2, name: '2. ข้อมูลประเภทและตำแหน่ง', status: 'done' },
+                                        { id: 3, name: '3. ข้อมูลรายภาคและเขต', status: 'working' },
                                         { id: 4, name: '4. ข้อมูลเจาะลึกรายเขตและตำแหน่ง', status: 'waiting' },
                                         { id: 5, name: '5. วิเคราะห์โอกาสเรียกตัว', status: 'waiting' },
                                     ].map((item) => {
@@ -122,7 +117,7 @@ export default function MaintenanceNotice() {
                                             },
                                             working: {
                                                 label: 'กำลังดำเนินการ',
-                                                className: 'bg-amber-100 text-amber-700',
+                                                className: 'bg-blue-100 text-blue-700',
                                             },
                                             waiting: {
                                                 label: 'รอคิว',
@@ -151,7 +146,7 @@ export default function MaintenanceNotice() {
                         </div>
                     </div>
 
-                    <button onClick={handleClose} className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3text-sm md:text-base lg:text-lg font-semibold text-whitetransition hover:bg-blue-700 active:scale-[0.98]">
+                    <button onClick={handleClose} className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 text-sm md:text-base lg:text-lg font-semibold text-whitetransition hover:bg-blue-700 active:scale-[0.98]">
                         รับทราบ
                     </button>
                 </div>

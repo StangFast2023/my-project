@@ -16,6 +16,7 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
             console.error(error);
         }
     };
+    console.log(topTenData);
     const typeStyles = {
         1: "bg-blue-100 text-blue-700",
         2: "bg-green-100 text-green-700",
@@ -67,7 +68,7 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
                                     </td>
                                     <td className="p-2 lg:p-2 text-right">
                                         <span className="font-mono text-sm md:text-base lg:text-sm font-bold text-gray-700">
-                                            {Number(pos.total).toLocaleString()}
+                                            {Number(pos.total_list).toLocaleString()}
                                         </span>
                                     </td>
                                     <td className="p-2 lg:p-2 text-center hidden md:block lg:block">

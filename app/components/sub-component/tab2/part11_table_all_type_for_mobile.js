@@ -1,9 +1,8 @@
 "use client";
 import { useMemo } from "react";
-import { Newspaper, ChevronRight } from "lucide-react";
+import { Newspaper } from "lucide-react";
 export default function T2P11_TableSummaryforMobile({ data }) {
     const part8 = useMemo(() => data?.tab2?.part8 || {}, [data?.tab2?.part8]);
-
     const { roundColumns } = useMemo(() => {
         let gTotal = { list: 0, list_new: 0, diff: 0, call: 0, remain: 0, rounds: {} };
         let maxRoundsFound = 0;
@@ -52,13 +51,9 @@ export default function T2P11_TableSummaryforMobile({ data }) {
                             acc.diff += Number(zone.total_diff) || 0;
                             acc.call += Number(zone.total_call) || 0;
                             acc.remain += Number(zone.total_remain) || 0;
-
                             roundColumns.forEach((num) => {
-                                acc.rounds[num] =
-                                    (acc.rounds[num] || 0) +
-                                    (Number(zone.round_data?.[num]?.total) || 0);
+                                acc.rounds[num] = (acc.rounds[num] || 0) + (Number(zone.round_data?.[num]?.total) || 0);
                             });
-
                             return acc;
                         },
                         {
@@ -135,31 +130,43 @@ export default function T2P11_TableSummaryforMobile({ data }) {
                                 </div>
                             </div>
                             <div className="border-t border-gray-200 bg-gray-50 p-3">
-                                <details>
-                                    <summary className="cursor-pointer text-sm font-bold text-gray-700">
-                                        สรุปยอดเรียกแยกรอบของภาค
-                                    </summary>
-                                    <div className="mt-3 space-y-2">
-                                        {roundColumns.filter((num) => reg.rounds[num] > 0).map((num) => (
-                                            <div
-                                                key={num}
-                                                className="flex items-center justify-between rounded-lg border border-gray-200 bg-white p-3"
-                                            >
-                                                <span className="text-sm text-gray-600">
-                                                    รอบที่ {num}
-                                                </span>
-                                                <span className="text-sm font-bold text-emerald-700">
-                                                    {reg.rounds[num].toLocaleString()} คน
-                                                </span>
-                                            </div>
-                                        ))}
-                                        {!roundColumns.some((num) => reg.rounds[num] > 0) && (
-                                            <p className="py-2 text-center text-xs text-gray-400">
-                                                ยังไม่มีข้อมูลรอบเรียกบรรจุ
-                                            </p>
-                                        )}
-                                    </div>
-                                </details>
+                                <span className="text-gray-600 font-semibold">สรุปยอดเรียกแยกรอบของภาค</span>
+                                <div className="mt-3">
+                                    {roundColumns.some((num) => reg.rounds[num] > 0) ? (
+                                        <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                            {roundColumns
+                                                .filter((num) => reg.rounds[num] > 0)
+                                                .map((num) => (
+                                                    <div
+                                                        key={num}
+                                                        className="flex min-w-[155px] flex-shrink-0 snap-start flex-col gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-200 hover:border-emerald-300 hover:shadow-md"
+                                                    >
+                                                        <div className="flex items-center justify-between">
+                                                            <span className="text-xs font-medium text-gray-500">
+                                                                รอบเรียกบรรจุ
+                                                            </span>
+                                                            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-sm font-bold text-emerald-700">
+                                                                {num}
+                                                            </span>
+                                                        </div>
+                                                        <div className="text-right items-baseline gap-1.5">
+                                                            <span className="text-2xl font-bold tabular-nums tracking-tight text-gray-700">
+                                                                {reg.rounds[num].toLocaleString()}
+                                                            </span>
+                                                            <span className="text-xs font-medium text-gray-500 ml-2">
+                                                                คน
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                        </div>
+                                    ) : (
+                                        <p className="py-3 text-center text-xs text-gray-400">
+                                            ยังไม่มีข้อมูลรอบเรียกบรรจุ
+                                        </p>
+                                    )}
+
+                                </div>
                             </div>
                             <div className="px-3">
                                 <hr className="border-gray-200" />
@@ -245,20 +252,35 @@ export default function T2P11_TableSummaryforMobile({ data }) {
                                                             จำนวนเรียกบรรจุแยกรอบ
                                                         </p>
                                                         {roundsWithData.length > 0 ? (
-                                                            <div className="space-y-2">
-                                                                {roundsWithData.map((num) => (
-                                                                    <div
-                                                                        key={num}
-                                                                        className="flex items-center justify-between rounded-lg border border-gray-100 bg-white p-3"
-                                                                    >
-                                                                        <span className="text-sm text-gray-600">
-                                                                            รอบที่ {num}
-                                                                        </span>
-                                                                        <span className="text-sm font-bold text-emerald-700">
-                                                                            {Number(zone.round_data?.[num]?.total).toLocaleString()} คน
-                                                                        </span>
-                                                                    </div>
-                                                                ))}
+                                                            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                                                                {roundsWithData.map((num) => {
+                                                                    const list_new_status = zone.round_data?.[num]?.list_new_status || false;
+                                                                    return (
+                                                                        <div
+                                                                            key={num}
+                                                                            className="flex min-w-[190px] flex-shrink-0 snap-start flex-col gap-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+                                                                        >
+                                                                            <div className="flex items-center justify-between gap-2">
+                                                                                <span className="text-sm font-semibold text-gray-700">
+                                                                                    รอบที่ {num}
+                                                                                </span>
+                                                                                <span className={`rounded-lg px-2.5 py-1 text-xs font-semibold whitespace-nowrap ${list_new_status ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>
+                                                                                    {list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                                                                </span>
+                                                                            </div>
+
+                                                                            <div className="text-right gap-1.5">
+                                                                                <span className="text-2xl font-bold tabular-nums tracking-tight text-gray-700">
+                                                                                    {Number(zone.round_data?.[num]?.total).toLocaleString()}
+                                                                                </span>
+                                                                                <span className="text-sm font-bold text-gray-600 ml-2">
+                                                                                    คน
+                                                                                </span>
+                                                                            </div>
+                                                                            <div className={`h-1 w-full rounded-full ${list_new_status ? 'bg-emerald-400' : 'bg-rose-400'}`} />
+                                                                        </div>
+                                                                    );
+                                                                })}
                                                             </div>
                                                         ) : (
                                                             <p className="py-2 text-center text-xs text-gray-400">
