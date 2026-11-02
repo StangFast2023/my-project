@@ -93,7 +93,7 @@ export default function T1P3_PieListed({ data }) {
                                                                         <span className="text-gray-700 font-bold text-base lg:text-sm">
                                                                             {roundInfo.total_called.toLocaleString()}
                                                                         </span>
-                                                                        <span className={`block w-[calc(100%+1rem)] -mx-2 -mb-2 text-center text-xs font-normal whitespace-nowrap ${roundInfo.list_new_status ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                                                        <span className={`block w-[80%] rounded-xl py-1 text-center text-xs font-normal whitespace-nowrap ${roundInfo.list_new_status ? 'text-emerald-500 bg-emerald-50' : 'text-rose-500 bg-rose-50'}`}>
                                                                             {roundInfo.list_new_status ? "บัญชีใหม่" : "บัญชีเก่า"}
                                                                         </span>
                                                                     </div>

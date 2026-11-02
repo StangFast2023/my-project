@@ -89,7 +89,7 @@ export default function T2P7_TableSummary({ data }) {
                                                                             <span className="text-base font-bold tabular-nums text-gray-800">
                                                                                 {zone.round_data[num].total > 0 ? zone.round_data[num].total.toLocaleString() : '-'}
                                                                             </span>
-                                                                            <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap ${list_new_status ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}
+                                                                            <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] whitespace-nowrap ${list_new_status ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}
                                                                             >
                                                                                 {list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
                                                                             </span>
