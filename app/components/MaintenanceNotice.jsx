@@ -106,8 +106,8 @@ export default function MaintenanceNotice() {
                                     {[
                                         { id: 1, name: '1. สรุปภาพรวม', status: 'done' },
                                         { id: 2, name: '2. ข้อมูลประเภทและตำแหน่ง', status: 'done' },
-                                        { id: 3, name: '3. ข้อมูลรายภาคและเขต', status: 'working' },
-                                        { id: 4, name: '4. ข้อมูลเจาะลึกรายเขตและตำแหน่ง', status: 'waiting' },
+                                        { id: 3, name: '3. ข้อมูลรายภาคและเขต', status: 'done' },
+                                        { id: 4, name: '4. ข้อมูลเจาะลึกรายเขตและตำแหน่ง', status: 'working' },
                                         { id: 5, name: '5. วิเคราะห์โอกาสเรียกตัว', status: 'waiting' },
                                     ].map((item) => {
                                         const statusConfig = {

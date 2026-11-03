@@ -62,7 +62,7 @@ export default function T2P7_TableAllType({ data }) {
             const total = (key) => zoneList.reduce((sum, item) => sum + (item[key] || 0), 0);
             return {
                 subId,
-                name: zoneList[0]?.prov_full_name || `เขต ${subId}`,
+                name: zoneList[0]?.prov_sub_name || `เขต ${subId}`,
                 items: zoneList,
                 totalList: total("total_list"),
                 totalListNew: total("total_list_new"),
@@ -113,7 +113,7 @@ export default function T2P7_TableAllType({ data }) {
                                             setMobileZoneIndex(0);
                                             setMobileTypeIndex(0);
                                         }}
-                                        className={`shrink-0 snap-start rounded-lg border px-4 py-3 text-sm font-semibold ${mobileRegionIndex === index ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-gray-200 bg-white text-gray-600"}`}
+                                        className={`shrink-0 snap-start rounded-lg border px-3 py-2 text-sm font-semibold ${mobileRegionIndex === index ? "border-emerald-600 bg-emerald-50 text-emerald-800" : "border-gray-200 bg-white text-gray-600"}`}
                                     >
                                         {region.regionName}
                                     </button>
@@ -124,13 +124,27 @@ export default function T2P7_TableAllType({ data }) {
                             <h3 className="mb-2 text-sm font-bold text-gray-700">
                                 ชั้นที่ 2 · ระดับเขต
                             </h3>
-                            <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2">
+                            <div
+                                className="grid gap-2"
+                                style={{
+                                    gridTemplateColumns: `repeat(${selectedRegion?.zones?.length || 1}, minmax(0, 1fr))`
+                                }}
+                            >
                                 {(selectedRegion?.zones || []).map((zone, index) => (
                                     <button
-                                        key={zone.subId} onClick={() => { setMobileZoneIndex(index); setMobileTypeIndex(0); }}
-                                        className={`min-w-36 shrink-0 snap-start rounded-lg border p-3 text-center ${mobileZoneIndex === index ? "border-violet-600 bg-violet-50 text-violet-800" : "border-gray-200 bg-white text-gray-700"}`}
+                                        key={zone.subId}
+                                        onClick={() => {
+                                            setMobileZoneIndex(index);
+                                            setMobileTypeIndex(0);
+                                        }}
+                                        className={`min-w-0 rounded-lg border p-1 text-center transition-colors ${mobileZoneIndex === index
+                                            ? "border-orange-600 bg-orange-50 text-orange-800"
+                                            : "border-gray-200 bg-white text-gray-700"
+                                            }`}
                                     >
-                                        <div className="text-sm font-semibold">{zone.name}</div>
+                                        <div className="text-sm font-semibold break-words">
+                                            {zone.name}
+                                        </div>
                                     </button>
                                 ))}
                             </div>
@@ -139,14 +153,25 @@ export default function T2P7_TableAllType({ data }) {
                             <h3 className="mb-2 text-sm font-bold text-gray-700">
                                 ชั้นที่ 3 · ประเภทตำแหน่ง
                             </h3>
-                            <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2">
+                            <div className="grid grid-cols-3 gap-2">
                                 {selectedTypes.map((item, index) => (
                                     <button
                                         key={`${item.prov_sub_id}-${item.pos_type_id}`}
                                         onClick={() => setMobileTypeIndex(index)}
-                                        className={`min-w-36 shrink-0 snap-start rounded-lg border p-3 text-center ${mobileTypeIndex === index ? (Number(item.pos_type_id) === 1 ? 'border-blue-200 bg-blue-200 text-blue-700 shadow-sm' : Number(item.pos_type_id) === 2 ? 'border-emerald-200 bg-emerald-200 text-emerald-700 shadow-sm' : 'border-amber-200 bg-amber-200 text-amber-700 shadow-sm') : "border-gray-200 bg-white text-gray-700"}`}
+                                        className={`min-w-0 rounded-lg border-1 p-2 text-center transition-colors ${mobileTypeIndex === index
+                                            ? (
+                                                Number(item.pos_type_id) === 1
+                                                    ? 'border-blue-400 bg-blue-200 text-blue-700 shadow-sm'
+                                                    : Number(item.pos_type_id) === 2
+                                                        ? 'border-emerald-400 bg-emerald-200 text-emerald-700 shadow-sm'
+                                                        : 'border-amber-400 bg-amber-200 text-amber-700 shadow-sm'
+                                            )
+                                            : 'border-gray-200 bg-white text-gray-700'
+                                            }`}
                                     >
-                                        <div className="text-sm font-semibold">{item.pos_type}</div>
+                                        <div className="text-sm font-semibold break-words">
+                                            {item.pos_type}
+                                        </div>
                                     </button>
                                 ))}
                             </div>
@@ -155,28 +180,28 @@ export default function T2P7_TableAllType({ data }) {
                                     <div className="grid grid-cols-2 gap-2">
                                         <div className="rounded-lg bg-amber-50 p-3">
                                             <div className="text-xs text-amber-700">ขึ้นบัญชี (เก่า)</div>
-                                            <div className="mt-1 font-bold text-gray-700 text-right">
+                                            <div className="text-sm mt-1 font-bold text-gray-700 text-right">
                                                 {selectedType.total_list.toLocaleString()}
                                             </div>
                                         </div>
 
                                         <div className="rounded-lg bg-amber-100 p-3">
                                             <div className="text-xs text-amber-800">ขึ้นบัญชี (ใหม่)</div>
-                                            <div className="mt-1 font-bold text-gray-700 text-right">
+                                            <div className="text-sm mt-1 font-bold text-gray-700 text-right">
                                                 {selectedType.total_list_new.toLocaleString()}
                                             </div>
                                         </div>
 
                                         <div className="rounded-lg bg-rose-50 p-3">
                                             <div className="text-xs text-rose-700">ส่วนต่าง</div>
-                                            <div className="mt-1 font-bold text-gray-700 text-right">
+                                            <div className="text-sm mt-1 font-bold text-gray-700 text-right">
                                                 {selectedType.total_diff.toLocaleString()}
                                             </div>
                                         </div>
 
                                         <div className="rounded-lg bg-emerald-50 p-3">
                                             <div className="text-xs text-emerald-700">เรียกแล้วรวม</div>
-                                            <div className="mt-1 font-bold text-gray-700 text-right">
+                                            <div className="text-sm mt-1 font-bold text-gray-700 text-right">
                                                 {selectedType.total_call.toLocaleString()}
                                             </div>
                                         </div>
@@ -218,23 +243,27 @@ export default function T2P7_TableAllType({ data }) {
                                 <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto pb-2">
                                     {roundColumns.map((num) => {
                                         const round = selectedType.round_data?.[num];
+                                        const list_new = selectedType.round_data?.[num]?.list_new_status;
+                                        console.log(selectedType.round_data?.[num]);
                                         return (
                                             round?.total != null ? (
                                                 <div
                                                     key={num}
                                                     className="min-w-32 shrink-0 snap-start rounded-lg border border-gray-200 bg-white p-3"
                                                 >
-                                                    <div>
-                                                        <div className="text-xs text-gray-500">
-                                                            รอบที่ {num}
-                                                        </div>
-                                                        <div className="mt-1 text-xs text-gray-500">
-                                                            จำนวนเรียกบรรจุ
-                                                        </div>
+                                                    <div className="text-sm font-bold text-gray-700">
+                                                        รอบที่ {num}
                                                     </div>
                                                     <div className="mt-2 text-lg font-bold text-right text-gray-800">
-                                                        {round?.total != null ? round.total.toLocaleString() : "—"}
+                                                        {round?.total != null ? round.total.toLocaleString() + ' คน' : ``}
                                                     </div>
+                                                    {list_new !== null ? (
+                                                        <>
+                                                            <div className={`my-1 w-full text-center text-sm px-2 py-1 border-1 rounded-lg ${list_new ? 'text-emerald-600 bg-emerald-50 text-emerald-200' : 'text-rose-600 bg-rose-50 text-rose-200'}`}>
+                                                                {list_new ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                                            </div>
+                                                        </>
+                                                    ) : ``}
                                                 </div>
                                             ) : null
                                         );
@@ -327,11 +356,46 @@ export default function T2P7_TableAllType({ data }) {
                                                                 <td className={`px-6 py-4  text-base font-semibold text-center ${zone.total_remain === 0 ? 'bg-blue-50 text-blue-500' : zone.total_remain > 0 ? 'bg-orange-50 text-orange-500' : 'bg-rose-50 text-rose-500'}`}>
                                                                     {zone.total_remain.toLocaleString()}
                                                                 </td>
-                                                                {roundColumns.map(num => { const roundInfo = zone.round_data?.[num]; const bgClass = roundInfo ? "bg-white" : "bg-gray-100"; return (<td key={num} className={`px-4 py-4 text-center text-base font-semibold ${bgClass}`}>{roundInfo ? roundInfo.total.toLocaleString() : null}</td>); })}
+                                                                {roundColumns.map(num => {
+                                                                    const roundInfo = zone.round_data?.[num];
+                                                                    const list_new_status = roundInfo?.list_new_status || '';
+                                                                    const bgClass = roundInfo ? "bg-white" : "bg-gray-100";
+                                                                    return (
+                                                                        <td
+                                                                            key={num}
+                                                                            className={`group px-4 pt-4 text-center text-base font-semibold transition-colors duration-200 ${bgClass} ${roundInfo ? (list_new_status ? "hover:bg-emerald-50" : "hover:bg-rose-50") : ""}`}
+                                                                        >
+                                                                            {roundInfo ? (
+                                                                                <div className="flex flex-col items-center justify-center gap-1">
+                                                                                    <span className="tabular-nums text-gray-800">
+                                                                                        {roundInfo.total.toLocaleString()}
+                                                                                    </span>
 
+                                                                                    <div className="relative flex h-5 w-full items-center justify-center">
+                                                                                        <span
+                                                                                            className={`h-[3px] w-10 rounded-full transition-all duration-200 group-hover:-translate-y-2 ${list_new_status
+                                                                                                ? "bg-emerald-500"
+                                                                                                : "bg-rose-500"
+                                                                                                }`}
+                                                                                        />
+
+                                                                                        <span
+                                                                                            className={`pointer-events-none absolute bottom-0 hidden translate-y-1 whitespace-nowrap rounded-md px-2 py-0.5 text-[11px] font-medium opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 md:block ${list_new_status
+                                                                                                ? "bg-emerald-50 text-emerald-600"
+                                                                                                : "bg-rose-50 text-rose-600"
+                                                                                                }`}
+                                                                                        >
+                                                                                            {list_new_status ? "บัญชีใหม่" : "บัญชีเก่า"}
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            ) : null}
+                                                                        </td>
+                                                                    );
+                                                                })}
                                                             </tr>
                                                         ))}
-                                                        <tr className="bg-slate-50/60 font-semibold text-gray-900 ">
+                                                        <tr className="bg-slate-50/60 font-semibold text-gray-900">
                                                             <td className="px-4 py-3  text-center text-xs text-slate-500 bg-slate-50/40 font-bold">รวมประจำเขต</td>
                                                             <td className="px-4 py-3  text-center text-base font-semibold ">{zoneTotalList.toLocaleString()}</td>
                                                             <td className="px-4 py-3  text-center text-base font-semibold ">{zoneTotalListNew.toLocaleString()}</td>

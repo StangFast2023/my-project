@@ -92,9 +92,7 @@ export default function T2P7_TableAllType({ data }) {
             localStorage.removeItem("selectedPos");
         }
     };
-    const filteredData = selectedOption
-        ? Object.values(data_select).filter(item => item.pos_id === selectedOption.value)
-        : [];
+    const filteredData = selectedOption ? Object.values(data_select).filter(item => item.pos_id === selectedOption.value) : [];
     const displayData = selectedOption ? tableData : [];
 
     const max_rounds_all_zones = Math.max(...Object.values(displayData).map(zone => zone.total_round));
@@ -351,7 +349,10 @@ export default function T2P7_TableAllType({ data }) {
                                                                                     {rounds.map(({ num, data: round }) => {
                                                                                         const called = round.call_status === true;
                                                                                         const change = round.percent_change;
+                                                                                        const rank = called ? round.start_end : null;
+                                                                                        const list_new = called ? round.list_new_status : null;
                                                                                         const hasChange = change !== null && change !== undefined && Number.isFinite(Number(change));
+                                                                                        console.log(rank);
                                                                                         const workStatus = {
                                                                                             waiting: "รอการเรียกบรรจุ",
                                                                                             "not-used": "ไม่มีการใช้บัญชี",
@@ -364,7 +365,7 @@ export default function T2P7_TableAllType({ data }) {
                                                                                             >
                                                                                                 <div className="space-y-2">
                                                                                                     <div className="flex items-center justify-between gap-2">
-                                                                                                        <span className="text-xs font-bold text-gray-800">
+                                                                                                        <span className="m-1 text-base font-bold text-gray-800">
                                                                                                             รอบที่ {round.round || num}
                                                                                                         </span>
                                                                                                         <span className={`rounded-full px-3 py-0.5 text-xs font-semibold ${called ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>
@@ -379,13 +380,38 @@ export default function T2P7_TableAllType({ data }) {
                                                                                                             </p>
                                                                                                         </div>
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                            <p className="text-xs text-gray-400">ลำดับที่เรียก</p>
+                                                                                                            <p className="text-xs text-gray-400">บัญชีที่ใช้เรียก</p>
                                                                                                             <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                                {called ? round.start_end || "-" : "-"}
+                                                                                                                {list_new !== null ? (
+                                                                                                                    <>
+                                                                                                                        <span className={`text-sm rounded-sm px-2 ${list_new ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                                                                                                            {list_new ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                                                                                                        </span>
+                                                                                                                    </>
+                                                                                                                ) : null}
                                                                                                             </p>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                     <div className="space-y-1">
+                                                                                                        <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                            <p className="text-xs text-gray-400">ลำดับที่เรียก</p>
+                                                                                                            <div className="flex max-w-full gap-1.5 overflow-x-auto whitespace-nowrap py-1 scrollbar-thin scrollbar-thumb-gray-300">
+                                                                                                                {Array.isArray(rank) && rank.length > 0 ? (
+                                                                                                                    rank.map((item, index) => (
+                                                                                                                        <span
+                                                                                                                            key={index}
+                                                                                                                            className="inline-flex items-center rounded-md border border-gray-400 bg-white px-3 py-2 text-xs font-semibold text-gray-700 whitespace-nowrap"
+                                                                                                                        >
+                                                                                                                            {item}
+                                                                                                                        </span>
+                                                                                                                    ))
+                                                                                                                ) : (
+                                                                                                                    <span className="text-sm font-semibold text-gray-400">-</span>
+                                                                                                                )}
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div className="grid grid-cols-2 gap-2">
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
                                                                                                             <p className="text-xs text-gray-400">วันที่บรรจุ</p>
                                                                                                             <p className="text-right text-sm font-semibold text-gray-800">
@@ -509,7 +535,8 @@ export default function T2P7_TableAllType({ data }) {
                                                                                     const crossed_zone = status_cross ? each_round_data.crossed_zone : "";
 
                                                                                     const call_date = call_status ? each_round_data.call_date : "-";
-                                                                                    const called_rank = call_status ? each_round_data.start_end : "-";
+                                                                                    const called_rank = call_status ? each_round_data.start_end : [];
+                                                                                    const list_new_status = call_status ? each_round_data.list_new_status : null;
                                                                                     const percent_change = call_status ? each_round_data.percent_change : "";
                                                                                     const proportion_used = call_status ? each_round_data.proportion_used.toFixed(2) + " %" : "-";
                                                                                     const status_work = each_round_data.status_work;
@@ -559,12 +586,20 @@ export default function T2P7_TableAllType({ data }) {
                                                                                     let text_content = `
                                                                                             <table class="w-full text-left border-collapse">
                                                                                                 <tr class="border-b">
-                                                                                                    <th class="w-[60%] py-2 font-bold text-gray-500">จำนวนที่เรียกบรรจุ :</th>
-                                                                                                    <td class="w-[40%] py-2 font-bold">${total.toLocaleString()}</td>
+                                                                                                    <th class="w-[50%] py-2 font-bold text-gray-500">จำนวนที่เรียกบรรจุ :</th>
+                                                                                                    <td class="w-[50%] py-2 font-bold">${total.toLocaleString()}</td>
                                                                                                 </tr>
                                                                                                 <tr class="border-b">
                                                                                                     <th class="py-2 font-bold text-gray-500">ลำดับที่ :</th>
-                                                                                                    <td class="py-2 font-bold">${called_rank}</td>
+                                                                                                    <td class="py-2 font-bold">
+                                                                                                        <div class="flex flex-wrap gap-1.5">
+                                                                                                            ${called_rank.length > 0 ? called_rank.map(rank => `<span class="inline-flex items-center rounded-md border border-gray-400 bg-white px-2.5 py-1 text-sm font-semibold text-gray-700 whitespace-nowrap">${rank}</span>`).join('') : '<span class="text-gray-400">-</span>'}
+                                                                                                        </div>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr class="border-b">
+                                                                                                    <th class="py-2 font-bold text-gray-500">บัญชีที่ใช้เรียก :</th>
+                                                                                                    <td class="py-2 font-bold"><span class="px-2.5 py-1 text-sm font-semibold rounded-md whitespace-nowrap ${list_new_status !== null ? (list_new_status ? "border border-emerald-400 text-emerald-700 bg-emerald-100" : "border border-rose-400 text-rose-700 bg-rose-100") : null} ">${list_new_status !== null ? (list_new_status ? `บัญชีใหม่` : `บัญชีเก่า`) : ``}</span></td>
                                                                                                 </tr>
                                                                                                 <tr class="border-b">
                                                                                                     <th class="py-2 font-bold text-gray-500">วันที่บรรจุ :</th>
@@ -572,7 +607,7 @@ export default function T2P7_TableAllType({ data }) {
                                                                                                 </tr>
                                                                                                 <tr class="border-b">
                                                                                                     <th class="py-2 font-bold text-gray-500">สถานะ:</th>
-                                                                                                    <td class="py-2 font-bold">${status_work_text}</td>
+                                                                                                    <td class="py-2 font-bold">${call_status ? status_work_text : `-`}</td>
                                                                                                 </tr>
                                                                                                 <tr class="border-b">
                                                                                                     <th class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</th>
@@ -591,8 +626,8 @@ export default function T2P7_TableAllType({ data }) {
                                                                                                 <div class="mt-3 pt-3 border-t border-gray-200 text-sm">
                                                                                                     <table class="w-full text-lg text-left border-collapse">
                                                                                                         <tr class="border-b">
-                                                                                                            <th class="w-[60%] py-2 font-bold text-gray-500">เป็นการเรียกใช้บัญชีข้ามเขต :</th>
-                                                                                                            <td class="w-[40%] py-2 font-bold">${status_cross === true ? "ใช่" : "ไม่ใช่"}</td>
+                                                                                                            <th class="w-[50%] py-2 font-bold text-gray-500">เป็นการเรียกใช้บัญชีข้ามเขต :</th>
+                                                                                                            <td class="w-[50%] py-2 font-bold">${status_cross === true ? "ใช่" : "ไม่ใช่"}</td>
                                                                                                         </tr>
                                                                                                         <tr class="border-b">
                                                                                                             <th class="py-2 font-bold text-gray-500">ภาค :</th>
