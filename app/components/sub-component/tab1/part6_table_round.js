@@ -60,7 +60,7 @@ export default function T1P3_PieListed({ data }) {
                                 return (
                                     <React.Fragment key={region.name}>
                                         <tr className="bg-emerald-50/20">
-                                            <td colSpan={roundColumns.length + 7} className="border-t-2 border-gray-700 px-6 py-2 text-emerald-700 font-bold text-base lg:text-lg uppercase tracking-wider">
+                                            <td colSpan={roundColumns.length + 7} className="border-t-2 border-b-1 border-gray-700  px-6 py-2 text-emerald-700 font-bold text-base lg:text-lg uppercase tracking-wider">
                                                 <span className="sticky left-[30px]">{region.name}</span>
                                             </td>
                                         </tr>
@@ -86,16 +86,20 @@ export default function T1P3_PieListed({ data }) {
                                                         return (
                                                             <td
                                                                 key={num}
-                                                                className={`px-2 py-2 text-center align-bottom ${bgClass}`}
+                                                                className={`group px-2 pt-2 text-center align-bottom transition-colors duration-200 ${bgClass} ${roundInfo ? (roundInfo.list_new_status ? 'hover:bg-emerald-50' : 'hover:bg-rose-50') : ''}`}
                                                             >
                                                                 {roundInfo && (
-                                                                    <div className="flex h-full flex-col items-center justify-between gap-1">
+                                                                    <div className="flex h-full flex-col items-center justify-center gap-1">
                                                                         <span className="text-gray-700 font-bold text-base lg:text-sm">
                                                                             {roundInfo.total_called.toLocaleString()}
                                                                         </span>
-                                                                        <span className={`block w-[80%] rounded-xl py-1 text-center text-xs font-normal whitespace-nowrap ${roundInfo.list_new_status ? 'text-emerald-500 bg-emerald-50' : 'text-rose-500 bg-rose-50'}`}>
-                                                                            {roundInfo.list_new_status ? "บัญชีใหม่" : "บัญชีเก่า"}
-                                                                        </span>
+                                                                        <div className="relative flex h-5 w-full items-center justify-center">
+                                                                            <span className={`h-[3px] w-10 rounded-full transition-all duration-200 group-hover:-translate-y-2 ${roundInfo.list_new_status ? 'bg-emerald-500' : 'bg-rose-500'}`}
+                                                                            />
+                                                                            <span className={`pointer-events-none absolute bottom-0 hidden translate-y-1 rounded-md px-2 py-0.5 text-[11px] font-medium whitespace-nowrap opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 md:block ${roundInfo.list_new_status ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                                                                                {roundInfo.list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                                                            </span>
+                                                                        </div>
                                                                     </div>
                                                                 )}
                                                             </td>
@@ -105,14 +109,14 @@ export default function T1P3_PieListed({ data }) {
                                             );
                                         })}
                                         <tr key={region.name}>
-                                            <td className="bg-white          px-6 py-4 text-base lg:text-sm font-semibold text-center text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
-                                            <td className="bg-amber-200/50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
-                                            <td className="bg-amber-300/50   px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{reg.new_list.toLocaleString()}</td>
-                                            <td className="bg-red-300/50     px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-600">{reg.diff.toLocaleString()}</td>
-                                            <td className="bg-emerald-200/50 px-4 py-4 text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
-                                            <td className="bg-blue-200/50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.new_list) * 100).toFixed(2)} %</td>
-                                            <td className="bg-rose-200/50    px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
-                                            {reg.rounds.map((v, i) => <td key={i} className={`px-4 py-4 text-base lg:text-sm text-center font-semibold text-gray-700 ${v > 0 ? 'bg-white' : 'bg-gray-200'}`} >{v > 0 ? v.toLocaleString() : null}</td>)}
+                                            <td className="bg-white          border-t-1 border-gray-700 px-6 py-4 text-base lg:text-sm font-semibold text-center text-gray-600 sticky left-0 z-10"> รวม {region.name}</td>
+                                            <td className="bg-amber-200/50   border-t-1 border-gray-700 px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{reg.list.toLocaleString()}</td>
+                                            <td className="bg-amber-300/50   border-t-1 border-gray-700 px-4 py-4 text-base lg:text-sm font-semibold text-center text-gray-600">{reg.new_list.toLocaleString()}</td>
+                                            <td className="bg-red-300/50     border-t-1 border-gray-700 px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-600">{reg.diff.toLocaleString()}</td>
+                                            <td className="bg-emerald-200/50 border-t-1 border-gray-700 px-4 py-4 text-base lg:text-sm font-semibold text-center text-emerald-600">{reg.call.toLocaleString()}</td>
+                                            <td className="bg-blue-200/50    border-t-1 border-gray-700 px-4 py-4 text-base lg:text-sm font-semibold text-center text-blue-600">{((reg.call / reg.new_list) * 100).toFixed(2)} %</td>
+                                            <td className="bg-rose-200/50    border-t-1 border-gray-700 px-4 py-4 text-base lg:text-sm font-semibold text-center text-rose-500">{reg.remain.toLocaleString()}</td>
+                                            {reg.rounds.map((v, i) => <td key={i} className={`border-t-1 border-gray-700 px-4 py-4 text-base lg:text-sm text-center font-semibold text-gray-700 ${v > 0 ? 'bg-white' : 'bg-gray-200'}`} >{v > 0 ? v.toLocaleString() : null}</td>)}
                                         </tr>
                                     </React.Fragment>
                                 );
