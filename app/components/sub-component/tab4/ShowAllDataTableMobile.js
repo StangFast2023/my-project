@@ -21,19 +21,6 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         })}%`;
-    const formatDateThai = (dateStr) => {
-        if (!dateStr) return '-';
-
-        const [d, m, y] = dateStr.split('-');
-        const months = [
-            'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.',
-            'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.',
-            'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.',
-        ];
-        const monthIndex = Number(m) - 1;
-        if (!d || !y || !months[monthIndex]) return dateStr;
-        return `${parseInt(d, 10)} ${months[monthIndex]} ${parseInt(y, 10) + 543}`;
-    };
     const getRoundStatus = (status) => {
         switch (status) {
             case 'completed':
@@ -360,6 +347,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                         {mobilePositions.map((item) => {
                             const active = activePosition?.uniqueKey === item.uniqueKey;
                             const status = getPositionStatus(item);
+                            const status_open = item.status_open;
                             return (
                                 <button
                                     key={item.uniqueKey}
@@ -378,35 +366,20 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                                 <span className={`rounded-md px-2 w-full text-center py-1 text-xs font-semibold ${item.pos_type_id === 1 ? 'bg-blue-50 text-blue-700 border-1 border-blue-700' : item.pos_type_id === 2 ? 'bg-emerald-50 text-emerald-700 border-1 border-emerald-700' : 'bg-amber-50 text-amber-700 border-1 border-amber-700'}`}>
                                                     {item.pos_type_name || 'ไม่ระบุประเภท'}
                                                 </span>
-                                                <span className={`rounded-md px-2 w-full text-center py-1 text-xs font-semibold ${status.color}`}>
-                                                    {status.label}
-                                                </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-3 gap-2 border-t border-gray-200 pt-3">
-                                        <div className="p-2 rounded inset-shadow-sm border border-gray-400">
-                                            <p className="text-[11px] text-gray-500">
-                                                ขึ้นบัญชีใหม่
-                                            </p>
-                                            <p className="text-sm font-bold text-gray-800 text-right">
-                                                {formatNumber(item.total_listed_n)}
+                                    <div className="grid grid-cols-2 gap-2 border-t border-gray-200 pt-3">
+                                        <div className="p-2 rounded inset-shadow-sm">
+                                            <p className="text-xs text-gray-500">สถานะเปิดสอบ</p>
+                                            <p className={`mt-1 p-2 rounded-xl font-bold text-center border shadow-sm ${status_open ? 'border-emerald-700 text-emerald-700 bg-emerald-50' : 'border-rose-700 text-rose-700  bg-rose-50'}`}>
+                                                {status_open ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}
                                             </p>
                                         </div>
-                                        <div className="p-2 rounded inset-shadow-sm border border-gray-400">
-                                            <p className="text-[11px] text-gray-500">
-                                                เรียกแล้ว
-                                            </p>
-                                            <p className="text-sm font-bold text-emerald-700 text-right">
-                                                {formatNumber(item.total_call)}
-                                            </p>
-                                        </div>
-                                        <div className="p-2 rounded inset-shadow-sm border border-gray-400">
-                                            <p className="text-[11px] text-gray-500">
-                                                คงเหลือ
-                                            </p>
-                                            <p className={`text-sm font-bold text-right ${item.total_remain < 0 ? 'text-rose-600' : 'text-amber-700'}`} >
-                                                {formatNumber(item.total_remain)}
+                                        <div className="p-2 rounded inset-shadow-sm">
+                                            <p className="text-xs text-gray-500">สถานะบัญชี</p>
+                                            <p className={`mt-1 p-2 rounded-xl font-bold text-center shadow-sm ${status.color}`}>
+                                                {status.label}
                                             </p>
                                         </div>
                                     </div>
@@ -444,21 +417,6 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-px bg-gray-200">
-                            <div className="bg-white p-2">
-                                <p className="text-xs text-gray-500">สถานะเปิดสอบ</p>
-                                <p className={`mt-1 p-2 rounded-xl font-bold text-center shadow-sm ${activePosition.status_open ? 'text-emerald-700 bg-emerald-100' : 'text-rose-700  bg-rose-100'}`}>
-                                    {activePosition.status_open ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}
-                                </p>
-                            </div>
-
-                            <div className="bg-white p-2">
-                                <p className="text-xs text-gray-500">สถานะบัญชี</p>
-                                <p className={`mt-1 p-2 rounded-xl font-bold text-center shadow-sm ${activePosition.total_remain === 0 ? "text-emerald-700 bg-emerald-100" : (activePosition.total_remain > 0 ? "text-amber-700 bg-amber-100" : "text-rose-700 bg-rose-100")} `}>
-                                    {getPositionStatus(activePosition).label}
-                                </p>
-                            </div>
-                        </div>
                         <div className="grid grid-cols-2 gap-3 p-2">
                             <div className="rounded-xl bg-gray-50 p-2 inset-shadow-sm">
                                 <p className="text-xs text-gray-500">ขึ้นบัญชี (เก่า)</p>
@@ -523,6 +481,8 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                         const status = getRoundStatus(data?.status);
                                         const statusList = data?.status_list_n ?? 'no-data';
                                         const statusCall = data?.status_call ?? 'no-data';
+                                        const list_new = data?.list_new_status ?? 'no-data';
+                                        const account_status = data?.account_status ?? 'no-data';
                                         const noCall = statusCall === false && statusList === false;
                                         const listExhausted = statusCall === false && statusList === true;
                                         let changeText = '-';
@@ -572,25 +532,47 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                                     </span>
                                                 </div>
                                                 <div className="flex flex-1 flex-col gap-3 p-4">
-                                                    <div className="grid grid-cols-2 gap-3">
-                                                        <div className="rounded-xl bg-emerald-50 p-2">
-                                                            <p className="text-xs text-emerald-700">
-                                                                จำนวนที่เรียกบรรจุ
-                                                            </p>
-                                                            <p className="mt-1 text-xl font-bold text-emerald-800 text-right">
-                                                                {roundTotal}
-                                                            </p>
-                                                        </div>
-                                                        <div className="rounded-xl bg-gray-50 p-2">
-                                                            <p className="text-xs text-gray-500">
-                                                                ลำดับที่
-                                                            </p>
-                                                            <p className="mt-1 break-words text-lg font-bold text-gray-800 text-right">
-                                                                {noCall || listExhausted ? '-' : data?.start_end || '-'}
-                                                            </p>
-                                                        </div>
+                                                    <div className="rounded-xl bg-emerald-50 p-2">
+                                                        <p className="text-xs text-emerald-700">
+                                                            จำนวนที่เรียกบรรจุ
+                                                        </p>
+                                                        <p className="mt-1 text-xl font-bold text-emerald-800 text-right">
+                                                            {roundTotal}
+                                                        </p>
+                                                    </div>
+                                                    <div className="rounded-xl bg-gray-50 p-2 min-h-[10vh]">
+                                                        <p className="text-xs text-gray-500">
+                                                            ลำดับที่
+                                                        </p>
+                                                        <p className="mt-1 break-words text-lg font-bold text-gray-800 text-right">
+                                                            {noCall || listExhausted ? (
+                                                                '-'
+                                                            ) : (
+                                                                <div className="flex max-w-full flex-nowrap justify-start gap-1 overflow-x-auto whitespace-nowrap py-1">
+                                                                    {(Array.isArray(data?.start_end)
+                                                                        ? data.start_end
+                                                                        : [data?.start_end]
+                                                                    ).filter(Boolean).map((item, index) => (
+                                                                        <span
+                                                                            key={index}
+                                                                            className="shrink-0 rounded-md bg-white px-3 py-2 text-sm font-semibold border-1 border-gray-600 text-gray-700 shadow-xl"
+                                                                        >
+                                                                            {item}
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </p>
                                                     </div>
                                                     <div className="overflow-hidden rounded-xl border border-gray-100">
+                                                        <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-3 py-3">
+                                                            <span className="text-sm text-gray-500">
+                                                                บัญชีที่ใช้เรียก
+                                                            </span>
+                                                            <span className={`text-right text-sm font-bold p-1 rounded-xl ${account_status ? '' : (list_new ? 'border-1 bg-emerald-50 border-emerald-400 text-emerald-700' : 'border-1 bg-rose-50 border-rose-400 text-rose-700')} `} >
+                                                                {account_status ? '' : (list_new ? 'บัญชีใหม่' : 'บัญชีเก่า')}
+                                                            </span>
+                                                        </div>
                                                         <div className="flex items-start justify-between gap-3 border-b border-gray-100 px-3 py-3">
                                                             <span className="text-sm text-gray-500">
                                                                 อัตราการเปลี่ยนแปลง
@@ -604,7 +586,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                                                 วันที่บรรจุ
                                                             </span>
                                                             <span className="text-right text-sm font-semibold text-gray-800">
-                                                                {formatDateThai(data?.date)}
+                                                                {data?.date}
                                                             </span>
                                                         </div>
                                                     </div>

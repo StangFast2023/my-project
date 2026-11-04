@@ -107,8 +107,8 @@ export default function MaintenanceNotice() {
                                         { id: 1, name: '1. สรุปภาพรวม', status: 'done' },
                                         { id: 2, name: '2. ข้อมูลประเภทและตำแหน่ง', status: 'done' },
                                         { id: 3, name: '3. ข้อมูลรายภาคและเขต', status: 'done' },
-                                        { id: 4, name: '4. ข้อมูลเจาะลึกรายเขตและตำแหน่ง', status: 'working' },
-                                        { id: 5, name: '5. วิเคราะห์โอกาสเรียกตัว', status: 'waiting' },
+                                        { id: 4, name: '4. ข้อมูลเจาะลึกรายเขตและตำแหน่ง', status: 'done' },
+                                        { id: 5, name: '5. วิเคราะห์โอกาสเรียกตัว', status: 'working' },
                                     ].map((item) => {
                                         const statusConfig = {
                                             done: {
@@ -146,7 +146,7 @@ export default function MaintenanceNotice() {
                         </div>
                     </div>
 
-                    <button onClick={handleClose} className="mt-6 w-full rounded-xl bg-blue-600 px-5 py-3 text-sm md:text-base lg:text-lg font-semibold text-whitetransition hover:bg-blue-700 active:scale-[0.98]">
+                    <button onClick={handleClose} className="mt-6 w-full rounded-xl bg-blue-600 text-white px-5 py-3 text-sm md:text-base lg:text-lg font-semibold text-whitetransition hover:bg-blue-700 active:scale-[0.98]">
                         รับทราบ
                     </button>
                 </div>

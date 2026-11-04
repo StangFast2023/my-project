@@ -53,9 +53,7 @@ const ModalBody = ({ items, selectedItems, onSelectChange }) => {
     const toastTimer = React.useRef(null);
     const showToast = (msg, color = "bg-green-500") => {
         if (toastTimer.current) clearTimeout(toastTimer.current);
-
         setToast({ show: true, msg, color });
-
         toastTimer.current = setTimeout(() => {
             setToast({ show: false, msg: "", color: "" });
         }, 2000);

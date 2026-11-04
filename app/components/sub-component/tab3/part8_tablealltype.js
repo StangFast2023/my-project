@@ -249,21 +249,31 @@ export default function T2P7_TableAllType({ data }) {
                                             round?.total != null ? (
                                                 <div
                                                     key={num}
-                                                    className="min-w-32 shrink-0 snap-start rounded-lg border border-gray-200 bg-white p-3"
+                                                    className="min-w-40 shrink-0 snap-start overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm"
                                                 >
-                                                    <div className="text-sm font-bold text-gray-700">
-                                                        รอบที่ {num}
-                                                    </div>
-                                                    <div className="mt-2 text-lg font-bold text-right text-gray-800">
-                                                        {round?.total != null ? round.total.toLocaleString() + ' คน' : ``}
-                                                    </div>
-                                                    {list_new !== null ? (
-                                                        <>
-                                                            <div className={`my-1 w-full text-center text-sm px-2 py-1 border-1 rounded-lg ${list_new ? 'text-emerald-600 bg-emerald-50 text-emerald-200' : 'text-rose-600 bg-rose-50 text-rose-200'}`}>
+                                                    <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-3 py-2">
+                                                        <div className="text-sm font-semibold text-gray-600">
+                                                            รอบที่ {num}
+                                                        </div>
+
+                                                        {list_new !== null && (
+                                                            <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold ${list_new ? 'border-1 border-emerald-400 bg-emerald-50 text-emerald-700' : 'border-1 border-rose-400 bg-rose-50 text-rose-700'}`}>
+                                                                <span className={`mr-1.5 h-1.5 w-1.5 rounded-full ${list_new ? 'bg-emerald-500' : 'bg-rose-500'}`} />
                                                                 {list_new ? 'บัญชีใหม่' : 'บัญชีเก่า'}
-                                                            </div>
-                                                        </>
-                                                    ) : ``}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="flex flex-col items-end gap-2 px-3 py-3">
+                                                        <div className="text-xl font-bold tabular-nums text-gray-800">
+                                                            {round?.total != null
+                                                                ? round.total.toLocaleString()
+                                                                : '-'}
+                                                            <span className="ml-1 text-xs font-medium text-gray-500">
+                                                                คน
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ) : null
                                         );
@@ -363,28 +373,15 @@ export default function T2P7_TableAllType({ data }) {
                                                                     return (
                                                                         <td
                                                                             key={num}
-                                                                            className={`group px-4 pt-4 text-center text-base font-semibold transition-colors duration-200 ${bgClass} ${roundInfo ? (list_new_status ? "hover:bg-emerald-50" : "hover:bg-rose-50") : ""}`}
+                                                                            className={`group px-4 py-4 text-center text-base font-semibold transition-colors duration-200 ${bgClass} ${roundInfo ? (list_new_status ? "hover:bg-emerald-50 border-b-2 border-emerald-400" : "hover:bg-rose-50 border-b-2 border-rose-400") : ""}`}
                                                                         >
                                                                             {roundInfo ? (
-                                                                                <div className="flex flex-col items-center justify-center gap-1">
-                                                                                    <span className="tabular-nums text-gray-800">
+                                                                                <div className="flex h-full flex-col items-center justify-center gap-1">
+                                                                                    <span className="tabular-nums text-gray-800 duration-200 group-hover:-translate-y-2">
                                                                                         {roundInfo.total.toLocaleString()}
                                                                                     </span>
-
-                                                                                    <div className="relative flex h-5 w-full items-center justify-center">
-                                                                                        <span
-                                                                                            className={`h-[3px] w-10 rounded-full transition-all duration-200 group-hover:-translate-y-2 ${list_new_status
-                                                                                                ? "bg-emerald-500"
-                                                                                                : "bg-rose-500"
-                                                                                                }`}
-                                                                                        />
-
-                                                                                        <span
-                                                                                            className={`pointer-events-none absolute bottom-0 hidden translate-y-1 whitespace-nowrap rounded-md px-2 py-0.5 text-[11px] font-medium opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 md:block ${list_new_status
-                                                                                                ? "bg-emerald-50 text-emerald-600"
-                                                                                                : "bg-rose-50 text-rose-600"
-                                                                                                }`}
-                                                                                        >
+                                                                                    <div className="relative flex w-full translate-y-1 items-center justify-center opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
+                                                                                        <span className={`absolute -bottom-2 hidden whitespace-nowrap rounded-md px-2 py-0.5 text-[11px] font-medium md:block ${list_new_status ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"}`}>
                                                                                             {list_new_status ? "บัญชีใหม่" : "บัญชีเก่า"}
                                                                                         </span>
                                                                                     </div>

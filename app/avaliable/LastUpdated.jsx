@@ -17,7 +17,7 @@ export default function LastUpdated() {
     }).format(new Date(buildTime));
 
     return (
-        <div className="flex items-center justify-center gap-2 text-base text-gray-600">
+        <div className="flex items-center justify-center gap-2 text-[13px] lg:text-base text-gray-600">
             <Clock size={14} />
             <span>
                 เว็บไซต์ปรับปรุงล่าสุด: {formattedDate} น.

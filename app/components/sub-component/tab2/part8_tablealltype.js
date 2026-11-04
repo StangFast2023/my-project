@@ -84,15 +84,14 @@ export default function T2P7_TableSummary({ data }) {
                                                             const roundInfo = zone.round_data?.[num];
                                                             const list_new_status = roundInfo?.list_new_status || false;
                                                             return (
-                                                                <td key={num} className={`group px-4 pt-2 text-center align-middle transition-colors duration-200 ${roundInfo?.total > 0 ? (list_new_status ? 'bg-white hover:bg-emerald-50' : 'bg-white hover:bg-rose-50') : 'bg-gray-100'}`}>
+                                                                <td key={num} className={`group px-4 py-3 text-center align-middle transition-colors duration-200 ${roundInfo?.total > 0 ? (list_new_status ? 'bg-white border-b-2 border-emerald-400 hover:bg-emerald-50' : 'bg-white border-b-2 border-rose-400 hover:bg-rose-50') : 'bg-gray-100'}`}>
                                                                     {roundInfo ? (
-                                                                        <div className="flex flex-col items-center justify-center gap-1.5">
-                                                                            <span className="text-base font-bold tabular-nums text-gray-800">
+                                                                        <div className="flex h-full flex-col items-center justify-center gap-1">
+                                                                            <span className="text-base font-bold tabular-nums text-gray-800 duration-200 group-hover:-translate-y-2">
                                                                                 {roundInfo.total > 0 ? roundInfo.total.toLocaleString() : '-'}
                                                                             </span>
-                                                                            <div className="relative flex h-5 w-full items-center justify-center">
-                                                                                <span className={`h-[3px] w-10 rounded-full transition-all duration-200 group-hover:-translate-y-2 ${list_new_status ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-                                                                                <span className={`pointer-events-none absolute bottom-0 hidden translate-y-1 rounded-md px-2 py-0.5 text-[11px] font-medium whitespace-nowrap opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 md:block ${list_new_status ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                                                                            <div className="relative flex w-full translate-y-1 items-center justify-center opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
+                                                                                <span className={`absolute -bottom-1 hidden whitespace-nowrap rounded-md text-[11px] font-medium md:block ${list_new_status ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
                                                                                     {list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
                                                                                 </span>
                                                                             </div>
@@ -104,7 +103,7 @@ export default function T2P7_TableSummary({ data }) {
                                                     </tr>
                                                 );
                                             })}
-                                            <tr className="bg-gray-50 font-bold text-gray-800 group hover:bg-gray-200 duration-200">
+                                            <tr className="bg-gray-50 font-bold text-gray-800">
                                                 <td className="sticky left-0 z-20 px-6 py-4 border-t-1 border-gray-600 text-base lg:text-sm  bg-inherit     font-semibold text-left">รวม {Object.values(posTypes)[0]?.prov_main_name}</td>
                                                 <td className=" px-4 py-4 border-t-1 border-gray-600 text-base lg:text-sm font-semibold text-center  bg-amber-50    ">{reg.list.toLocaleString()}</td>
                                                 <td className=" px-4 py-4 border-t-1 border-gray-600 text-base lg:text-sm font-semibold text-center  bg-amber-100   ">{reg.list_new.toLocaleString()}</td>

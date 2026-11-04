@@ -112,7 +112,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                 <td className=" w-[120px] min-w-[120px] bg-gray-100 p-4 text-center font-bold text-gray-700">{s_listed_n.toLocaleString()}</td>
                                                 <td className=" w-[120px] min-w-[120px] bg-rose-50  p-4 text-center font-bold text-rose-700">{s_diff.toLocaleString()}</td>
                                                 <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-emerald-50 text-emerald-700">{s_called.toLocaleString()}</td>
-                                                <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${s_remain === 0 ? 'bg-blue-50 text-blue-500' : s_remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500'}`}>{s_remain.toLocaleString()}</td>
+                                                <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${s_remain === 0 ? 'bg-emerald-50 text-emerald-500' : s_remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500'}`}>{s_remain.toLocaleString()}</td>
                                                 {roundsArray.map((_, i) => <td key={i} className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center">{provSubData.total_each_round?.[i + 1]?.total.toLocaleString() || null}</td>)}
                                             </>
                                         ) : Array.from({ length: roundsArray.length + 10 }).map((_, i) => <td key={i} className="bg-emerald-50"></td>)
@@ -130,7 +130,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                 {
                                                     !isCollapsed && (
                                                         <tr className="bg-emerald-50 font-bold" style={{ display: columns.all_header ? '' : 'none' }}>
-                                                            <td className=" w-[400px] min-w-[400px] bg-emerald-50 sticky z-10 left-0 p-3 pl-12"><div className="grid grid-cols-12 gap-6"><div className="col-span-12 lg:col-span-4 px-3 py-1 text-right">รวม</div><div className="col-span-12 lg:col-span-8 bg-emerald-300 px-3 py-1 rounded-lg text-emerald-900 text-center">{provSubData.pro_sub_name}</div></div></td>
+                                                            <td className=" w-[400px] min-w-[400px] bg-emerald-50 sticky z-10 left-0 p-3 pl-12"><div className="grid grid-cols-12 gap-6"><div className="col-span-12 lg:col-span-4 px-3 py-1 text-right">รวม</div><div className="col-span-12 lg:col-span-8 bg-emerald-300 px-3 py-1 rounded-lg text-emerald-900 text-center">{provSubData.pro_main_name}</div></div></td>
                                                             {!columns.all_header && (<td className=" w-[200px] min-w-[200px] bg-emerald-50 p-4 text-center font-bold"></td>)}
                                                             {!columns.all_header && (<td className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center font-bold"></td>)}
                                                             <td className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center font-bold"></td>
@@ -141,7 +141,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                                                             <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-gray-100 text-gray-700">{s_listed_n.toLocaleString()}</td>
                                                             <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-rose-50  text-rose-700">{s_diff.toLocaleString()}</td>
                                                             <td className=" w-[120px] min-w-[120px] p-4 text-center font-bold bg-emerald-50 text-emerald-700">{s_called.toLocaleString()}</td>
-                                                            <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${s_remain === 0 ? 'bg-blue-50 text-blue-500' : s_remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500'}`}>{s_remain.toLocaleString()}</td>
+                                                            <td className={`w-[120px] min-w-[120px] p-4 text-center font-bold ${s_remain === 0 ? 'bg-emerald-50 text-emerald-500' : s_remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500'}`}>{s_remain.toLocaleString()}</td>
                                                             {roundsArray.map((_, i) => (<td key={i} className=" w-[100px] min-w-[100px] bg-emerald-50 p-4 text-center">{provSubData.total_each_round?.[i + 1]?.total.toLocaleString() || null}</td>))}
                                                         </tr>
                                                     )
@@ -174,7 +174,7 @@ export default function Part2_RegionRow({ regionKey, regionData, collapsedIDs, t
                             <td className={`w-[120px] min-w-[120px] bg-gray-200 p-4 text-center font-bold  text-gray-700`}>{listed_n.toLocaleString()}</td>
                             <td className={`w-[120px] min-w-[120px] bg-rose-200 p-4 text-center font-bold  text-rose-700`}>{diff.toLocaleString()}</td>
                             <td className={`w-[120px] min-w-[120px] bg-clip-padding p-4 text-center font-bold bg-emerald-50 text-emerald-700`}>{called.toLocaleString()}</td>
-                            <td className={`w-[120px] min-w-[120px] bg-clip-padding p-4 text-center font-bold ${remain === 0 ? 'bg-blue-50 text-blue-500' : (remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500')}`}>{remain.toLocaleString()}</td>
+                            <td className={`w-[120px] min-w-[120px] bg-clip-padding p-4 text-center font-bold ${remain === 0 ? 'bg-emerald-50 text-emerald-500' : (remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500')}`}>{remain.toLocaleString()}</td>
                             {roundsArray.map((_, i) => (<td key={i} className=" w-[100px] min-w-[100px] bg-emerald-100 p-4 text-center">{regionData.total_each_round?.[i + 1]?.total.toLocaleString() || null}</td>))}
                         </tr>
 

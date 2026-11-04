@@ -176,7 +176,7 @@ export default function App() {
             <div>
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <div className="p-2 text-center">
-                        <span className="text-base text-gray-600 font-bold">
+                        <span className="text-gray-600 font-bold">
                             <LastUpdated />
                         </span>
                     </div>

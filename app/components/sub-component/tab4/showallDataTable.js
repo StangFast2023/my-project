@@ -42,12 +42,6 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
         2: "bg-slate-100 text-slate-800 font-bold",
         3: "bg-orange-100 text-orange-800 font-bold"
     };
-    const formatDateThai = (dateStr) => {
-        if (!dateStr) return "-";
-        const [d, m, y] = dateStr.split("-");
-        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-        return `${parseInt(d)} ${months[parseInt(m) - 1]} ${parseInt(y) + 543}`;
-    };
     const getBagColor = (has_no_data, status_call, status_list) => {
         if (!has_no_data) return 'cursor-default';
         if (status_call === true) {
@@ -90,6 +84,7 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                             pro_main_id: regionData.pro_main_id,
                             pro_main_name: regionData.pro_main_name,
                             pro_sub_id: provSubData.pro_sub_id,
+                            pro_sub_name: provSubData.pro_sub_name,
                             pos_type_id: posData.pos_type_id,
                             pro_main_id: regionData.pro_main_id,
                         });
@@ -151,7 +146,7 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                 <tr key={`${item.uniqueKey}`} className="bg-white hover:bg-gray-50" >
                                     <td className=" w-[400px] min-w-[400px] sticky left-0 z-20 p-4 bg-white shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">[ <span className="font-semibold">{item.pos_id}</span> ] {item.pos_name}</td>
                                     {!columns.all_header && (<td className={`w-[200px] min-w-[200px] sticky top-0  z-10 p-4 font-semibold text-center bg-gray-50 ${regionColors[item.pro_main_id]} `}>{item.pro_main_name}</td>)}
-                                    {!columns.all_header && (<td className={`w-[100px] min-w-[100px] sticky top-0  z-10 p-4 font-semibold text-center bg-gray-50 ${zoneColors[item.pro_sub_id]} `}>เขต {item.pro_sub_id}</td>)}
+                                    {!columns.all_header && (<td className={`w-[100px] min-w-[100px] sticky top-0  z-10 p-4 font-semibold text-center bg-gray-50 ${zoneColors[item.pro_sub_id]} `}>{item.pro_sub_name}</td>)}
                                     <td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${item.pos_type_id === 1 ? "bg-blue-50 text-blue-700" : item.pos_type_id === 2 ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{item.pos_type_name}</td>
                                     {columns.column_part1 && (<td className={`w-[100px] min-w-[100px] p-4 text-center font-bold ${item.status_open ? "bg-green-50 text-green-700" : "bg-rose-50 text-rose-700"}`}>{item.status_open ? "เปิด" : "ไม่เปิดสอบ"}</td>)}
                                     {columns.column_part2 && (<td className={`w-[150px] min-w-[150px] p-4 text-center font-bold ${item.status_out_of_lits ? (item.status_open === false ? "bg-rose-50 text-rose-700" : "bg-green-50 text-green-700") : item.total_remain < 0 ? "bg-rose-700 text-white" : "bg-yellow-50 text-yellow-700"}`}>{item.status_out_of_lits ? (item.status_open === false ? "ไม่มีบัญชี" : "หมดบัญชี") : item.total_remain < 0 ? "ขาดแคลน" : "คงเหลือ"}</td>)}
@@ -160,12 +155,24 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                     <td className="w-[120px] min-w-[120px] p-4 text-center font-bold bg-gray-100 text-gray-700">{item.total_listed_n.toLocaleString()}</td>
                                     <td className="w-[120px] min-w-[120px] p-4 text-center font-bold bg-rose-100 text-rose-700">{item.total_diff.toLocaleString()}</td>
                                     <td className="w-[120px] min-w-[120px] p-4 text-center bg-clip-padding bg-emerald-50 font-bold text-emerald-700">{item.total_call.toLocaleString()}</td>
-                                    <td className={`w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold ${item.total_remain === 0 ? (item.status_open ? 'bg-blue-50 text-blue-500' : 'bg-gray-50 text-gray-500') : item.total_remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500'}`}>{item.total_remain.toLocaleString()}</td>
+                                    <td className={`w-[120px] min-w-[120px] p-4 text-center bg-clip-padding font-bold ${item.total_remain === 0 ? (item.status_open ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-50 text-gray-500') : item.total_remain > 0 ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500'}`}>{item.total_remain.toLocaleString()}</td>
                                     {roundsArray.map((_, i) => {
                                         const status = item.roundsData?.[i + 1]?.status;
-                                        const text_color = ['completed', 'waiting'].includes(status) ? 'text-emerald-600' : status === 'exhaustion' ? 'text-amber-600' : status === 'not-used' ? 'text-red-400' : 'text-slate-900';
                                         const call_values = ['completed', 'waiting'].includes(status) ? item.roundsData?.[i + 1]?.total : (status === 'exhaustion' ? '-' : (status === 'not-used' ? '0' : null));
-                                        const status_list = item.roundsData?.[i + 1]?.status_list_n ?? 'no-data';
+                                        const status_list = item.roundsData?.[i + 1]?.status_list ?? 'no-data';
+                                        const list_new = item.roundsData?.[i + 1]?.list_new_status ?? 'no-data';
+                                        const list_new_badge = list_new !== null ? `
+                                                <span class="w-full text-center rounded-md border px-2.5 py-1 text-sm font-semibold ${list_new ? 'border-emerald-300 bg-emerald-50 text-emerald-600' : 'border-rose-300 bg-rose-50 text-rose-600'}">
+                                                    ${list_new ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                                </span>
+                                            ` : '';
+                                        const ranks = Array.isArray(item.roundsData?.[i + 1]?.start_end) && item.roundsData?.[i + 1]?.start_end.length > 0
+                                            ? item.roundsData?.[i + 1]?.start_end.map(rank => `
+                                                    <span class="inline-flex items-center rounded-md border border-gray-400 bg-white px-2.5 py-1 text-sm font-semibold text-gray-700 whitespace-nowrap">
+                                                        ${rank}
+                                                    </span>
+                                                `).join('')
+                                            : '<span class="text-gray-400">-</span>';
                                         const status_call = item.roundsData?.[i + 1]?.status_call ?? 'no-data';
                                         const has_no_data = !(status_call === 'no-data' && status_list === 'no-data');
                                         const bag_color = getBagColor(has_no_data, status_call, status_list);
@@ -224,7 +231,9 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                                 'minus': '<svg class="w-5 h-5 inline mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>'
                                             }[ui.icon] || '';
                                             let text_title = `รอบที่  ${roundIndex || 0}`;
-                                            let text_content = `
+                                            let text_content;
+                                            if (status_call) {
+                                                text_content = `
                                                     <table class="w-full text-left border-collapse">
                                                         <tr class="border-b">
                                                             <th class="w-[60%] py-2 font-bold text-gray-500">จำนวนที่เรียกบรรจุ :</th>
@@ -232,7 +241,11 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                                         </tr>
                                                         <tr class="border-b">
                                                             <th class="py-2 font-bold text-gray-500">ลำดับที่ :</th>
-                                                            <td class="py-2 font-bold">${roundData?.start_end || 0}</td>
+                                                            <td class="py-2 font-bold">${ranks || null}</td>
+                                                        </tr>
+                                                        <tr class="border-b">
+                                                            <td class="py-2 font-bold text-gray-500">บัญชีที่ใช้เรียก :</td>
+                                                            <td class="py-2 font-bold text-gray-500">${list_new_badge}</td>
                                                         </tr>
                                                         <tr class="border-b">
                                                             <th class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</th>
@@ -240,7 +253,7 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                                         </tr>
                                                         <tr class="border-b">
                                                             <th class="py-2 font-bold text-gray-500">วันที่บรรจุ :</th>
-                                                            <td class="py-2 font-bold">${formatDateThai(roundData?.date) || null}</td>
+                                                            <td class="py-2 font-bold">${roundData?.date || null}</td>
                                                         </tr>
                                                         <tr>
                                                             <th class="py-2 font-bold text-gray-500">สถานะ:</th>
@@ -270,7 +283,7 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                                         </div>
                                                     </details>
                                                 `.trim();
-                                            if (status_call === false && status_list === false) {
+                                            } else {
                                                 status_call = 'warning';
                                                 text_content = `
                                                     <table class="w-full text-left border-collapse">
@@ -283,46 +296,25 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                                             <td class="py-2 font-bold">-</td>
                                                         </tr>
                                                         <tr class="border-b">
-                                                            <th class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</th>
-                                                            <td class="py-2 font-bold ${ui.color}">${ui.text}</td>
-                                                        </tr>
-                                                        <tr class="border-b">
-                                                            <th class="py-2 font-bold text-gray-500">วันที่บรรจุ :</th>
-                                                            <td class="py-2 font-bold">${formatDateThai(roundData?.date) || null}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="py-2 font-bold text-gray-500">สถานะ:</th>
-                                                            <td class="py-2 font-bold">${roundData?.status == 'waiting' ? 'รอการบรรจุ' : (roundData?.status == 'completed' ? 'บรรจุแล้ว' : (roundData?.status == 'not-used' ? 'ไม่มีการเรียกใช้บัญชี' : 'บัญชีหมด'))}</td>
-                                                        </tr>
-                                                    </table>
-                                                `.trim();
-                                            } else if (status_call === false && status_list === true) {
-                                                status_call = 'danger';
-                                                text_content = `
-                                                    <table class="w-full text-left border-collapse">
-                                                        <tr class="border-b">
-                                                            <th class="w-[60%] py-2 font-bold text-gray-500">จำนวนที่เรียกบรรจุ :</th>
-                                                            <td class="w-[40%] py-2 font-bold">-</td>
-                                                        </tr>
-                                                        <tr class="border-b">
-                                                            <th class="py-2 font-bold text-gray-500">ลำดับที่ :</th>
-                                                            <td class="py-2 font-bold">-</td>
-                                                        </tr>
-                                                        <tr class="border-b">
-                                                            <th class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</th>
+                                                            <td class="py-2 font-bold text-gray-500">บัญชีที่ใช้เรียก :</td>
                                                             <td class="py-2 font-bold text-gray-500">-</td>
                                                         </tr>
                                                         <tr class="border-b">
+                                                            <th class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</th>
+                                                            <td class="py-2 font-bold">-</td>
+                                                        </tr>
+                                                        <tr class="border-b">
                                                             <th class="py-2 font-bold text-gray-500">วันที่บรรจุ :</th>
-                                                            <td class="py-2 font-bold">${formatDateThai(roundData?.date) || null}</td>
+                                                            <td class="py-2 font-bold">-</td>
                                                         </tr>
                                                         <tr>
                                                             <th class="py-2 font-bold text-gray-500">สถานะ:</th>
-                                                            <td class="py-2 font-bold">${roundData?.status == 'waiting' ? 'รอการบรรจุ' : (roundData?.status == 'completed' ? 'บรรจุแล้ว' : (roundData?.status == 'not-used' ? 'ไม่มีการเรียกใช้บัญชี' : 'บัญชีหมด'))}</td>
+                                                            <td class="py-2 font-bold">-</td>
                                                         </tr>
                                                     </table>
                                                 `.trim();
                                             }
+
                                             Swal.fire({
                                                 title: text_title,
                                                 html: text_content,
@@ -335,10 +327,11 @@ export default function ShowAllDataTable({ checkData, part2, isLoading }) {
                                             <td
                                                 key={i}
                                                 onClick={has_no_data ? () => handleCellClick(i + 1, item.roundsData?.[i + 1], status_call, status_list, item) : undefined}
-                                                className={`w-[100px] min-w-[100px] bg-clip-padding relative group p-4 text-center font-bold ${bag_color} ${text_color}`}
-                                            >
+                                                className={`w-[100px] min-w-[100px] bg-clip-padding relative group p-4 text-center font-bold ${bag_color} ${status_call && status_list ? 'text-emerald-600' : (!status_call && status_list ? 'text-rose-600' : 'text-amber-600')}`}>
                                                 <div className={`transition-transform duration-300 group-hover:-translate-y-2 `}>
-                                                    {call_values ? call_values.toLocaleString() : null}
+                                                    {call_values !== undefined && call_values !== null ? (
+                                                        status_call && status_list ? call_values.toLocaleString() : (!status_list ? '-' : 0)
+                                                    ) : null}
                                                 </div>
                                                 {has_no_data && (
                                                     <div className={`absolute inset-x-0 bottom-0 flex flex-col items-center justify-center opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out ${button_color} `}>

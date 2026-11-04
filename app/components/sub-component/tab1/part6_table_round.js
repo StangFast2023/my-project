@@ -70,7 +70,9 @@ export default function T1P3_PieListed({ data }) {
                                             reg.diff += (Number(zone.total_listed - zone.total_listed_new) || 0);
                                             reg.call += (Number(zone.total_called) || 0);
                                             reg.remain += (Number(zone.total_remain) || 0);
-                                            roundColumns.forEach((n, i) => reg.rounds[i] += (zone['data-round']?.[n]?.total_called || 0));
+                                            roundColumns.forEach((n, i) => {
+                                                reg.rounds[i] = (reg.rounds[i] || 0) + (zone['data-round']?.[i]?.total_called || 0);
+                                            });
                                             return (
                                                 <tr key={zone.full}>
                                                     <td className="bg-gray-50    px-6 py-4 text-base lg:text-sm font-semibold text-left   text-gray-700 sticky left-0 z-10">{zone.name}</td>
@@ -86,17 +88,15 @@ export default function T1P3_PieListed({ data }) {
                                                         return (
                                                             <td
                                                                 key={num}
-                                                                className={`group px-2 pt-2 text-center align-bottom transition-colors duration-200 ${bgClass} ${roundInfo ? (roundInfo.list_new_status ? 'hover:bg-emerald-50' : 'hover:bg-rose-50') : ''}`}
+                                                                className={`group px-2 py-2 text-center align-bottom transition-colors duration-200 ${bgClass} ${roundInfo ? (roundInfo.list_new_status ? 'hover:bg-emerald-50 border-b-2 border-emerald-500' : 'hover:bg-rose-50 border-b-2 border-rose-500') : ''}`}
                                                             >
                                                                 {roundInfo && (
                                                                     <div className="flex h-full flex-col items-center justify-center gap-1">
-                                                                        <span className="text-gray-700 font-bold text-base lg:text-sm">
+                                                                        <span className="text-base font-bold text-gray-700 duration-200 group-hover:-translate-y-2 lg:text-sm">
                                                                             {roundInfo.total_called.toLocaleString()}
                                                                         </span>
-                                                                        <div className="relative flex h-5 w-full items-center justify-center">
-                                                                            <span className={`h-[3px] w-10 rounded-full transition-all duration-200 group-hover:-translate-y-2 ${roundInfo.list_new_status ? 'bg-emerald-500' : 'bg-rose-500'}`}
-                                                                            />
-                                                                            <span className={`pointer-events-none absolute bottom-0 hidden translate-y-1 rounded-md px-2 py-0.5 text-[11px] font-medium whitespace-nowrap opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 md:block ${roundInfo.list_new_status ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
+                                                                        <div className="relative flex w-full translate-y-1 items-center justify-center opacity-0 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
+                                                                            <span className={`absolute -bottom-1 hidden whitespace-nowrap rounded-md text-[11px] font-medium md:block ${roundInfo.list_new_status ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>
                                                                                 {roundInfo.list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
                                                                             </span>
                                                                         </div>
