@@ -348,16 +348,17 @@ export default function T2P7_TableAllType({ data }) {
                                                                                 <div className="flex w-full min-w-full items-start snap-x snap-mandatory gap-2 overflow-x-auto">
                                                                                     {rounds.map(({ num, data: round }) => {
                                                                                         const called = round.call_status === true;
+                                                                                        const listed = round.list_status === true;
                                                                                         const change = round.percent_change;
                                                                                         const rank = called ? round.start_end : null;
                                                                                         const list_new = called ? round.list_new_status : null;
                                                                                         const hasChange = change !== null && change !== undefined && Number.isFinite(Number(change));
-                                                                                        console.log(rank);
-                                                                                        const workStatus = {
-                                                                                            waiting: "รอการเรียกบรรจุ",
-                                                                                            "not-used": "ไม่มีการใช้บัญชี",
-                                                                                            exhaustion: "บัญชีสิ้นสุด",
-                                                                                        }[round.status_work] || "ได้รับการบรรจุแล้ว";
+                                                                                        const today = new Date();
+                                                                                        const [datePart] = round.datetime.split(" ");
+                                                                                        const [year, month, day] = datePart.split("-").map(Number);
+                                                                                        const roundDate = new Date(year, month - 1, day);
+                                                                                        const isReachedDate = today >= roundDate;
+                                                                                        const workStatus = called && listed ? (isReachedDate ? "ได้รับการบรรจุแล้ว" : "รอการเรียกบรรจุ") : (!called ? 'ไม่มีการเรียกใช้บัญชี' : 'บัญชีสิ้นสุด');
                                                                                         return (
                                                                                             <div
                                                                                                 key={num}
@@ -368,8 +369,8 @@ export default function T2P7_TableAllType({ data }) {
                                                                                                         <span className="m-1 text-base font-bold text-gray-800">
                                                                                                             รอบที่ {round.round || num}
                                                                                                         </span>
-                                                                                                        <span className={`rounded-full px-3 py-0.5 text-xs font-semibold ${called ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"}`}>
-                                                                                                            {called ? "เรียกบรรจุแล้ว" : "ไม่ได้เรียก"}
+                                                                                                        <span className={`rounded-full px-3 py-0.5 text-xs font-semibold ${called && listed ? (isReachedDate ? "bg-emerald-100 text-emerald-700" : "bg-blue-100 text-blue-700") : "bg-rose-100 text-rose-700"}`}>
+                                                                                                            {workStatus}
                                                                                                         </span>
                                                                                                     </div>
                                                                                                     <div className="grid grid-cols-2 gap-2">
@@ -413,15 +414,15 @@ export default function T2P7_TableAllType({ data }) {
                                                                                                     </div>
                                                                                                     <div className="grid grid-cols-2 gap-2">
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                            <p className="text-xs text-gray-400">วันที่บรรจุ</p>
+                                                                                                            <p className="text-xs text-gray-400">วันที่รายงานตัว</p>
                                                                                                             <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                                {called ? round.call_date || "-" : "-"}
+                                                                                                                {called ? round.report_date || "-" : "-"}
                                                                                                             </p>
                                                                                                         </div>
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                            <p className="text-xs text-gray-400">สถานะการทำงาน</p>
-                                                                                                            <p className={`text-right text-sm font-semibold text-gray-800`}>
-                                                                                                                {workStatus}
+                                                                                                            <p className="text-xs text-gray-400">วันที่บรรจุ</p>
+                                                                                                            <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                                {called ? round.call_date || "-" : "-"}
                                                                                                             </p>
                                                                                                         </div>
                                                                                                         <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
@@ -534,11 +535,13 @@ export default function T2P7_TableAllType({ data }) {
                                                                                     const crossed_region = status_cross ? each_round_data.crossed_region : "";
                                                                                     const crossed_zone = status_cross ? each_round_data.crossed_zone : "";
 
+                                                                                    const report_date = call_status ? each_round_data.report_date : "-";
                                                                                     const call_date = call_status ? each_round_data.call_date : "-";
                                                                                     const called_rank = call_status ? each_round_data.start_end : [];
                                                                                     const list_new_status = call_status ? each_round_data.list_new_status : null;
                                                                                     const percent_change = call_status ? each_round_data.percent_change : "";
                                                                                     const proportion_used = call_status ? each_round_data.proportion_used.toFixed(2) + " %" : "-";
+
                                                                                     const status_work = each_round_data.status_work;
                                                                                     const status_work_text = status_work === "waiting" ? "รอการเรียกบรรจุ" : (status_work === "not-used" ? "ไม่มีการใช้บัญชี" : (status_work === "exhaustion" ? "บัญชีสิ้นสุด" : "ได้รับการบรรจุแล้ว"))
 
@@ -593,13 +596,19 @@ export default function T2P7_TableAllType({ data }) {
                                                                                                     <th class="py-2 font-bold text-gray-500">ลำดับที่ :</th>
                                                                                                     <td class="py-2 font-bold">
                                                                                                         <div class="flex flex-wrap gap-1.5">
-                                                                                                            ${called_rank.length > 0 ? called_rank.map(rank => `<span class="inline-flex items-center rounded-md border border-gray-400 bg-white px-2.5 py-1 text-sm font-semibold text-gray-700 whitespace-nowrap">${rank}</span>`).join('') : '<span class="text-gray-400">-</span>'}
+                                                                                                            ${called_rank.length > 0 ? called_rank.map(rank => `<span class="inline-flex items-center rounded-md border border-gray-400 bg-white px-2.5 py-1 text-sm font-semibold text-gray-700 whitespace-nowrap">${rank}</span>`).join('') : '<span class="text-gray-600">-</span>'}
                                                                                                         </div>
                                                                                                     </td>
                                                                                                 </tr>
                                                                                                 <tr class="border-b">
-                                                                                                    <th class="py-2 font-bold text-gray-500">บัญชีที่ใช้เรียก :</th>
-                                                                                                    <td class="py-2 font-bold"><span class="px-2.5 py-1 text-sm font-semibold rounded-md whitespace-nowrap ${list_new_status !== null ? (list_new_status ? "border border-emerald-400 text-emerald-700 bg-emerald-100" : "border border-rose-400 text-rose-700 bg-rose-100") : null} ">${list_new_status !== null ? (list_new_status ? `บัญชีใหม่` : `บัญชีเก่า`) : ``}</span></td>
+                                                                                                    <th class="py-2 font-bold text-gray-500">บัญชีที่ใช้เรียก : </th>
+                                                                                                    <td class="py-2 font-bold">
+                                                                                                    ${call_status ? `<span class="px-2.5 py-1 text-sm font-semibold rounded-md whitespace-nowrap ${list_new_status !== null ? (list_new_status ? "border border-emerald-400 text-emerald-700 bg-emerald-100" : "border border-rose-400 text-rose-700 bg-rose-100") : null} ">${list_new_status !== null ? (list_new_status ? `บัญชีใหม่` : `บัญชีเก่า`) : ``}</span>` : `-`}
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                <tr class="border-b">
+                                                                                                    <th class="py-2 font-bold text-gray-500">วันที่รายงานตัว :</th>
+                                                                                                    <td class="py-2 font-bold">${report_date}</td>
                                                                                                 </tr>
                                                                                                 <tr class="border-b">
                                                                                                     <th class="py-2 font-bold text-gray-500">วันที่บรรจุ :</th>
@@ -653,29 +662,26 @@ export default function T2P7_TableAllType({ data }) {
                                                                                     <td
                                                                                         key={num}
                                                                                         onClick={has_data ? () => handleCellClick(data_round) : undefined}
-                                                                                        className={`px-4 py-4 relative group text-center ${Object.values(data_round).length > 0 && status_list === true ? bag_color : "bg-gray-200/50"} `}
+                                                                                        className={`px-4 py-4 relative group text-center ${Object.values(data_round).length > 0 && has_data ? bag_color : "bg-gray-200/50"} `}
                                                                                     >
                                                                                         {
-                                                                                            status_list === true ?
-                                                                                                (
-                                                                                                    <>
-                                                                                                        {has_data ? (
-                                                                                                            <div className={`transition-transform duration-300 group-hover:-translate-y-2 text-base lg:text-sm`}>
-                                                                                                                <span className={`font-bold ${call_status === true ? "text-gray-600" : "text-rose-600"}`}>
-                                                                                                                    {data_round.total.toLocaleString()}
-                                                                                                                </span>
-                                                                                                            </div>
-                                                                                                        ) : null}
-                                                                                                        {has_data && (
-                                                                                                            <div className={`absolute inset-x-0 bottom-0 flex flex-col items-center justify-center opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out ${button_color} `}>
-                                                                                                                <div className="flex items-center gap-1 text-xs font-medium">
-                                                                                                                    <Search size={10} />
-                                                                                                                    <span>รายละเอียด</span>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        )}
-                                                                                                    </>
-                                                                                                ) : null
+                                                                                            <>
+                                                                                                {has_data ? (
+                                                                                                    <div className={`transition-transform duration-300 group-hover:-translate-y-2 text-base lg:text-sm`}>
+                                                                                                        <span className={`font-bold ${call_status === true ? "text-gray-600" : (status_list ? "text-rose-600" : "text-amber-600")}`}>
+                                                                                                            {status_list ? data_round.total.toLocaleString() : '-'}
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                ) : null}
+                                                                                                {has_data && (
+                                                                                                    <div className={`absolute inset-x-0 bottom-0 flex flex-col items-center justify-center opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out ${button_color} `}>
+                                                                                                        <div className="flex items-center gap-1 text-xs font-medium">
+                                                                                                            <Search size={10} />
+                                                                                                            <span>รายละเอียด</span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                )}
+                                                                                            </>
                                                                                         }
 
                                                                                     </td>

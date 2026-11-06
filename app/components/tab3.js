@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { OctagonAlert } from 'lucide-react';
 import T3P6_TablePositio from './sub-component/tab3/part6_tableposition';
 import T3P7_RegoinAnalytics from './sub-component/tab3/part7_regionanalytic';
 import T3P8_TableAllType from './sub-component/tab3/part8_tablealltype';
