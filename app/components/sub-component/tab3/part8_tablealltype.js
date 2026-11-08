@@ -244,7 +244,6 @@ export default function T2P7_TableAllType({ data }) {
                                     {roundColumns.map((num) => {
                                         const round = selectedType.round_data?.[num];
                                         const list_new = selectedType.round_data?.[num]?.list_new_status;
-                                        console.log(selectedType.round_data?.[num]);
                                         return (
                                             round?.total != null ? (
                                                 <div

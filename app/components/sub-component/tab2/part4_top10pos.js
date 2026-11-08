@@ -16,7 +16,6 @@ export default function T2P4_Top10ListPos({ setIsOpen, setDetails, data }) {
             console.error(error);
         }
     };
-    console.log(topTenData);
     const typeStyles = {
         1: "bg-blue-100 text-blue-700",
         2: "bg-green-100 text-green-700",

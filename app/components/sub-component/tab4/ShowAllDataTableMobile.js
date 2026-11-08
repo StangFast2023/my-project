@@ -583,6 +583,14 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                                         </div>
                                                         <div className="flex items-start justify-between gap-3 px-3 py-3">
                                                             <span className="text-sm text-gray-500">
+                                                                วันที่รายงานตัว
+                                                            </span>
+                                                            <span className="text-right text-sm font-semibold text-gray-800">
+                                                                {data?.report_date}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex items-start justify-between gap-3 px-3 py-3">
+                                                            <span className="text-sm text-gray-500">
                                                                 วันที่บรรจุ
                                                             </span>
                                                             <span className="text-right text-sm font-semibold text-gray-800">

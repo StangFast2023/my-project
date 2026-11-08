@@ -147,6 +147,10 @@ export default function Part4_PositionRow({ posData, roundsArray, regoin, zone }
                                         <td class="py-2 font-bold ${ui.color}">${iconSvg}${ui.text}</td>
                                     </tr>
                                     <tr class="border-b">
+                                        <td class="py-2 font-bold text-gray-500">วันที่รายงานตัว :</td>
+                                        <td class="py-2 font-bold">${roundData?.report_date || null}</td>
+                                    </tr>
+                                    <tr class="border-b">
                                         <td class="py-2 font-bold text-gray-500">วันที่บรรจุ :</td>
                                         <td class="py-2 font-bold">${roundData?.date || null}</td>
                                     </tr>
@@ -196,6 +200,10 @@ export default function Part4_PositionRow({ posData, roundsArray, regoin, zone }
                                     <tr class="border-b">
                                         <td class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</td>
                                         <td class="py-2 font-bold ${ui.color}">-</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2 font-bold text-gray-500">วันที่รายงานตัว :</td>
+                                        <td class="py-2 font-bold">-</td>
                                     </tr>
                                     <tr class="border-b">
                                         <td class="py-2 font-bold text-gray-500">วันที่บรรจุ :</td>
