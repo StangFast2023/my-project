@@ -218,12 +218,12 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                             {totalCalled ? formatNumber(totalCalled) : '-'} คน
                                         </span>
                                     </div>
-                                    <div className="flex items-center justify-between gap-3">
+                                    {/* <div className="flex items-center justify-between gap-3">
                                         <span className="text-gray-200">ยอดคงเหลือ</span>
                                         <span className="font-bold">
                                             {finalRemain ? formatNumber(finalRemain) : '-'} คน
                                         </span>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </article>
                         </div>
@@ -247,7 +247,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                         <th className="border-b-2 border-gray-700 bg-gray-50 p-3 text-center font-semibold text-gray-700">บัญชีที่ใช้เรียก</th>
                                         <th className="border-b-2 border-gray-700 bg-blue-50 p-3 text-center font-semibold text-blue-700">สถานะดำเนินการ</th>
                                         <th className="border-b-2 border-gray-700 bg-gray-50 p-3 text-center font-semibold text-gray-700">สถานะการเรียกบรรจุข้ามเขต</th>
-                                        <th className="border-b-2 border-gray-700 bg-amber-50 p-3 text-center font-semibold text-amber-700">ยอดคงเหลือ (คน)</th>
+                                        {/* <th className="border-b-2 border-gray-700 bg-amber-50 p-3 text-center font-semibold text-amber-700">ยอดคงเหลือ (คน)</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -305,9 +305,9 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                                         </div>
                                                     )}
                                             </td>
-                                            <td className={`p-3 text-center text-sm font-semibold ${round_data?.list_status ? total_remain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-gray-600'}`}>
+                                            {/* <td className={`p-3 text-center text-sm font-semibold ${round_data?.list_status ? total_remain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-gray-600'}`}>
                                                 {round_data?.list_status ? round_data?.list_status === true ? formatNumber(total_remain) : '-' : '-'}
-                                            </td>
+                                            </td> */}
                                         </tr>
                                     ))}
 
@@ -325,9 +325,9 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                             <td className="bg-gray-700 p-3 text-center"></td>
                                             <td className="bg-gray-700 p-3 text-center"></td>
                                             <td className="bg-gray-700 p-3 text-center"></td>
-                                            <td className="bg-gray-700 p-3 text-center">
+                                            {/* <td className="bg-gray-700 p-3 text-center">
                                                 {finalRemain ? formatNumber(finalRemain) : '-'}
-                                            </td>
+                                            </td> */}
                                         </tr>
                                     )}
                                 </tbody>

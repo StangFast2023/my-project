@@ -181,8 +181,8 @@ export default function App() {
                         </span>
                     </div>
 
-                    <div className="flex flex-wrap items-end justify-start gap-4 p-2 md:justify-end">
-                        <p className="rounded-xl bg-white p-2 text-xl font-bold text-gray-800 shadow-xl">
+                    <div className="flex w-full flex-col items-stretch justify-start gap-3 p-2 md:w-auto md:flex-row md:items-end md:justify-end md:gap-4">
+                        <p className="w-full flex justify-between items-center rounded-xl bg-white p-2 text-center text-xl font-bold text-gray-800 shadow-xl md:w-auto">
                             <span className="mr-2 text-base font-normal text-gray-500">
                                 เข้าชมทั้งหมด
                             </span>
@@ -192,7 +192,7 @@ export default function App() {
                             </span>
                         </p>
 
-                        <p className="rounded-xl bg-white p-2 text-xl font-bold text-green-600 shadow-xl">
+                        <p className="w-full flex justify-between items-center rounded-xl bg-white p-2 text-center text-xl font-bold text-green-600 shadow-xl md:w-auto">
                             <span className="mr-2 text-base font-normal text-gray-500">
                                 เข้าชมวันนี้
                             </span>
