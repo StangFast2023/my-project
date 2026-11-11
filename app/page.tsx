@@ -1,6 +1,7 @@
 "use client";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import Tab1 from "./components/tab1";
 import Tab2 from "./components/tab2";
 import Tab3 from "./components/tab3";
@@ -8,7 +9,6 @@ import Tab4 from "./components/tab4";
 import Tab5 from "./components/tab5";
 import ModalTab2Part6 from "./components/sub-component/tab2/modal/modal_of_part6top10pos";
 import ModalFilterSelect from "./components/sub-component/tab5/modal/modalFilterSelect";
-import { useSyncExternalStore } from "react";
 import LastUpdated from "@/app/avaliable/LastUpdated";
 
 export interface FilterData {

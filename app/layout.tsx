@@ -5,7 +5,7 @@ import ThemeSwitcher from "./components/ThemeSwitcher";
 import Providers from './components/providers';
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import MaintenanceNotice from '@/app/components/MaintenanceNotice';
+import NoticeManager from "@/app/components/NoticeManager";
 
 const kanit = Kanit({
     weight: ['300', '400', '700'],
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
                     {children}
                     <Analytics />
                     <SpeedInsights />
-                    <MaintenanceNotice />
+                    <NoticeManager />
                 </Providers>
             </body>
         </html>

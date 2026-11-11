@@ -1,23 +1,54 @@
+
 "use client";
+
 import { motion } from "framer-motion";
 import { Bar } from "react-chartjs-2";
 import { Bolt } from 'lucide-react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
-import useMediaQuery from '@/app/avaliable/useMediaQuery';
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    LineElement,
+    PointElement,
+    LineController,
+    BarController,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+} from "chart.js";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    LineElement,
+    PointElement,
+    LineController,
+    BarController,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+);
+
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
+
 export default function T2P3_TypePerRound({ data }) {
-    const isMobile = useMediaQuery("(max-width: 767px)");
     const part3 = data?.tab2?.part3;
     if (!part3) return null;
+
     const keys = Object.keys(part3);
     const labels = keys.map(key => `รอบที่ ${key}`);
+
     const types = [
         { id: 1, name: "ทั่วไป", color: "#3b82f6ab" },
         { id: 2, name: "วิชาการ", color: "#10b981ab" },
         { id: 3, name: "ครูผู้ช่วย", color: "#f59e0bab" }
     ];
+
     const barDatasets = types.map(type => ({
         type: 'bar',
         label: type.name,
@@ -29,6 +60,7 @@ export default function T2P3_TypePerRound({ data }) {
         borderRadius: 4,
         order: 2,
     }));
+
     const lineDataset = {
         type: 'line',
         label: ' ยอดรวมการเรียกรายงานตัว ',
@@ -43,23 +75,19 @@ export default function T2P3_TypePerRound({ data }) {
         tension: 0.3,
         order: 1,
     };
+
     const chartData = {
         labels: labels,
         datasets: [...barDatasets, lineDataset],
     };
-    const options = {
+
+    const mobileChartWidth = Math.max(labels.length * 75, 320);
+
+    const sharedOptions = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                position: 'bottom'
-            },
             tooltip: {
-                labels: {
-                    font: {
-                        size: 14
-                    }
-                },
                 callbacks: {
                     label: function (context) {
                         let label = context.dataset.label || '';
@@ -89,24 +117,80 @@ export default function T2P3_TypePerRound({ data }) {
                     mode: 'x',
                 }
             }
+        }
+    };
+
+    const desktopOptions = {
+        ...sharedOptions,
+        plugins: {
+            ...sharedOptions.plugins,
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { family: "'Kanit', sans-serif", size: 14 }
+                }
+            }
         },
         scales: {
             y: {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
-                display: !isMobile,
-                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
+                display: true,
+                ticks: {
+                    callback: (value) => value.toLocaleString() + ' อัตรา'
+                }
             },
             y1: {
                 type: 'linear',
                 position: 'right',
                 beginAtZero: true,
-                display: !isMobile,
+                display: true,
                 grid: { drawOnChartArea: false },
-                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
+                ticks: {
+                    callback: (value) => value.toLocaleString() + ' อัตรา'
+                }
+            }
+        }
+    };
+
+    const mobileOptions = {
+        ...sharedOptions,
+        plugins: {
+            ...sharedOptions.plugins,
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { family: "'Kanit', sans-serif", size: 10 },
+                    boxWidth: 10,
+                    boxHeight: 10,
+                    padding: 8
+                }
             }
         },
+        scales: {
+            x: {
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 45,
+                    font: { size: 10 }
+                }
+            },
+            y: {
+                type: 'linear',
+                position: 'left',
+                beginAtZero: true,
+                display: false
+            },
+            y1: {
+                type: 'linear',
+                position: 'right',
+                beginAtZero: true,
+                grid: { drawOnChartArea: false },
+                display: false
+            }
+        }
     };
 
     return (
@@ -120,8 +204,26 @@ export default function T2P3_TypePerRound({ data }) {
                     <Bolt />
                     <span className="ml-2">เปรียบเทียบผลการเรียกบรรจุรายรอบ จำแนกตามประเภทตำแหน่ง</span>
                 </h3>
-                <div className="w-full h-[370px]">
-                    <Bar data={chartData} options={options} />
+
+                {/* Desktop */}
+                <div className="hidden md:block w-full h-[370px]">
+                    <Bar data={chartData} options={desktopOptions} />
+                </div>
+
+                {/* Mobile */}
+                <div className="block md:hidden w-full">
+                    <div className="w-full overflow-x-auto overflow-y-hidden">
+                        <div
+                            className="relative h-[390px]"
+                            style={{ width: `${mobileChartWidth}px` }}
+                        >
+                            <Bar data={chartData} options={mobileOptions} />
+                        </div>
+                    </div>
+
+                    <p className="text-center text-gray-400 text-xs mt-2">
+                        เลื่อนกราฟไปทางซ้ายหรือขวาเพื่อดูข้อมูลเพิ่มเติม
+                    </p>
                 </div>
             </div>
         </motion.div>

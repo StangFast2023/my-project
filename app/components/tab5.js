@@ -29,7 +29,7 @@ export default function Tab5({ setIsOpen, details }) {
                 `https://dla-backend-production.up.railway.app/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`
             );
             // const response = await axios.get(
-            //     `http://127.0.0.1:8000/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`
+            //     `https://dla-backend-production.up.railway.app/api/prediction-user-detail/${regionId}/${areaId}/${positionId}/${sequence}/${frequency}`
             // );
             return response.data;
         },

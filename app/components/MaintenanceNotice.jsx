@@ -5,7 +5,6 @@ import { useSyncExternalStore } from 'react';
 const STORAGE_KEY = 'maintenance_notice_dismissed';
 const ONE_HOUR = 60 * 60 * 1000;
 
-// แจ้ง React เมื่อสถานะเปลี่ยน
 const subscribe = (callback) => {
     window.addEventListener('storage', callback);
     window.addEventListener('maintenance-notice-change', callback);
@@ -16,7 +15,6 @@ const subscribe = (callback) => {
     };
 };
 
-// อ่านสถานะจาก sessionStorage
 const getSnapshot = () => {
     const dismissedAt = sessionStorage.getItem(STORAGE_KEY);
 
@@ -34,16 +32,11 @@ export default function MaintenanceNotice() {
         getSnapshot,
         getServerSnapshot
     );
-
     const handleClose = () => {
         sessionStorage.setItem(STORAGE_KEY, Date.now().toString());
-
-        // แจ้ง React ให้ตรวจสอบสถานะใหม่
         window.dispatchEvent(new Event('maintenance-notice-change'));
     };
-
     if (!isOpen) return null;
-
     return (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 p-4">
             <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">

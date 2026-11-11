@@ -36,13 +36,13 @@ export default function Tab5_2({ details, base_data, data }) {
                     <Row7 data={dataforChart} />
                 </div>
             </div>
-            <div className="grid lg:grid-cols-12 gap-2 my-2 hidden lg:block">
-                <div className="col-span-12 lg:col-span-12">
+            <div className="grid grid-cols-12 gap-2 my-2 w-full min-w-0">
+                <div className="col-span-12 min-w-0 w-full">
                     <Row8 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
             </div>
-            <div className="grid lg:grid-cols-12 gap-2 my-2">
-                <div className="col-span-12 lg:col-span-12">
+            <div className="grid grid-cols-12 gap-2 my-2 w-full min-w-0">
+                <div className="col-span-12 min-w-0 w-full">
                     <Row9 region={RegSh} zone={ZneSh} position={PosSh} data={dataforChart} />
                 </div>
             </div>

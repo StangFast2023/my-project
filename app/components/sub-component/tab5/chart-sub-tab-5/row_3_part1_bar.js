@@ -1,33 +1,67 @@
 
 "use client";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler } from "chart.js";
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+} from "chart.js";
+
 import { Bar } from "react-chartjs-2";
 import useMediaQuery from '@/app/avaliable/useMediaQuery';
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler);
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip,
+    Legend,
+    Filler
+);
+
 export default function Row3Part1Bar({ data }) {
     const isMobile = useMediaQuery("(max-width: 767px)");
+
     const chartRawData = data?.chart_1_round;
+
     if (!chartRawData) return null;
+
     const keys = Object.keys(chartRawData);
     const labels = keys.map(key => chartRawData[key].date_thai_s);
+
     const monthlyTotals = [];
     const cumulativeData = [];
+
     let runningTotal = 0;
 
     keys.forEach(key => {
         const monthData = chartRawData[key];
         const monthTotal = Number(monthData.total_per_month) || 0;
         const isCalled = !!monthData.call;
+
         runningTotal += monthTotal;
+
         monthlyTotals.push(monthTotal);
+
         if (isCalled) {
             cumulativeData.push(null);
         } else {
             cumulativeData.push(runningTotal);
         }
     });
+
     const chartData = {
-        labels: labels,
+        labels,
         datasets: [
             {
                 type: 'line',
@@ -53,18 +87,64 @@ export default function Row3Part1Bar({ data }) {
         ]
     };
 
+    // กำหนดความกว้างกราฟบนมือถือ
+    const mobileChartWidth = Math.max(
+        600,
+        keys.length * 65
+    );
+
     const optionsBar = {
         responsive: true,
         maintainAspectRatio: false,
         spanGaps: true,
-        responsive: true,
+
         scales: {
-            y: { beginAtZero: true }
+            x: {
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 0,
+                    font: {
+                        family: "'Kanit', sans-serif",
+                        size: isMobile ? 11 : 12
+                    }
+                }
+            },
+            y: {
+                type: 'linear',
+                position: 'left',
+                beginAtZero: true,
+                display: !isMobile,
+                ticks: {
+                    callback: (value) =>
+                        value.toLocaleString() + ' อัตรา'
+                }
+            },
+            y1: {
+                type: 'linear',
+                position: 'right',
+                beginAtZero: true,
+                display: !isMobile,
+                grid: {
+                    drawOnChartArea: false
+                },
+                ticks: {
+                    callback: (value) =>
+                        value.toLocaleString() + ' อัตรา'
+                }
+            }
         },
+
         plugins: {
             legend: {
                 position: 'bottom',
-                labels: { font: { family: "'Kanit', sans-serif", size: 14 } }
+                labels: {
+                    font: {
+                        family: "'Kanit', sans-serif",
+                        size: isMobile ? 11 : 14
+                    },
+                    boxWidth: isMobile ? 12 : 40
+                }
             },
             tooltip: {
                 mode: 'index',
@@ -72,10 +152,13 @@ export default function Row3Part1Bar({ data }) {
                 callbacks: {
                     label: function (context) {
                         let label = context.dataset.label || '';
+
                         if (label) label += ': ';
+
                         if (context.parsed.y !== null) {
                             label += context.parsed.y.toLocaleString() + ' คน';
                         }
+
                         return label;
                     }
                 }
@@ -84,38 +167,43 @@ export default function Row3Part1Bar({ data }) {
                 zoom: {
                     wheel: {
                         enabled: true,
-                        modifierKey: 'ctrl',
+                        modifierKey: 'ctrl'
                     },
                     pinch: {
-                        enabled: true,
+                        enabled: true
                     },
-                    mode: 'x',
+                    mode: 'x'
                 },
                 pan: {
                     enabled: true,
-                    mode: 'x',
+                    mode: 'x'
                 }
             }
-        },
-        scales: {
-            y: {
-                type: 'linear',
-                position: 'left',
-                beginAtZero: true,
-                display: !isMobile,
-                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
-            },
-            y1: {
-                type: 'linear',
-                position: 'right',
-                beginAtZero: true,
-                display: !isMobile,
-                grid: { drawOnChartArea: false },
-                ticks: { callback: (value) => value.toLocaleString() + ' อัตรา' }
-            }
-        },
+        }
     };
+
     return (
-        <Bar data={chartData} options={optionsBar} />
+        <div className="w-full min-w-0">
+            <div
+                className={`w-full ${isMobile
+                        ? "overflow-x-auto overscroll-x-contain"
+                        : "overflow-hidden"
+                    }`}
+            >
+                <div
+                    className="relative"
+                    style={{
+                        width: isMobile ? `${mobileChartWidth}px` : "100%",
+                        height: "350px",
+                        minWidth: isMobile ? `${mobileChartWidth}px` : "0"
+                    }}
+                >
+                    <Bar
+                        data={chartData}
+                        options={optionsBar}
+                    />
+                </div>
+            </div>
+        </div>
     );
 }

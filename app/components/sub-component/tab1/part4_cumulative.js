@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import { Chart } from 'react-chartjs-2';
 import { TrendingUp } from 'lucide-react';
-import useMediaQuery from '@/app/avaliable/useMediaQuery';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -28,7 +27,6 @@ ChartJS.register(
 ChartJS.defaults.font.family = "'Kanit', sans-serif";
 ChartJS.defaults.font.size = 16;
 export default function T1P4_Cumulative({ data }) {
-    const isMobile = useMediaQuery("(max-width: 767px)");
     const chartRawData = data?.tab1?.part3;
     if (!chartRawData) return null;
     const keys = Object.keys(chartRawData);
@@ -74,16 +72,13 @@ export default function T1P4_Cumulative({ data }) {
             }
         ]
     };
-    const options = {
+    const mobileChartWidth = Math.max(labels.length * 75, 320);
+
+    const sharedOptions = {
         responsive: true,
         maintainAspectRatio: false,
         spanGaps: true,
-        responsive: true,
         plugins: {
-            legend: {
-                position: 'bottom',
-                labels: { font: { family: "'Kanit', sans-serif", size: 14 } }
-            },
             tooltip: {
                 mode: 'index',
                 intersect: false,
@@ -114,24 +109,80 @@ export default function T1P4_Cumulative({ data }) {
                     mode: 'x',
                 }
             }
+        }
+    };
+
+    const desktopOptions = {
+        ...sharedOptions,
+        plugins: {
+            ...sharedOptions.plugins,
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { family: "'Kanit', sans-serif", size: 14 }
+                }
+            }
         },
         scales: {
             y: {
                 type: 'linear',
                 position: 'left',
                 beginAtZero: true,
-                display: !isMobile,
-                ticks: { callback: (value) => value.toLocaleString() + ' คน' }
+                display: true,
+                ticks: {
+                    callback: (value) => value.toLocaleString() + ' คน'
+                }
             },
             y1: {
                 type: 'linear',
                 position: 'right',
                 beginAtZero: true,
                 grid: { drawOnChartArea: false },
-                display: !isMobile,
-                ticks: { callback: (value) => value.toLocaleString() + ' คน' }
+                display: true,
+                ticks: {
+                    callback: (value) => value.toLocaleString() + ' คน'
+                }
+            }
+        }
+    };
+
+    const mobileOptions = {
+        ...sharedOptions,
+        plugins: {
+            ...sharedOptions.plugins,
+            legend: {
+                position: 'bottom',
+                labels: {
+                    font: { family: "'Kanit', sans-serif", size: 10 },
+                    boxWidth: 10,
+                    boxHeight: 10,
+                    padding: 8
+                }
             }
         },
+        scales: {
+            x: {
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 45,
+                    font: { size: 10 }
+                }
+            },
+            y: {
+                type: 'linear',
+                position: 'left',
+                beginAtZero: true,
+                display: false
+            },
+            y1: {
+                type: 'linear',
+                position: 'right',
+                beginAtZero: true,
+                grid: { drawOnChartArea: false },
+                display: false
+            }
+        }
     };
     return (
 
@@ -145,8 +196,25 @@ export default function T1P4_Cumulative({ data }) {
                     <TrendingUp />
                     <span className="ml-2">สถิติการเรียกบรรจุรายเดือนและยอดสะสม</span>
                 </h3>
-                <div className="h-[370px] w-full">
-                    <Chart type="bar" data={chartData} options={options} />
+                {/* Desktop */}
+                <div className="hidden md:block h-[370px] w-full">
+                    <Chart type="bar" data={chartData} options={desktopOptions} />
+                </div>
+
+                {/* Mobile */}
+                <div className="block md:hidden w-full">
+                    <div className="w-full overflow-x-auto overflow-y-hidden">
+                        <div
+                            className="relative h-[390px]"
+                            style={{ width: `${mobileChartWidth}px` }}
+                        >
+                            <Chart type="bar" data={chartData} options={mobileOptions} />
+                        </div>
+                    </div>
+
+                    <p className="text-center text-gray-400 text-xs mt-2">
+                        เลื่อนกราฟไปทางซ้ายหรือขวาเพื่อดูข้อมูลเพิ่มเติม
+                    </p>
                 </div>
             </div>
         </motion.div>

@@ -65,7 +65,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
     const totalCalled = cumulative_total_call;
     const finalRemain = total_remain;
     const renderChange = (round_data) => (
-        <div className={`flex items-center gap-1.5 ${getChangeColor(round_data)}`}>
+        <div className={`flex items-center justify-center gap-1.5 ${getChangeColor(round_data)}`}>
             {round_data?.change != null && round_data?.change !== 'first' ? (
                 round_data?.change > 0 ? (
                     <TrendingUp className="w-4 h-4 shrink-0" />
@@ -123,6 +123,12 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                     </div>
                                     <div className="space-y-3 p-4 text-sm">
                                         <div className="flex items-start justify-between gap-3">
+                                            <span className="shrink-0 text-gray-500">วันเดือนปีที่รายงานตัว</span>
+                                            <span className="text-right font-medium text-gray-800">
+                                                {round_data?.list_status ? round_data?.report_date ?? '-' : '-'}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-start justify-between gap-3">
                                             <span className="shrink-0 text-gray-500">วันเดือนปีที่บรรจุ</span>
                                             <span className="text-right font-medium text-gray-800">
                                                 {round_data?.list_status ? round_data?.date ?? '-' : '-'}
@@ -135,15 +141,35 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                             </span>
                                         </div>
                                         <div className="flex items-start justify-between gap-3">
-                                            <span className="text-gray-500">ลำดับที่</span>
-                                            <span className="text-right font-semibold text-gray-700">
-                                                {round_data?.list_status ? round_data?.call_status === true ? round_data?.start_end ?? '-' : '-' : '-'}
-                                            </span>
+                                            <span className="text-gray-500 shrink-0">ลำดับที่</span>
+
+                                            <div className="flex max-w-[75%] gap-1 overflow-x-auto whitespace-nowrap pb-1">
+                                                {round_data?.list_status && round_data?.call_status === true &&
+                                                    Array.isArray(round_data?.start_end) &&
+                                                    round_data.start_end.length > 0 ? (
+                                                    round_data.start_end.map((item, index) => (
+                                                        <span
+                                                            key={index}
+                                                            className="inline-flex shrink-0 items-center justify-center min-w-7 h-7 px-2 text-sm font-semibold text-gray-700 bg-gray-50 border border-gray-300 rounded-md"
+                                                        >
+                                                            {item}
+                                                        </span>
+                                                    ))
+                                                ) : (
+                                                    <span className="text-gray-400">-</span>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="flex items-start justify-between gap-3">
                                             <span className="text-gray-500">อัตราการเปลี่ยนแปลง</span>
                                             <span className="text-right font-semibold">
                                                 {renderChange(round_data)}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-start justify-between gap-3">
+                                            <span className="text-gray-500">บัญชีที่ใช้เรียก</span>
+                                            <span className={`font-semibold ${round_data?.list_new_status ? 'text-emerald-700' : 'text-rose-700'}`}>
+                                                {round_data?.list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
                                             </span>
                                         </div>
                                         <div className="flex items-start justify-between gap-3">
@@ -211,46 +237,65 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                             <table className="w-full border-collapse whitespace-nowrap text-left">
                                 <thead className="bg-gray-50 text-sm text-gray-600">
                                     <tr>
-                                        <th className="border-b-2 border-gray-700 bg-gray-50 px-4 py-4 text-center font-semibold text-gray-700">รอบที่</th>
-                                        <th className="border-b-2 border-gray-700 bg-green-50 px-4 py-4 text-center font-semibold text-green-700">สถานะการเรียกบรรจุ</th>
-                                        <th className="border-b-2 border-gray-700 bg-gray-50 px-4 py-4 text-center font-semibold text-gray-700">วันเดือนปีที่บรรจุ</th>
-                                        <th className="border-b-2 border-gray-700 bg-emerald-50 px-4 py-4 text-center font-semibold text-emerald-700">จำนวนที่เรียก (คน)</th>
-                                        <th className="border-b-2 border-gray-700 bg-gray-50 px-4 py-4 text-center font-semibold text-gray-700">ลำดับที่</th>
-                                        <th className="border-b-2 border-gray-700 bg-amber-50 px-4 py-4 text-center font-semibold text-amber-700">อัตราการเปลี่ยนแปลง (%)</th>
-                                        <th className="border-b-2 border-gray-700 bg-sky-50 px-4 py-4 text-center font-semibold text-sky-700">สัดส่วนการใช้บัญชี (%)</th>
-                                        <th className="border-b-2 border-gray-700 bg-blue-50 px-4 py-4 text-center font-semibold text-blue-700">สถานะดำเนินการ</th>
-                                        <th className="border-b-2 border-gray-700 bg-gray-50 px-4 py-4 text-center font-semibold text-gray-700">สถานะการเรียกบรรจุข้ามเขต</th>
-                                        <th className="border-b-2 border-gray-700 bg-amber-50 px-4 py-4 text-center font-semibold text-amber-700">ยอดคงเหลือ (คน)</th>
+                                        <th className="border-b-2 border-gray-700 bg-gray-50 p-3 text-center font-semibold text-gray-700">รอบที่</th>
+                                        <th className="border-b-2 border-gray-700 bg-green-50 p-3 text-center font-semibold text-green-700">สถานะการเรียกบรรจุ</th>
+                                        <th className="border-b-2 border-gray-700 bg-gray-50 p-3 text-center font-semibold text-gray-700">วันเดือนปีที่บรรจุ</th>
+                                        <th className="border-b-2 border-gray-700 bg-emerald-50 p-3 text-center font-semibold text-emerald-700">จำนวนที่เรียก (คน)</th>
+                                        <th className="border-b-2 border-gray-700 bg-gray-50 p-3 text-center font-semibold text-gray-700">ลำดับที่</th>
+                                        <th className="border-b-2 border-gray-700 bg-amber-50 p-3 text-center font-semibold text-amber-700">อัตราการเปลี่ยนแปลง (%)</th>
+                                        <th className="border-b-2 border-gray-700 bg-sky-50 p-3 text-center font-semibold text-sky-700">สัดส่วนการใช้บัญชี (%)</th>
+                                        <th className="border-b-2 border-gray-700 bg-gray-50 p-3 text-center font-semibold text-gray-700">บัญชีที่ใช้เรียก</th>
+                                        <th className="border-b-2 border-gray-700 bg-blue-50 p-3 text-center font-semibold text-blue-700">สถานะดำเนินการ</th>
+                                        <th className="border-b-2 border-gray-700 bg-gray-50 p-3 text-center font-semibold text-gray-700">สถานะการเรียกบรรจุข้ามเขต</th>
+                                        <th className="border-b-2 border-gray-700 bg-amber-50 p-3 text-center font-semibold text-amber-700">ยอดคงเหลือ (คน)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {roundCards.map(({ key, round_data, total_remain }) => (
                                         <tr key={key} className="bg-emerald-50/20">
-                                            <td className="bg-gray-50 px-4 py-4 text-center text-sm font-semibold text-gray-600">
+                                            <td className="bg-gray-50 p-3 text-center text-sm font-semibold text-gray-600">
                                                 {round_data?.round}
                                             </td>
-                                            <td className={`bg-gray-50 px-4 py-4 text-center text-sm font-semibold ${round_data?.list_status === true ? round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600' : 'text-amber-600'}`}>
-                                                {getRoundStatus(round_data)}
+                                            <td className={`bg-gray-50 p-3 text-center text-sm font-semibold ${round_data?.list_status === true ? round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600' : 'text-amber-600'}`}>
+                                                {round_data?.list_status && getRoundStatus(round_data)}
                                             </td>
-                                            <td className="bg-gray-50 px-4 py-4 text-center text-sm font-semibold text-gray-600">
+                                            <td className="bg-gray-50 p-3 text-center text-sm font-semibold text-gray-600">
                                                 {round_data?.list_status ? round_data?.date ?? '-' : '-'}
                                             </td>
-                                            <td className={`bg-gray-50 px-4 py-4 text-center text-sm font-semibold ${round_data?.list_status === true ? round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600' : 'text-gray-600'}`}>
+                                            <td className={`bg-gray-50 p-3 text-center text-sm font-semibold ${round_data?.list_status === true ? round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600' : 'text-gray-600'}`}>
                                                 {round_data?.total ? formatNumber(round_data.total) : '-'}
                                             </td>
-                                            <td className={`bg-gray-50 px-4 py-4 text-center text-sm font-semibold ${round_data?.list_status === true ? round_data?.call_status === true ? 'text-emerald-600' : 'text-rose-600' : 'text-gray-600'}`}>
-                                                {round_data?.list_status ? round_data?.call_status === true ? round_data?.start_end ?? '-' : '-' : '-'}
+                                            <td className={`bg-gray-50 p-3 text-center text-sm font-semibold whitespace-nowrap text-gray-700`}>
+                                                {round_data?.list_status && round_data?.call_status === true
+                                                    ? Array.isArray(round_data?.start_end)
+                                                        ? (
+                                                            <div className="flex flex-wrap gap-1 p-1">
+                                                                {round_data.start_end.map((item, index) => (
+                                                                    <span
+                                                                        key={index}
+                                                                        className="inline-flex items-center justify-center px-1 text-sm border border-gray-400 rounded"
+                                                                    >
+                                                                        {item}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        )
+                                                        : '-'
+                                                    : '-'}
                                             </td>
-                                            <td className="bg-amber-50 px-4 py-4 text-center text-sm font-semibold">
+                                            <td className="bg-amber-50 p-3 text-center text-sm font-semibold">
                                                 {renderChange(round_data)}
                                             </td>
-                                            <td className="bg-sky-50 px-4 py-4 text-center text-sm font-semibold text-sky-700">
+                                            <td className="bg-sky-50 p-3 text-center text-sm font-semibold text-sky-700">
                                                 {formatPercent(round_data?.proportion)}
                                             </td>
-                                            <td className={`bg-gray-50 px-4 py-4 text-center text-sm font-semibold ${getProcessColor(round_data)}`}>
+                                            <td className={`bg-gray-100 p-3 text-center text-sm font-semibold ${round_data?.list_new_status ? 'text-emerald-600' : 'text-rose-600'}`}>
+                                                {round_data?.list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                            </td>
+                                            <td className={`bg-blue-50 p-3 text-center text-sm font-semibold ${getProcessColor(round_data)}`}>
                                                 {getProcessStatus(round_data)}
                                             </td>
-                                            <td className="bg-gray-50 px-4 py-4 text-center text-sm font-semibold text-gray-600">
+                                            <td className="bg-gray-50 p-3 text-center text-sm font-semibold text-gray-600">
                                                 {round_data?.list_status ? round_data?.is_cross_region === true ? 'ใช่' : 'ไม่ใช่' : '-'}
                                                 {round_data?.list_status === true &&
                                                     round_data?.call_status === true &&
@@ -260,7 +305,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                                         </div>
                                                     )}
                                             </td>
-                                            <td className={`px-4 py-4 text-center text-sm font-semibold ${round_data?.list_status ? total_remain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-gray-600'}`}>
+                                            <td className={`p-3 text-center text-sm font-semibold ${round_data?.list_status ? total_remain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600' : 'bg-amber-50 text-gray-600'}`}>
                                                 {round_data?.list_status ? round_data?.list_status === true ? formatNumber(total_remain) : '-' : '-'}
                                             </td>
                                         </tr>
@@ -268,18 +313,19 @@ export default function Row4RoundTable({ region, zone, position, data }) {
 
                                     {TableData && (
                                         <tr className="bg-gray-700 text-sm font-bold text-white">
-                                            <td colSpan={3} className="bg-gray-700 px-4 py-4 text-center uppercase tracking-wider">
+                                            <td colSpan={3} className="bg-gray-700 p-3 text-center uppercase tracking-wider">
                                                 รวมทั้งหมด
                                             </td>
-                                            <td className="bg-gray-700 px-4 py-4 text-center">
+                                            <td className="bg-gray-700 p-3 text-center">
                                                 {totalCalled ? formatNumber(totalCalled) : '-'}
                                             </td>
-                                            <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                            <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                            <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                            <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                            <td className="bg-gray-700 px-4 py-4 text-center"></td>
-                                            <td className="bg-gray-700 px-4 py-4 text-center">
+                                            <td className="bg-gray-700 p-3 text-center"></td>
+                                            <td className="bg-gray-700 p-3 text-center"></td>
+                                            <td className="bg-gray-700 p-3 text-center"></td>
+                                            <td className="bg-gray-700 p-3 text-center"></td>
+                                            <td className="bg-gray-700 p-3 text-center"></td>
+                                            <td className="bg-gray-700 p-3 text-center"></td>
+                                            <td className="bg-gray-700 p-3 text-center">
                                                 {finalRemain ? formatNumber(finalRemain) : '-'}
                                             </td>
                                         </tr>
@@ -290,6 +336,6 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

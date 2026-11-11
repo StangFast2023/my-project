@@ -2,7 +2,9 @@
 import { useMemo, useEffect, useSyncExternalStore } from 'react';
 import CountUp from 'react-countup';
 import { motion } from "framer-motion";
+import useMediaQuery from '@/app/avaliable/useMediaQuery';
 export default function StaticNumber({ data }) {
+    const isMobile = useMediaQuery("(max-width: 767px)");
     const subscribeAccountType = (callback) => {
         window.addEventListener("accountTypeChange", callback);
 
@@ -156,178 +158,349 @@ export default function StaticNumber({ data }) {
 
     const activeAccount = calculatedAccounts.find((acc) => acc.accountType === accountType);
     return (
+
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div className={`${data ? 'block' : 'opacity-0'} lg:gap-2 p-2 rounded-xl`}>
-                <div className="flex flex-wrap sm:flex-nowrap justify-end items-center gap-2 mb-2">
-                    <div className="flex flex-col sm:flex-row p-0.5 rounded-sm bg-gray-100 border border-gray-200 w-full sm:w-auto gap-1">
-                        {calculatedAccounts.map((acc) => {
-                            const isActive = acc.accountType === accountType;
-                            return (
-                                <button
-                                    key={acc.accountType}
-                                    onClick={() => handleAccountTypeChange(acc.accountType)}
-                                    className={`w-full sm:w-auto px-3 py-2 rounded-sm text-sm transition-all duration-300 ease-in-out whitespace-normal sm:whitespace-nowrap ${isActive ? "bg-blue-200 text-blue-600 font-bold shadow-sm" : "bg-gray-200 text-gray-600 font-semibold hover:bg-gray-300"}`}
-                                >
-                                    {acc.accountType === 1 ? "8 เขต (ยกเว้นภาคใต้เขต 1 & 2)" : "เฉพาะภาคใต้ เขต 1 & 2"}
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-                <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-5">
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">วันประกาศขึ้นบัญชี</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                {activeAccount.startDateFormatted}
-                            </span>
-                        </div>
-                        <div className="w-full rounded-full h-3 overflow-hidden">
-                        </div>
-                    </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">วันสิ้นสุดอายุบัญชี</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                {activeAccount.expireDateFormatted}
-                            </span>
-                        </div>
-                        <div className="w-full rounded-full h-3 overflow-hidden">
-                        </div>
-                    </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">อายุบัญชี</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                {activeAccount.passedTime.formatted}
-                            </span>
-                        </div>
-                        <div className="w-full rounded-full h-3 overflow-hidden">
-                        </div>
-                    </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">ระยะเวลาที่เหลือก่อนบัญชีหมดอายุ</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                {activeAccount.remainingTime.formatted}
-                            </span>
-                        </div>
-                        <div className="w-full rounded-full h-3 overflow-hidden">
-                        </div>
-                    </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl md:col-span-2 lg:col-span-1">
-                        <p className="text-gray-500 text-sm">ความคืบหน้าอายุบัญชี</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={activeAccount.progress}
-                                    duration={3}
-                                    separator=","
-                                    decimals={2}
-                                    useEasing={true}
-                                />   <b className="text-xl lg:text-xl">  / 100.00 %</b>
-                            </span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                            <div className={`h-full rounded-full transition-all duration-1000 ${activeAccount.progress <= 100 ? 'bg-blue-500' : 'bg-green-500'}`} style={{ width: `${Math.min(activeAccount.progress, 100)}%` }} />
-                        </div>
-                    </div>
-                </div>
-                <div className="text-gray-600 text-sm font-bold text-right my-2">ข้อมูล ณ วันที่ {activeAccount.todayDateFormatted}</div>
-            </div>
+            {isMobile ?
+                <>
+                    <div className={`${data ? 'block' : 'opacity-0'} block lg:hidden min-w-0 p-2`}>
+                        <div className="mb-3">
+                            <div className="flex flex-col gap-2">
+                                {calculatedAccounts.map((acc) => {
+                                    const isActive = acc.accountType === accountType;
 
-            <div className={`${data ? 'block' : 'opacity-0'} p-2 pb-0 rounded-xl`}>
-                <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6 lg:gap-2 ">
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด <b>(เก่า)</b></p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={data?.tab1?.part1?.OldTotalList}
-                                    duration={3}
-                                    separator=","
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-xl lg:text-xl">  คน</b>
-                            </span>
+                                    return (
+                                        <button
+                                            key={acc.accountType}
+                                            onClick={() => handleAccountTypeChange(acc.accountType)}
+                                            className={`w-full px-3 py-3 rounded-xl text-sm text-center transition-all duration-300 ${isActive
+                                                ? "bg-blue-50 text-blue-600 font-bold border border-blue-200 shadow-sm"
+                                                : "bg-gray-100 text-gray-600 font-semibold border border-gray-200"
+                                                }`}
+                                        >
+                                            {acc.accountType === 1
+                                                ? "8 เขต (ยกเว้นภาคใต้เขต 1 & 2)"
+                                                : "เฉพาะภาคใต้ เขต 1 & 2"}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                            {[
+                                {
+                                    label: "วันประกาศขึ้นบัญชี",
+                                    value: activeAccount.startDateFormatted
+                                },
+                                {
+                                    label: "วันสิ้นสุดอายุบัญชี",
+                                    value: activeAccount.expireDateFormatted
+                                },
+                                {
+                                    label: "อายุบัญชี",
+                                    value: activeAccount.passedTime.formatted
+                                },
+                                {
+                                    label: "ระยะเวลาที่เหลือก่อนบัญชีหมดอายุ",
+                                    value: activeAccount.remainingTime.formatted
+                                }
+                            ].map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm"
+                                >
+                                    <p className="text-gray-500 text-xs leading-relaxed min-h-8">
+                                        {item.label}
+                                    </p>
+                                    <div className="text-right min-w-0 mt-1">
+                                        <span className="text-base font-bold text-gray-600 break-words">
+                                            {item.value}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <div className="col-span-2 min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs">ความคืบหน้าอายุบัญชี</p>
+
+                                <div className="text-right min-w-0 my-1">
+                                    <span className="text-xl font-bold text-gray-600">
+                                        <CountUp
+                                            end={activeAccount.progress}
+                                            duration={3}
+                                            separator=","
+                                            decimals={2}
+                                            useEasing={true}
+                                        />
+                                        <b className="text-sm"> / 100.00 %</b>
+                                    </span>
+                                </div>
+
+                                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                    <div
+                                        className={`h-full rounded-full transition-all duration-1000 ${activeAccount.progress <= 100
+                                            ? 'bg-blue-500'
+                                            : 'bg-green-500'
+                                            }`}
+                                        style={{
+                                            width: `${Math.min(activeAccount.progress, 100)}%`
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="text-gray-600 text-xs font-bold text-right my-3">
+                            ข้อมูล ณ วันที่ {activeAccount.todayDateFormatted}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                            {[
+                                {
+                                    label: <>ขึ้นบัญชีทั้งหมด <b>(เก่า)</b></>,
+                                    value: data?.tab1?.part1?.OldTotalList
+                                },
+                                {
+                                    label: <>ขึ้นบัญชีทั้งหมด <b>(ใหม่)</b></>,
+                                    value: data?.tab1?.part1?.NewTotalList
+                                },
+                                {
+                                    label: "ส่วนต่าง",
+                                    value: data?.tab1?.part1?.DiffTotalList
+                                },
+                                {
+                                    label: "เรียกไปแล้ว",
+                                    value: data?.tab1?.part1?.TotalCall
+                                },
+                                {
+                                    label: "คงเหลือตามบัญชีใหม่",
+                                    value: data?.tab1?.part1?.NewTotalList - data?.tab1?.part1?.TotalCall
+                                },
+                                {
+                                    label: "เรียกเฉลี่ยรอบละ",
+                                    value: data?.tab1?.part1?.AvgCall
+                                }
+                            ].map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm"
+                                >
+                                    <p className="text-gray-500 text-xs leading-relaxed min-h-8">
+                                        {item.label}
+                                    </p>
+
+                                    <div className="min-w-0 text-right mt-1">
+                                        <span className="text-xl font-bold text-gray-600 break-words">
+                                            <CountUp
+                                                end={item.value}
+                                                duration={3}
+                                                separator=","
+                                                decimals={0}
+                                                useEasing={true}
+                                            />
+                                            <b className="text-sm"> คน</b>
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">ขึ้นบัญชีทั้งหมด <b>(ใหม่)</b></p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={data?.tab1?.part1?.NewTotalList}
-                                    duration={3}
-                                    separator=","
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-xl lg:text-xl">  คน</b>
-                            </span>
+
+                </>
+                :
+                <>
+
+                    <div className={`${data ? 'block' : 'opacity-0'} min-w-0 p-2 rounded-xl`}>
+                        <div className="flex justify-end items-center gap-2 mb-3">
+                            <div className="flex flex-col sm:flex-row p-1 rounded-xl bg-gray-100 border border-gray-200 w-full sm:w-auto gap-1">
+                                {calculatedAccounts.map((acc) => {
+                                    const isActive = acc.accountType === accountType;
+                                    return (
+                                        <button
+                                            key={acc.accountType}
+                                            onClick={() => handleAccountTypeChange(acc.accountType)}
+                                            className={`flex-1 sm:flex-none w-full sm:w-auto px-3 py-2.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-all duration-300 ease-in-out whitespace-normal sm:whitespace-nowrap ${isActive
+                                                ? "bg-white text-blue-600 font-bold shadow-sm border border-blue-100"
+                                                : "bg-gray-200 text-gray-600 font-semibold hover:bg-gray-300"
+                                                }`}
+                                        >
+                                            {acc.accountType === 1
+                                                ? "8 เขต (ยกเว้นภาคใต้เขต 1 & 2)"
+                                                : "เฉพาะภาคใต้ เขต 1 & 2"}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="grid !grid-cols-1 sm:!grid-cols-2 lg:!grid-cols-5 gap-2">
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">วันประกาศขึ้นบัญชี</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        {activeAccount.startDateFormatted}
+                                    </span>
+                                </div>
+                                <div className="w-full rounded-full h-3 overflow-hidden" />
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">วันสิ้นสุดอายุบัญชี</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        {activeAccount.expireDateFormatted}
+                                    </span>
+                                </div>
+                                <div className="w-full rounded-full h-3 overflow-hidden" />
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">อายุบัญชี</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        {activeAccount.passedTime.formatted}
+                                    </span>
+                                </div>
+                                <div className="w-full rounded-full h-3 overflow-hidden" />
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">ระยะเวลาที่เหลือก่อนบัญชีหมดอายุ</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        {activeAccount.remainingTime.formatted}
+                                    </span>
+                                </div>
+                                <div className="w-full rounded-full h-3 overflow-hidden" />
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm sm:col-span-2 lg:col-span-1">
+                                <p className="text-gray-500 text-xs sm:text-sm">ความคืบหน้าอายุบัญชี</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        <CountUp
+                                            end={activeAccount.progress}
+                                            duration={3}
+                                            separator=","
+                                            decimals={2}
+                                            useEasing={true}
+                                        /> <b className="text-sm sm:text-base lg:text-lg">/ 100.00 %</b>
+                                    </span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                    <div
+                                        className={`h-full rounded-full transition-all duration-1000 ${activeAccount.progress <= 100 ? 'bg-blue-500' : 'bg-green-500'}`}
+                                        style={{ width: `${Math.min(activeAccount.progress, 100)}%` }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="text-gray-600 text-xs sm:text-sm font-bold text-right my-3">
+                            ข้อมูล ณ วันที่ {activeAccount.todayDateFormatted}
                         </div>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">ส่วนต่าง</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={data?.tab1?.part1?.DiffTotalList}
-                                    duration={3}
-                                    separator=","
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-xl lg:text-xl">  คน</b>
-                            </span>
+
+                    <div className={`${data ? 'block' : 'opacity-0'} min-w-0 p-2 pb-0 rounded-xl`}>
+                        <div className="grid !grid-cols-2 sm:!grid-cols-3 lg:!grid-cols-6 gap-2">
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">ขึ้นบัญชีทั้งหมด <b>(เก่า)</b></p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        <CountUp
+                                            end={data?.tab1?.part1?.OldTotalList}
+                                            duration={3}
+                                            separator=","
+                                            decimals={0}
+                                            useEasing={true}
+                                        /> <b className="text-sm sm:text-base">คน</b>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">ขึ้นบัญชีทั้งหมด <b>(ใหม่)</b></p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        <CountUp
+                                            end={data?.tab1?.part1?.NewTotalList}
+                                            duration={3}
+                                            separator=","
+                                            decimals={0}
+                                            useEasing={true}
+                                        /> <b className="text-sm sm:text-base">คน</b>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">ส่วนต่าง</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        <CountUp
+                                            end={data?.tab1?.part1?.DiffTotalList}
+                                            duration={3}
+                                            separator=","
+                                            decimals={0}
+                                            useEasing={true}
+                                        /> <b className="text-sm sm:text-base">คน</b>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">เรียกไปแล้ว</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        <CountUp
+                                            end={data?.tab1?.part1?.TotalCall}
+                                            duration={3}
+                                            separator=","
+                                            decimals={0}
+                                            useEasing={true}
+                                        /> <b className="text-sm sm:text-base">คน</b>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">คงเหลือตามบัญชีใหม่</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        <CountUp
+                                            end={data?.tab1?.part1?.NewTotalList - data?.tab1?.part1?.TotalCall}
+                                            duration={3}
+                                            separator=","
+                                            decimals={0}
+                                            useEasing={true}
+                                        /> <b className="text-sm sm:text-base">คน</b>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
+                                <p className="text-gray-500 text-xs sm:text-sm">เรียกเฉลี่ยรอบละ</p>
+                                <div className="min-w-0 text-right">
+                                    <span className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-gray-600 break-words">
+                                        <CountUp
+                                            end={data?.tab1?.part1?.AvgCall}
+                                            duration={3}
+                                            separator=","
+                                            decimals={0}
+                                            useEasing={true}
+                                        /> <b className="text-sm sm:text-base">คน</b>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">เรียกไปแล้ว</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={data?.tab1?.part1?.TotalCall}
-                                    duration={3}
-                                    separator=","
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-xl lg:text-xl">  คน</b>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">คงเหลือตามบัญชีใหม่</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={data?.tab1?.part1?.NewTotalList - data?.tab1?.part1?.TotalCall}
-                                    duration={3}
-                                    separator=","
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-xl lg:text-xl">  คน</b>
-                            </span>
-                        </div>
-                    </div>
-                    <div className="flex-1 flex flex-col justify-center p-2 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-xl">
-                        <p className="text-gray-500 text-sm">เรียกเฉลี่ยรอบละ</p>
-                        <div className="items-baseline gap-2 text-right">
-                            <span className="text-2xl lg:text-3xl font-bold text-gray-600">
-                                <CountUp
-                                    end={data?.tab1?.part1?.AvgCall}
-                                    duration={3}
-                                    separator=","
-                                    decimals={0}
-                                    useEasing={true}
-                                />   <b className="text-xl lg:text-xl">  คน</b>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                </>
+            }
         </motion.div>
+
     );
 }

@@ -7,7 +7,9 @@ import useMediaQuery from '@/app/avaliable/useMediaQuery';
 
 export default function Row6RegionTable({ position, data }) {
     const isMobile = useMediaQuery('(max-width: 767px)');
-    const TableData = data?.chart_3_region || {};
+    const TableData = useMemo(() => {
+        return data?.chart_3_region || {};
+    }, [data?.chart_3_region]);
     const [selectedRegionKey, setSelectedRegionKey] = useState(null);
     const [selectedZoneKey, setSelectedZoneKey] = useState(null);
     const [selectedRoundKey, setSelectedRoundKey] = useState(null);
@@ -25,14 +27,14 @@ export default function Row6RegionTable({ position, data }) {
         return { text: `${formatted} %`, color: 'text-gray-500', icon: 'minus' };
     };
 
-    const textColor = (value) => {
-        if (value === '-' || value == null) return 'text-amber-600';
+    const textColor = (value, list) => {
         if (Number(value) > 0) return 'text-emerald-600';
+        if (list === false) return 'text-amber-600';
         return 'text-rose-600';
     };
 
-    const getBgHover = (value) => {
-        if (value === '-' || value == null) return 'hover:bg-amber-50/90';
+    const getBgHover = (value, list) => {
+        if (list === false) return 'hover:bg-amber-50/90';
         if (Number(value) > 0) return 'hover:bg-emerald-50/90';
         return 'hover:bg-rose-50/90';
     };
@@ -44,20 +46,27 @@ export default function Row6RegionTable({ position, data }) {
 
     const handleCellClick = (roundInfo) => {
         if (!roundInfo) return;
-        const date = roundInfo?.date ?? '-';
+        const date = roundInfo?.thai_short ?? '-';
+        const report_date = roundInfo?.report_thai_short ?? '-';
         const round = roundInfo?.round ?? 0;
-        const called = roundInfo?.called;
-        const listed = roundInfo?.listed;
-        const status = roundInfo?.status;
+        const called = roundInfo?.call_status;
+        const listed = roundInfo?.list_status;
+        const status = roundInfo?.work_status;
         const change = roundInfo?.change;
+        const list_new_status = roundInfo?.list_new_status;
         const proportion = formatPercent(roundInfo?.proportion);
         const total = roundInfo?.total ?? '-';
-        const start_end = roundInfo?.start_end ?? null;
+        const start_end = Array.isArray(roundInfo?.start_end) && roundInfo.start_end.length
+            ? roundInfo.start_end.map(item => `
+                <span class="inline-flex items-center justify-center py-1 px-2 text-sm border-1 border-gray-500 rounded-md bg-white text-gray-700">
+                    ${item}
+                </span>
+            `).join('')
+            : null;
         const is_cross_region = roundInfo?.is_cross_region === true;
         const crossed_region = roundInfo?.crossed_region;
         const crossed_zone = roundInfo?.crossed_zone;
         const ui = getChangeUI(round, called, listed, change);
-
         const changeIcon = ui.icon === 'up'
             ? '<span aria-hidden="true">↗ </span>'
             : ui.icon === 'down'
@@ -76,17 +85,26 @@ export default function Row6RegionTable({ position, data }) {
                         ? 'ภาคใต้'
                         : '-';
 
-        const statusText = total === '0' || Number(total) === 0
-            ? 'ไม่มีการเรียกใช้บัญชี'
-            : total === '-'
-                ? 'บัญชีสิ้นสุดแล้ว'
+        const listNewName = list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า';
+        const ListNewBadge = `
+            <span class="text-sm p-1 border rounded-sm ${list_new_status
+                ? 'text-emerald-600 border-emerald-400 bg-emerald-100'
+                : 'text-rose-600 border-rose-400 bg-rose-100'
+            }">${listNewName}</span>
+        `;
+
+        const statusText = listed === false
+            ? 'บัญชีสิ้นสุดแล้ว'
+            : total === '0' || Number(total) === 0
+                ? 'ไม่มีการเรียกใช้บัญชี'
                 : status === 'waiting'
                     ? 'รอการบรรจุ'
                     : 'บรรจุแล้ว';
-        const statusColor = total === '0' || Number(total) === 0
-            ? 'text-rose-500'
-            : total === '-'
-                ? 'text-amber-500'
+
+        const statusColor = listed === false
+            ? 'text-amber-500'
+            : total === '0' || Number(total) === 0
+                ? 'text-rose-500'
                 : status === 'waiting'
                     ? 'text-sky-500'
                     : 'text-emerald-500';
@@ -95,8 +113,10 @@ export default function Row6RegionTable({ position, data }) {
             <table class="w-full text-left border-collapse">
                 <tr class="border-b"><td class="w-[60%] py-2 font-bold text-gray-500">จำนวนที่เรียกบรรจุ :</td><td class="w-[40%] py-2 font-bold">${total}</td></tr>
                 <tr class="border-b"><td class="py-2 font-bold text-gray-500">ลำดับที่ :</td><td class="py-2 font-bold">${start_end ?? '-'}</td></tr>
+                <tr class="border-b"><td class="py-2 font-bold text-gray-500">บัญชีที่ใช้เรียก :</td><td class="py-2 font-bold">${ListNewBadge}</td></tr>
                 <tr class="border-b"><td class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</td><td class="py-2 font-bold ${ui.color}">${changeIcon}${ui.text}</td></tr>
                 <tr class="border-b"><td class="py-2 font-bold text-gray-500">สัดส่วนของการใช้บัญชี :</td><td class="py-2 font-bold">${proportion}</td></tr>
+                <tr class="border-b"><td class="py-2 font-bold text-gray-500">วันที่รายงานตัว :</td><td class="py-2 font-bold">${report_date}</td></tr>
                 <tr class="border-b"><td class="py-2 font-bold text-gray-500">วันที่บรรจุ :</td><td class="py-2 font-bold">${date}</td></tr>
                 <tr><td class="py-2 font-bold text-gray-500">สถานะ:</td><td class="py-2 font-bold ${statusColor}">${statusText}</td></tr>
             </table>
@@ -115,7 +135,7 @@ export default function Row6RegionTable({ position, data }) {
         Swal.fire({
             title: `รอบที่ ${round}`,
             html: textContent,
-            icon: total === '-' ? 'warning' : (total === '0' || Number(total) === 0) ? 'error' : 'success',
+            icon: listed === false ? 'warning' : (total === '0' || Number(total) === 0) ? 'error' : 'success',
             confirmButtonText: 'ตกลง',
             confirmButtonColor: '#10b981',
         });
@@ -175,7 +195,7 @@ export default function Row6RegionTable({ position, data }) {
         });
 
         return { ...region, key: String(regionKey), zones, summary };
-    }), [TableData]);
+    }), [TableData, roundColumns]);
 
     const grandTotal = useMemo(() => {
         const result = {
@@ -198,7 +218,7 @@ export default function Row6RegionTable({ position, data }) {
             });
         });
         return result;
-    }, [regions]);
+    }, [regions, roundColumns]);
 
     const getRemainingStatus = (remain) => remain === 0 ? 'หมดบัญชีแล้ว' : remain > 0 ? 'คงเหลือ' : 'ขาดแคลน';
     const getRemainingClass = (remain) => remain > 0 ? 'text-orange-600' : 'text-rose-600';
@@ -210,10 +230,10 @@ export default function Row6RegionTable({ position, data }) {
             <button
                 type="button"
                 onClick={() => handleCellClick(roundInfo)}
-                className={`w-full rounded-md px-2 py-2 text-sm font-semibold transition-colors ${textColor(roundInfo.total)} ${getBgHover(roundInfo.total)}`}
+                className={`w-full rounded-md px-2 py-2 text-sm font-semibold transition-colors ${textColor(roundInfo.total, roundInfo.list_status)} ${getBgHover(roundInfo.total, roundInfo.list_status)}`}
                 aria-label={`ดูรายละเอียดรอบที่ ${roundInfo.round ?? ''}`}
             >
-                {roundInfo.total != null ? Number(roundInfo.total).toLocaleString() : '—'}
+                {roundInfo.list_status === true ? Number(roundInfo.total).toLocaleString() : '—'}
                 <span className="mt-1 block text-[10px] font-medium text-gray-500">ดูรายละเอียด</span>
             </button>
         );
@@ -226,7 +246,6 @@ export default function Row6RegionTable({ position, data }) {
     const activeZone = mobileZones.find((zone) => zone.key === String(selectedZoneKey)) || mobileZones[0] || null;
     const activeRoundList = activeZone?.mobileRounds || [];
     const activeRound = activeRoundList.find((round) => round.roundKey === Number(selectedRoundKey)) || activeRoundList[0] || null;
-
     const changeRegion = (regionKey) => {
         setSelectedRegionKey(regionKey);
         setSelectedZoneKey(null);
@@ -360,21 +379,36 @@ export default function Row6RegionTable({ position, data }) {
             <section className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-3 shadow-sm">
                 <div className="mb-3 flex items-center gap-2">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-800 text-sm font-bold text-white">2</span>
-                    <div>
+                    <div className="min-w-0">
                         <h3 className="font-bold text-gray-800">เลือกเขต</h3>
-                        <p className="text-xs text-gray-600">{activeRegion?.name || 'เลือกเขตในภาคที่เลือก'}</p>
+                        <p className="truncate text-xs text-gray-600">
+                            {activeRegion?.name || 'เลือกเขตในภาคที่เลือก'}
+                        </p>
                     </div>
                 </div>
+
                 {mobileZones.length === 0 ? (
-                    <p className="rounded-lg bg-gray-50 p-4 text-center text-sm text-gray-500">ไม่มีข้อมูลเขตในภาคนี้</p>
+                    <p className="rounded-lg bg-gray-50 p-4 text-center text-sm text-gray-500">
+                        ไม่มีข้อมูลเขตในภาคนี้
+                    </p>
                 ) : (
                     <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2">
                         {mobileZones.map((zone) => {
                             const active = zone.key === activeZone?.key;
+
                             return (
-                                <button key={zone.key} type="button" onClick={() => changeZone(zone.key)}
-                                    className={`min-w-[124px] shrink-0 snap-start rounded-xl border px-4 py-3 text-center text-sm font-bold transition ${active ? 'border-sky-600 bg-sky-600 text-white shadow-sm' : 'border-gray-200 bg-gray-50 text-gray-700'}`}>
-                                    <span className="mt-1 block">{zone.name || `เขต ${zone.key}`}</span>
+                                <button
+                                    key={zone.key}
+                                    type="button"
+                                    onClick={() => changeZone(zone.key)}
+                                    className={`flex min-w-0 flex-1 shrink-0 snap-start items-center justify-center rounded-xl border px-3 py-2.5 text-center text-sm font-bold transition ${active
+                                        ? 'border-sky-600 bg-sky-600 text-white shadow-sm'
+                                        : 'border-gray-200 bg-gray-50 text-gray-700'
+                                        }`}
+                                >
+                                    <span className="whitespace-nowrap">
+                                        {zone.name || `เขต ${zone.key}`}
+                                    </span>
                                 </button>
                             );
                         })}
@@ -437,19 +471,33 @@ export default function Row6RegionTable({ position, data }) {
 
                                         {activeRound.roundInfo ? (
                                             <>
-                                                <div className="grid grid-cols-2 gap-2 p-3">
-                                                    <div className="rounded-xl bg-emerald-50 p-3">
-                                                        <p className="text-xs text-emerald-700">จำนวนที่เรียกบรรจุ</p>
-                                                        <p className="mt-1 break-words text-right text-xl font-bold text-emerald-800">
-                                                            {activeRound.roundInfo.total != null ? formatNumber(activeRound.roundInfo.total) : '-'}
-                                                        </p>
-                                                    </div>
-                                                    <div className="rounded-xl bg-gray-50 p-3">
-                                                        <p className="text-xs text-gray-600">ลำดับที่</p>
-                                                        <p className="mt-1 break-words text-right text-lg font-bold text-gray-800">{activeRound.roundInfo.start_end ?? '-'}</p>
-                                                    </div>
-                                                </div>
                                                 <div className="divide-y divide-gray-100 border-t border-gray-100">
+                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
+                                                        <span className="text-sm text-gray-500">จำนวนที่เรียกบรรจุ</span>
+                                                        <span className={`max-w-[60%] text-right text-sm font-bold text-gray-700`}>
+                                                            {activeRound.roundInfo.total != null ? formatNumber(activeRound.roundInfo.total) : '-'}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
+                                                        <span className="text-sm text-gray-500">ลำดับที่</span>
+                                                        <div className="min-w-0 max-w-[80%] overflow-x-auto">
+                                                            <div className="flex w-max justify-end gap-1 whitespace-nowrap">
+                                                                {Array.isArray(activeRound.roundInfo.start_end) &&
+                                                                    activeRound.roundInfo.start_end.length > 0 ? (
+                                                                    activeRound.roundInfo.start_end.map((item, index) => (
+                                                                        <span
+                                                                            key={index}
+                                                                            className="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-50 px-2 text-sm font-bold text-gray-700"
+                                                                        >
+                                                                            {item}
+                                                                        </span>
+                                                                    ))
+                                                                ) : (
+                                                                    <span className="text-sm font-bold">-</span>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div className="flex items-start justify-between gap-3 px-3 py-3">
                                                         <span className="text-sm text-gray-500">อัตราการเปลี่ยนแปลง</span>
                                                         <span className={`max-w-[60%] text-right text-sm font-bold ${getChangeUI(activeRound.roundKey, activeRound.roundInfo.called, activeRound.roundInfo.listed, activeRound.roundInfo.change).color}`}>
@@ -457,12 +505,22 @@ export default function Row6RegionTable({ position, data }) {
                                                         </span>
                                                     </div>
                                                     <div className="flex items-start justify-between gap-3 px-3 py-3">
+                                                        <span className="text-sm text-gray-500">บัญชีที่ใช้เรียก</span>
+                                                        <span className={`text-right text-sm font-semibold border-1 p-1 rounded-sm ${activeRound.roundInfo.list_new_status ? 'text-emerald-600 bg-emerald-100 border-emerald-400' : 'text-rose-600 bg-rose-100 border-rose-400'}`}>
+                                                            {activeRound.roundInfo.list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
                                                         <span className="text-sm text-gray-500">สัดส่วนของการใช้บัญชี</span>
                                                         <span className="text-right text-sm font-semibold text-gray-800">{formatPercent(activeRound.roundInfo.proportion)}</span>
                                                     </div>
                                                     <div className="flex items-start justify-between gap-3 px-3 py-3">
+                                                        <span className="text-sm text-gray-500">วันที่รายงานตัว</span>
+                                                        <span className="text-right text-sm font-semibold text-gray-800">{activeRound.roundInfo.report_thai_short ?? '-'}</span>
+                                                    </div>
+                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
                                                         <span className="text-sm text-gray-500">วันที่บรรจุ</span>
-                                                        <span className="text-right text-sm font-semibold text-gray-800">{activeRound.roundInfo.date ?? '-'}</span>
+                                                        <span className="text-right text-sm font-semibold text-gray-800">{activeRound.roundInfo.thai_short ?? '-'}</span>
                                                     </div>
                                                     <div className="flex items-start justify-between gap-3 px-3 py-3">
                                                         <span className="text-sm text-gray-500">สถานะ</span>
@@ -497,7 +555,6 @@ export default function Row6RegionTable({ position, data }) {
     );
 
     if (!TableData || Object.keys(TableData).length === 0) return null;
-
     return (
         <div className="grid w-full min-w-0 grid-cols-1 gap-4 lg:grid-cols-12">
             <div className="col-span-1 w-full min-w-0 overflow-hidden rounded-2xl border border-gray-100 bg-white p-3 shadow-sm sm:p-4 lg:col-span-12">
@@ -541,13 +598,13 @@ export default function Row6RegionTable({ position, data }) {
                                                 {region.zones.map((zone) => (
                                                     <tr key={`${region.key}-${zone.key}`}>
                                                         <td className="sticky left-0 z-10 bg-gray-50 px-4 py-4 text-left text-sm font-semibold text-gray-700">{zone.name}</td>
-                                                        <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>{zone.statusOpen ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}</td>
+                                                        <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.status_open ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>{zone.statusOpen ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}</td>
                                                         <td className="bg-amber-50 px-4 py-4 text-center text-sm font-semibold text-gray-600">{zone.statusOpen ? formatNumber(zone.listed) : '-'}</td>
                                                         <td className="bg-amber-100 px-4 py-4 text-center text-sm font-semibold text-gray-700">{zone.statusOpen ? formatNumber(zone.listedNew) : '-'}</td>
                                                         <td className="bg-rose-50 px-4 py-4 text-center text-sm font-semibold text-rose-600">{zone.statusOpen ? formatNumber(zone.diff) : '-'}</td>
                                                         <td className="bg-emerald-50 px-4 py-4 text-center text-sm font-semibold text-emerald-600">{zone.statusOpen ? formatNumber(zone.calledTotal) : '-'}</td>
-                                                        <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? zone.processing < 100 ? 'bg-blue-50 text-blue-600' : 'bg-violet-50 text-violet-600' : 'bg-blue-50 text-blue-600'}`}>{zone.statusOpen ? formatPercent(zone.processing) : '-'}</td>
-                                                        <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? zone.remain > 0 ? 'bg-orange-50 text-orange-600' : 'bg-rose-500 text-white' : 'bg-gray-50 text-gray-500'}`}>{zone.statusOpen ? getRemainingStatus(zone.remain) : '-'}</td>
+                                                        <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? zone.processing < 100 ? 'bg-blue-100 text-blue-600' : 'bg-emerald-100 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>{zone.statusOpen ? formatPercent(zone.processing) : '-'}</td>
+                                                        <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? zone.remain > 0 ? 'bg-orange-50 text-orange-600' : 'bg-rose-600 text-white' : 'bg-gray-50 text-gray-500'}`}>{zone.statusOpen ? getRemainingStatus(zone.remain) : '-'}</td>
                                                         <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? zone.remain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600' : 'bg-gray-50 text-gray-500'}`}>{zone.statusOpen ? formatNumber(zone.remain) : '-'}</td>
                                                         {zone.rounds.map(({ roundKey, roundInfo }) => (
                                                             <td key={roundKey} className={`relative px-2 py-2 text-center ${roundInfo ? 'bg-white' : 'bg-gray-100'}`}>
@@ -589,6 +646,6 @@ export default function Row6RegionTable({ position, data }) {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
