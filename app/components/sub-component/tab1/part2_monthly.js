@@ -262,7 +262,7 @@ export default function T1P2_CallMonthly({ data }) {
     };
 
     // กำหนดความกว้างกราฟ Mobile ตามจำนวนเดือน
-    const mobileChartWidth = Math.max(labels.length * 75, 320);
+    const mobileChartWidth = Math.max(labels.length * 75, 450);
 
     return (
         <motion.div
@@ -278,7 +278,7 @@ export default function T1P2_CallMonthly({ data }) {
             </h3>
 
             {/* Desktop */}
-            <div className="hidden md:block w-full h-[370px]">
+            <div className="hidden md:block w-full h-[400px]">
                 <Bar
                     data={chartData}
                     options={desktopOptions}

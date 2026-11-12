@@ -82,7 +82,7 @@ export default function T2P2_TypePerMonth({ data }) {
         datasets: [...barDatasets, lineDataset],
     };
 
-    const mobileChartWidth = Math.max(labels.length * 75, 320);
+    const mobileChartWidth = Math.max(labels.length * 75, 500);
 
     const sharedOptions = {
         responsive: true,
@@ -161,19 +161,9 @@ export default function T2P2_TypePerMonth({ data }) {
     };
 
     const mobileOptions = {
-        ...sharedOptions,
-        plugins: {
-            ...sharedOptions.plugins,
-            legend: {
-                position: 'bottom',
-                labels: {
-                    font: { family: "'Kanit', sans-serif", size: 10 },
-                    boxWidth: 10,
-                    boxHeight: 10,
-                    padding: 8
-                }
-            }
-        },
+        responsive: true,
+        maintainAspectRatio: false,
+        spanGaps: true,
         scales: {
             x: {
                 ticks: {
@@ -193,9 +183,36 @@ export default function T2P2_TypePerMonth({ data }) {
                 type: 'linear',
                 position: 'right',
                 beginAtZero: true,
-                grid: { drawOnChartArea: false },
-                display: false
+                display: false,
+                grid: { drawOnChartArea: false }
             }
+        },
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    boxWidth: 10,
+                    boxHeight: 10,
+                    padding: 8,
+                    font: { size: 10 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    title: function (context) {
+                        return fullNames[context[0].dataIndex];
+                    },
+                    label: function (context) {
+                        let label = context.dataset.label || '';
+                        if (label) label += ' : ';
+                        if (context.parsed.y !== null) {
+                            label += new Intl.NumberFormat('th-TH').format(context.parsed.y) + ' คน';
+                        }
+                        return label;
+                    }
+                }
+            },
+            zoom: sharedOptions.plugins.zoom
         }
     };
 
@@ -221,9 +238,14 @@ export default function T2P2_TypePerMonth({ data }) {
                     <div className="w-full overflow-x-auto overflow-y-hidden">
                         <div
                             className="relative h-[390px]"
-                            style={{ width: `${mobileChartWidth}px` }}
+                            style={{
+                                width: `${mobileChartWidth}px`
+                            }}
                         >
-                            <Bar data={chartData} options={mobileOptions} />
+                            <Bar
+                                data={chartData}
+                                options={mobileOptions}
+                            />
                         </div>
                     </div>
 

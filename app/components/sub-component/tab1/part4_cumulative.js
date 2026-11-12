@@ -72,7 +72,7 @@ export default function T1P4_Cumulative({ data }) {
             }
         ]
     };
-    const mobileChartWidth = Math.max(labels.length * 75, 320);
+    const mobileChartWidth = Math.max(labels.length * 75, 450);
 
     const sharedOptions = {
         responsive: true,
@@ -197,7 +197,7 @@ export default function T1P4_Cumulative({ data }) {
                     <span className="ml-2">สถิติการเรียกบรรจุรายเดือนและยอดสะสม</span>
                 </h3>
                 {/* Desktop */}
-                <div className="hidden md:block h-[370px] w-full">
+                <div className="hidden md:block h-[400px] w-full">
                     <Chart type="bar" data={chartData} options={desktopOptions} />
                 </div>
 

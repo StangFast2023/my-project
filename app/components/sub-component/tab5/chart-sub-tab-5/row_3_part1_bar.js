@@ -186,15 +186,15 @@ export default function Row3Part1Bar({ data }) {
         <div className="w-full min-w-0">
             <div
                 className={`w-full ${isMobile
-                        ? "overflow-x-auto overscroll-x-contain"
-                        : "overflow-hidden"
+                    ? "overflow-x-auto overscroll-x-contain"
+                    : "overflow-hidden"
                     }`}
             >
                 <div
                     className="relative"
                     style={{
                         width: isMobile ? `${mobileChartWidth}px` : "100%",
-                        height: "350px",
+                        height: isMobile ? "330px" : "460px",
                         minWidth: isMobile ? `${mobileChartWidth}px` : "0"
                     }}
                 >

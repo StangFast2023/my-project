@@ -81,7 +81,7 @@ export default function T2P3_TypePerRound({ data }) {
         datasets: [...barDatasets, lineDataset],
     };
 
-    const mobileChartWidth = Math.max(labels.length * 75, 320);
+    const mobileChartWidth = Math.max(labels.length * 75, 450);
 
     const sharedOptions = {
         responsive: true,
