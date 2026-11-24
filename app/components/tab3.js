@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import T3P6_TablePositio from './sub-component/tab3/part6_tableposition';
+import T3P6_TablePosition from './sub-component/tab3/part6_tableposition';
 import T3P7_RegoinAnalytics from './sub-component/tab3/part7_regionanalytic';
 import T3P8_TableAllType from './sub-component/tab3/part8_tablealltype';
 export default function Tab3() {
@@ -35,7 +35,7 @@ export default function Tab3() {
             </div>
             <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>
                 <div className={`${data ? 'block' : 'hidden'} col-span-12 lg:col-span-12 rounded-2xl shadow-sm border border-gray-100 p-4 bg-white`}>
-                    <T3P6_TablePositio data={data} />
+                    <T3P6_TablePosition data={data} />
                 </div>
             </div>
             {/* <div className={`${data ? 'm-6' : 'bg-white/50 animate-pulse rounded-2xl'}`} style={{ height: data ? 'auto' : '800px' }}>

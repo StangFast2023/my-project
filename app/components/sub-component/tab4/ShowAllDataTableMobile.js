@@ -1,7 +1,52 @@
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef, Fragment } from 'react';
 import { EmptyData } from '../../EmptyData';
 import { Check } from 'lucide-react';
+
+const getMobileCallTypes = (typeCall) => {
+    if (!typeCall || typeof typeCall !== "object") return [];
+
+    return Object.values(typeCall).map((item) => {
+        const ranks = Array.isArray(item.rank)
+            ? item.rank.map(({ start, end }) => {
+                if (start === end) return String(start);
+                return `${start}-${end}`;
+            })
+            : [];
+
+        const provinceGroups = Object.entries(item.provinces || {}).map(
+            ([regionId, regionData]) => {
+                const zones = Object.entries(regionData || {})
+                    .filter(([key, value]) => {
+                        return key !== "name" && value && typeof value === "object";
+                    })
+                    .map(([zoneId, zoneData]) => ({
+                        zoneId,
+                        name: zoneData.name || `เขต ${zoneId}`,
+                        provinces: Array.isArray(zoneData.list)
+                            ? zoneData.list
+                            : [],
+                    }));
+
+                return {
+                    regionId,
+                    name: regionData.name || `ภาค ${regionId}`,
+                    zones,
+                };
+            }
+        );
+
+        return {
+            id: item.type_call_id,
+            name: item.type_call_name || "ไม่ระบุประเภทการเรียก",
+            total: Number(item.total) || 0,
+            callStatus: item.call_status === true,
+            listNewStatus: item.list_new_status === true,
+            ranks,
+            provinceGroups,
+        };
+    });
+};
 
 export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) {
     const safePart2 = useMemo(() => part2?.tab4?.part2?.data || {}, [part2?.tab4?.part2?.data]);
@@ -10,10 +55,18 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
         () => Array.from({ length: maxRound }, (_, i) => i + 1),
         [maxRound]
     );
+    const [selectedZone, setSelectedZone] = useState(null);
     const [selectedRegionKey, setSelectedRegionKey] = useState(null);
     const [selectedZoneId, setSelectedZoneId] = useState(null);
     const [selectedPositionKey, setSelectedPositionKey] = useState(null);
     const hasData = Object.keys(safePart2).length > 0;
+    const roundsScrollRef = useRef(null);
+
+    useEffect(() => {
+        if (roundsScrollRef.current) {
+            roundsScrollRef.current.scrollLeft = 0;
+        }
+    }, [selectedPositionKey]);
     const formatNumber = (value) =>
         (Number(value) || 0).toLocaleString('en-US');
     const formatPercent = (value) =>
@@ -21,35 +74,6 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         })}%`;
-    const getRoundStatus = (status) => {
-        switch (status) {
-            case 'completed':
-                return {
-                    label: 'บรรจุแล้ว',
-                    color: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-                };
-            case 'waiting':
-                return {
-                    label: 'รอการบรรจุ',
-                    color: 'bg-sky-50 text-sky-700 border-sky-200',
-                };
-            case 'not-used':
-                return {
-                    label: 'ไม่มีการเรียกใช้บัญชี',
-                    color: 'bg-rose-50 text-rose-700 border-rose-200',
-                };
-            case 'exhaustion':
-                return {
-                    label: 'บัญชีหมด',
-                    color: 'bg-amber-50 text-amber-700 border-amber-200',
-                };
-            default:
-                return {
-                    label: 'ไม่มีข้อมูลสถานะ',
-                    color: 'bg-gray-50 text-gray-600 border-gray-200',
-                };
-        }
-    };
     const getPositionStatus = (item) => {
         if (item.status_out_of_lits) {
             return item.status_open === false
@@ -190,24 +214,16 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
         return (
             <div className="flex min-h-[300px] flex-col items-center justify-center gap-4">
                 <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-b-gray-600" />
-                <p className="text-center text-sm font-semibold text-gray-500">
+                <p className="text-center text-sm font-semibold text-gray-700">
                     กำลังดึงข้อมูล... กรุณารอสักครู่
                 </p>
             </div>
         );
     }
-    const roundsWithData = roundsArray.filter((round) => {
-        const data = activePosition?.roundsData?.[round];
-        if (!data) return false;
-        const statusList = data.status_list_n ?? 'no-data';
-        const statusCall = data.status_call ?? 'no-data';
-        return !(
-            statusList === 'no-data' && statusCall === 'no-data'
-        );
-    });
     if (!hasData || flatTableRows.length === 0) {
         return <EmptyData />;
     }
+
     return (
         <div className="fade-in space-y-3 pb-6">
             <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
@@ -219,13 +235,13 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                 </div>
                 <div className="grid grid-cols-2 gap-3 p-2">
                     <div className="rounded-xl bg-gray-50 p-2">
-                        <p className="text-xs text-gray-500">ขึ้นบัญชี (เก่า)</p>
+                        <p className="text-xs text-gray-700">ขึ้นบัญชี (เก่า)</p>
                         <p className="mt-1 break-words text-xl font-bold text-gray-800 text-right">
                             {formatNumber(summary.total_listed)}
                         </p>
                     </div>
                     <div className="rounded-xl bg-gray-100 p-2">
-                        <p className="text-xs text-gray-500">ขึ้นบัญชี (ใหม่)</p>
+                        <p className="text-xs text-gray-700">ขึ้นบัญชี (ใหม่)</p>
                         <p className="mt-1 break-words text-xl font-bold text-gray-800 text-right">
                             {formatNumber(summary.total_listed_n)}
                         </p>
@@ -249,7 +265,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                         </p>
                     </div>
                     <div className="rounded-xl border border-gray-200 p-2">
-                        <p className="text-xs text-gray-500">ความคืบหน้า</p>
+                        <p className="text-xs text-gray-700">ความคืบหน้า</p>
                         <p className={`mt-1 text-xl font-bold text-right ${summaryStatusColor}`}>
                             {formatPercent(summaryPercent)}
                         </p>
@@ -259,7 +275,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                     </div>
                 </div>
                 <div className="px-3 pb-3">
-                    <p className="mb-2 text-xs font-bold text-gray-500">
+                    <p className="mb-2 text-xs font-bold text-gray-700">
                         ยอดเรียกแยกตามรอบ
                     </p>
                     <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory">
@@ -270,7 +286,7 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                         key={round}
                                         className="flex min-w-[120px] shrink-0 snap-start items-center justify-between gap-2 rounded-lg border border-gray-200 px-3 py-2 shadow-sm"
                                     >
-                                        <span className="text-xs text-gray-500 whitespace-nowrap">
+                                        <span className="text-xs text-gray-700 whitespace-nowrap">
                                             รอบ {round}
                                         </span>
                                         <span className="text-lg font-bold text-gray-800">
@@ -371,19 +387,19 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                     </div>
                                     <div className="grid grid-cols-2 gap-2 border-t border-gray-200 pt-3">
                                         <div className="p-2 rounded inset-shadow-sm">
-                                            <p className="text-xs text-gray-500">สถานะเปิดสอบ</p>
+                                            <p className="text-xs text-gray-700">สถานะเปิดสอบ</p>
                                             <p className={`mt-1 p-2 rounded-xl font-bold text-center border shadow-sm ${status_open ? 'border-emerald-700 text-emerald-700 bg-emerald-50' : 'border-rose-700 text-rose-700  bg-rose-50'}`}>
                                                 {status_open ? 'เปิดสอบ' : 'ไม่เปิดสอบ'}
                                             </p>
                                         </div>
                                         <div className="p-2 rounded inset-shadow-sm">
-                                            <p className="text-xs text-gray-500">สถานะบัญชี</p>
+                                            <p className="text-xs text-gray-700">สถานะบัญชี</p>
                                             <p className={`mt-1 p-2 rounded-xl font-bold text-center shadow-sm ${status.color}`}>
                                                 {status.label}
                                             </p>
                                         </div>
                                     </div>
-                                    <div className={`mt-3 rounded-lg py-1.5 text-center text-xs font-bold ${active ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-500'}`}>
+                                    <div className={`mt-3 rounded-lg py-1.5 text-center text-xs font-bold ${active ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}>
                                         {active ? (
                                             <>
                                                 <Check className="mr-1 inline-block h-4 w-4" strokeWidth={6} />
@@ -419,13 +435,13 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
 
                         <div className="grid grid-cols-2 gap-3 p-2">
                             <div className="rounded-xl bg-gray-50 p-2 inset-shadow-sm">
-                                <p className="text-xs text-gray-500">ขึ้นบัญชี (เก่า)</p>
+                                <p className="text-xs text-gray-700">ขึ้นบัญชี (เก่า)</p>
                                 <p className="mt-1 text-lg font-bold text-gray-800 text-right">
                                     {formatNumber(activePosition.total_listed)}
                                 </p>
                             </div>
                             <div className="rounded-xl bg-gray-100 p-2 inset-shadow-sm">
-                                <p className="text-xs text-gray-500">ขึ้นบัญชี (ใหม่)</p>
+                                <p className="text-xs text-gray-700">ขึ้นบัญชี (ใหม่)</p>
                                 <p className="mt-1 text-lg font-bold text-gray-800 text-right">
                                     {formatNumber(activePosition.total_listed_n)}
                                 </p>
@@ -449,199 +465,390 @@ export default function ShowAllDataTableMobile({ checkData, part2, isLoading }) 
                                 </p>
                             </div>
                             <div className="rounded-xl border border-gray-200 p-2 inset-shadow-sm">
-                                <p className="text-xs text-gray-500">ความคืบหน้า</p>
-                                <p className={`mt-1 text-lg font-bold text-right ${!activePosition.status_open ? 'text-gray-500' : activePosition.pos_percent < 30 ? 'text-rose-600' : activePosition.pos_percent < 70 ? 'text-amber-600' : activePosition.pos_percent <= 100 ? 'text-emerald-600' : 'text-violet-600'}`}>
+                                <p className="text-xs text-gray-700">ความคืบหน้า</p>
+                                <p className={`mt-1 text-lg font-bold text-right ${!activePosition.status_open ? 'text-gray-700' : activePosition.pos_percent < 30 ? 'text-rose-600' : activePosition.pos_percent < 70 ? 'text-amber-600' : activePosition.pos_percent <= 100 ? 'text-emerald-600' : 'text-violet-600'}`}>
                                     {activePosition.status_open ? formatPercent(activePosition.pos_percent) : '0%'}
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div className="rounded-2xl border border-gray-200 bg-white p-2 shadow-sm">
-                        <div className="mb-3 flex items-center gap-2">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-800 text-sm font-bold text-white">
-                                4
-                            </span>
-                            <h2 className="text-lg font-bold text-gray-800">
-                                รายละเอียดการเรียกแต่ละรอบ
-                            </h2>
-                        </div>
-                        <div className="text-xs text-gray-400 text-center mb-2">
-                            กรุณาเลื่อนซ้าย-ขวาเพื่อเลือกดูรอบ
-                        </div>
 
-                        {roundsWithData.length === 0 ? (
-                            <div className="rounded-2xl border border-gray-200 bg-white p-5 text-center text-sm text-gray-400">
-                                ยังไม่มีข้อมูลรอบเรียกบัญชี
+                        <div className="mt-5">
+
+                            <div className="mb-3 flex items-center gap-2">
+                                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-800 text-sm font-bold text-white">
+                                    4
+                                </span>
+                                <h2 className="text-lg font-bold text-gray-800">
+                                    รายละเอียดการเรียกแต่ละรอบ
+                                </h2>
                             </div>
-                        ) : (
-                            <div className="-mx-2 overflow-x-auto px-2 pb-3">
-                                <div className="flex w-full items-stretch gap-3">
-                                    {roundsWithData.map((round) => {
-                                        const data = activePosition.roundsData?.[round];
-                                        const status = getRoundStatus(data?.status);
-                                        const statusList = data?.status_list_n ?? 'no-data';
-                                        const statusCall = data?.status_call ?? 'no-data';
-                                        const list_new = data?.list_new_status ?? 'no-data';
-                                        const account_status = data?.account_status ?? 'no-data';
-                                        const noCall = statusCall === false && statusList === false;
-                                        const listExhausted = statusCall === false && statusList === true;
-                                        let changeText = '-';
-                                        let changeColor = 'text-gray-500';
-                                        if (round === 1) {
-                                            changeText = 'รอบเริ่มต้น';
-                                            changeColor = 'text-emerald-600';
-                                        } else if (noCall) {
-                                            changeText = 'สิ้นสุดการเรียกบรรจุ';
-                                        } else if (
-                                            data?.percent_change !== null && data?.percent_change !== undefined
-                                        ) {
-                                            const value = Number(data.percent_change);
-                                            const formatted = Math.abs(value).toLocaleString(
-                                                'en-US',
-                                                {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2,
-                                                }
-                                            );
-                                            changeText = value > 0 ? `▲ ${formatted}%` : value < 0 ? `▼ ${formatted}%` : `${formatted}%`;
-                                            changeColor = value > 0 ? 'text-emerald-600' : value < 0 ? 'text-rose-600' : 'text-gray-500';
-                                        }
-                                        const crossedRegionNames = {
-                                            1: 'ภาคเหนือ',
-                                            2: 'ภาคกลาง',
-                                            3: 'ภาคตะวันออกเฉียงเหนือ',
-                                            4: 'ภาคใต้',
-                                        };
-                                        const roundTotal = noCall || listExhausted ? '-' : data?.total != null ? formatNumber(data.total) : '-';
+                            <div className="text-xs text-gray-400 text-center mb-2">
+                                กรุณาเลื่อนซ้าย-ขวาเพื่อเลือกดูรอบ
+                            </div>
+
+                            {(() => {
+                                const roundsWithData = roundsArray
+                                    .map((num) => ({
+                                        num,
+                                        data: activePosition?.roundsData?.[num],
+                                    }))
+                                    .filter(({ data }) => {
                                         return (
-                                            <article
-                                                key={round}
-                                                className="flex w-auto min-w-[100%] shrink-0 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm"
-                                            >
-                                                <div className="flex items-start justify-between gap-3 border-b border-gray-100 p-4">
-                                                    <div>
-                                                        <h3 className="text-base font-bold text-gray-800">
-                                                            รอบที่ {round}
-                                                        </h3>
-                                                    </div>
-
-                                                    <span
-                                                        className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-bold ${status.color}`}
-                                                    >
-                                                        {status.label}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-1 flex-col gap-3 p-4">
-                                                    <div className="rounded-xl bg-emerald-50 p-2">
-                                                        <p className="text-xs text-emerald-700">
-                                                            จำนวนที่เรียกบรรจุ
-                                                        </p>
-                                                        <p className="mt-1 text-xl font-bold text-emerald-800 text-right">
-                                                            {roundTotal}
-                                                        </p>
-                                                    </div>
-                                                    <div className="rounded-xl bg-gray-50 p-2 min-h-[10vh]">
-                                                        <p className="text-xs text-gray-500">
-                                                            ลำดับที่
-                                                        </p>
-                                                        <p className="mt-1 break-words text-lg font-bold text-gray-800 text-right">
-                                                            {noCall || listExhausted ? (
-                                                                '-'
-                                                            ) : (
-                                                                <div className="flex max-w-full flex-nowrap justify-start gap-1 overflow-x-auto whitespace-nowrap py-1">
-                                                                    {(Array.isArray(data?.start_end)
-                                                                        ? data.start_end
-                                                                        : [data?.start_end]
-                                                                    ).filter(Boolean).map((item, index) => (
-                                                                        <span
-                                                                            key={index}
-                                                                            className="shrink-0 rounded-md bg-white px-3 py-2 text-sm font-semibold border-1 border-gray-600 text-gray-700 shadow-xl"
-                                                                        >
-                                                                            {item}
-                                                                        </span>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-                                                        </p>
-                                                    </div>
-                                                    <div className="overflow-hidden rounded-xl border border-gray-100">
-                                                        <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-3 py-3">
-                                                            <span className="text-sm text-gray-500">
-                                                                บัญชีที่ใช้เรียก
-                                                            </span>
-                                                            <span className={`text-right text-sm font-bold p-1 rounded-xl ${account_status ? '' : (list_new ? 'border-1 bg-emerald-50 border-emerald-400 text-emerald-700' : 'border-1 bg-rose-50 border-rose-400 text-rose-700')} `} >
-                                                                {account_status ? '' : (list_new ? 'บัญชีใหม่' : 'บัญชีเก่า')}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-start justify-between gap-3 border-b border-gray-100 px-3 py-3">
-                                                            <span className="text-sm text-gray-500">
-                                                                อัตราการเปลี่ยนแปลง
-                                                            </span>
-                                                            <span className={`text-right text-sm font-bold ${listExhausted ? 'text-gray-500' : changeColor}`} >
-                                                                {listExhausted ? '-' : changeText}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                            <span className="text-sm text-gray-500">
-                                                                วันที่รายงานตัว
-                                                            </span>
-                                                            <span className="text-right text-sm font-semibold text-gray-800">
-                                                                {data?.report_date}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                            <span className="text-sm text-gray-500">
-                                                                วันที่บรรจุ
-                                                            </span>
-                                                            <span className="text-right text-sm font-semibold text-gray-800">
-                                                                {data?.date}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="overflow-hidden rounded-xl border border-gray-200">
-                                                        <div className="bg-gray-50 px-3 py-3">
-                                                            <h4 className="text-sm font-bold text-gray-800">
-                                                                รายละเอียดการเรียกข้ามเขต
-                                                            </h4>
-                                                        </div>
-                                                        <div className="divide-y divide-gray-100">
-                                                            <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                                <span className="text-sm text-gray-500">
-                                                                    เรียกใช้บัญชีข้ามเขต
-                                                                </span>
-                                                                <span className="text-right text-sm font-bold text-gray-800">
-                                                                    {data?.status_cross === true ? 'ใช่' : data?.status_cross === false ? 'ไม่ใช่' : '-'}
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                                <span className="text-sm text-gray-500">
-                                                                    ภาคที่เรียกข้ามมา
-                                                                </span>
-                                                                <span className="max-w-[60%] text-right text-sm font-bold text-gray-800">
-                                                                    {crossedRegionNames[data?.crossed_region] || '-'}
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                                <span className="text-sm text-gray-500">
-                                                                    เขตที่เรียกข้ามมา
-                                                                </span>
-                                                                <span className="text-right text-sm font-bold text-gray-800">
-                                                                    {data?.crossed_zone != null && data?.crossed_zone !== 'no-data' ? `เขต ${data.crossed_zone}` : '-'}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </article>
+                                            data &&
+                                            (
+                                                data.call_status !== undefined ||
+                                                data.list_status !== undefined ||
+                                                data.type_call
+                                            )
                                         );
-                                    })}
-                                </div>
-                            </div>
-                        )}
+                                    });
 
+                                if (roundsWithData.length === 0) {
+                                    return (
+                                        <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 text-center text-gray-700">
+                                            ยังไม่มีข้อมูลการเรียกบรรจุ
+                                        </div>
+                                    );
+                                }
 
+                                return (
+                                    <div
+                                        ref={roundsScrollRef}
+                                        className="flex gap-3 overflow-x-auto pb-4"
+                                    >
+                                        {roundsWithData.map(({ num, data }) => {
+                                            const called = data.call_status === true;
+                                            const listed = data.list_status === true;
+                                            const change = Number(data.percent_change) || 0;
+                                            const proportion_used = activePosition.total_listed_n > 0 ? Number((data.total / activePosition.total_listed_n) * 100).toFixed(2) : 0;
+                                            const callTypes = getMobileCallTypes(data.type_call);
+
+                                            const workStatus = (() => {
+                                                if (data.status_work === "completed") {
+                                                    return {
+                                                        label: "ได้รับการบรรจุแล้ว",
+                                                        color: "border-1 border-green-400 bg-green-100 text-green-700",
+                                                    };
+                                                }
+
+                                                if (data.status_work === "waiting") {
+                                                    return {
+                                                        label: "รอการเรียกบรรจุ",
+                                                        color: "border-1 border-blue-400 bg-blue-100 text-blue-700",
+                                                    };
+                                                }
+
+                                                if (!called) {
+                                                    return {
+                                                        label: "ไม่มีการเรียกใช้บัญชี",
+                                                        color: "border-1 border-gray-400 bg-gray-100 text-gray-600",
+                                                    };
+                                                }
+
+                                                if (!listed) {
+                                                    return {
+                                                        label: "บัญชีสิ้นสุด",
+                                                        color: "border-1 border-red-400 bg-red-100 text-red-700",
+                                                    };
+                                                }
+
+                                                return {
+                                                    label: "ไม่ระบุสถานะ",
+                                                    color: "border-1 border-gray-400 bg-gray-100 text-gray-600",
+                                                };
+                                            })();
+
+                                            return (
+                                                <Fragment key={num}>
+                                                    {called ? (
+                                                        <div
+                                                            key={num}
+                                                            className="min-w-[300px] max-w-[340px] flex-shrink-0 rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+                                                        >
+                                                            {/* หัวการ์ด */}
+                                                            <div className="bg-gray-100 border-b border-gray-100 p-4">
+                                                                <div className="flex items-center justify-between">
+                                                                    <h4 className="font-bold text-gray-800">
+                                                                        รอบที่ {num}
+                                                                    </h4>
+
+                                                                    <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${workStatus.color}`}>
+                                                                        {workStatus.label}
+                                                                    </span>
+                                                                </div>
+
+                                                                <div className="mt-3">
+                                                                    <p className="text-sm text-gray-700">
+                                                                        จำนวนเรียกบรรจุ
+                                                                    </p>
+
+                                                                    <p className="text-right text-2xl font-bold text-gray-700">
+                                                                        {Number(data.total || 0).toLocaleString("th-TH")}
+                                                                        <span className="ml-2 text-sm font-normal text-gray-700">
+                                                                            อัตรา
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* ข้อมูลประจำรอบ */}
+                                                            <div className="p-4 space-y-3">
+                                                                <div className={`p-2 border-1 rounded-lg ${data.list_new_status ? 'border-emerald-400 bg-emerald-200/50' : 'border-rose-400 bg-rose-200/50'}`}>
+                                                                    <p className="text-xs text-gray-700">
+                                                                        ประเภทบัญชี
+                                                                    </p>
+                                                                    <p className={`text-right text-sm font-bold ${data.list_new_status ? 'text-emerald-700' : 'text-rose-700'} `}>
+                                                                        {data.list_new_status
+                                                                            ? "บัญชีใหม่"
+                                                                            : "บัญชีเดิม"}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="p-2 border-1 border-gray-400 rounded-lg bg-gray-50">
+                                                                    <p className="text-xs text-gray-700">
+                                                                        วันที่รายงานข้อมูล
+                                                                    </p>
+
+                                                                    <p className="text-right text-sm font-bold text-gray-800">
+                                                                        {data.st_report_thai_short || "-"}
+                                                                        {" - "}
+                                                                        {data.ed_report_thai_short || "-"}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="p-2 border-1 border-gray-400 rounded-lg bg-gray-50">
+                                                                    <p className="text-xs text-gray-700">
+                                                                        วันที่เรียกบรรจุ
+                                                                    </p>
+
+                                                                    <p className="text-right text-sm font-bold text-gray-800">
+                                                                        {data.call_date || "-"}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="grid grid-cols-2 gap-2">
+                                                                    <div className="p-2 border-1 border-gray-400 rounded-lg bg-gray-50">
+                                                                        <p className="text-xs text-gray-700">
+                                                                            เปลี่ยนแปลง
+                                                                        </p>
+
+                                                                        <p className={`text-right text-sm font-semibold ${change > 0
+                                                                            ? "text-green-600"
+                                                                            : change < 0
+                                                                                ? "text-red-600"
+                                                                                : "text-gray-600"
+                                                                            }`}>
+                                                                            {change > 0 ? "+" : ""}
+                                                                            {change.toLocaleString("th-TH", {
+                                                                                minimumFractionDigits: 2,
+                                                                                maximumFractionDigits: 2,
+                                                                            })}%
+                                                                        </p>
+                                                                    </div>
+
+                                                                    <div className="p-2 border-1 border-gray-400 rounded-lg bg-gray-50">
+                                                                        <p className="text-xs text-gray-700">
+                                                                            สัดส่วนการใช้บัญชี
+                                                                        </p>
+
+                                                                        <p className="text-right text-sm font-semibold text-gray-800">
+                                                                            {proportion_used}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* รายละเอียดประเภทการเรียก */}
+                                                            <div className="border-t border-gray-200 p-4">
+                                                                <h5 className="mb-3 text-sm font-bold text-gray-800">
+                                                                    รายละเอียดประเภทการเรียก
+                                                                </h5>
+
+                                                                {callTypes.length === 0 ? (
+                                                                    <p className="text-sm text-gray-400 text-center py-3">
+                                                                        ไม่มีรายละเอียดประเภทการเรียก
+                                                                    </p>
+                                                                ) : (
+                                                                    <div className="flex gap-3 overflow-x-auto pb-3 snap-x snap-mandatory">
+                                                                        {callTypes.map((type, typeIndex) => (
+                                                                            <div
+                                                                                key={`${type.id}-${typeIndex}`}
+                                                                                className="w-[95%] min-w-[95%] flex-shrink-0 snap-start rounded-lg border border-gray-200 overflow-hidden"
+                                                                            >
+                                                                                <div className="bg-gray-50 p-2">
+                                                                                    <div className="flex items-center justify-between gap-2">
+                                                                                        <p className="text-sm font-semibold text-gray-800">
+                                                                                            {type.name}
+                                                                                        </p>
+                                                                                        <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs border-1 border-emerald-400 font-semibold text-emerald-700 whitespace-nowrap">
+                                                                                            {type.total.toLocaleString("th-TH")} อัตรา
+                                                                                        </span>
+                                                                                    </div>
+
+                                                                                    <div className="mt-2">
+                                                                                        <p className="text-xs text-gray-700 mb-2">
+                                                                                            ลำดับที่เรียก
+                                                                                        </p>
+
+                                                                                        {type.ranks.length > 0 ? (
+                                                                                            <div className="flex flex-nowrap gap-1.5 overflow-x-auto pb-2 snap-x snap-mandatory">
+                                                                                                {type.ranks.map((rank, index) => (
+                                                                                                    <span
+                                                                                                        key={`${rank}-${index}`}
+                                                                                                        className="flex-shrink-0 snap-start rounded-md bg-white border border-gray-400 px-2 py-1 text-sm font-semibold text-gray-700"
+                                                                                                    >
+                                                                                                        {rank}
+                                                                                                    </span>
+                                                                                                ))}
+                                                                                            </div>
+                                                                                        ) : (
+                                                                                            <p className="text-sm text-gray-400">-</p>
+                                                                                        )}
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                {/* รายละเอียดภาคและเขต */}
+                                                                                <div className="p-3">
+                                                                                    {type.provinceGroups.length === 0 ? (
+                                                                                        <p className="text-xs text-gray-400">
+                                                                                            ไม่มีข้อมูลพื้นที่
+                                                                                        </p>
+                                                                                    ) : (
+                                                                                        <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory">
+                                                                                            {type.provinceGroups.map((region) => (
+                                                                                                <div
+                                                                                                    key={region.regionId}
+                                                                                                    className="w-[95%] min-w-[95%] flex-shrink-0 snap-start rounded-lg border border-gray-200 p-3"
+                                                                                                >
+                                                                                                    {/* ชื่อภาค */}
+                                                                                                    <p className="mb-3 text-sm font-semibold text-gray-800">
+                                                                                                        {region.name}
+                                                                                                    </p>
+
+                                                                                                    {region.zones.length === 0 ? (
+                                                                                                        <p className="text-xs text-gray-400">
+                                                                                                            ไม่มีข้อมูลเขต
+                                                                                                        </p>
+                                                                                                    ) : (
+                                                                                                        /* การ์ดเขตเลื่อนซ้าย-ขวา */
+                                                                                                        <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory">
+                                                                                                            {region.zones.map((zone) => (
+                                                                                                                <div
+                                                                                                                    key={zone.zoneId}
+                                                                                                                    className="w-[95%] min-w-[95%] flex-shrink-0 snap-start rounded-lg border border-gray-100 bg-gray-50 p-2"
+                                                                                                                >
+                                                                                                                    <div className="flex items-center justify-between gap-2">
+                                                                                                                        <p className="text-sm font-medium text-gray-700">
+                                                                                                                            {zone.name}
+                                                                                                                        </p>
+
+                                                                                                                        <span className="text-xs text-gray-700 whitespace-nowrap">
+                                                                                                                            {zone.provinces.length} จังหวัด
+                                                                                                                        </span>
+                                                                                                                    </div>
+
+                                                                                                                    <button
+                                                                                                                        type="button"
+                                                                                                                        onClick={() => {
+                                                                                                                            setSelectedZone({
+                                                                                                                                regionName: region.name,
+                                                                                                                                zoneName: zone.name,
+                                                                                                                                provinces: zone.provinces,
+                                                                                                                            });
+                                                                                                                        }}
+                                                                                                                        className="mt-2 w-full border-1 border-emerald-400 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700 hover:bg-emerald-100 transition"
+                                                                                                                    >
+                                                                                                                        ดูรายชื่อจังหวัด
+                                                                                                                    </button>
+                                                                                                                </div>
+                                                                                                            ))}
+                                                                                                        </div>
+                                                                                                    )}
+                                                                                                </div>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    ) : null}
+                                                </Fragment>
+                                            );
+                                        })}
+                                    </div>
+                                );
+                            })()}
+                        </div>
                     </div>
                 </section>
+            )}
+            {/* Modal รายชื่อจังหวัด */}
+            {selectedZone && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+                    onClick={() => setSelectedZone(null)}
+                >
+                    <div
+                        className="w-full max-w-md rounded-xl bg-white shadow-xl"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between border-b border-gray-200 p-4">
+                            <div>
+                                <h3 className="font-bold text-gray-800">
+                                    {selectedZone.zoneName}
+                                </h3>
+
+                                <p className="text-xs text-gray-700">
+                                    {selectedZone.regionName}
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => setSelectedZone(null)}
+                                className="rounded-lg px-3 py-1 text-gray-700 hover:bg-gray-100"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <div className="max-h-[60vh] overflow-y-auto p-4">
+                            {selectedZone.provinces.length > 0 ? (
+                                <div className="grid grid-cols-2 gap-2">
+                                    {selectedZone.provinces.map((province, index) => (
+                                        <div
+                                            key={`${province}-${index}`}
+                                            className="rounded-lg bg-gray-50 p-2 text-sm text-gray-700"
+                                        >
+                                            {province}
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="py-5 text-center text-sm text-gray-400">
+                                    ไม่มีรายชื่อจังหวัด
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="border-t border-gray-200 p-3">
+                            <button
+                                type="button"
+                                onClick={() => setSelectedZone(null)}
+                                className="w-full rounded-lg bg-gray-100 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200"
+                            >
+                                ปิด
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

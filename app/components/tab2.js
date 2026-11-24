@@ -55,6 +55,7 @@ export default function Tab1({ setIsOpen, setDetails }) {
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[370px]'} col-span-12 lg:col-span-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P3_TypePerRound data={data} />
                     </div>
+
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P4_Top10ListPos setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
@@ -64,6 +65,7 @@ export default function Tab1({ setIsOpen, setDetails }) {
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[400px]'} col-span-12 lg:col-span-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100`}>
                         <T2P6_TypeAllCall setIsOpen={setIsOpen} setDetails={setDetails} data={data} />
                     </div>
+
                     <div className={`${data ? 'bg-white' : 'bg-white/50 animate-pulse h-[800px]'} col-span-12 lg:col-span-12 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 hidden md:block lg:block`}>
                         <T2P8_TableAllType data={data} />
                     </div>

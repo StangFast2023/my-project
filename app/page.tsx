@@ -1,28 +1,219 @@
-export default function MaintenancePage() {
+"use client";
+import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
+import Tab1 from "./components/tab1";
+import Tab2 from "./components/tab2";
+import Tab3 from "./components/tab3";
+import Tab4 from "./components/tab4";
+import Tab5 from "./components/tab5";
+import ModalTab2Part6 from "./components/sub-component/tab2/modal/modal_of_part6top10pos";
+import ModalFilterSelect from "./components/sub-component/tab5/modal/modalFilterSelect";
+import LastUpdated from "@/app/avaliable/LastUpdated";
+
+export interface FilterData {
+    id_region: number;
+    id_sub_regoin: number;
+    id_position: number;
+    number_rank: number;
+}
+
+export default function App() {
+
+    const subscribe = (callback: () => void) => {
+        window.addEventListener("activeMainTabChange", callback);
+
+        return () => {
+            window.removeEventListener("activeMainTabChange", callback);
+        };
+    };
+
+    const getActiveTab = () => {
+        const savedTab = sessionStorage.getItem("activeMainTab");
+        const parsed = Number(savedTab);
+
+        return parsed >= 1 && parsed <= 5 ? parsed : 1;
+    };
+
+    const getServerActiveTab = () => 1;
+    const activeTab = useSyncExternalStore(
+        subscribe,
+        getActiveTab,
+        getServerActiveTab
+    );
+
+    const handleTabChange = (tabId: number) => {
+        sessionStorage.setItem("activeMainTab", String(tabId));
+
+        window.dispatchEvent(new Event("activeMainTabChange"));
+    };
+
+    const [stats, setStats] = useState({
+        total_views: 0,
+        unique_visitors: 0,
+        today_views: 0,
+    });
+
+    const fetchStats = () => {
+        fetch("https://dla-backend-production.up.railway.app/api/visitor-stats")
+            // fetch("http://127.0.0.1:8000/api/visitor-stats")
+            .then((res) => res.json())
+            .then((resData) => {
+                if (resData.status === "success" && resData.data) {
+                    setStats(resData.data);
+                }
+            })
+            .catch((err) => console.error("Fetch Stats Error:", err));
+    };
+    useEffect(() => {
+        fetch("https://dla-backend-production.up.railway.app/api/track-view", {
+            // fetch("http://127.0.0.1:8000/api/track-view", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page_name: `tab${activeTab}_recruitment` }),
+        })
+            .then(() => {
+                fetchStats();
+            })
+            .catch((err) => console.error("Tracking Error:", err));
+    }, []);
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    {/* for tap2 part6 */ }
+    const [details, setDetails] = useState(null);
+    const [isOpen2, setIsOpen2] = useState(false);
+
+    {/* for tap5 part1 */ }
+    const [details5, setDetails5] = useState<FilterData | null>(null);;
+    const [isOpen5, setIsOpen5] = useState(false);
+    const handleSave = (val: FilterData) => {
+        setDetails5(val);
+        setIsOpen5(false);
+    };
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+    }, [activeTab]);
+
     return (
-        <main className="min-h-screen flex items-center justify-center px-6">
+        <main>
+            <div className="flex flex-col items-center pt-5">
+                <div className="flex items-center gap-3 text-base lg:text-3xl text-gray-700 font-bold">
+                    <h1 className="text-right">
+                        DLA Dashboard
+                        <br></br>
+                        สถิติการเรียกบรรจุข้าราชการท้องถิ่น
+                    </h1>
+                    <div className="text-3xl lg:text-3xl shadow-lg bg-white px-4 py-1 rounded-3xl border border-emerald-100 text-2xl bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-600">
+                        2568
+                    </div>
+                </div>
+            </div>
+            <div className="my-2 p-2 text-sm md:text-base lg:text-lg">
+                <div className="block lg:hidden">
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="flex items-center p-2 bg-gray-100 rounded-xl w-full text-xl text-left font-bold text-gray-600">
+                        <span>{isMenuOpen ? <X /> : <Menu />}</span>
+                        <span className="ml-auto text-base">{isMenuOpen ? "ปิดเมนู" : "เลือกเมนู"}</span>
+                    </button>
+                    {isMenuOpen && (
+                        <div className="flex flex-col text-base text-gray-600 font-semibold gap-2 mt-2 bg-gray-100 p-2 rounded-xl shadow-lg">
+                            <button onClick={() => { handleTabChange(1); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 1 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>สรุปภาพรวม</button>
+                            <button onClick={() => { handleTabChange(2); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 2 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>ข้อมูลประเภทและตำแหน่ง</button>
+                            <button onClick={() => { handleTabChange(3); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 3 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>ข้อมูลรายภาคและเขต</button>
+                            <button onClick={() => { handleTabChange(4); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 4 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>ข้อมูลเจาะลึกรายเขตและตำแหน่ง</button>
+                            <button onClick={() => { handleTabChange(5); setIsMenuOpen(false) }} className={`p-3 rounded-lg ${activeTab === 5 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 text-white shadow" : "bg-white"}`}>วิเคราะห์โอกาสเรียกตัว</button>
+                        </div>
+                    )}
+                </div>
+                <div className="hidden lg:flex sticky top-0 z-50 gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-full shadow-xl">
+                    <button onClick={() => handleTabChange(1)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 1 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 1 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
+                            สรุปภาพรวม
+                        </span>
+                    </button>
+                    <button onClick={() => handleTabChange(2)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 2 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 2 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
+                            ข้อมูลประเภทและตำแหน่ง
+                        </span>
+                    </button>
+                    <button onClick={() => handleTabChange(3)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 3 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 3 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
+                            ข้อมูลรายภาคและเขต
+                        </span>
+                    </button>
+                    <button onClick={() => handleTabChange(4)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 4 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 4 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
+                            ข้อมูลเจาะลึกรายเขตและตำแหน่ง
+                        </span>
+                    </button>
+                    <button onClick={() => handleTabChange(5)} className={`flex-1 px-6 py-2 rounded-lg transition font-bold ${activeTab === 5 ? "bg-white shadow text-green-600" : null}`} >
+                        <span className={`${activeTab === 5 ? "bg-gradient-to-r from-emerald-200 via-teal-400 to-teal-400 bg-clip-text text-transparent bg-white text-green-600" : "text-gray-400"}`}>
+                            วิเคราะห์โอกาสเรียกตัว
+                        </span>
+                    </button>
+                </div>
+                <div className="mt-6">
+                    {activeTab === 1 && (<div className="animate-fade-in"> <Tab1 /> </div>)}
+                    {activeTab === 2 && (<div className="animate-fade-in"> <Tab2 setIsOpen={setIsOpen2} setDetails={setDetails} /> </div>)}
+                    {activeTab === 3 && (<div className="animate-fade-in"> <Tab3 /> </div>)}
+                    {activeTab === 4 && (<div className="animate-fade-in"> <Tab4 /> </div>)}
+                    {activeTab === 5 && (<div className="animate-fade-in"> <Tab5 setIsOpen={setIsOpen5} details={details5} /> </div>)}
+                </div>
+            </div>
 
-            <div className="text-center">
+            {/* for tap2 part6 */}
+            <ModalTab2Part6 isOpen={isOpen2} setIsOpen={setIsOpen2} details={details} />
 
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="lucide lucide-wrench-icon lucide-wrench w-25 h-25 mx-auto my-2 text-gray-600">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z" />
-                </svg>
+            {/* for tap5 part1 */}
+            <ModalFilterSelect isOpen={isOpen5} setIsOpen={setIsOpen5} onSave={handleSave} />
 
-                <h1 className="text-3xl font-bold mb-4 text-gray-600">
-                    เว็บไซต์กำลังปรับปรุง
-                </h1>
+            <div>
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <div className="p-2 text-center">
+                        <span className="text-gray-600 font-bold">
+                            <LastUpdated />
+                        </span>
+                    </div>
 
-                <p className="text-lg text-gray-600 mb-3">
-                    ขณะนี้เรากำลังปรับปรุงเว็บไซต์ด้วยข้อมูลใหม่
-                </p>
+                    <div className="flex w-full flex-col items-stretch justify-start gap-3 p-2 md:w-auto md:flex-row md:items-end md:justify-end md:gap-4">
+                        <p className="w-full flex justify-between items-center rounded-xl bg-white p-2 text-center text-xl font-bold text-gray-800 shadow-xl md:w-auto">
+                            <span className="mr-2 text-base font-normal text-gray-500">
+                                เข้าชมทั้งหมด
+                            </span>
+                            {stats.total_views.toLocaleString()}
+                            <span className="ml-2 text-base font-normal text-gray-500">
+                                ครั้ง
+                            </span>
+                        </p>
 
-                <p className="text-lg text-gray-600 mb-3">
-                    พร้อมรองรับการแสดงข้อมูลข้ามภาค และเขต
-                </p>
+                        <p className="w-full flex justify-between items-center rounded-xl bg-white p-2 text-center text-xl font-bold text-green-600 shadow-xl md:w-auto">
+                            <span className="mr-2 text-base font-normal text-gray-500">
+                                เข้าชมวันนี้
+                            </span>
+                            {stats.today_views.toLocaleString()}
+                            <span className="ml-2 text-base font-normal text-gray-500">
+                                ครั้ง
+                            </span>
+                        </p>
+                    </div>
+                </div>
 
-                <p className="text-lg text-gray-600 mb-3">
-                    ขออภัยในความไม่สะดวก และขอบคุณที่รอครับ
-                </p>
+                <div className="mx-auto flex full-max-w items-center gap-4 px-4 py-3 border-2 border-gray-400 border-t bg-white shadow-xl">
+                    <p className="flex-1 leading-6 text-gray-700 text-center">
+                        <span className="font-semibold">หมายเหตุ</span>
+                        <span className="mx-2">:</span>
+                        <span className="text-sm">
+                            ยอดเรียกบรรจุ 3 รอบแรกเป็นยอดที่เรียกจากบัญชีเดิม ก่อนการปรับปรุงบัญชี จึงไม่สามารถระบุได้ว่าผู้ที่ถูกเรียกทั้งหมดมีจำนวนเท่าใดที่ยังคงอยู่ในบัญชีใหม่
+                            การคำนวณความคืบหน้าเป็นการนำยอดเรียกสะสมจากบัญชีเดิมมาเปรียบเทียบกับจำนวนผู้สอบแข่งขันได้ตามบัญชีใหม่ เพื่อใช้เป็นข้อมูลประกอบเท่านั้น
+                        </span>
+                    </p>
+                </div>
             </div>
         </main>
     );
