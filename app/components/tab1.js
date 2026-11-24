@@ -24,8 +24,8 @@ export default function Tab1() {
     });
     return (
         <div className="animate-fade-in">
-            <div className="my-3">
-                <div className="flex items-center gap-4 mb-4">
+            <div className="p-2">
+                <div className="flex items-center gap-4">
                     <div className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-teal-400 to-teal-600 rounded-2xl shadow-lg shadow-teal-100 aspect-[3/4]">
                         <span className="text-4xl font-black text-white drop-shadow-sm">
                             1

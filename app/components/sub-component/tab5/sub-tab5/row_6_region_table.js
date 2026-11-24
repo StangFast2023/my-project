@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useMemo, useState } from 'react';
-import Swal from 'sweetalert2';
-import { ContactRound } from 'lucide-react';
+import React, { useMemo, useState, useSyncExternalStore } from 'react';
+import { createPortal } from 'react-dom';
+import { ContactRound, Search } from 'lucide-react';
+import RoundDetailModal from '@/app/components/RoundDetailModal';
 import useMediaQuery from '@/app/avaliable/useMediaQuery';
 
 export default function Row6RegionTable({ position, data }) {
@@ -10,9 +11,28 @@ export default function Row6RegionTable({ position, data }) {
     const TableData = useMemo(() => {
         return data?.chart_3_region || {};
     }, [data?.chart_3_region]);
+    const mounted = useSyncExternalStore(
+        () => () => { },
+        () => true,
+        () => false
+    );
     const [selectedRegionKey, setSelectedRegionKey] = useState(null);
     const [selectedZoneKey, setSelectedZoneKey] = useState(null);
     const [selectedRoundKey, setSelectedRoundKey] = useState(null);
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedRound, setSelectedRound] = useState(null);
+
+    const [isProvinceModalOpen, setIsProvinceModalOpen] = useState(false);
+    const [selectedTypeCall, setSelectedTypeCall] = useState(null);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+    const [selectedZone, setSelectedZone] = useState(null);
+
+    const handleCellClick = (each_round_data) => {
+        setSelectedRound(each_round_data);
+        setIsModalOpen(true);
+    };
 
     const roundColumns = Array.from({ length: 10 }, (_, i) => i + 1);
 
@@ -43,103 +63,6 @@ export default function Row6RegionTable({ position, data }) {
     const formatPercent = (value) => value == null || value === ''
         ? '-'
         : `${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} %`;
-
-    const handleCellClick = (roundInfo) => {
-        if (!roundInfo) return;
-        const date = roundInfo?.thai_short ?? '-';
-        const report_date = roundInfo?.report_thai_short ?? '-';
-        const round = roundInfo?.round ?? 0;
-        const called = roundInfo?.call_status;
-        const listed = roundInfo?.list_status;
-        const status = roundInfo?.work_status;
-        const change = roundInfo?.change;
-        const list_new_status = roundInfo?.list_new_status;
-        const proportion = formatPercent(roundInfo?.proportion);
-        const total = roundInfo?.total ?? '-';
-        const start_end = Array.isArray(roundInfo?.start_end) && roundInfo.start_end.length
-            ? roundInfo.start_end.map(item => `
-                <span class="inline-flex items-center justify-center py-1 px-2 text-sm border-1 border-gray-500 rounded-md bg-white text-gray-700">
-                    ${item}
-                </span>
-            `).join('')
-            : null;
-        const is_cross_region = roundInfo?.is_cross_region === true;
-        const crossed_region = roundInfo?.crossed_region;
-        const crossed_zone = roundInfo?.crossed_zone;
-        const ui = getChangeUI(round, called, listed, change);
-        const changeIcon = ui.icon === 'up'
-            ? '<span aria-hidden="true">↗ </span>'
-            : ui.icon === 'down'
-                ? '<span aria-hidden="true">↘ </span>'
-                : ui.icon === 'minus'
-                    ? '<span aria-hidden="true">− </span>'
-                    : '';
-
-        const regionName = crossed_region === 1
-            ? 'ภาคเหนือ'
-            : crossed_region === 2
-                ? 'ภาคกลาง'
-                : crossed_region === 3
-                    ? 'ภาคตะวันออกเฉียงเหนือ'
-                    : crossed_region === 4
-                        ? 'ภาคใต้'
-                        : '-';
-
-        const listNewName = list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า';
-        const ListNewBadge = `
-            <span class="text-sm p-1 border rounded-sm ${list_new_status
-                ? 'text-emerald-600 border-emerald-400 bg-emerald-100'
-                : 'text-rose-600 border-rose-400 bg-rose-100'
-            }">${listNewName}</span>
-        `;
-
-        const statusText = listed === false
-            ? 'บัญชีสิ้นสุดแล้ว'
-            : total === '0' || Number(total) === 0
-                ? 'ไม่มีการเรียกใช้บัญชี'
-                : status === 'waiting'
-                    ? 'รอการบรรจุ'
-                    : 'บรรจุแล้ว';
-
-        const statusColor = listed === false
-            ? 'text-amber-500'
-            : total === '0' || Number(total) === 0
-                ? 'text-rose-500'
-                : status === 'waiting'
-                    ? 'text-sky-500'
-                    : 'text-emerald-500';
-
-        const textContent = `
-            <table class="w-full text-left border-collapse">
-                <tr class="border-b"><td class="w-[60%] py-2 font-bold text-gray-500">จำนวนที่เรียกบรรจุ :</td><td class="w-[40%] py-2 font-bold">${total}</td></tr>
-                <tr class="border-b"><td class="py-2 font-bold text-gray-500">ลำดับที่ :</td><td class="py-2 font-bold">${start_end ?? '-'}</td></tr>
-                <tr class="border-b"><td class="py-2 font-bold text-gray-500">บัญชีที่ใช้เรียก :</td><td class="py-2 font-bold">${ListNewBadge}</td></tr>
-                <tr class="border-b"><td class="py-2 font-bold text-gray-500">อัตราการเปลี่ยนแปลง :</td><td class="py-2 font-bold ${ui.color}">${changeIcon}${ui.text}</td></tr>
-                <tr class="border-b"><td class="py-2 font-bold text-gray-500">สัดส่วนของการใช้บัญชี :</td><td class="py-2 font-bold">${proportion}</td></tr>
-                <tr class="border-b"><td class="py-2 font-bold text-gray-500">วันที่รายงานตัว :</td><td class="py-2 font-bold">${report_date}</td></tr>
-                <tr class="border-b"><td class="py-2 font-bold text-gray-500">วันที่บรรจุ :</td><td class="py-2 font-bold">${date}</td></tr>
-                <tr><td class="py-2 font-bold text-gray-500">สถานะ:</td><td class="py-2 font-bold ${statusColor}">${statusText}</td></tr>
-            </table>
-            <details class="group bg-gray-50 p-3 rounded-lg border border-gray-200 text-left">
-                <summary class="list-none font-semibold cursor-pointer flex justify-between items-center">รายละเอียดเพิ่มเติม (บรรจุข้ามเขต)<span>▼</span></summary>
-                <div class="mt-3 pt-3 border-t border-gray-200 text-sm">
-                    <table class="w-full text-left border-collapse">
-                        <tr class="border-b"><td class="w-[60%] py-2 font-bold text-gray-500">เป็นการเรียกใช้บัญชีข้ามเขต :</td><td class="w-[40%] py-2 font-bold">${is_cross_region ? 'ใช่' : 'ไม่ใช่'}</td></tr>
-                        <tr class="border-b"><td class="py-2 font-bold text-gray-500">ภาค :</td><td class="py-2 font-bold">${is_cross_region ? regionName : '-'}</td></tr>
-                        <tr><td class="py-2 font-bold text-gray-500">เขต :</td><td class="py-2 font-bold">${is_cross_region ? 'เขต ' + (crossed_zone ?? '-') : '-'}</td></tr>
-                    </table>
-                </div>
-            </details>
-        `.trim();
-
-        Swal.fire({
-            title: `รอบที่ ${round}`,
-            html: textContent,
-            icon: listed === false ? 'warning' : (total === '0' || Number(total) === 0) ? 'error' : 'success',
-            confirmButtonText: 'ตกลง',
-            confirmButtonColor: '#10b981',
-        });
-    };
 
     const regions = useMemo(() => Object.entries(TableData).map(([regionKey, region]) => {
         const zones = Object.entries(region?.sub_province || {}).map(([zoneKey, zone]) => {
@@ -224,21 +147,6 @@ export default function Row6RegionTable({ position, data }) {
     const getRemainingClass = (remain) => remain > 0 ? 'text-orange-600' : 'text-rose-600';
     const getProcessing = (called, listed) => listed > 0 ? `${((called / listed) * 100).toFixed(2)} %` : '0.00 %';
 
-    const renderRoundValue = (roundInfo) => {
-        if (!roundInfo) return <span className="text-gray-300">—</span>;
-        return (
-            <button
-                type="button"
-                onClick={() => handleCellClick(roundInfo)}
-                className={`w-full rounded-md px-2 py-2 text-sm font-semibold transition-colors ${textColor(roundInfo.total, roundInfo.list_status)} ${getBgHover(roundInfo.total, roundInfo.list_status)}`}
-                aria-label={`ดูรายละเอียดรอบที่ ${roundInfo.round ?? ''}`}
-            >
-                {roundInfo.list_status === true ? Number(roundInfo.total).toLocaleString() : '—'}
-                <span className="mt-1 block text-[10px] font-medium text-gray-500">ดูรายละเอียด</span>
-            </button>
-        );
-    };
-
     const mobileRegions = regions;
     const activeRegion = mobileRegions.find((region) => region.key === String(selectedRegionKey)) || mobileRegions[0] || null;
     const activeRegionKey = activeRegion?.key ?? null;
@@ -246,6 +154,10 @@ export default function Row6RegionTable({ position, data }) {
     const activeZone = mobileZones.find((zone) => zone.key === String(selectedZoneKey)) || mobileZones[0] || null;
     const activeRoundList = activeZone?.mobileRounds || [];
     const activeRound = activeRoundList.find((round) => round.roundKey === Number(selectedRoundKey)) || activeRoundList[0] || null;
+    const activeTypeCalls = activeRound?.roundInfo?.type_call &&
+        typeof activeRound.roundInfo.type_call === 'object'
+        ? Object.values(activeRound.roundInfo.type_call)
+        : [];
     const changeRegion = (regionKey) => {
         setSelectedRegionKey(regionKey);
         setSelectedZoneKey(null);
@@ -458,84 +370,374 @@ export default function Row6RegionTable({ position, data }) {
                                 </div>
 
                                 {activeRound && (
-                                    <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-                                        <div className="flex items-start justify-between gap-3 border-b border-gray-100 bg-gray-50 p-4">
-                                            <div>
-                                                <p className="text-xs text-gray-600">{activeRegion?.name} / {activeZone.name || `เขต ${activeZone.key}`}</p>
-                                                <h4 className="mt-1 text-lg font-bold text-gray-800">รอบที่ {activeRound.roundKey}</h4>
+                                    <>
+                                        <article className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+                                            <div className="flex items-start justify-between gap-3 border-b border-gray-100 bg-gray-50 p-4">
+                                                <div>
+                                                    <p className="text-xs text-gray-600">{activeRegion?.name} / {activeZone.name || `เขต ${activeZone.key}`}</p>
+                                                    <h4 className="mt-1 text-lg font-bold text-gray-800">รอบที่ {activeRound.roundKey}</h4>
+                                                </div>
+                                                <span className="shrink-0 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs font-semibold text-gray-600">
+                                                    {activeRound.roundInfo ? (activeRound.roundInfo.status === 'waiting' ? 'รอการบรรจุ' : 'มีข้อมูล') : 'ไม่มีข้อมูล'}
+                                                </span>
                                             </div>
-                                            <span className="shrink-0 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs font-semibold text-gray-600">
-                                                {activeRound.roundInfo ? (activeRound.roundInfo.status === 'waiting' ? 'รอการบรรจุ' : 'มีข้อมูล') : 'ไม่มีข้อมูล'}
-                                            </span>
-                                        </div>
 
-                                        {activeRound.roundInfo ? (
-                                            <>
-                                                <div className="divide-y divide-gray-100 border-t border-gray-100">
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">จำนวนที่เรียกบรรจุ</span>
-                                                        <span className={`max-w-[60%] text-right text-sm font-bold text-gray-700`}>
-                                                            {activeRound.roundInfo.total != null ? formatNumber(activeRound.roundInfo.total) : '-'}
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">ลำดับที่</span>
-                                                        <div className="min-w-0 max-w-[80%] overflow-x-auto">
-                                                            <div className="flex w-max justify-end gap-1 whitespace-nowrap">
-                                                                {Array.isArray(activeRound.roundInfo.start_end) &&
-                                                                    activeRound.roundInfo.start_end.length > 0 ? (
-                                                                    activeRound.roundInfo.start_end.map((item, index) => (
-                                                                        <span
-                                                                            key={index}
-                                                                            className="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-50 px-2 text-sm font-bold text-gray-700"
-                                                                        >
-                                                                            {item}
-                                                                        </span>
-                                                                    ))
-                                                                ) : (
-                                                                    <span className="text-sm font-bold">-</span>
-                                                                )}
+                                            {activeRound.roundInfo ? (
+                                                <>
+
+                                                    <div className="divide-y divide-gray-100 border-t border-gray-100">
+
+                                                        <div className="space-y-3 p-3">
+                                                            <p className="text-sm font-bold text-gray-700">
+                                                                ข้อมูลเพิ่มเติมของรอบ
+                                                            </p>
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <span className="text-sm text-gray-500">
+                                                                    เรียกทั้งหมด
+                                                                </span>
+                                                                <span className="text-right text-sm font-semibold text-gray-800">
+                                                                    {activeRound.roundInfo.total}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <span className="text-sm text-gray-500">
+                                                                    อัตราการเปลี่ยนแปลง
+                                                                </span>
+                                                                <span className={`max-w-[60%] text-right text-sm font-bold ${getChangeUI(
+                                                                    activeRound.roundKey,
+                                                                    activeRound.roundInfo.called,
+                                                                    activeRound.roundInfo.listed,
+                                                                    activeRound.roundInfo.percent_change
+                                                                ).color
+                                                                    }`}>
+                                                                    {getChangeUI(
+                                                                        activeRound.roundKey,
+                                                                        activeRound.roundInfo.called,
+                                                                        activeRound.roundInfo.listed,
+                                                                        activeRound.roundInfo.percent_change
+                                                                    ).text}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <span className="text-sm text-gray-500">
+                                                                    สัดส่วนของการใช้บัญชี
+                                                                </span>
+                                                                <span className="text-right text-sm font-semibold text-gray-800">
+                                                                    {formatPercent(activeRound.roundInfo.proportion_used)}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <span className="text-sm text-gray-500">
+                                                                    วันที่รายงานตัว
+                                                                </span>
+                                                                <span className="text-right text-sm font-semibold text-gray-800">
+                                                                    {activeRound.roundInfo.st_report_thai_short + ' - ' + activeRound.roundInfo.ed_report_thai_short ?? '-'}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <span className="text-sm text-gray-500">
+                                                                    วันที่บรรจุ
+                                                                </span>
+                                                                <span className="text-right text-sm font-semibold text-gray-800">
+                                                                    {activeRound.roundInfo.thai_short ?? '-'}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <span className="text-sm text-gray-500">
+                                                                    สถานะ
+                                                                </span>
+                                                                <span className={`text-right text-sm font-bold ${activeRound.roundInfo.status_work === 'waiting'
+                                                                    ? 'text-sky-600'
+                                                                    : activeRound.roundInfo.total === '-'
+                                                                        ? 'text-amber-600'
+                                                                        : 'text-emerald-600'
+                                                                    }`}>
+                                                                    {activeRound.roundInfo.total === '-'
+                                                                        ? 'บัญชีสิ้นสุดแล้ว'
+                                                                        : activeRound.roundInfo.status_work === 'waiting'
+                                                                            ? 'รอการบรรจุ'
+                                                                            : Number(activeRound.roundInfo.total) === 0
+                                                                                ? 'ไม่มีการเรียกใช้บัญชี'
+                                                                                : 'บรรจุแล้ว'}
+                                                                    {console.log(activeRound.roundInfo)}
+                                                                </span>
                                                             </div>
                                                         </div>
+
+                                                        <div className="space-y-3 p-3">
+                                                            <div className="flex items-center justify-between gap-2">
+                                                                <p className="text-sm font-bold text-gray-700">
+                                                                    ประเภทการเรียก
+                                                                </p>
+                                                                <span className="text-xs text-gray-400">
+                                                                    {activeTypeCalls.length} ประเภท
+                                                                </span>
+                                                            </div>
+
+                                                            {activeTypeCalls.length > 0 ? (
+                                                                <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-2">
+                                                                    {activeTypeCalls.map((typeData, index) => {
+                                                                        const regions = Object.entries(typeData.provinces || {});
+
+                                                                        return (
+                                                                            <div
+                                                                                key={typeData.type_call_id ?? index}
+                                                                                className="w-[100%] min-w-[100%] shrink-0 snap-start space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-3"
+                                                                            >
+                                                                                {/* ประเภทการเรียก */}
+                                                                                <div className="flex items-start justify-center gap-2">
+                                                                                    <span className="text-right text-sm font-bold text-gray-800">
+                                                                                        {typeData.type_call_name || '-'}
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                {/* จำนวนที่เรียก */}
+                                                                                <div className="flex items-center justify-between gap-3">
+                                                                                    <span className="text-sm text-gray-500">
+                                                                                        จำนวนที่เรียก
+                                                                                    </span>
+                                                                                    <span className="font-bold text-emerald-700">
+                                                                                        {formatNumber(typeData.total)} คน
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                {/* ลำดับที่ */}
+                                                                                <div className="space-y-2">
+                                                                                    <span className="text-sm text-gray-500">
+                                                                                        ลำดับที่
+                                                                                    </span>
+
+                                                                                    <div className="flex gap-1 overflow-x-auto whitespace-nowrap pb-1">
+                                                                                        {Array.isArray(typeData.rank) &&
+                                                                                            typeData.rank.length > 0 ? (
+                                                                                            typeData.rank.map((item, rankIndex) => {
+                                                                                                const rankText =
+                                                                                                    item && typeof item === 'object'
+                                                                                                        ? item.start === item.end
+                                                                                                            ? String(item.start)
+                                                                                                            : `${item.start}-${item.end}`
+                                                                                                        : String(item);
+
+                                                                                                return (
+                                                                                                    <span
+                                                                                                        key={rankIndex}
+                                                                                                        className="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-white px-2 text-sm font-semibold text-gray-700"
+                                                                                                    >
+                                                                                                        {rankText}
+                                                                                                    </span>
+                                                                                                );
+                                                                                            })
+                                                                                        ) : (
+                                                                                            <span className="text-sm text-gray-400">-</span>
+                                                                                        )}
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                {/* บัญชีที่ใช้เรียก */}
+                                                                                <div className="flex items-center justify-between gap-3">
+                                                                                    <span className="text-sm text-gray-500">
+                                                                                        บัญชีที่ใช้เรียก
+                                                                                    </span>
+                                                                                    <span
+                                                                                        className={`rounded-md border px-2 py-1 text-xs font-semibold ${typeData.list_new_status === true
+                                                                                            ? 'border-emerald-300 bg-emerald-100 text-emerald-700'
+                                                                                            : 'border-rose-300 bg-rose-100 text-rose-700'
+                                                                                            }`}
+                                                                                    >
+                                                                                        {typeData.list_new_status === true
+                                                                                            ? 'บัญชีใหม่'
+                                                                                            : 'บัญชีเก่า'}
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                {/* การเรียกข้ามเขต */}
+                                                                                <div className="flex items-center justify-between gap-3">
+                                                                                    <span className="text-sm text-gray-500">
+                                                                                        เรียกบรรจุข้ามเขต
+                                                                                    </span>
+                                                                                    <span className="text-sm font-semibold text-gray-700">
+                                                                                        {typeData.is_cross_region === true ? 'ใช่' : 'ไม่ใช่'}
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                {/* ภาคและเขต */}
+                                                                                <div className="space-y-2">
+                                                                                    <div className="flex items-center justify-between gap-2">
+                                                                                        <span className="text-sm font-semibold text-gray-700">
+                                                                                            ภาค & เขต
+                                                                                        </span>
+                                                                                        <span className="text-xs text-gray-400">
+                                                                                            {regions.length} ภาค
+                                                                                        </span>
+                                                                                    </div>
+
+                                                                                    {regions.length > 0 ? (
+                                                                                        <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2">
+                                                                                            {regions.map(([regionKey, region]) => {
+                                                                                                const zones = Object.entries(region || {}).filter(
+                                                                                                    ([key, value]) =>
+                                                                                                        key !== 'name' &&
+                                                                                                        value &&
+                                                                                                        typeof value === 'object' &&
+                                                                                                        !Array.isArray(value)
+                                                                                                );
+
+                                                                                                return (
+                                                                                                    <div
+                                                                                                        key={regionKey}
+                                                                                                        className="w-[100%] min-w-[100%] shrink-0 snap-start space-y-3 rounded-xl border border-sky-200 bg-white p-3"
+                                                                                                    >
+                                                                                                        {/* ชื่อภาค */}
+                                                                                                        <div className="flex items-center justify-between gap-2">
+                                                                                                            <span className="text-sm font-bold text-gray-800">
+                                                                                                                {region.name || `ภาค ${regionKey}`}
+                                                                                                            </span>
+                                                                                                        </div>
+
+                                                                                                        {/* สไลเดอร์เขต */}
+                                                                                                        {zones.length > 0 ? (
+                                                                                                            <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2">
+                                                                                                                {zones.map(([zoneKey, zone]) => (
+                                                                                                                    <div
+                                                                                                                        key={zoneKey}
+                                                                                                                        className="w-[100%] min-w-[100%] shrink-0 snap-start space-y-3 rounded-lg border border-gray-200 bg-gray-50 p-3"
+                                                                                                                    >
+                                                                                                                        <div className="flex justify-start items-center gap-2">
+                                                                                                                            <span className="text-sm font-bold text-gray-800">
+                                                                                                                                {zone.name}
+                                                                                                                            </span>
+                                                                                                                        </div>
+
+                                                                                                                        <div className="flex items-center justify-between gap-2">
+                                                                                                                            <span className="text-xs text-gray-500">
+                                                                                                                                จำนวนจังหวัด
+                                                                                                                            </span>
+                                                                                                                            <span className="text-sm font-semibold text-gray-700">
+                                                                                                                                {Array.isArray(zone.list)
+                                                                                                                                    ? zone.list.length
+                                                                                                                                    : 0} จังหวัด
+                                                                                                                            </span>
+                                                                                                                        </div>
+
+                                                                                                                        {/* ดูจังหวัดเฉพาะเขต */}
+                                                                                                                        <button
+                                                                                                                            type="button"
+                                                                                                                            onClick={() => {
+                                                                                                                                setSelectedTypeCall(typeData);
+                                                                                                                                setSelectedRegion(region);
+                                                                                                                                setSelectedZone(zone);
+                                                                                                                                setIsProvinceModalOpen(true);
+                                                                                                                            }}
+                                                                                                                            className="flex w-full items-center justify-center gap-2 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm font-semibold text-sky-700 transition hover:bg-sky-100"
+                                                                                                                        >
+                                                                                                                            <Search size={16} />
+                                                                                                                            ดูจังหวัด
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                ))}
+                                                                                                            </div>
+                                                                                                        ) : (
+                                                                                                            <p className="text-center text-sm text-gray-400">
+                                                                                                                ไม่มีข้อมูลเขต
+                                                                                                            </p>
+                                                                                                        )}
+
+                                                                                                        {zones.length > 1 && (
+                                                                                                            <p className="text-center text-xs text-gray-400">
+                                                                                                                เลื่อนซ้าย–ขวาเพื่อดูเขตอื่น
+                                                                                                            </p>
+                                                                                                        )}
+                                                                                                    </div>
+                                                                                                );
+                                                                                            })}
+                                                                                        </div>
+                                                                                    ) : (
+                                                                                        <div className="rounded-lg bg-white p-3 text-center text-sm text-gray-400">
+                                                                                            ไม่มีข้อมูลภาคและเขต
+                                                                                        </div>
+                                                                                    )}
+
+                                                                                    {regions.length > 1 && (
+                                                                                        <p className="text-center text-xs text-gray-400">
+                                                                                            เลื่อนซ้าย–ขวาเพื่อดูภาคอื่น
+                                                                                        </p>
+                                                                                    )}
+                                                                                </div>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            ) : (
+                                                                <div className="rounded-lg bg-gray-50 p-4 text-center text-sm text-gray-400">
+                                                                    ไม่มีข้อมูลประเภทการเรียก
+                                                                </div>
+                                                            )}
+
+                                                            {activeTypeCalls.length > 1 && (
+                                                                <p className="text-center text-xs text-gray-400">
+                                                                    เลื่อนซ้าย–ขวาเพื่อดูประเภทการเรียกอื่น
+                                                                </p>
+                                                            )}
+                                                        </div>
+
                                                     </div>
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">อัตราการเปลี่ยนแปลง</span>
-                                                        <span className={`max-w-[60%] text-right text-sm font-bold ${getChangeUI(activeRound.roundKey, activeRound.roundInfo.called, activeRound.roundInfo.listed, activeRound.roundInfo.change).color}`}>
-                                                            {getChangeUI(activeRound.roundKey, activeRound.roundInfo.called, activeRound.roundInfo.listed, activeRound.roundInfo.change).text}
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">บัญชีที่ใช้เรียก</span>
-                                                        <span className={`text-right text-sm font-semibold border-1 p-1 rounded-sm ${activeRound.roundInfo.list_new_status ? 'text-emerald-600 bg-emerald-100 border-emerald-400' : 'text-rose-600 bg-rose-100 border-rose-400'}`}>
-                                                            {activeRound.roundInfo.list_new_status ? 'บัญชีใหม่' : 'บัญชีเก่า'}
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">สัดส่วนของการใช้บัญชี</span>
-                                                        <span className="text-right text-sm font-semibold text-gray-800">{formatPercent(activeRound.roundInfo.proportion)}</span>
-                                                    </div>
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">วันที่รายงานตัว</span>
-                                                        <span className="text-right text-sm font-semibold text-gray-800">{activeRound.roundInfo.report_thai_short ?? '-'}</span>
-                                                    </div>
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">วันที่บรรจุ</span>
-                                                        <span className="text-right text-sm font-semibold text-gray-800">{activeRound.roundInfo.thai_short ?? '-'}</span>
-                                                    </div>
-                                                    <div className="flex items-start justify-between gap-3 px-3 py-3">
-                                                        <span className="text-sm text-gray-500">สถานะ</span>
-                                                        <span className={`text-right text-sm font-bold ${activeRound.roundInfo.status === 'waiting' ? 'text-sky-600' : activeRound.roundInfo.total === '-' ? 'text-amber-600' : 'text-emerald-600'}`}>
-                                                            {activeRound.roundInfo.total === '-' ? 'บัญชีสิ้นสุดแล้ว' : activeRound.roundInfo.status === 'waiting' ? 'รอการบรรจุ' : Number(activeRound.roundInfo.total) === 0 ? 'ไม่มีการเรียกใช้บัญชี' : 'บรรจุแล้ว'}
-                                                        </span>
-                                                    </div>
+
+                                                </>
+                                            ) : (
+                                                <div className="p-5 text-center text-sm text-gray-500">
+                                                    ไม่มีข้อมูลสำหรับรอบที่ {activeRound.roundKey}
                                                 </div>
-                                            </>
-                                        ) : (
-                                            <div className="p-5 text-center text-sm text-gray-500">
-                                                ไม่มีข้อมูลสำหรับรอบที่ {activeRound.roundKey}
-                                            </div>
-                                        )}
-                                    </article>
+                                            )}
+                                        </article>
+                                        {mounted && isProvinceModalOpen && selectedTypeCall &&
+                                            createPortal(
+                                                <div
+                                                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4"
+                                                    onClick={() => setIsProvinceModalOpen(false)}
+                                                >
+                                                    <div className="max-h-[65vh] space-y-3 overflow-y-auto p-4">
+                                                        {selectedZone && Array.isArray(selectedZone.list) &&
+                                                            selectedZone.list.length > 0 ? (
+                                                            <div className="overflow-hidden rounded-xl border border-gray-200">
+                                                                <div className="space-y-1 bg-sky-50 p-3">
+                                                                    <p className="text-xs text-sky-600">
+                                                                        {selectedTypeCall?.type_call_name}
+                                                                    </p>
+                                                                    <p className="font-bold text-gray-800">
+                                                                        {selectedRegion?.name}
+                                                                    </p>
+                                                                    <p className="text-sm font-semibold text-gray-700">
+                                                                        {selectedZone.name}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="flex bg-white flex-wrap gap-2 p-3">
+                                                                    {selectedZone.list.map((province, index) => (
+                                                                        <span
+                                                                            key={index}
+                                                                            className="rounded-lg border border-gray-200 bg-gray-100 px-2.5 py-1.5 text-sm font-medium text-gray-700"
+                                                                        >
+                                                                            {province}
+                                                                        </span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="py-8 text-center text-sm text-gray-400">
+                                                                ไม่มีรายชื่อจังหวัด
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>,
+                                                document.body
+                                            )
+                                        }
+                                    </>
                                 )}
                             </>
                         )}
@@ -607,9 +809,42 @@ export default function Row6RegionTable({ position, data }) {
                                                         <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? zone.remain > 0 ? 'bg-orange-50 text-orange-600' : 'bg-rose-600 text-white' : 'bg-gray-50 text-gray-500'}`}>{zone.statusOpen ? getRemainingStatus(zone.remain) : '-'}</td>
                                                         <td className={`px-4 py-4 text-center text-sm font-semibold ${zone.statusOpen ? zone.remain > 0 ? 'bg-amber-50 text-amber-600' : 'bg-rose-50 text-rose-600' : 'bg-gray-50 text-gray-500'}`}>{zone.statusOpen ? formatNumber(zone.remain) : '-'}</td>
                                                         {zone.rounds.map(({ roundKey, roundInfo }) => (
-                                                            <td key={roundKey} className={`relative px-2 py-2 text-center ${roundInfo ? 'bg-white' : 'bg-gray-100'}`}>
-                                                                {renderRoundValue(roundInfo)}
+                                                            <td
+                                                                key={roundKey}
+                                                                onClick={() => roundInfo?.call_status === true ? handleCellClick(roundInfo) : null}
+                                                                className={`relative group overflow-hidden text-center p-0 ${roundInfo?.call_status === true ? `${getBgHover(roundInfo.total, roundInfo.list_status)} cursor-pointer` : 'bg-gray-100'}`}
+                                                                role="button"
+                                                                tabIndex={0}
+                                                                onKeyDown={(e) => {
+                                                                    if (e.key === 'Enter' || e.key === ' ') {
+                                                                        e.preventDefault();
+                                                                        handleCellClick(roundInfo);
+                                                                    }
+                                                                }}
+                                                                aria-label={`ดูรายละเอียดรอบที่ ${roundInfo?.call_status === true ? roundInfo?.round : ''}`}
+                                                            >
+                                                                {roundInfo?.call_status === true ? (
+                                                                    <>
+                                                                        <div className="py-2 transition-transform duration-300 group-hover:-translate-y-2 text-sm font-semibold">
+                                                                            <span className={textColor(roundInfo.total, roundInfo.list_status)}>
+                                                                                {roundInfo.list_status === true
+                                                                                    ? Number(roundInfo.total).toLocaleString()
+                                                                                    : ''}
+                                                                            </span>
+                                                                        </div>
+
+                                                                        {roundInfo.call_status === true && (
+                                                                            <div className="absolute inset-0 flex items-center justify-center bg-emerald-50/50 text-emerald-800 opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out pointer-events-none">
+                                                                                <div className="flex items-center gap-1 text-xs font-medium">
+                                                                                    <Search size={10} />
+                                                                                    <span>รายละเอียด</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                    </>
+                                                                ) : null}
                                                             </td>
+
                                                         ))}
                                                     </tr>
                                                 ))}
@@ -643,7 +878,15 @@ export default function Row6RegionTable({ position, data }) {
                                 </table>
                             </div>
                         )}
+
+                        <RoundDetailModal
+                            isOpen={isModalOpen}
+                            onClose={() => setIsModalOpen(false)}
+                            data={selectedRound}
+                        />
+
                     </div>
+
                 )}
             </div>
         </div >

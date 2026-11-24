@@ -1,7 +1,8 @@
 
 import LoadingScreen from "../../LoadingScreen";
 import Select, { components } from "react-select";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, Search, OctagonAlert } from "lucide-react";
 import RoundDetailModal from '@/app/components/RoundDetailModal';
@@ -99,6 +100,11 @@ const CustomOption = (props) => (
 export default function T2P7_TableAllType({ data }) {
 
     const isMobile = useMediaQuery("(max-width: 767px)");
+
+    const portalTargetRef = useRef(null);
+    const setPortalTarget = useCallback((node) => {
+        portalTargetRef.current = node;
+    }, []);
 
     const data_select = useMemo(() => {
         return data?.tab3?.part6 || {};
@@ -319,13 +325,13 @@ export default function T2P7_TableAllType({ data }) {
                                     transition={{ duration: 0.25 }}
                                 >
                                     <div className="flex flex-col items-center justify-center h-[600px] bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                                        <div className="text-gray-400 mb-4 hidden md:block lg:block">
+                                        <div className="text-gray-800 mb-4 hidden md:block lg:block">
                                             <OctagonAlert size={100} />
                                         </div>
-                                        <div className="text-gray-400 mb-4 block md:hidden lg:hidden">
+                                        <div className="text-gray-800 mb-4 block md:hidden lg:hidden">
                                             <OctagonAlert size={60} />
                                         </div>
-                                        <h3 className="text-base lg:text-3xl font-bold text-gray-500">
+                                        <h3 className="text-base lg:text-3xl font-bold text-gray-700">
                                             กรุณาเลือกตำแหน่งเพื่อแสดงข้อมูล
                                         </h3>
                                     </div>
@@ -340,552 +346,561 @@ export default function T2P7_TableAllType({ data }) {
                                     className="w-full h-auto min-h-fit"
                                 >
                                     {isMobile ? (
-                                        <div className="p-1 w-full h-auto">
-                                            <div className="rounded-2xl bg-white p-1">
-                                                <h3 className="mb-2 text-base font-bold text-gray-800">
-                                                    สรุปยอดรวมทุกภาค
-                                                </h3>
 
-                                                <div className="grid grid-cols-2 gap-2">
-                                                    {[
-                                                        {
-                                                            label: "ขึ้นบัญชีเก่า",
-                                                            value: summary.total_listed,
-                                                            color: "bg-amber-50 text-amber-700",
-                                                        },
-                                                        {
-                                                            label: "ขึ้นบัญชีใหม่",
-                                                            value: summary.total_listed_new,
-                                                            color: "bg-amber-100 text-amber-800",
-                                                        },
-                                                        {
-                                                            label: "ส่วนต่าง",
-                                                            value: summary.total_diff,
-                                                            color: "bg-rose-50 text-rose-700",
-                                                        },
-                                                        {
-                                                            label: "เรียกแล้ว",
-                                                            value: summary.total_called,
-                                                            color: "bg-emerald-50 text-emerald-700",
-                                                        },
-                                                        {
-                                                            label: "คงเหลือ",
-                                                            value: summary.total_remain,
-                                                            color: summary.total_remain === 0
-                                                                ? "bg-emerald-50 text-emerald-700"
-                                                                : summary.total_remain > 0
-                                                                    ? "bg-orange-50 text-orange-700"
-                                                                    : "bg-rose-50 text-rose-700",
-                                                        },
-                                                    ].map((stat) => (
-                                                        <div
-                                                            key={stat.label}
-                                                            className={`rounded-xl p-2 ${stat.color}`}
-                                                        >
-                                                            <p className="text-xs">{stat.label}</p>
+                                        <>
+                                            <div className="p-1 w-full h-auto">
+                                                <div className="rounded-2xl bg-white p-1">
+                                                    <h3 className="mb-2 text-base font-bold text-gray-800">
+                                                        สรุปยอดรวมทุกภาค
+                                                    </h3>
+
+                                                    <div className="grid grid-cols-2 gap-2">
+                                                        {[
+                                                            {
+                                                                label: "ขึ้นบัญชีเก่า",
+                                                                value: summary.total_listed,
+                                                                color: "bg-amber-50 text-amber-700",
+                                                            },
+                                                            {
+                                                                label: "ขึ้นบัญชีใหม่",
+                                                                value: summary.total_listed_new,
+                                                                color: "bg-amber-100 text-amber-800",
+                                                            },
+                                                            {
+                                                                label: "ส่วนต่าง",
+                                                                value: summary.total_diff,
+                                                                color: "bg-rose-50 text-rose-700",
+                                                            },
+                                                            {
+                                                                label: "เรียกแล้ว",
+                                                                value: summary.total_called,
+                                                                color: "bg-emerald-50 text-emerald-700",
+                                                            },
+                                                            {
+                                                                label: "คงเหลือ",
+                                                                value: summary.total_remain,
+                                                                color: summary.total_remain === 0
+                                                                    ? "bg-emerald-50 text-emerald-700"
+                                                                    : summary.total_remain > 0
+                                                                        ? "bg-orange-50 text-orange-700"
+                                                                        : "bg-rose-50 text-rose-700",
+                                                            },
+                                                        ].map((stat) => (
+                                                            <div
+                                                                key={stat.label}
+                                                                className={`rounded-xl p-2 ${stat.color}`}
+                                                            >
+                                                                <p className="text-xs">{stat.label}</p>
+                                                                <p className="mt-0.5 text-lg font-bold text-right">
+                                                                    {(Number(stat.value) || 0).toLocaleString()}
+                                                                </p>
+                                                            </div>
+                                                        ))}
+
+                                                        <div className={`rounded-xl p-2 ${percent === 100
+                                                            ? "bg-emerald-50 text-emerald-700"
+                                                            : percent < 100
+                                                                ? "bg-blue-50 text-blue-700"
+                                                                : "bg-violet-50 text-violet-700"
+                                                            }`}>
+                                                            <p className="text-xs">ความคืบหน้ารวม</p>
                                                             <p className="mt-0.5 text-lg font-bold text-right">
-                                                                {(Number(stat.value) || 0).toLocaleString()}
+                                                                {Number(percent || 0).toFixed(2)}%
                                                             </p>
                                                         </div>
-                                                    ))}
+                                                    </div>
+                                                </div>
 
-                                                    <div className={`rounded-xl p-2 ${percent === 100
-                                                        ? 'bg-emerald-50 text-emerald-700'
-                                                        : percent < 100
-                                                            ? 'bg-blue-50 text-blue-700'
-                                                            : 'bg-violet-50 text-violet-700'
-                                                        }`}>
-                                                        <p className="text-xs">ความคืบหน้ารวม</p>
-                                                        <p className="mt-0.5 text-lg font-bold text-right">
-                                                            {Number(percent || 0).toFixed(2)}%
-                                                        </p>
+                                                <div className="mt-2">
+                                                    <div className="flex flex-col items-center justify-between gap-1 p-1">
+                                                        <h3 className="text-base font-bold text-gray-800">
+                                                            รายละเอียดรายภาคและเขต
+                                                        </h3>
+                                                        <span className="shrink-0 text-xs text-gray-800">
+                                                            เลื่อนซ้าย–ขวา
+                                                        </span>
+                                                    </div>
+
+                                                    <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto p-1">
+                                                        {Object.values(displayData).map((item) => {
+                                                            const statusOpen = item.status_open === true;
+                                                            const totalListed = Number(item.total_listed) || 0;
+                                                            const totalListedNew = Number(item.total_listed_new) || 0;
+                                                            const totalCalled = Number(item.total_called) || 0;
+                                                            const totalDiff = Number(item.total_diff) || 0;
+                                                            const totalRemain = Number(item.total_remain) || 0;
+
+                                                            const progress = statusOpen && totalListedNew > 0
+                                                                ? (totalCalled / totalListedNew) * 100
+                                                                : 0;
+
+                                                            const rounds = round_columns
+                                                                .map((num) => ({
+                                                                    num,
+                                                                    data: item?.data_round?.[num] || {},
+                                                                }))
+                                                                .filter(({ data }) =>
+                                                                    Object.keys(data).length > 0 &&
+                                                                    data.list_status === true
+                                                                );
+
+                                                            return (
+                                                                <section
+                                                                    key={item.full_key_province}
+                                                                    className="h-auto w-full min-w-full snap-start rounded-xl border border-gray-200 bg-white p-1 shadow-sm"
+                                                                >
+                                                                    <div className="flex flex-col items-center border-b border-gray-200 p-2">
+                                                                        <h4 className="w-full text-center text-base font-bold text-gray-800">
+                                                                            {item.full_name_province}
+                                                                        </h4>
+                                                                        <span className={`mt-1 w-full rounded-full py-0.5 text-center text-sm font-bold ${statusOpen
+                                                                            ? "bg-emerald-100 text-emerald-700"
+                                                                            : "bg-rose-100 text-rose-700"
+                                                                            }`}>
+                                                                            {statusOpen ? "เปิดสอบ" : "ไม่เปิดสอบ"}
+                                                                        </span>
+                                                                    </div>
+
+                                                                    <div className="grid grid-cols-2 gap-1 p-1">
+                                                                        <div className="rounded-xl bg-amber-50 p-2">
+                                                                            <p className="text-xs text-gray-700">ขึ้นบัญชีเก่า</p>
+                                                                            <p className="mt-0.5 font-bold text-sm text-gray-700 text-right">
+                                                                                {statusOpen ? totalListed.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className="rounded-xl bg-amber-100 p-2">
+                                                                            <p className="text-xs text-gray-700">ขึ้นบัญชีใหม่</p>
+                                                                            <p className="mt-0.5 font-bold text-sm text-gray-700 text-right">
+                                                                                {statusOpen ? totalListedNew.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className="rounded-xl bg-rose-50 p-2">
+                                                                            <p className="text-xs text-gray-700">ส่วนต่าง</p>
+                                                                            <p className="mt-0.5 font-bold text-sm text-rose-700 text-right">
+                                                                                {statusOpen ? totalDiff.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className="rounded-xl bg-emerald-50 p-2">
+                                                                            <p className="text-xs text-gray-700">เรียกแล้ว</p>
+                                                                            <p className="mt-0.5 font-bold text-sm text-emerald-700 text-right">
+                                                                                {statusOpen ? totalCalled.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className={`rounded-xl p-2 ${progress === 100
+                                                                            ? "bg-emerald-50"
+                                                                            : progress < 100
+                                                                                ? "bg-blue-50"
+                                                                                : "bg-violet-50"
+                                                                            }`}>
+                                                                            <p className="text-xs text-gray-700">ความคืบหน้า</p>
+                                                                            <p className={`mt-0.5 font-bold text-sm text-right ${progress === 100
+                                                                                ? "text-emerald-700"
+                                                                                : progress < 100
+                                                                                    ? "text-blue-700"
+                                                                                    : "text-violet-700"
+                                                                                }`}>
+                                                                                {statusOpen ? `${progress.toFixed(2)}%` : "-"}
+                                                                            </p>
+
+                                                                            {statusOpen && (
+                                                                                <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-blue-100 text-right">
+                                                                                    <div
+                                                                                        className={`h-full rounded-full ${progress === 100
+                                                                                            ? "bg-emerald-500"
+                                                                                            : progress < 100
+                                                                                                ? "bg-blue-500"
+                                                                                                : "bg-violet-500"
+                                                                                            }`}
+                                                                                        style={{ width: `${Math.min(progress, 100)}%` }}
+                                                                                    />
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+
+                                                                        <div className={`rounded-xl p-2 ${totalRemain === 0
+                                                                            ? "bg-emerald-50"
+                                                                            : totalRemain > 0
+                                                                                ? "bg-orange-50"
+                                                                                : "bg-rose-50"
+                                                                            }`}>
+                                                                            <p className="text-xs text-gray-700">คงเหลือ</p>
+                                                                            <p className={`mt-0.5 font-bold text-sm text-right ${totalRemain === 0
+                                                                                ? "text-emerald-700"
+                                                                                : totalRemain > 0
+                                                                                    ? "text-orange-700"
+                                                                                    : "text-rose-700"
+                                                                                }`}>
+                                                                                {statusOpen ? totalRemain.toLocaleString() : "-"}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className={`rounded-xl p-2 col-span-2 text-center text-sm font-semibold ${totalRemain === 0
+                                                                            ? "bg-emerald-100 text-emerald-700"
+                                                                            : totalRemain > 0
+                                                                                ? "bg-orange-100 text-orange-700"
+                                                                                : "bg-rose-100 text-rose-700"
+                                                                            }`}>
+                                                                            สถานะบัญชี : {statusOpen
+                                                                                ? totalRemain === 0
+                                                                                    ? "หมดบัญชี"
+                                                                                    : totalRemain > 0
+                                                                                        ? "คงเหลือ"
+                                                                                        : "ขาดแคลน"
+                                                                                : "-"}
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div className="border-t border-gray-200">
+                                                                        <div className="flex items-center justify-between gap-2 p-2">
+                                                                            <h5 className="text-xs font-bold text-gray-700">
+                                                                                รายละเอียดการเรียกบรรจุ
+                                                                            </h5>
+                                                                            <span className="shrink-0 text-xs text-gray-800">
+                                                                                ทั้งหมด {rounds.length} รอบ
+                                                                            </span>
+                                                                        </div>
+
+                                                                        {rounds.length > 0 ? (
+                                                                            <div className="flex w-full min-w-full items-start snap-x snap-mandatory gap-2 overflow-x-auto">
+                                                                                {rounds.map(({ num, data: round }) => {
+                                                                                    const called = round.call_status === true;
+                                                                                    const listed = round.list_status === true;
+                                                                                    const change = round.percent_change;
+                                                                                    const list_new = called ? round.list_new_status : null;
+
+                                                                                    const hasChange = change !== null &&
+                                                                                        change !== undefined &&
+                                                                                        Number.isFinite(Number(change));
+
+                                                                                    const datePart = typeof round.datetime === "string"
+                                                                                        ? round.datetime.split(" ")[0]
+                                                                                        : null;
+
+                                                                                    const [year, month, day] = datePart
+                                                                                        ? datePart.split("-").map(Number)
+                                                                                        : [];
+
+                                                                                    const roundDate = year && month && day
+                                                                                        ? new Date(year, month - 1, day)
+                                                                                        : null;
+
+                                                                                    const isReachedDate = roundDate
+                                                                                        ? new Date() >= roundDate
+                                                                                        : false;
+
+                                                                                    const workStatus = called && listed
+                                                                                        ? (isReachedDate ? "ได้รับการบรรจุแล้ว" : "รอการเรียกบรรจุ")
+                                                                                        : (!called ? "ไม่มีการเรียกใช้บัญชี" : "บัญชีสิ้นสุด");
+
+                                                                                    const callTypes = getMobileCallTypes(round.type_call);
+
+                                                                                    return (
+                                                                                        <div
+                                                                                            key={num}
+                                                                                            className="h-auto min-h-fit w-[100%] min-w-[100%] shrink-0 snap-start rounded-xl border border-gray-200 bg-white p-1"
+                                                                                        >
+                                                                                            <div className="space-y-2">
+                                                                                                <div className="flex items-center justify-between gap-2">
+                                                                                                    <span className="m-1 text-base font-bold text-gray-800">
+                                                                                                        รอบที่ {round.round || num}
+                                                                                                    </span>
+                                                                                                </div>
+
+                                                                                                <div className="grid grid-cols-2 gap-2">
+                                                                                                    <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                        <p className="text-xs text-gray-800">จำนวนที่เรียกบรรจุ</p>
+                                                                                                        <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                            {(Number(round.total) || 0).toLocaleString()}
+                                                                                                        </p>
+                                                                                                    </div>
+
+                                                                                                    <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                        <p className="text-xs text-gray-800">บัญชีที่ใช้เรียก</p>
+                                                                                                        <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                            {list_new !== null && (
+                                                                                                                <span className={`text-sm rounded-sm px-2 ${list_new
+                                                                                                                    ? "text-emerald-600"
+                                                                                                                    : "text-rose-600"
+                                                                                                                    }`}>
+                                                                                                                    {list_new ? "บัญชีใหม่" : "บัญชีเก่า"}
+                                                                                                                </span>
+                                                                                                            )}
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div className="grid grid-cols-2 gap-2">
+                                                                                                    <div className="col-span-2 p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                        <p className="text-xs text-gray-800">วันที่รายงานตัว</p>
+                                                                                                        <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                            {called ? round.st_report_thai_short || "-" : "-"} - {called ? round.ed_report_thai_short || "-" : "-"}
+                                                                                                        </p>
+                                                                                                    </div>
+
+                                                                                                    <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                        <p className="text-xs text-gray-800">วันที่บรรจุ</p>
+                                                                                                        <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                            {called ? round.call_date || "-" : "-"}
+                                                                                                        </p>
+                                                                                                    </div>
+
+                                                                                                    <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                        <p className="text-xs text-gray-800">สถานะ</p>
+                                                                                                        <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                            <span className={`rounded-full text-xs font-semibold ${called && listed
+                                                                                                                ? isReachedDate
+                                                                                                                    ? "text-emerald-600"
+                                                                                                                    : "text-blue-600"
+                                                                                                                : "text-rose-600"
+                                                                                                                }`}>
+                                                                                                                {workStatus}
+                                                                                                            </span>
+                                                                                                        </p>
+                                                                                                    </div>
+
+                                                                                                    <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                        <p className="text-xs text-gray-800">อัตราการเปลี่ยนแปลง</p>
+                                                                                                        <p className={`text-right text-sm font-semibold ${!hasChange
+                                                                                                            ? "text-gray-700"
+                                                                                                            : Number(change) > 0
+                                                                                                                ? "text-emerald-600"
+                                                                                                                : Number(change) < 0
+                                                                                                                    ? "text-rose-600"
+                                                                                                                    : "text-gray-600"
+                                                                                                            }`}>
+                                                                                                            {Number(round.round) === 1
+                                                                                                                ? "รอบเริ่มต้น"
+                                                                                                                : round.call_status === false && round.list_status === false
+                                                                                                                    ? "สิ้นสุดการเรียกบรรจุ"
+                                                                                                                    : hasChange
+                                                                                                                        ? `${Number(change) > 0 ? "+" : ""}${Number(change).toFixed(2)}%`
+                                                                                                                        : "-"}
+                                                                                                        </p>
+                                                                                                    </div>
+
+                                                                                                    <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
+                                                                                                        <p className="text-xs text-gray-800">สัดส่วนการใช้บัญชี</p>
+                                                                                                        <p className="text-right text-sm font-semibold text-gray-800">
+                                                                                                            {called && Number.isFinite(Number(round.proportion_used))
+                                                                                                                ? `${Number(round.proportion_used).toFixed(2)}%`
+                                                                                                                : "-"}
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                {callTypes.length > 0 && (
+                                                                                                    <div className="border-t border-gray-200 pt-2 space-y-3">
+                                                                                                        <div className="flex items-center justify-between">
+                                                                                                            <h6 className="text-xs font-bold text-gray-700">
+                                                                                                                รายละเอียดประเภทการเรียก
+                                                                                                            </h6>
+                                                                                                            <span className="text-xs text-gray-800">
+                                                                                                                {callTypes.length} ประเภท
+                                                                                                            </span>
+                                                                                                        </div>
+
+                                                                                                        <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2">
+                                                                                                            {callTypes.map((callType) => (
+                                                                                                                <div
+                                                                                                                    key={callType.id}
+                                                                                                                    className="w-[95%] min-w-[95%] shrink-0 snap-start rounded-xl border border-gray-200 bg-gray-50 p-3 space-y-3"
+                                                                                                                >
+                                                                                                                    <div className="flex items-center justify-between gap-2">
+                                                                                                                        <span className="text-sm font-bold text-gray-800">
+                                                                                                                            {callType.name}
+                                                                                                                        </span>
+
+                                                                                                                        <span className="shrink-0 rounded-full px-3 py-1 text-xs border border-gray-400 text-gray-700 bg-white font-bold">
+                                                                                                                            {callType.total.toLocaleString()} อัตรา
+                                                                                                                        </span>
+                                                                                                                    </div>
+
+                                                                                                                    <div>
+                                                                                                                        <p className="mb-1 text-xs font-semibold text-gray-700">
+                                                                                                                            ลำดับบัญชีที่เรียก
+                                                                                                                        </p>
+
+                                                                                                                        <div className="flex flex-nowrap gap-1 overflow-x-auto pb-2">
+                                                                                                                            {callType.ranks.length > 0 ? (
+                                                                                                                                callType.ranks.map((rankItem, index) => (
+                                                                                                                                    <span
+                                                                                                                                        key={index}
+                                                                                                                                        className="shrink-0 rounded-md border border-gray-400 bg-white px-2 py-1 text-xs font-semibold text-gray-700"
+                                                                                                                                    >
+                                                                                                                                        {rankItem}
+                                                                                                                                    </span>
+                                                                                                                                ))
+                                                                                                                            ) : (
+                                                                                                                                <span className="text-xs text-gray-800">
+                                                                                                                                    ไม่ระบุลำดับ
+                                                                                                                                </span>
+                                                                                                                            )}
+                                                                                                                        </div>
+                                                                                                                    </div>
+
+                                                                                                                    {callType.provinceGroups.length > 0 ? (
+                                                                                                                        <div className="space-y-2">
+                                                                                                                            <p className="text-xs font-semibold text-gray-700">
+                                                                                                                                พื้นที่เรียกบรรจุ
+                                                                                                                            </p>
+
+                                                                                                                            <div className="space-y-3">
+                                                                                                                                <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2">
+                                                                                                                                    {callType.provinceGroups.map((region) => (
+                                                                                                                                        <div
+                                                                                                                                            key={region.regionId}
+                                                                                                                                            className="w-[95%] min-w-[95%] shrink-0 snap-start rounded-lg border border-gray-600 bg-white p-2 space-y-2"
+                                                                                                                                        >
+                                                                                                                                            <div className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2">
+                                                                                                                                                <p className="text-sm font-bold text-gray-700">
+                                                                                                                                                    {region.name}
+                                                                                                                                                </p>
+                                                                                                                                            </div>
+
+                                                                                                                                            <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2">
+                                                                                                                                                {region.zones.map((zone) => (
+                                                                                                                                                    <div
+                                                                                                                                                        key={zone.zoneId}
+                                                                                                                                                        className="w-[90%] min-w-[90%] shrink-0 snap-start rounded-lg border border-gray-200 bg-gray-50 p-2"
+                                                                                                                                                    >
+                                                                                                                                                        <div className="flex items-center justify-between gap-2">
+                                                                                                                                                            <p className="text-xs font-bold text-gray-700">
+                                                                                                                                                                {zone.name}
+                                                                                                                                                            </p>
+
+                                                                                                                                                            <span className="shrink-0 text-xs text-gray-800">
+                                                                                                                                                                {zone.provinces.length} จังหวัด
+                                                                                                                                                            </span>
+                                                                                                                                                        </div>
+
+                                                                                                                                                        <button
+                                                                                                                                                            type="button"
+                                                                                                                                                            onClick={() => setSelectedZone({
+                                                                                                                                                                id: zone.zoneId,
+                                                                                                                                                                name: zone.name,
+                                                                                                                                                                regionName: region.name,
+                                                                                                                                                                provinces: zone.provinces,
+                                                                                                                                                            })}
+                                                                                                                                                            className="mt-2 w-full rounded-lg border border-blue-200 bg-blue-50 py-2 text-xs font-semibold text-blue-700"
+                                                                                                                                                        >
+                                                                                                                                                            ดูรายชื่อจังหวัด
+                                                                                                                                                        </button>
+                                                                                                                                                    </div>
+                                                                                                                                                ))}
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    ))}
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    ) : (
+                                                                                                                        <p className="text-xs text-gray-800">
+                                                                                                                            ไม่มีข้อมูลพื้นที่ที่เรียกบรรจุ
+                                                                                                                        </p>
+                                                                                                                    )}
+                                                                                                                </div>
+                                                                                                            ))}
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                )}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    );
+                                                                                })}
+                                                                            </div>
+                                                                        ) : (
+                                                                            <p className="rounded-xl bg-gray-50 p-3 text-center text-xs text-gray-700">
+                                                                                ยังไม่มีข้อมูลการเรียกบรรจุ
+                                                                            </p>
+                                                                        )}
+                                                                    </div>
+                                                                </section>
+                                                            );
+                                                        })}
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className="mt-2">
-                                                <div className="flex flex-col items-center justify-between gap-1 p-1">
-                                                    <h3 className="text-base font-bold text-gray-800">
-                                                        รายละเอียดรายภาคและเขต
-                                                    </h3>
-                                                    <span className="shrink-0 text-xs text-gray-400">
-                                                        เลื่อนซ้าย–ขวา
-                                                    </span>
-                                                </div>
+                                            {/* Modal รายชื่อจังหวัด เฉพาะมือถือ */}
+                                            {selectedZone && typeof document !== "undefined" && createPortal(
+                                                <div className="md:hidden fixed inset-0 z-[9999] flex items-center justify-center bg-gray-800/70 p-4">
+                                                    <div
+                                                        className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl"
+                                                        role="dialog"
+                                                        aria-modal="true"
+                                                        aria-labelledby="province-modal-title"
+                                                    >
+                                                        {/* Header */}
+                                                        <div className="flex items-center justify-between border-b border-gray-200 p-4">
+                                                            <div>
+                                                                <h3
+                                                                    id="province-modal-title"
+                                                                    className="text-base font-bold text-gray-800"
+                                                                >
+                                                                    รายชื่อจังหวัด
+                                                                </h3>
+                                                                <p className="mt-1 text-xs text-gray-700">
+                                                                    {selectedZone.regionName} {selectedZone.name}
+                                                                </p>
+                                                            </div>
 
-                                                <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto p-1">
-                                                    {Object.values(displayData).map((item) => {
-                                                        const statusOpen = item.status_open === true;
-                                                        const totalListed = Number(item.total_listed) || 0;
-                                                        const totalListedNew = Number(item.total_listed_new) || 0;
-                                                        const totalCalled = Number(item.total_called) || 0;
-                                                        const totalDiff = Number(item.total_diff) || 0;
-                                                        const totalRemain = Number(item.total_remain) || 0;
-
-                                                        const progress = statusOpen && totalListedNew > 0
-                                                            ? (totalCalled / totalListedNew) * 100
-                                                            : 0;
-
-                                                        const rounds = round_columns
-                                                            .map((num) => ({
-                                                                num,
-                                                                data: item?.data_round?.[num] || {},
-                                                            }))
-                                                            .filter(({ data }) =>
-                                                                Object.keys(data).length > 0 &&
-                                                                data.list_status === true
-                                                            );
-
-                                                        return (
-                                                            <section
-                                                                key={item.full_key_province}
-                                                                className="h-auto w-full min-w-full snap-start rounded-xl border border-gray-200 bg-white p-1 shadow-sm"
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setSelectedZone(null)}
+                                                                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600"
+                                                                aria-label="ปิดหน้าต่าง"
                                                             >
-                                                                <div className="flex flex-col items-center border-b border-gray-200 p-2">
-                                                                    <h4 className="w-full text-center text-base font-bold text-gray-800">
-                                                                        {item.full_name_province}
-                                                                    </h4>
-                                                                    <span className={`mt-1 w-full rounded-full py-0.5 text-center text-sm font-bold ${statusOpen
-                                                                        ? "bg-emerald-100 text-emerald-700"
-                                                                        : "bg-rose-100 text-rose-700"
-                                                                        }`}>
-                                                                        {statusOpen ? "เปิดสอบ" : "ไม่เปิดสอบ"}
-                                                                    </span>
-                                                                </div>
+                                                                ✕
+                                                            </button>
+                                                        </div>
 
-                                                                <div className="grid grid-cols-2 gap-1 p-1">
-                                                                    <div className="rounded-xl bg-amber-50 p-2">
-                                                                        <p className="text-xs text-gray-500">ขึ้นบัญชีเก่า</p>
-                                                                        <p className="mt-0.5 font-bold text-sm text-gray-700 text-right">
-                                                                            {statusOpen ? totalListed.toLocaleString() : "-"}
-                                                                        </p>
-                                                                    </div>
+                                                        {/* จำนวนจังหวัด */}
+                                                        <div className="px-4 pt-3">
+                                                            <span className="text-xs font-semibold text-gray-700">
+                                                                ทั้งหมด {selectedZone.provinces.length} จังหวัด
+                                                            </span>
+                                                        </div>
 
-                                                                    <div className="rounded-xl bg-amber-100 p-2">
-                                                                        <p className="text-xs text-gray-500">ขึ้นบัญชีใหม่</p>
-                                                                        <p className="mt-0.5 font-bold text-sm text-gray-700 text-right">
-                                                                            {statusOpen ? totalListedNew.toLocaleString() : "-"}
-                                                                        </p>
-                                                                    </div>
-
-                                                                    <div className="rounded-xl bg-rose-50 p-2">
-                                                                        <p className="text-xs text-gray-500">ส่วนต่าง</p>
-                                                                        <p className="mt-0.5 font-bold text-sm text-rose-700 text-right">
-                                                                            {statusOpen ? totalDiff.toLocaleString() : "-"}
-                                                                        </p>
-                                                                    </div>
-
-                                                                    <div className="rounded-xl bg-emerald-50 p-2">
-                                                                        <p className="text-xs text-gray-500">เรียกแล้ว</p>
-                                                                        <p className="mt-0.5 font-bold text-sm text-emerald-700 text-right">
-                                                                            {statusOpen ? totalCalled.toLocaleString() : "-"}
-                                                                        </p>
-                                                                    </div>
-
-                                                                    <div className={`rounded-xl p-2 ${progress === 100
-                                                                        ? "bg-emerald-50"
-                                                                        : progress < 100
-                                                                            ? "bg-blue-50"
-                                                                            : "bg-violet-50"
-                                                                        }`}>
-                                                                        <p className="text-xs text-gray-500">ความคืบหน้า</p>
-                                                                        <p className={`mt-0.5 font-bold text-sm text-right ${progress === 100
-                                                                            ? "text-emerald-700"
-                                                                            : progress < 100
-                                                                                ? "text-blue-700"
-                                                                                : "text-violet-700"
-                                                                            }`}>
-                                                                            {statusOpen ? `${progress.toFixed(2)}%` : "-"}
-                                                                        </p>
-
-                                                                        {statusOpen && (
-                                                                            <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-blue-100 text-right">
-                                                                                <div
-                                                                                    className={`h-full rounded-full ${progress === 100
-                                                                                        ? "bg-emerald-500"
-                                                                                        : progress < 100
-                                                                                            ? "bg-blue-500"
-                                                                                            : "bg-violet-500"
-                                                                                        }`}
-                                                                                    style={{ width: `${Math.min(progress, 100)}%` }}
-                                                                                />
-                                                                            </div>
-                                                                        )}
-                                                                    </div>
-
-                                                                    <div className={`rounded-xl p-2 ${totalRemain === 0
-                                                                        ? "bg-emerald-50"
-                                                                        : totalRemain > 0
-                                                                            ? "bg-orange-50"
-                                                                            : "bg-rose-50"
-                                                                        }`}>
-                                                                        <p className="text-xs text-gray-500">คงเหลือ</p>
-                                                                        <p className={`mt-0.5 font-bold text-sm text-right ${totalRemain === 0
-                                                                            ? "text-emerald-700"
-                                                                            : totalRemain > 0
-                                                                                ? "text-orange-700"
-                                                                                : "text-rose-700"
-                                                                            }`}>
-                                                                            {statusOpen ? totalRemain.toLocaleString() : "-"}
-                                                                        </p>
-                                                                    </div>
-
-                                                                    <div className={`rounded-xl p-2 col-span-2 text-center text-sm font-semibold ${totalRemain === 0
-                                                                        ? "bg-emerald-100 text-emerald-700"
-                                                                        : totalRemain > 0
-                                                                            ? "bg-orange-100 text-orange-700"
-                                                                            : "bg-rose-100 text-rose-700"
-                                                                        }`}>
-                                                                        สถานะบัญชี : {statusOpen
-                                                                            ? totalRemain === 0
-                                                                                ? "หมดบัญชี"
-                                                                                : totalRemain > 0
-                                                                                    ? "คงเหลือ"
-                                                                                    : "ขาดแคลน"
-                                                                            : "-"}
-                                                                    </div>
-                                                                </div>
-
-                                                                <div className="border-t border-gray-200">
-                                                                    <div className="flex items-center justify-between gap-2 p-2">
-                                                                        <h5 className="text-xs font-bold text-gray-700">
-                                                                            รายละเอียดการเรียกบรรจุ
-                                                                        </h5>
-                                                                        <span className="shrink-0 text-xs text-gray-400">
-                                                                            ทั้งหมด {rounds.length} รอบ
-                                                                        </span>
-                                                                    </div>
-
-                                                                    {rounds.length > 0 ? (
-                                                                        <div className="flex w-full min-w-full items-start snap-x snap-mandatory gap-2 overflow-x-auto">
-                                                                            {rounds.map(({ num, data: round }) => {
-                                                                                const called = round.call_status === true;
-                                                                                const listed = round.list_status === true;
-                                                                                const change = round.percent_change;
-                                                                                const list_new = called ? round.list_new_status : null;
-
-                                                                                const hasChange = change !== null &&
-                                                                                    change !== undefined &&
-                                                                                    Number.isFinite(Number(change));
-
-                                                                                const datePart = typeof round.datetime === "string"
-                                                                                    ? round.datetime.split(" ")[0]
-                                                                                    : null;
-
-                                                                                const [year, month, day] = datePart
-                                                                                    ? datePart.split("-").map(Number)
-                                                                                    : [];
-
-                                                                                const roundDate = year && month && day
-                                                                                    ? new Date(year, month - 1, day)
-                                                                                    : null;
-
-                                                                                const isReachedDate = roundDate
-                                                                                    ? new Date() >= roundDate
-                                                                                    : false;
-
-                                                                                const workStatus = called && listed
-                                                                                    ? (isReachedDate ? "ได้รับการบรรจุแล้ว" : "รอการเรียกบรรจุ")
-                                                                                    : (!called ? "ไม่มีการเรียกใช้บัญชี" : "บัญชีสิ้นสุด");
-
-                                                                                const callTypes = getMobileCallTypes(round.type_call);
-
-                                                                                return (
-                                                                                    <div
-                                                                                        key={num}
-                                                                                        className="h-auto min-h-fit w-[100%] min-w-[100%] shrink-0 snap-start rounded-xl border border-gray-200 bg-white p-1"
-                                                                                    >
-                                                                                        <div className="space-y-2">
-                                                                                            <div className="flex items-center justify-between gap-2">
-                                                                                                <span className="m-1 text-base font-bold text-gray-800">
-                                                                                                    รอบที่ {round.round || num}
-                                                                                                </span>
-                                                                                            </div>
-
-                                                                                            <div className="grid grid-cols-2 gap-2">
-                                                                                                <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                    <p className="text-xs text-gray-400">จำนวนที่เรียกบรรจุ</p>
-                                                                                                    <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                        {(Number(round.total) || 0).toLocaleString()}
-                                                                                                    </p>
-                                                                                                </div>
-
-                                                                                                <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                    <p className="text-xs text-gray-400">บัญชีที่ใช้เรียก</p>
-                                                                                                    <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                        {list_new !== null && (
-                                                                                                            <span className={`text-sm rounded-sm px-2 ${list_new
-                                                                                                                ? "text-emerald-600"
-                                                                                                                : "text-rose-600"
-                                                                                                                }`}>
-                                                                                                                {list_new ? "บัญชีใหม่" : "บัญชีเก่า"}
-                                                                                                            </span>
-                                                                                                        )}
-                                                                                                    </p>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            <div className="grid grid-cols-2 gap-2">
-                                                                                                <div className="col-span-2 p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                    <p className="text-xs text-gray-400">วันที่รายงานตัว</p>
-                                                                                                    <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                        {called ? round.st_report_thai_short || "-" : "-"} - {called ? round.ed_report_thai_short || "-" : "-"}
-                                                                                                    </p>
-                                                                                                </div>
-
-                                                                                                <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                    <p className="text-xs text-gray-400">วันที่บรรจุ</p>
-                                                                                                    <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                        {called ? round.call_date || "-" : "-"}
-                                                                                                    </p>
-                                                                                                </div>
-
-                                                                                                <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                    <p className="text-xs text-gray-400">สถานะ</p>
-                                                                                                    <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                        <span className={`rounded-full text-xs font-semibold ${called && listed
-                                                                                                            ? isReachedDate
-                                                                                                                ? "text-emerald-600"
-                                                                                                                : "text-blue-600"
-                                                                                                            : "text-rose-600"
-                                                                                                            }`}>
-                                                                                                            {workStatus}
-                                                                                                        </span>
-                                                                                                    </p>
-                                                                                                </div>
-
-                                                                                                <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                    <p className="text-xs text-gray-400">อัตราการเปลี่ยนแปลง</p>
-                                                                                                    <p className={`text-right text-sm font-semibold ${!hasChange
-                                                                                                        ? "text-gray-500"
-                                                                                                        : Number(change) > 0
-                                                                                                            ? "text-emerald-600"
-                                                                                                            : Number(change) < 0
-                                                                                                                ? "text-rose-600"
-                                                                                                                : "text-gray-600"
-                                                                                                        }`}>
-                                                                                                        {Number(round.round) === 1
-                                                                                                            ? "รอบเริ่มต้น"
-                                                                                                            : round.call_status === false && round.list_status === false
-                                                                                                                ? "สิ้นสุดการเรียกบรรจุ"
-                                                                                                                : hasChange
-                                                                                                                    ? `${Number(change) > 0 ? "+" : ""}${Number(change).toFixed(2)}%`
-                                                                                                                    : "-"}
-                                                                                                    </p>
-                                                                                                </div>
-
-                                                                                                <div className="p-1.5 border border-gray-100 rounded bg-gray-50/50">
-                                                                                                    <p className="text-xs text-gray-400">สัดส่วนการใช้บัญชี</p>
-                                                                                                    <p className="text-right text-sm font-semibold text-gray-800">
-                                                                                                        {called && Number.isFinite(Number(round.proportion_used))
-                                                                                                            ? `${Number(round.proportion_used).toFixed(2)}%`
-                                                                                                            : "-"}
-                                                                                                    </p>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            {callTypes.length > 0 && (
-                                                                                                <div className="border-t border-gray-200 pt-2 space-y-3">
-                                                                                                    <div className="flex items-center justify-between">
-                                                                                                        <h6 className="text-xs font-bold text-gray-700">
-                                                                                                            รายละเอียดประเภทการเรียก
-                                                                                                        </h6>
-                                                                                                        <span className="text-xs text-gray-400">
-                                                                                                            {callTypes.length} ประเภท
-                                                                                                        </span>
-                                                                                                    </div>
-
-                                                                                                    <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2">
-                                                                                                        {callTypes.map((callType) => (
-                                                                                                            <div
-                                                                                                                key={callType.id}
-                                                                                                                className="w-[95%] min-w-[95%] shrink-0 snap-start rounded-xl border border-gray-200 bg-gray-50 p-3 space-y-3"
-                                                                                                            >
-                                                                                                                <div className="flex items-center justify-between gap-2">
-                                                                                                                    <span className="text-sm font-bold text-gray-800">
-                                                                                                                        {callType.name}
-                                                                                                                    </span>
-
-                                                                                                                    <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${typeStyles[callType.id] || "bg-slate-100 text-slate-700"
-                                                                                                                        }`}>
-                                                                                                                        {callType.total.toLocaleString()} อัตรา
-                                                                                                                    </span>
-                                                                                                                </div>
-
-                                                                                                                <div>
-                                                                                                                    <p className="mb-1 text-xs font-semibold text-gray-500">
-                                                                                                                        ลำดับบัญชีที่เรียก
-                                                                                                                    </p>
-
-                                                                                                                    <div className="flex flex-wrap gap-1">
-                                                                                                                        {callType.ranks.length > 0 ? (
-                                                                                                                            callType.ranks.map((rankItem, index) => (
-                                                                                                                                <span
-                                                                                                                                    key={index}
-                                                                                                                                    className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs font-semibold text-gray-700"
-                                                                                                                                >
-                                                                                                                                    {rankItem}
-                                                                                                                                </span>
-                                                                                                                            ))
-                                                                                                                        ) : (
-                                                                                                                            <span className="text-xs text-gray-400">
-                                                                                                                                ไม่ระบุลำดับ
-                                                                                                                            </span>
-                                                                                                                        )}
-                                                                                                                    </div>
-                                                                                                                </div>
-
-                                                                                                                {callType.provinceGroups.length > 0 ? (
-                                                                                                                    <div className="space-y-2">
-                                                                                                                        <p className="text-xs font-semibold text-gray-500">
-                                                                                                                            พื้นที่เรียกบรรจุ
-                                                                                                                        </p>
-
-                                                                                                                        <div className="space-y-3">
-                                                                                                                            <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2">
-                                                                                                                                {callType.provinceGroups.map((region) => (
-                                                                                                                                    <div
-                                                                                                                                        key={region.id}
-                                                                                                                                        className="w-[95%] min-w-[95%] shrink-0 snap-start rounded-lg border border-blue-200 bg-white p-2 space-y-2"
-                                                                                                                                    >
-                                                                                                                                        <div className="rounded-md bg-blue-50 px-3 py-2">
-                                                                                                                                            <p className="text-sm font-bold text-blue-700">
-                                                                                                                                                {region.name}
-                                                                                                                                            </p>
-                                                                                                                                        </div>
-
-                                                                                                                                        <div className="flex gap-2 overflow-x-auto snap-x snap-mandatory pb-2">
-                                                                                                                                            {region.zones.map((zone) => (
-                                                                                                                                                <div
-                                                                                                                                                    key={zone.id}
-                                                                                                                                                    className="w-[90%] min-w-[90%] shrink-0 snap-start rounded-lg border border-gray-200 bg-gray-50 p-2"
-                                                                                                                                                >
-                                                                                                                                                    <div className="flex items-center justify-between gap-2">
-                                                                                                                                                        <p className="text-xs font-bold text-gray-700">
-                                                                                                                                                            {zone.name}
-                                                                                                                                                        </p>
-
-                                                                                                                                                        <span className="shrink-0 text-xs text-gray-400">
-                                                                                                                                                            {zone.provinces.length} จังหวัด
-                                                                                                                                                        </span>
-                                                                                                                                                    </div>
-
-                                                                                                                                                    <button
-                                                                                                                                                        type="button"
-                                                                                                                                                        onClick={() => setSelectedZone({
-                                                                                                                                                            id: zone.id,
-                                                                                                                                                            name: zone.name,
-                                                                                                                                                            regionName: region.name,
-                                                                                                                                                            provinces: zone.provinces,
-                                                                                                                                                        })}
-                                                                                                                                                        className="mt-2 w-full rounded-lg border border-blue-200 bg-blue-50 py-2 text-xs font-semibold text-blue-700"
-                                                                                                                                                    >
-                                                                                                                                                        ดูรายชื่อจังหวัด
-                                                                                                                                                    </button>
-                                                                                                                                                </div>
-                                                                                                                                            ))}
-                                                                                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                ))}
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                ) : (
-                                                                                                                    <p className="text-xs text-gray-400">
-                                                                                                                        ไม่มีข้อมูลพื้นที่ที่เรียกบรรจุ
-                                                                                                                    </p>
-                                                                                                                )}
-                                                                                                            </div>
-                                                                                                        ))}
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            )}
-
-
-                                                                                            {/* Modal รายชื่อจังหวัด เฉพาะมือถือ */}
-                                                                                            {selectedZone && (
-                                                                                                <div className="md:hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
-                                                                                                    <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-xl">
-
-                                                                                                        {/* Header */}
-                                                                                                        <div className="flex items-center justify-between border-b border-gray-200 p-4">
-                                                                                                            <div>
-                                                                                                                <h3 className="text-base font-bold text-gray-800">
-                                                                                                                    รายชื่อจังหวัด
-                                                                                                                </h3>
-                                                                                                                <p className="mt-1 text-xs text-gray-500">
-                                                                                                                    {selectedZone.regionName} {selectedZone.name}
-                                                                                                                </p>
-                                                                                                            </div>
-
-                                                                                                            <button
-                                                                                                                type="button"
-                                                                                                                onClick={() => setSelectedZone(null)}
-                                                                                                                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600"
-                                                                                                                aria-label="ปิดหน้าต่าง"
-                                                                                                            >
-                                                                                                                ✕
-                                                                                                            </button>
-                                                                                                        </div>
-
-                                                                                                        {/* จำนวนจังหวัด */}
-                                                                                                        <div className="px-4 pt-3">
-                                                                                                            <span className="text-xs font-semibold text-gray-500">
-                                                                                                                ทั้งหมด {selectedZone.provinces.length} จังหวัด
-                                                                                                            </span>
-                                                                                                        </div>
-
-                                                                                                        {/* รายชื่อจังหวัด เลื่อนขึ้น-ลง */}
-                                                                                                        <div className="max-h-[60vh] overflow-y-auto p-4">
-                                                                                                            {selectedZone.provinces.length > 0 ? (
-                                                                                                                <div className="grid grid-cols-2 gap-2">
-                                                                                                                    {selectedZone.provinces.map((province, index) => (
-                                                                                                                        <div
-                                                                                                                            key={`${selectedZone.id}-${index}`}
-                                                                                                                            className="rounded-md border border-gray-200 bg-gray-50 px-2 py-2 text-xs font-semibold text-gray-700"
-                                                                                                                        >
-                                                                                                                            {province}
-                                                                                                                        </div>
-                                                                                                                    ))}
-                                                                                                                </div>
-                                                                                                            ) : (
-                                                                                                                <p className="py-4 text-center text-xs text-gray-400">
-                                                                                                                    ไม่ระบุจังหวัด
-                                                                                                                </p>
-                                                                                                            )}
-                                                                                                        </div>
-
-                                                                                                        {/* Footer */}
-                                                                                                        <div className="border-t border-gray-200 p-3">
-                                                                                                            <button
-                                                                                                                type="button"
-                                                                                                                onClick={() => setSelectedZone(null)}
-                                                                                                                className="w-full rounded-lg bg-gray-800 py-2.5 text-sm font-semibold text-white"
-                                                                                                            >
-                                                                                                                ปิดหน้าต่าง
-                                                                                                            </button>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            )}
-
-                                                                                        </div>
-                                                                                    </div>
-                                                                                );
-                                                                            })}
+                                                        {/* รายชื่อจังหวัด เลื่อนขึ้น-ลง */}
+                                                        <div className="max-h-[60vh] overflow-y-auto p-4">
+                                                            {selectedZone.provinces.length > 0 ? (
+                                                                <div className="grid grid-cols-2 gap-2">
+                                                                    {selectedZone.provinces.map((province, index) => (
+                                                                        <div
+                                                                            key={`${selectedZone.id}-${index}`}
+                                                                            className="rounded-md border border-gray-200 bg-gray-50 px-2 py-2 text-xs font-semibold text-gray-700"
+                                                                        >
+                                                                            {province}
                                                                         </div>
-                                                                    ) : (
-                                                                        <p className="rounded-xl bg-gray-50 p-3 text-center text-xs text-gray-500">
-                                                                            ยังไม่มีข้อมูลการเรียกบรรจุ
-                                                                        </p>
-                                                                    )}
+                                                                    ))}
                                                                 </div>
-                                                            </section>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>
-                                        </div>
+                                                            ) : (
+                                                                <p className="py-4 text-center text-xs text-gray-800">
+                                                                    ไม่ระบุจังหวัด
+                                                                </p>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Footer */}
+                                                        <div className="border-t border-gray-200 p-3">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setSelectedZone(null)}
+                                                                className="w-full rounded-lg bg-gray-800 py-2.5 text-sm font-semibold text-white"
+                                                            >
+                                                                ปิดหน้าต่าง
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>,
+                                                document.body
+                                            )}
+                                        </>
+
                                     ) : (
                                         <div className="w-full overflow-x-auto">
                                             <table className="min-w-[1400px] w-full border-collapse whitespace-nowrap text-left">
@@ -1112,6 +1127,7 @@ export default function T2P7_TableAllType({ data }) {
                                                 onClose={() => setIsModalOpen(false)}
                                                 data={selectedRound}
                                             />
+
                                         </div>
                                     )}
                                 </motion.div>

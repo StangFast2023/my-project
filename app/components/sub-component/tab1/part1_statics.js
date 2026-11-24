@@ -166,7 +166,7 @@ export default function StaticNumber({ data }) {
         >
             {isMobile ?
                 <>
-                    <div className={`${data ? 'block' : 'opacity-0'} block lg:hidden min-w-0 p-2`}>
+                    <div className={`${data ? 'block' : 'opacity-0'} block lg:hidden min-w-0`}>
                         <div className="mb-3">
                             <div className="flex flex-col gap-2">
                                 {calculatedAccounts.map((acc) => {
@@ -314,7 +314,7 @@ export default function StaticNumber({ data }) {
                 :
                 <>
 
-                    <div className={`${data ? 'block' : 'opacity-0'} min-w-0 p-2 rounded-xl`}>
+                    <div className={`${data ? 'block' : 'opacity-0'} min-w-0 rounded-xl`}>
                         <div className="flex justify-end items-center gap-2 mb-3">
                             <div className="flex flex-col sm:flex-row p-1 rounded-xl bg-gray-100 border border-gray-200 w-full sm:w-auto gap-1">
                                 {calculatedAccounts.map((acc) => {
@@ -405,7 +405,7 @@ export default function StaticNumber({ data }) {
                         </div>
                     </div>
 
-                    <div className={`${data ? 'block' : 'opacity-0'} min-w-0 p-2 pb-0 rounded-xl`}>
+                    <div className={`${data ? 'block' : 'opacity-0'} min-w-0 pb-0 rounded-xl`}>
                         <div className="grid !grid-cols-2 sm:!grid-cols-3 lg:!grid-cols-6 gap-2">
                             <div className="min-w-0 flex flex-col justify-center p-3 bg-gray-50 rounded-xl border-l-4 border-emerald-500 shadow-sm">
                                 <p className="text-gray-500 text-xs sm:text-sm">ขึ้นบัญชีทั้งหมด <b>(เก่า)</b></p>
