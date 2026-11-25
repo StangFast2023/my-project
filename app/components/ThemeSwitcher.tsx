@@ -12,6 +12,7 @@ export default function InfoModal() {
     const iconFiles = {
 
         "nextdotjs": "nextdotjs_000000.svg",
+        "react": "react_61DAFB.svg",
         "tailwindcss": "tailwindcss_06B6D4.svg",
 
         "laravel": "laravel_FF2D20.svg",
@@ -22,7 +23,6 @@ export default function InfoModal() {
         "vercel": "vercel_000000.svg",
         "railway": "railway_0B0D0E.svg",
         "neon": "neon_34D59A.svg",
-
 
         "facebook": "facebook_0866FF.svg",
         "line": "line_00C300.svg",
@@ -111,7 +111,7 @@ export default function InfoModal() {
                                             <h2 className="text-xl text-center font-bold text-gray-800 mb-6">กลุ่มเทคโนโลยีที่ใช้พัฒนา</h2>
                                             <div>
                                                 {[
-                                                    { head: "Front-end", data: { 0: { value: "Next.js", logo: "nextdotjs" }, 1: { value: "Tailwind Css", logo: "tailwindcss" } } },
+                                                    { head: "Front-end", data: { 0: { value: "Next.js", logo: "nextdotjs" }, 1: { value: "React", logo: "react" }, 2: { value: "Tailwind CSS", logo: "tailwindcss" } } },
                                                     { head: "Back-end", data: { 0: { value: "Laravel", logo: "laravel" }, 1: { value: "Prisma", logo: "prisma" } } },
                                                     { head: "Database", data: { 0: { value: "PostgreSql", logo: "postgresql" } } },
                                                     { head: "Infrastructure & Services", data: { 0: { value: "Vercel", logo: "vercel" }, 1: { value: "Railway", logo: "railway" }, 2: { value: "Neon", logo: "neon" } } },
