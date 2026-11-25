@@ -288,7 +288,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                                             : 'text-amber-600'
                                                             }`}
                                                     >
-                                                        {round_data?.list_status && getRoundStatus(round_data)}
+                                                        {round_data?.call_status && getRoundStatus(round_data)}
                                                     </td>
                                                 )}
 
@@ -298,7 +298,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                                         rowSpan={typeCallRows.length}
                                                         className="bg-gray-50 p-3 text-center text-sm font-semibold text-gray-600"
                                                     >
-                                                        {round_data?.list_status ? round_data?.date ?? '-' : '-'}
+                                                        {round_data?.call_status ? round_data?.call_date : '-'}
                                                     </td>
                                                 )}
 
@@ -311,7 +311,7 @@ export default function Row4RoundTable({ region, zone, position, data }) {
                                                         : 'text-gray-600'
                                                         }`}
                                                 >
-                                                    {round_data?.list_status
+                                                    {round_data?.call_status
                                                         ? typeData?.total
                                                             ? formatNumber(typeData.total)
                                                             : '-'
